@@ -20,7 +20,7 @@ Los commit creados para el proyecto deben guiarse por la siguiente sintaxis:
 
     tipo(capa-contexto): titular
     
-En caso de que se requiera extender la explicacion del cambio realizado la sintaxis será:
+En caso de que se requiera extender la explicacion del cambio realizado la sintaxis sera:
 
     tipo(capa-contexto): titular
     descripcion completa ...
@@ -43,7 +43,7 @@ la primera palabra en ingles define tipo del commit que se hace entre los cuales
     * fix: arreglos de todo tipo.
     * perf: un cambio que mejora el rendimiento (por ejemplo el uso de threads).
     * refactor: un cambio que no corrige un error ni agrega una característica.
-    * style: cambio unicamente visual del codigo (se añaden espacios en blanco, se añaden comillas faltantes, etc..).
+    * style: cambio unicamente visual del codigo (se añaden espacios en blanco, comillas faltantes, etc..).
     * test: se añaden pruebas de software (especificar el tipo de test) o se actualizan pruebas existentes.
     
     
@@ -72,10 +72,10 @@ El tituloar debe comenzar con la primera palabra en ingles que identifique que *
     delete
     update
     
-Pueden haber mas accionoes ingresadas en ingles de ser necesarias.
+Pueden haber mas acciones en ingles de ser necesarias.
     
 El resto del contenido debe contener una descripcion minima del cambio realizado escrito en español con los minimos caracteres posibles.
-Se recomienda no superar los 40 caracteres, el commit completo no deberia ser mas de una linea.
+Se recomienda no superar los 40 caracteres de titular, el commit completo no deberia ser mas de una linea.
 
 
 ### Descripcion completa del commit 

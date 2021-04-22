@@ -17,5 +17,6 @@ namespace Dominio.Entidades
 
         // obtener los modelos relacionados 
         public Persona PersonaRel { get; set; }
+        public ICollection<Rol> RolsRel { get; set; }
     }
 }
