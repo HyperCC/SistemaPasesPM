@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Dominio.Entidades
 {
-    public class TIpoNombre
+    public class TipoNombre
     {
         // atributos de la entidad
         public string Nombre { get; set; }

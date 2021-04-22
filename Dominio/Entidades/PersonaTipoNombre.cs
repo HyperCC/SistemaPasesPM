@@ -12,6 +12,6 @@ namespace Dominio.Entidades
 
         // obtener los modelos relacionados 
         public Persona PersonaRel { get; set; }
-        public TIpoNombre TIpoNombreRel { get; set; }
+        public TipoNombre TIpoNombreRel { get; set; }
     }
 }
