@@ -4,11 +4,10 @@ using System.Text;
 
 namespace Dominio.Entidades
 {
-    public class Usuario
+    public class Persona
     {
         // atributos de la entidad
-        public string Correo { get; set; }
-        public string Contrasena { get; set; }
+        public string Rut { get; set; }
 
         // relacionamiento segun modelo R
 
