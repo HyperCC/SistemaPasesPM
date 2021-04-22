@@ -11,7 +11,7 @@ namespace Dominio.Entidades
         public string Tipo { get; set; } // nombre o apellido
         public string Posicion { get; set; } // primero, segundo, tercero.
 
-        // relacionamiento segun modelo R
-
+        // obtener los modelos relacionados 
+        public ICollection<PersonaTipoNombre> PersonasRel { get; set; }
     }
 }

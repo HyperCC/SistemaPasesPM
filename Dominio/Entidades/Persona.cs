@@ -6,10 +6,12 @@ namespace Dominio.Entidades
 {
     public class Persona
     {
+        public Guid PersonaId { get; set; }
+
         // atributos de la entidad
         public string Rut { get; set; }
 
-        // relacionamiento segun modelo R
-
+        // obtener los modelos relacionados 
+        public ICollection<PersonaTipoNombre> TipoNombresRel { get; set; }
     }
 }
