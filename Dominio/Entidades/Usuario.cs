@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Dominio.Entidades
 {
-    public class Usuario
+    public class Usuario : IdentityUser // herencia para login
     {
         public Guid UsuarioId { get; set; }
 
