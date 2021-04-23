@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Dominio.Entidades;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -31,6 +33,16 @@ namespace WebApi
             services.AddDbContext<SistemaPasesContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
             );
+
+            // configuracion de core identity para el acceso por logins 
+            var builder = services.AddIdentityCore<Usuario>();
+            // inicializacion del modulo de identidad utilizando a usuario para los login
+            var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+
+            // instanciar el uso de roles de usuario con los datos pre contrstruidos de IdentityRole
+            identityBuilder.AddEntityFrameworkStores<SistemaPasesContext>();
+            // Claims comunicando las entidades Usuario y IdentityRole
+            identityBuilder.AddSignInManager<SignInManager<Usuario>>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
