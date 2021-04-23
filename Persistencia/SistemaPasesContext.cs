@@ -7,6 +7,9 @@ using System.Text;
 
 namespace Persistencia
 {
+    /// <summary>
+    /// Base de datos principal para todo el sistema
+    /// </summary>
     public class SistemaPasesContext : IdentityDbContext<Usuario>
     {
         // extension por configuracion para DbContextOptions
@@ -17,7 +20,7 @@ namespace Persistencia
         // metodo heredado para re configurar relaciones
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // genera las tablas donde se almacenaran los datos
+            // genera las migraciones con las entiades declaradas
             base.OnModelCreating(modelBuilder);
 
             // declaracion de clave primaria compuesta para relaciones N-N
