@@ -1,4 +1,5 @@
 ﻿using Dominio.Entidades;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Persistencia;
@@ -44,6 +46,9 @@ namespace WebApi
             // Claims comunicando las entidades Usuario y IdentityRole
             identityBuilder.AddSignInManager<SignInManager<Usuario>>();
 
+            // configuracion de los datos de prueba para las migraciones
+            services.TryAddSingleton<ISystemClock, SystemClock>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -51,9 +56,8 @@ namespace WebApi
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
+
             else
             {
                 // The default HSTS value is 30 days. You may want to change this for 
