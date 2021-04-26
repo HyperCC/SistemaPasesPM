@@ -10,8 +10,13 @@ namespace Dominio.Entidades
 
         // atributos de la entidad
         public string Nombre { get; set; }
-        public string Tipo { get; set; } // nombre o apellido
-        public string Posicion { get; set; } // primero, segundo, tercero.
+        public TipoIdentificador Tipo { get; set; } // nombre o apellido
+        public int Posicion { get; set; } // primero, segundo, tercero.
+
+        public enum TipoIdentificador
+        {
+            NOMBRE, APELLIDO
+        }
 
         // obtener los modelos relacionados 
         public ICollection<PersonaTipoNombre> PersonasRel { get; set; }

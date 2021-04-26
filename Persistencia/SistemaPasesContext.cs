@@ -33,5 +33,6 @@ namespace Persistencia
         public DbSet<Rol> Rol { get; set; }
         public DbSet<TipoNombre> TipoNombre { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<Empresa> Empresa { get; set; }
     }
 }

@@ -77,27 +77,88 @@ namespace Aplicacion.ConfiguracionLogin
                 // creacion del nuevo usuario y los datos relacionados
                 var usuarioGenerado = new Usuario
                 {
-                    Correo = request.CorreoElectronico
+                    Correo = request.CorreoElectronico,
                 };
 
+                // persona y relacion directa
                 var personaGenerada = new Persona
                 {
+                    PersonaId = new Guid(),
                     Rut = request.Rut
                 };
 
-                // obtencion de nombres 
-                string[] nombres = request.Nombres.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                // almacenamiento y relacion
+                await this._context.Persona.AddAsync(personaGenerada);
+                usuarioGenerado.PersonaId = personaGenerada.PersonaId;
 
-                foreach(var nombre in nombres)
+                // obtencion de nombres de la cadena bruta
+                string[] nombres = request.Nombres.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                // asignacion de los nuevos nombres
+                int currentIteration = 1;
+                foreach (var nombre in nombres)
                 {
                     var nom = new TipoNombre
                     {
-                        Nombre=nombre,
-
+                        Nombre = nombre,
+                        Tipo = TipoNombre.TipoIdentificador.NOMBRE,
+                        Posicion = currentIteration
                     };
+                    // TODO: agregar la busueda de nombres y apellidos repetidos
+                    currentIteration++;
+                    // agregar el nuevo nombre 
+                    this._context.TipoNombre.Add(nom);
                 }
 
+                // obtencion de apellidos de la cadena bruta
+                string[] apellidos = request.Apellidos.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                // asignacion de los nuevos apellidos
+                currentIteration = 1;
+                foreach (var nombre in nombres)
+                {
+                    var ape = new TipoNombre
+                    {
+                        Nombre = nombre,
+                        Tipo = TipoNombre.TipoIdentificador.APELLIDO,
+                        Posicion = currentIteration
+                    };
 
+                    currentIteration++;
+                    // agregar el nuevo nombre 
+                    this._context.TipoNombre.Add(ape);
+                }
+
+                // buscar empresa perteneciente.
+                var empresaExiste = await this._context.Empresa.Where(x => x.Rut == request.RutEmpresa).FirstOrDefaultAsync();
+
+                // si no existe la empresa se crea una nueva
+                if (empresaExiste == null)
+                {
+                    var empresaGenerada = new Empresa
+                    {
+                        EmpresaId = new Guid(),
+                        Rut = request.RutEmpresa,
+                        Nombre = request.NombreEmpresa
+                    };
+
+                    // agregar la nueva empresa
+                    await this._context.Empresa.AddAsync(empresaGenerada);
+                    // relacionar empresa con usuario
+                    usuarioGenerado.EmpresaId = empresaGenerada.EmpresaId;
+                }
+                else
+                {
+                    usuarioGenerado.EmpresaId = empresaExiste.EmpresaId;
+                }
+
+                // verificar si se pudo crear el UsuarioData y retornarlo
+                var resultado = await this._userManager.CreateAsync(usuarioGenerado, "Hol@Mundo");
+                if (resultado.Succeeded)
+                {
+                    //TODO: agregar devolucion de usuario DTO
+                    return usuarioGenerado;
+                }
+
+                throw new Exception("No se pudo agregar el nuevo usuario");
             }
         }
     }
