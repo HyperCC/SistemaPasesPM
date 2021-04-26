@@ -1,4 +1,5 @@
-﻿using Dominio.Entidades;
+﻿using Aplicacion.ExcepcionesPersonalizadas;
+using Dominio.Entidades;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -51,17 +52,17 @@ namespace Aplicacion.ConfiguracionLogin
                 this._userManager = userManager;
             }
 
-             /// <summary>
-             /// Operacion registrar
-             /// </summary>
-             /// <param name="request">datos recibidos por el controlador</param>
-             /// <param name="cancellationToken">indicador de cancelacion de solicitud</param>
-             /// <returns>codigo de estado http</returns>
+            /// <summary>
+            /// Operacion registrar
+            /// </summary>
+            /// <param name="request">datos recibidos por el controlador</param>
+            /// <param name="cancellationToken">indicador de cancelacion de solicitud</param>
+            /// <returns>codigo de estado http</returns>
             public async Task<Usuario> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
                 // verificar que el email sea unico o no exista ya en la DB
                 var existe = await this._context.Usuario.Where(x => x.Correo == request.CorreoElectronico).AnyAsync();
-                
+
             }
         }
     }
