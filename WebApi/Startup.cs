@@ -1,4 +1,5 @@
 ﻿using Dominio.Entidades;
+using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +16,7 @@ using Persistencia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace WebApi
@@ -35,6 +37,9 @@ namespace WebApi
             services.AddDbContext<SistemaPasesContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
             );
+
+            // configura el mediador para toda la app
+            services.AddMediatR(Assembly.GetExecutingAssembly());
 
             // configuracion de core identity para el acceso por logins 
             var builder = services.AddIdentityCore<Usuario>();
