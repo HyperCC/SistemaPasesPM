@@ -39,6 +39,7 @@ namespace WebApi
             );
 
             // configura el mediador para toda la app
+            //services.AddMediatR(typeof(Registrar.Manejador).Assembly);
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
             // configuracion de core identity para el acceso por logins 

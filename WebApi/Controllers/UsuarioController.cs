@@ -6,23 +6,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApi.Controllers.ControllerPersonalizado;
 
 namespace WebApi.Controllers
 {
-    public class UsuarioController : ControllerBase
+    /// <summary>
+    /// Controladores para las operaciones con Usuarios
+    /// </summary>
+    public class UsuarioController : PersonalController
     {
-        private readonly IMediator _mediator;
-        public UsuarioController(IMediator mediator)
-            => this._mediator = mediator;
 
         /// <summary>
         /// Registro de usuarios
         /// </summary>
         /// <param name="parametros">datos del formulario del cliente</param>
         /// <returns>codigo de estado http y datos relacionados</returns>
+        [HttpPost("registrar")]
         public async Task<ActionResult<Usuario>> Registrar(Registrar.Ejecuta parametros)
         {
-            return await this._mediator.Send(parametros);
+            return await this.MediadorHerencia.Send(parametros);
         }
     }
 }
