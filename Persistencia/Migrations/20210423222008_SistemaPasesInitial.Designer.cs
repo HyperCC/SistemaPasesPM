@@ -10,8 +10,8 @@ using Persistencia;
 namespace Persistencia.Migrations
 {
     [DbContext(typeof(SistemaPasesContext))]
-    [Migration("20210423184144_SistemaPasesInicial")]
-    partial class SistemaPasesInicial
+    [Migration("20210423222008_SistemaPasesInitial")]
+    partial class SistemaPasesInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

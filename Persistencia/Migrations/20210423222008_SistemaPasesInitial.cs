@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistencia.Migrations
 {
-    public partial class SistemaPasesInicial : Migration
+    public partial class SistemaPasesInitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
