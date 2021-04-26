@@ -24,7 +24,7 @@ namespace Aplicacion.ConfiguracionLogin
         /// </summary>
         public class Ejecuta : IRequest<Usuario>
         {
-            // principales datos recibidos por formulario
+            // datos recibidos por formulario
             public string Rut { get; set; }
             public string Nombres { get; set; }
             public string Apellidos { get; set; }
@@ -61,7 +61,42 @@ namespace Aplicacion.ConfiguracionLogin
             public async Task<Usuario> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
                 // verificar que el email sea unico o no exista ya en la DB
-                var existe = await this._context.Usuario.Where(x => x.Correo == request.CorreoElectronico).AnyAsync();
+                var correoExiste = await this._context.Usuario.Where(x => x.Correo == request.CorreoElectronico).AnyAsync();
+
+                if (correoExiste)
+                    throw new ManejadorException(HttpStatusCode.BadRequest,
+                        new { mensaje = $"Ya existe un usuario registrado con el Email {request.CorreoElectronico}" });
+
+                // verificar que el rut sea unico o no exista ya en la DB
+                var rutExiste = await this._context.Persona.Where(x => x.Rut == request.Rut).AnyAsync();
+
+                if (rutExiste)
+                    throw new ManejadorException(HttpStatusCode.BadRequest,
+                        new { mensaje = $"Ya existe un usuario registrado con el Rut {request.Rut}" });
+
+                // creacion del nuevo usuario y los datos relacionados
+                var usuarioGenerado = new Usuario
+                {
+                    Correo = request.CorreoElectronico
+                };
+
+                var personaGenerada = new Persona
+                {
+                    Rut = request.Rut
+                };
+
+                // obtencion de nombres 
+                string[] nombres = request.Nombres.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+                foreach(var nombre in nombres)
+                {
+                    var nom = new TipoNombre
+                    {
+                        Nombre=nombre,
+
+                    };
+                }
+
 
             }
         }
