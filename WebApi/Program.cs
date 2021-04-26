@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Persistencia;
-using Persistencia.Seeders;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,7 +34,7 @@ namespace WebApi
                     context.Database.Migrate();
 
                     // instancia del seeder de datos creado en Persistencia
-                    UsuarioSeeder.InsertarData(context);
+                    //UsuarioSeeder.InsertarData(context);
                 }
                 catch (Exception ex)
                 {
