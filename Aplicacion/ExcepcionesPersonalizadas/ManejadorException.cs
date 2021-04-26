@@ -8,7 +8,7 @@ namespace Aplicacion.ExcepcionesPersonalizadas
     /// <summary>
     /// Excepcion personalizada para los metodos Manejador de los mediadores
     /// </summary>
-    public class ManejadorException
+    public class ManejadorException : Exception
     {
         // codigo http a devolver 
         public HttpStatusCode Codigo { get; }

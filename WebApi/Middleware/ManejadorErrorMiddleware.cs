@@ -47,7 +47,36 @@ namespace WebApi.Middleware
             Exception ex,
             ILogger<ManejadorErrorMiddleware> logger)
         {
-            
+            object errores = null;
+
+            // verificar el tipo de excepcion
+            switch (ex)
+            {
+                // si se lanza ManejadorExcepcion (excepcion personalizada), error de validacion para solicitudes http
+                case ManejadorException me:
+                    logger.LogError(ex, "Manejador Error en clase ManejadorExcepcion");
+                    errores = me.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)me.Codigo;
+                    break;
+
+                // error generico o desconocido
+                case Exception e:
+                    logger.LogError(ex, "Error del servior, clase Exception");
+                    errores = string.IsNullOrWhiteSpace(e.Message) ? "Error Exception - mensaje generico se Exception" : e.Message;
+                    // error en el servidor tipo 5xx
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    break;
+            }
+
+            // transformacion de los errores encontrados a datos en json
+            context.Response.ContentType = "application/json";
+            if (errores != null)
+            {
+                // serializacion de los datos
+                var resultados = JsonConvert.SerializeObject(new { errores });
+                await context.Response.WriteAsync(resultados);
+            }
         }
     }
 }
