@@ -105,37 +105,24 @@ namespace Aplicacion.ConfiguracionLogin
                         .FirstOrDefaultAsync();
 
                     // agregar el nuevo nombre si no existe
+                    var nuevoNombre = new TipoNombre();
                     if (nombreExiste == null)
                     {
-                        var guidNuevoNombre = new Guid();
-
-                        this._context.TipoNombre.Add(
-                            new TipoNombre
-                            {
-                                TipoNombreId = guidNuevoNombre,
-                                Nombre = nombre,
-                                Tipo = TipoNombre.TipoIdentificador.NOMBRE,
-                                Posicion = currentIteration
-                            });
-
-                        // agregar tabla con nombres y personas 
-                        this._context.PersonaTipoNombre.Add(
-                            new PersonaTipoNombre
-                            {
-                                PersonaId = personaGenerada.PersonaId,
-                                TipoNombreId = guidNuevoNombre
-                            });
+                        nuevoNombre.TipoNombreId = new Guid();
+                        nuevoNombre.Nombre = nombre;
+                        nuevoNombre.Tipo = TipoNombre.TipoIdentificador.NOMBRE;
+                        nuevoNombre.Posicion = currentIteration;
                     }
-                    else
+                    this._context.TipoNombre.Add(nuevoNombre);
+
+                    // agregar tabla con nombres y personas 
+                    var nuevoPersonaTipoNombre = new PersonaTipoNombre
                     {
-                        // agregar tabla con nombres y personas 
-                        this._context.PersonaTipoNombre.Add(
-                            new PersonaTipoNombre
-                            {
-                                PersonaId = personaGenerada.PersonaId,
-                                TipoNombreId = nombreExiste.TipoNombreId
-                            });
-                    }
+                        PersonaId = personaGenerada.PersonaId,
+                        TipoNombreId = (nombreExiste == null) ?
+                        nuevoNombre.TipoNombreId : nombreExiste.TipoNombreId
+                    };
+                    this._context.PersonaTipoNombre.Add(nuevoPersonaTipoNombre);
 
                     currentIteration++;
                 }
@@ -154,37 +141,25 @@ namespace Aplicacion.ConfiguracionLogin
                         .FirstOrDefaultAsync();
 
                     // agregar el nuevo nombre si no existe
+                    var nuevoApellido = new TipoNombre();
                     if (apellidoExiste == null)
                     {
-                        var guidNuevoApellido = new Guid();
-
-                        this._context.TipoNombre.Add(
-                            new TipoNombre
-                            {
-                                TipoNombreId = guidNuevoApellido,
-                                Nombre = apellido,
-                                Tipo = TipoNombre.TipoIdentificador.APELLIDO,
-                                Posicion = currentIteration
-                            });
-
-                        // agregar tabla con nombres y personas 
-                        this._context.PersonaTipoNombre.Add(
-                            new PersonaTipoNombre
-                            {
-                                PersonaId = personaGenerada.PersonaId,
-                                TipoNombreId = guidNuevoApellido
-                            });
+                        nuevoApellido.TipoNombreId = new Guid();
+                        nuevoApellido.Nombre = apellido;
+                        nuevoApellido.Tipo = TipoNombre.TipoIdentificador.APELLIDO;
+                        nuevoApellido.Posicion = currentIteration;
                     }
-                    else
+                    this._context.TipoNombre.Add(nuevoApellido);
+
+                    // agregar tabla con nombres y personas 
+                    var nuevoPersonaTipoNombre = new PersonaTipoNombre
                     {
-                        // agregar tabla con nombres y personas 
-                        this._context.PersonaTipoNombre.Add(
-                            new PersonaTipoNombre
-                            {
-                                PersonaId = personaGenerada.PersonaId,
-                                TipoNombreId = apellidoExiste.TipoNombreId
-                            });
-                    }
+                        PersonaId = personaGenerada.PersonaId,
+                        TipoNombreId = (apellidoExiste == null) ?
+                        nuevoApellido.TipoNombreId : apellidoExiste.TipoNombreId
+                    };
+                    this._context.PersonaTipoNombre.Add(nuevoPersonaTipoNombre);
+
                     currentIteration++;
                 }
 
