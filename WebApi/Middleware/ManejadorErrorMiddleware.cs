@@ -62,7 +62,7 @@ namespace WebApi.Middleware
 
                 // error generico o desconocido
                 case Exception e:
-                    logger.LogError(ex, "Error del servior, clase Exception");
+                    logger.LogError(ex, "Error del servidor - clase Exception");
                     errores = string.IsNullOrWhiteSpace(e.Message) ? "Error Exception - mensaje generico se Exception" : e.Message;
                     // error en el servidor tipo 5xx
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

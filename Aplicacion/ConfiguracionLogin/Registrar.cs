@@ -99,14 +99,30 @@ namespace Aplicacion.ConfiguracionLogin
                 {
                     var nom = new TipoNombre
                     {
+                        TipoNombreId = new Guid(),
                         Nombre = nombre,
                         Tipo = TipoNombre.TipoIdentificador.NOMBRE,
                         Posicion = currentIteration
                     };
-                    // TODO: agregar la busueda de nombres y apellidos repetidos
+
+                    var nombreExiste = await this._context.TipoNombre
+                        .Where(x => x.Nombre == nom.Nombre
+                        && x.Tipo == nom.Tipo
+                        && x.Posicion == nom.Posicion)
+                        .FirstOrDefaultAsync();
+
+                    // agregar el nuevo nombre si no existe
+                    if (nombreExiste == null)
+                        await this._context.TipoNombre.AddAsync(nom);
+
+                    // agregar tabla con nombres y personas 
+                    await this._context.PersonaTipoNombre.AddAsync(new PersonaTipoNombre
+                    {
+                        PersonaId = personaGenerada.PersonaId,
+                        TipoNombreId = nom.TipoNombreId
+                    });
+
                     currentIteration++;
-                    // agregar el nuevo nombre 
-                    this._context.TipoNombre.Add(nom);
                 }
 
                 // obtencion de apellidos de la cadena bruta
@@ -122,9 +138,24 @@ namespace Aplicacion.ConfiguracionLogin
                         Posicion = currentIteration
                     };
 
+                    var apellidoExiste = await this._context.TipoNombre
+                        .Where(x => x.Nombre == ape.Nombre
+                        && x.Tipo == ape.Tipo
+                        && x.Posicion == ape.Posicion)
+                        .FirstOrDefaultAsync();
+
+                    // agregar el nuevo nombre si no existe
+                    if (apellidoExiste == null)
+                        await this._context.TipoNombre.AddAsync(ape);
+
+                    // agregar tabla con nombres y personas 
+                    await this._context.PersonaTipoNombre.AddAsync(new PersonaTipoNombre
+                    {
+                        PersonaId = personaGenerada.PersonaId,
+                        TipoNombreId = ape.TipoNombreId
+                    });
+
                     currentIteration++;
-                    // agregar el nuevo nombre 
-                    this._context.TipoNombre.Add(ape);
                 }
 
                 // buscar empresa perteneciente.
