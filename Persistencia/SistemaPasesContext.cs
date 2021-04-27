@@ -20,11 +20,12 @@ namespace Persistencia
         // metodo heredado para re configurar relaciones
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // genera las migraciones con las entiades declaradas
+            // genera las entiades declaradas con las migraciones
             base.OnModelCreating(modelBuilder);
 
             // declaracion de clave primaria compuesta para relaciones N-N
             modelBuilder.Entity<PersonaTipoNombre>().HasKey(ci => new { ci.PersonaId, ci.TipoNombreId });
+            modelBuilder.Entity<PasePersonaExterna>().HasKey(ci => new { ci.PaseId, ci.PersonaExternaId });
         }
 
         // conversion de los modelos a entidades en la Solucion
@@ -34,5 +35,14 @@ namespace Persistencia
         public DbSet<TipoNombre> TipoNombre { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Empresa> Empresa { get; set; }
+        public DbSet<AnexoContrato> AnexoContrato { get; set; }
+        public DbSet<AsesorPrevencion> AsesorPrevencion { get; set; }
+        public DbSet<Documento> Documento { get; set; }
+        public DbSet<ExamenesCompetencia> ExamenesCompetencia { get; set; }
+        public DbSet<Pase> Pase { get; set; }
+        public DbSet<PasePersonaExterna> PasePersonaExterna { get; set; }
+        public DbSet<PersonaExterna> PersonaExterna { get; set; }
+        public DbSet<RegistroPersona> RegistroPersona { get; set; }
+        public DbSet<TipoDocumento> TipoDocumento { get; set; }
     }
 }

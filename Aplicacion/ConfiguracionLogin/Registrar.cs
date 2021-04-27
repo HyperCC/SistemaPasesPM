@@ -97,30 +97,45 @@ namespace Aplicacion.ConfiguracionLogin
                 int currentIteration = 1;
                 foreach (var nombre in nombres)
                 {
-                    var nom = new TipoNombre
-                    {
-                        TipoNombreId = new Guid(),
-                        Nombre = nombre,
-                        Tipo = TipoNombre.TipoIdentificador.NOMBRE,
-                        Posicion = currentIteration
-                    };
-
+                    // buscar si existe el nombre
                     var nombreExiste = await this._context.TipoNombre
-                        .Where(x => x.Nombre == nom.Nombre
-                        && x.Tipo == nom.Tipo
-                        && x.Posicion == nom.Posicion)
+                        .Where(x => x.Nombre == nombre
+                        && x.Tipo == TipoNombre.TipoIdentificador.NOMBRE
+                        && x.Posicion == currentIteration)
                         .FirstOrDefaultAsync();
 
                     // agregar el nuevo nombre si no existe
                     if (nombreExiste == null)
-                        await this._context.TipoNombre.AddAsync(nom);
-
-                    // agregar tabla con nombres y personas 
-                    await this._context.PersonaTipoNombre.AddAsync(new PersonaTipoNombre
                     {
-                        PersonaId = personaGenerada.PersonaId,
-                        TipoNombreId = nom.TipoNombreId
-                    });
+                        var guidNuevoNombre = new Guid();
+
+                        this._context.TipoNombre.Add(
+                            new TipoNombre
+                            {
+                                TipoNombreId = guidNuevoNombre,
+                                Nombre = nombre,
+                                Tipo = TipoNombre.TipoIdentificador.NOMBRE,
+                                Posicion = currentIteration
+                            });
+
+                        // agregar tabla con nombres y personas 
+                        this._context.PersonaTipoNombre.Add(
+                            new PersonaTipoNombre
+                            {
+                                PersonaId = personaGenerada.PersonaId,
+                                TipoNombreId = guidNuevoNombre
+                            });
+                    }
+                    else
+                    {
+                        // agregar tabla con nombres y personas 
+                        this._context.PersonaTipoNombre.Add(
+                            new PersonaTipoNombre
+                            {
+                                PersonaId = personaGenerada.PersonaId,
+                                TipoNombreId = nombreExiste.TipoNombreId
+                            });
+                    }
 
                     currentIteration++;
                 }
@@ -129,32 +144,47 @@ namespace Aplicacion.ConfiguracionLogin
                 string[] apellidos = request.Apellidos.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                 // asignacion de los nuevos apellidos
                 currentIteration = 1;
-                foreach (var nombre in nombres)
+                foreach (var apellido in apellidos)
                 {
-                    var ape = new TipoNombre
-                    {
-                        Nombre = nombre,
-                        Tipo = TipoNombre.TipoIdentificador.APELLIDO,
-                        Posicion = currentIteration
-                    };
-
+                    // buscar si existe el apellido
                     var apellidoExiste = await this._context.TipoNombre
-                        .Where(x => x.Nombre == ape.Nombre
-                        && x.Tipo == ape.Tipo
-                        && x.Posicion == ape.Posicion)
+                        .Where(x => x.Nombre == apellido
+                        && x.Tipo == TipoNombre.TipoIdentificador.APELLIDO
+                        && x.Posicion == currentIteration)
                         .FirstOrDefaultAsync();
 
                     // agregar el nuevo nombre si no existe
                     if (apellidoExiste == null)
-                        await this._context.TipoNombre.AddAsync(ape);
-
-                    // agregar tabla con nombres y personas 
-                    await this._context.PersonaTipoNombre.AddAsync(new PersonaTipoNombre
                     {
-                        PersonaId = personaGenerada.PersonaId,
-                        TipoNombreId = ape.TipoNombreId
-                    });
+                        var guidNuevoApellido = new Guid();
 
+                        this._context.TipoNombre.Add(
+                            new TipoNombre
+                            {
+                                TipoNombreId = guidNuevoApellido,
+                                Nombre = apellido,
+                                Tipo = TipoNombre.TipoIdentificador.APELLIDO,
+                                Posicion = currentIteration
+                            });
+
+                        // agregar tabla con nombres y personas 
+                        this._context.PersonaTipoNombre.Add(
+                            new PersonaTipoNombre
+                            {
+                                PersonaId = personaGenerada.PersonaId,
+                                TipoNombreId = guidNuevoApellido
+                            });
+                    }
+                    else
+                    {
+                        // agregar tabla con nombres y personas 
+                        this._context.PersonaTipoNombre.Add(
+                            new PersonaTipoNombre
+                            {
+                                PersonaId = personaGenerada.PersonaId,
+                                TipoNombreId = apellidoExiste.TipoNombreId
+                            });
+                    }
                     currentIteration++;
                 }
 
