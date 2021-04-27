@@ -22,6 +22,7 @@ namespace Dominio.Entidades
 
         public Persona PersonaRel { get; set; }
         //public PasePersonaExterna PasePersonaExternaRel { get; set; }
+        public ICollection<PasePersonaExterna> PasesRel { get; set; }
 
 
     }
