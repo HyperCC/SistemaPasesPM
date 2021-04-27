@@ -1,4 +1,5 @@
-﻿using Dominio.Entidades;
+﻿using Aplicacion.ConfiguracionLogin;
+using Dominio.Entidades;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -18,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using WebApi.Middleware;
 
 namespace WebApi
 {
@@ -39,8 +41,8 @@ namespace WebApi
             );
 
             // configura el mediador para toda la app
-            //services.AddMediatR(typeof(Registrar.Manejador).Assembly);
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddMediatR(typeof(Registrar.Manejador).Assembly);
+            //services.AddMediatR(Assembly.GetExecutingAssembly());
 
             // configuracion de core identity para el acceso por logins 
             var builder = services.AddIdentityCore<Usuario>();
@@ -61,6 +63,10 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
+            // nuevo midleware con los errores personalizados
+            app.UseMiddleware<ManejadorErrorMiddleware>();
+
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 

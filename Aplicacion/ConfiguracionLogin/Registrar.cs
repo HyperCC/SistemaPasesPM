@@ -150,9 +150,12 @@ namespace Aplicacion.ConfiguracionLogin
                     usuarioGenerado.EmpresaId = empresaExiste.EmpresaId;
                 }
 
+                // guardar el usuario creado
+                await this._context.Usuario.AddAsync(usuarioGenerado);
+
                 // verificar si se pudo crear el UsuarioData y retornarlo
-                var resultado = await this._userManager.CreateAsync(usuarioGenerado, "Hol@Mundo");
-                if (resultado.Succeeded)
+                var resultado = await this._context.SaveChangesAsync();
+                if (resultado > 0)
                 {
                     //TODO: agregar devolucion de usuario DTO
                     return usuarioGenerado;
