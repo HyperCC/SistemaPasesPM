@@ -1,4 +1,5 @@
 import './App.css';
+import Registro from './components/login/Registro';
 import Navbar from './components/Navbar';
 import PerfilGeneral from './components/PerfilGeneral';
 import Table from './components/Table';
@@ -9,14 +10,7 @@ import menu from './pages/menu';
 function App() {
   return (
     <div className="App">
-      <Navbar />
-      <div className="py-2">
-        <PerfilGeneral />
-      </div>
-      <div className="py-2">
-        <Table />
-      </div>
-      
+      <Registro />
     </div>
   );
 }
