@@ -28,12 +28,14 @@ namespace Aplicacion.ConfiguracionLogin
             public string Rut { get; set; }
             public string Nombres { get; set; }
             public string Apellidos { get; set; }
-            public string CorreoElectronico { get; set; }
+            public string Correo { get; set; }
             public string RutEmpresa { get; set; }
             public string NombreEmpresa { get; set; }
 
             // por defecto el capcha viene no validado
-            public bool Captcha { get; set; } = false;
+            public string Captcha { get; set; }
+            public string NoPerteneceEmpresa { get; set; }
+
         }
 
         /// <summary>
@@ -61,11 +63,11 @@ namespace Aplicacion.ConfiguracionLogin
             public async Task<Usuario> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
                 // verificar que el email sea unico o no exista ya en la DB
-                var correoExiste = await this._context.Usuario.Where(x => x.Correo == request.CorreoElectronico).AnyAsync();
+                var correoExiste = await this._context.Usuario.Where(x => x.Correo == request.Correo).AnyAsync();
 
                 if (correoExiste)
                     throw new ManejadorException(HttpStatusCode.BadRequest,
-                        new { mensaje = $"Ya existe un usuario registrado con el Email {request.CorreoElectronico}" });
+                        new { mensaje = $"Ya existe un usuario registrado con el Email {request.Correo}" });
 
                 // verificar que el rut sea unico o no exista ya en la DB
                 var rutExiste = await this._context.Persona.Where(x => x.Rut == request.Rut).AnyAsync();
@@ -77,7 +79,7 @@ namespace Aplicacion.ConfiguracionLogin
                 // creacion del nuevo usuario y los datos relacionados
                 var usuarioGenerado = new Usuario
                 {
-                    Correo = request.CorreoElectronico,
+                    Correo = request.Correo,
                 };
 
                 // persona y relacion directa

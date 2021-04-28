@@ -8,7 +8,7 @@ export default function Registro() {
     // atributos para el registro de usuario
     const [dataUsuario, setDataUsuario] = useState({
         Rut: '',
-        Nombres: 'chile',
+        Nombres: '',
         Apellidos: '',
         Correo: '',
         NoPerteneceEmpresa: '',

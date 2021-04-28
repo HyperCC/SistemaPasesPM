@@ -30,11 +30,25 @@ namespace WebApi
             Configuration = configuration;
         }
 
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // acceso a la api desde cualquier origen
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                    builderer =>
+                    {
+                        builderer.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+            });
+
             // configuracion para agregar el context al servicio web
             services.AddDbContext<SistemaPasesContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
@@ -63,6 +77,8 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            // uso de Cors
+            app.UseCors(MyAllowSpecificOrigins);
 
             // nuevo midleware con los errores personalizados
             app.UseMiddleware<ManejadorErrorMiddleware>();
