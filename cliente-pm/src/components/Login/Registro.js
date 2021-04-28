@@ -2,23 +2,6 @@ import React, { useState } from 'react';
 import './App.css';
 import { registrarUsuario } from '../../actions/UsuarioAction';
 
-// funciones en desarrollo
-function LabelInGrid(titulo, nameID) {
-    return (
-        <div class="col-span-1 form-group">
-            <label class="font-light  text-gray-800 select-none" for={nameID}>{titulo}</label>
-        </div>
-    );
-}
-
-function InputInGrid(nameID) {
-    return (
-        <div class="col-span-2">
-            <input type="text" name={nameID} id={nameID} class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
-        </div>
-    );
-}
-
 // pagina principal de registro
 const Registro = () => {
 
