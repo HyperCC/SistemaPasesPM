@@ -8,12 +8,16 @@ const Table = () => {
                     <h2 class="text-2xl leading-tight">
                         Listado de pases solicitados
                     </h2>
+                    
                     <div class="text-end">
                         <form class="flex w-full max-w-sm space-x-3">
+                            <button class="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-green-600 rounded-lg shadow-md hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-200" type="submit">
+                                Nuevo Pase
+                            </button>
                             <div class=" relative ">
                                 <input type="text" id="&quot;form-subscribe-Filter" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="busqueda"/>
                             </div>
-                            <button class="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-yellow-400 rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-200" type="submit">
+                            <button class="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-green-600 rounded-lg shadow-md hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-200" type="submit">
                                 Filtro
                             </button>
                         </form>
@@ -85,10 +89,10 @@ const Table = () => {
                                         </span>
                                     </td>
                                     <td class="text-center px-5 py-5 border-b border-gray-200 bg-white text-sm space-x-1">
-                                        <a href="#" class="hover:text-indigo-900 p-1 rounded bg-yellow-400 text-white p-2 px-2">
+                                        <a href="#" class="p-1 rounded bg-green-600 hover:bg-yellow-400 text-white p-2 px-2">
                                             Revisar
                                         </a>
-                                        <a href="#" class="hover:text-indigo-900 p-1 rounded bg-green-600 text-white p-2 px-2">
+                                        <a href="#" class="p-1 rounded bg-green-600 hover:bg-yellow-400 text-white p-2 px-2">
                                             Editar
                                         </a>
                                     </td>
@@ -130,10 +134,10 @@ const Table = () => {
                                         </span>
                                     </td>
                                     <td class="text-center px-5 py-5 border-b border-gray-200 bg-white text-sm space-x-1">
-                                        <a href="#" class="hover:text-indigo-900 p-1 rounded bg-green-600 text-white p-2 px-2">
+                                        <a href="#" class="p-1 rounded bg-green-600 hover:bg-yellow-400 text-white p-2 px-2">
                                             Revisar
                                         </a>
-                                        <a href="#" class="hover:text-indigo-900 p-1 rounded bg-green-600 text-white p-2 px-2">
+                                        <a href="#" class="p-1 rounded bg-green-600 hover:bg-yellow-400 text-white p-2 px-2">
                                             Editar
                                         </a>
                                     </td>
