@@ -8,11 +8,11 @@ const Navbar = () => {
             <p class="text-center text-2xl font-bold text-grey-800 text-white">Sistemas Pases de Accesos</p>
             <div className="flex space-x-2">
                 <a href="/"
-                className=" rounded bg-green-500 text-white p-2 px-4">
+                className=" rounded bg-green-500 text-white p-2 px-4 hover:bg-yellow-400">
                     Perfil
                 </a>
                 <a href="/"
-                className=" rounded bg-green-500 text-white p-2 px-4">
+                className=" rounded bg-green-500 text-white p-2 px-4 hover:bg-yellow-400">
                     Salir
                 </a>
             </div>
