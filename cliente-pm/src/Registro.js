@@ -1,6 +1,24 @@
 import React from 'react';
 import './App.css';
 
+// funciones en desarrollo
+function LabelInGrid(titulo, nameID) {
+    return (
+        <div class="col-span-1 form-group">
+            <label class="font-light  text-gray-800 select-none" for={nameID}>{titulo}</label>
+        </div>
+    );
+}
+
+function InputInGrid(nameID) {
+    return (
+        <div class="col-span-2">
+            <input type="text" name={nameID} id={nameID} class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
+        </div>
+    );
+}
+
+// pagina principal de registro
 export default function Registro() {
     return (
         <div>
@@ -14,6 +32,7 @@ export default function Registro() {
                             </p>
                         </div>
 
+                        {/* DATOS PRINCIPALES PARA USUARIO */}
                         <div class="grid grid-cols-3 px-4 md:px-8 gap-4 mt-12">
                             <div class="col-span-1 form-group">
                                 <label class="font-light  text-gray-800 select-none" for="rut">Rut</label>
@@ -50,6 +69,7 @@ export default function Registro() {
                             </label>
                         </div>
 
+                        {/* DATOS PRINCIPALES PARA EMPRESA */}
                         <div class="grid grid-cols-3 px-4 md:px-8 gap-4 mt-6">
                             <div class="col-span-1 form-group">
                                 <label class="font-light  text-gray-800 select-none" for="rutempresa">Rut Empresa</label>
@@ -62,7 +82,7 @@ export default function Registro() {
                                 <label class="font-light  text-gray-800 select-none" for="nombreempresa">Nombre Empresa</label>
                             </div>
                             <div class="col-span-2">
-                                <input type="text" name="nombreempresa" id="nombreempresa" class="w-full border-1 py-1 px-3 border-gray-800 rounded-md bg-gray-100" />
+                                <input type="text" name="nombreempresa" id="nombreempresa" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
                             </div>
                         </div>
 
@@ -72,6 +92,7 @@ export default function Registro() {
                             </label>
                         </div>
 
+                        {/* ENVIAR DATOS */}
                         <div class="mt-12 flex justify-center">
                             <button class="bg-blue-900 hover:bg-blue-800 shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                                 Guardar
