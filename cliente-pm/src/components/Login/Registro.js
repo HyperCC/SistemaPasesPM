@@ -11,28 +11,53 @@ export default function Registro() {
         Nombres: '',
         Apellidos: '',
         Correo: '',
-        NoPerteneceEmpresa: '',
+        NoPerteneceEmpresa: false,
         RutEmpresa: '',
         NombreEmpresa: '',
-        Captcha: ''
+        Captcha: false
     });
 
-    // asignar nuevos valores al state del registro
-    const ingresarValoresMemoria = actualValor => {
+    const [checkCaptcha, setCheckCaptcha] = useState(false);
+    const [checkNoPerteneceEmpresa, setCheckNoPerteneceEmpresa] = useState(false);
 
+    // asignar nuevos valores al state del registro
+    const ingresarValoresMemoria = valorInput => {
         // obtener el valor
-        const { name, value } = actualValor.target;
-        // asignar el valor
-        setDataUsuario(anterior => ({
-            ...anterior,
-            [name]: value
-        }));
+        const { name, value } = valorInput.target;
+
+        // actualizar el valor de NoPerteneceEmpresa segun el check
+        if (name === 'NoPerteneceEmpresa') {
+            setCheckNoPerteneceEmpresa(!checkNoPerteneceEmpresa);
+
+            setDataUsuario(anterior => ({
+                ...anterior, // mantener lo que existe antes
+                [name]: !checkNoPerteneceEmpresa // solo cambiar el input mapeado
+            }));
+
+            // actualizar el valor de Captcha segun el check
+        } else if (name === 'Captcha') {
+            setCheckCaptcha(!checkCaptcha);
+
+            setDataUsuario(anterior => ({
+                ...anterior, // mantener lo que existe antes
+                [name]: !checkCaptcha // solo cambiar el input mapeado
+            }));
+
+        } else {
+            // asignar el valor
+            setDataUsuario(anterior => ({
+                ...anterior, // mantener lo que existe antes
+                [name]: value // solo cambiar el input mapeado
+            }));
+        }
     };
 
     // boton para enviar el formulario
-    const botonRegistrarUsuario = valoresActuales => {
+    const botonRegistrarUsuario = infoFormulario => {
         // cancelar el envio inmediato del formulario
-        valoresActuales.preventDefault();
+        infoFormulario.preventDefault();
+
+        console.log('data usuario: ', dataUsuario);
 
         // uso del action registrar
         registrarUsuario(dataUsuario).then(response => {
@@ -86,8 +111,8 @@ export default function Registro() {
 
                             <div class="mt-6 form-group px-4 md:px-8">
                                 <label class="font-light  text-gray-800 select-none" for="NoPerteneceEmpresa">
-                                    <input type="checkbox" value={dataUsuario.NoPerteneceEmpresa} onChange={ingresarValoresMemoria} name="NoPerteneceEmpresa" /> No pertenece a la Empresa
-                            </label>
+                                    <input type="checkbox" checked={checkNoPerteneceEmpresa} onClick={ingresarValoresMemoria} name="NoPerteneceEmpresa" /> No pertenece a la Empresa
+                                </label>
                             </div>
 
                             {/* DATOS PRINCIPALES PARA EMPRESA */}
@@ -109,8 +134,8 @@ export default function Registro() {
 
                             <div class="mt-6 form-group px-4 md:px-8">
                                 <label class="font-light  text-gray-800 select-none" for="Captcha">
-                                    <input type="checkbox" value={dataUsuario.Captcha} onChange={ingresarValoresMemoria} name="Captcha" /> Captcha
-                            </label>
+                                    <input type="checkbox" checked={checkCaptcha} onClick={ingresarValoresMemoria} name="Captcha" /> Captcha
+                                </label>
                             </div>
 
                             {/* ENVIAR DATOS */}
