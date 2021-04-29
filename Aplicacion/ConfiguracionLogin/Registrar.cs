@@ -33,8 +33,8 @@ namespace Aplicacion.ConfiguracionLogin
             public string NombreEmpresa { get; set; }
 
             // por defecto el capcha viene no validado
-            public string Captcha { get; set; }
-            public string NoPerteneceEmpresa { get; set; }
+            public bool Captcha { get; set; }
+            public bool NoPerteneceEmpresa { get; set; }
 
         }
 

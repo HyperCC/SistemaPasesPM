@@ -22,7 +22,7 @@ namespace WebApi.Controllers
         /// <param name="parametros">datos del formulario del cliente</param>
         /// <returns>codigo de estado http y datos relacionados</returns>
         [HttpPost("registrar")]
-        public async Task<ActionResult<Usuario>> Registrar(Registrar.Ejecuta parametros)
+        public async Task<ActionResult<Usuario>> Registrar([FromForm]Registrar.Ejecuta parametros)
         {
             return await this.MediadorHerencia.Send(parametros);
         }

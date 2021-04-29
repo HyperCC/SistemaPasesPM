@@ -49,6 +49,11 @@ namespace WebApi
                     });
             });
 
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
             // configuracion para agregar el context al servicio web
             services.AddDbContext<SistemaPasesContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
