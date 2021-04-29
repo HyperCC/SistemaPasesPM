@@ -27,13 +27,15 @@ namespace Dominio.Entidades
         public Guid UsuarioId { get; set; }
 
         // obtener los modelos relacionados 
-
         public Empresa EmpresaRel { get; set; }
 
         public Usuario UsuarioRel { get; set; }
 
         public ICollection<Documento> DocumentosRel { get; set; }
-        public PersonaExterna PersonaExternaRel { get; set; }
+
+        public ICollection<PasePersonaExterna> PersonasExternaRel { get; set; }
+
+        public AsesorPrevencion Asesor { get; set; }
 
 
     }

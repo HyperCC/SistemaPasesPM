@@ -23,6 +23,6 @@ namespace Dominio.Entidades
         // obtener los modelos relacionados 
 
         public Persona PersonaRel { get; set; }
-        //public Pase PaseRel { get; set; }
+        public Pase PaseRel { get; set; }
     }
 }
