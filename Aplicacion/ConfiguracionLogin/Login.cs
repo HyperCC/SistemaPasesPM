@@ -1,4 +1,5 @@
-﻿using Aplicacion.ExcepcionesPersonalizadas;
+﻿using Aplicacion.ConfiguracionLogin.TokenSeguridad;
+using Aplicacion.ExcepcionesPersonalizadas;
 using Dominio.Entidades;
 using Dominio.ModelosDto;
 using MediatR;
@@ -29,14 +30,17 @@ namespace Aplicacion.ConfiguracionLogin
             private readonly SistemaPasesContext _context;
             private readonly UserManager<Usuario> _usuarioManager;
             private readonly SignInManager<Usuario> _signInManager;
+            private readonly JwtGenerador _jwtGenerador;
 
             public Manejador(SistemaPasesContext context,
                 UserManager<Usuario> usuarioManager,
-                SignInManager<Usuario> signInManager)
+                SignInManager<Usuario> signInManager,
+                 JwtGenerador jwtGenerador)
             {
                 this._context = context;
                 this._usuarioManager = usuarioManager;
                 this._signInManager = signInManager;
+                this._jwtGenerador = jwtGenerador;
             }
 
             public async Task<UsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
@@ -55,7 +59,7 @@ namespace Aplicacion.ConfiguracionLogin
                     {
                         Nombres = "nombres",
                         Apellidos = "apellidos",
-                        Token = "el token",
+                        Token = this._jwtGenerador.CreateToken(usuario, new List<string>()),
                         Email = usuario.Email
                     };
 
