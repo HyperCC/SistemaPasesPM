@@ -542,7 +542,7 @@ namespace Persistencia.Migrations
                         .HasForeignKey("PersonaId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Dominio.Entidades.TipoNombre", "TIpoNombreRel")
+                    b.HasOne("Dominio.Entidades.TipoNombre", "TipoNombreRel")
                         .WithMany("PersonasRel")
                         .HasForeignKey("TipoNombreId")
                         .OnDelete(DeleteBehavior.Cascade);
