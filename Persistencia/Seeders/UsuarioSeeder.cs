@@ -20,46 +20,78 @@ namespace Persistencia.Seeders
         /// <param name="context">base de datos completa</param>
         /// <param name="usuarioManager">posible usuario actual</param>
         /// <returns>creacion de un nuevo Usuario</returns>
-        public static void InsertarData(SistemaPasesContext context)
+        public static async Task InsertarData(SistemaPasesContext context, UserManager<Usuario> usuarioManager)
         {
-            // en caso de no haber usuarios en la DB
-            if (!context.Persona.Any())
+            // de no haber usaurios en la base de datos se crea el inicial 
+            if (context.Usuario.Any())
             {
-                context.Persona.AddRange(
-                    new Persona
-                    {
-                        Rut = "11222333-4"
-                    },
-
-                    new Persona
-                    {
-                        Rut = "55666777-8"
-                    },
-
-                     new Persona
-                     {
-                         Rut = "99111222-3"
-                     },
-
-                      new Persona
-                      {
-                          Rut = "4555666-7"
-                      }
-                );
-
-                context.SaveChanges();
-
-                /*
-                // creacion de nuevo usuario para poblar la DB
-                var usuario = new Usuario
+                // nombres
+                var nombre1 = new TipoNombre
                 {
-                    Correo = "kjkjkjk",
-                    Contrasena = "kmkmk",
-                    UserName = "domainB",
-                    Email = "belchello@gmail.com"
+                    TipoNombreId = new Guid(),
+                    Nombre = "camilo",
+                    Tipo = TipoNombre.TipoIdentificador.NOMBRE
+                };
+                var nombre2 = new TipoNombre
+                {
+                    TipoNombreId = new Guid(),
+                    Nombre = "andres",
+                    Tipo = TipoNombre.TipoIdentificador.NOMBRE
                 };
 
-                await usuarioManager.CreateAsync(usuario, "P@ssw0rd");*/
+                // apellidos
+                var apellido1 = new TipoNombre
+                {
+                    TipoNombreId = new Guid(),
+                    Nombre = "moraga",
+                    Tipo = TipoNombre.TipoIdentificador.APELLIDO
+                };
+                var apellido2 = new TipoNombre
+                {
+                    TipoNombreId = new Guid(),
+                    Nombre = "martinez",
+                    Tipo = TipoNombre.TipoIdentificador.APELLIDO
+                };
+                // agregar los respectivos nombres
+                await context.TipoNombre.AddRangeAsync(nombre1, nombre2, apellido1, apellido2);
+
+                // datos de la persona inicial
+                var nuevaPersona = new Persona
+                {
+                    PersonaId = new Guid(),
+                    Rut = "1.222.333-4"
+                };
+                await context.Persona.AddAsync(nuevaPersona);
+
+                // agrupar todas las instancias de PersonaTipoNombre correspondientes
+                Guid[] idsNombres = {nombre1.TipoNombreId,
+                    nombre2.TipoNombreId,
+                    apellido1.TipoNombreId,
+                    apellido2.TipoNombreId };
+
+                // generar las instancias 
+                foreach (Guid idnombre in idsNombres)
+                {
+                    await context.PersonaTipoNombre.AddAsync(new PersonaTipoNombre
+                    {
+                        PersonaId = nuevaPersona.PersonaId,
+                        TipoNombreId = idnombre
+                    });
+                }
+
+                var result = await context.SaveChangesAsync();
+                Console.WriteLine((result > 0) ? "TODO FUE OK" : "NADA FUNCIONO");
+
+                // usuario principal
+                var nuevoUsuario = new Usuario
+                {
+                    UsuarioId = new Guid(),
+                    Email = "admin@gmail.com",
+                    PersonaId = nuevaPersona.PersonaId
+                };
+                // agregar el usuario y generar el hash de al clave
+                await usuarioManager.CreateAsync(nuevoUsuario, "P@ssw0rd");
+
             }
         }
     }

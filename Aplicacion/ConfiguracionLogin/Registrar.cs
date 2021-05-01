@@ -35,7 +35,6 @@ namespace Aplicacion.ConfiguracionLogin
             // por defecto el capcha viene no validado
             public bool Captcha { get; set; }
             public bool NoPerteneceEmpresa { get; set; }
-
         }
 
         /// <summary>
@@ -79,7 +78,8 @@ namespace Aplicacion.ConfiguracionLogin
                 // creacion del nuevo usuario y los datos relacionados
                 var usuarioGenerado = new Usuario
                 {
-                    Correo = request.Correo,
+                    UsuarioId = new Guid(),
+                    Email = request.Correo,
                 };
 
                 // persona y relacion directa

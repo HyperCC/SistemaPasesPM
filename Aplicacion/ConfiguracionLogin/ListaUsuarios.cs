@@ -18,12 +18,12 @@ namespace Aplicacion.ConfiguracionLogin
         public class Manejador : IRequestHandler<Ejecuta, List<Usuario>>
         {
             private readonly SistemaPasesContext _context;
-            public Manejador(SistemaPasesContext context) => this._context = context;
-
+            public Manejador(SistemaPasesContext context) 
+                => this._context = context;
 
             public async Task<List<Usuario>> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
-                await this._context.PersonaExterna.FindAsync(new Guid());
+                await this._context.TipoDocumento.FindAsync(new Guid());
                 var usuarios = this._context.Usuario.ToList();
                 return usuarios;
             }

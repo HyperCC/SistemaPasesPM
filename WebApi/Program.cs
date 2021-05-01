@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Persistencia;
-
+using Persistencia.Seeders;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,13 +28,14 @@ namespace WebApi
                 var services = ambiente.ServiceProvider;
                 try
                 {
+                    var usuarioManager = services.GetRequiredService<UserManager<Usuario>>();
                     // llamar el uso de CursosOnlineContext
                     var context = services.GetRequiredService<SistemaPasesContext>();
                     // hacer la migracion directamente a la DB de no existir las tablas
                     context.Database.Migrate();
 
                     // instancia del seeder de datos creado en Persistencia
-                    //UsuarioSeeder.InsertarData(context);
+                    //UsuarioSeeder.InsertarData(context, usuarioManager).Wait();
                 }
                 catch (Exception ex)
                 {
