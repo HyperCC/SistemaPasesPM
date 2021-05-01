@@ -1,9 +1,11 @@
-﻿using Dominio.Entidades;
+﻿using Aplicacion.ExcepcionesPersonalizadas;
+using Dominio.Entidades;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Persistencia;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,7 +40,19 @@ namespace Aplicacion.ConfiguracionLogin
 
             public async Task<Usuario> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
-                throw new NotImplementedException();
+                // verificar que el email del usuario existe 
+                var usuario = await this._usuarioManager.FindByEmailAsync(request.Email);
+                if (usuario == null)
+                    throw new ManejadorException(HttpStatusCode.Unauthorized);
+
+                // verificar que la password sea correcta
+                var resultado = await this._signInManager.CheckPasswordSignInAsync(usuario, request.Password, false);
+                
+                // devolver datos del usuario logueado o lanzar 401
+                if (resultado.Succeeded)
+                    return usuario;
+
+                throw new ManejadorException(HttpStatusCode.Unauthorized);
             }
         }
 
