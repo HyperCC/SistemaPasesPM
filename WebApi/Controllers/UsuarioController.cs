@@ -1,5 +1,6 @@
 ﻿using Aplicacion.ConfiguracionLogin;
 using Dominio.Entidades;
+using Dominio.ModelosDto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -21,7 +22,7 @@ namespace WebApi.Controllers
         /// <param name="parametros">correo y contraseña</param>
         /// <returns>codigo de estado http y datos del usuario</returns>
         [HttpPost("login")]
-        public async Task<ActionResult<Usuario>> Login(Login.Ejecuta parametros)
+        public async Task<ActionResult<UsuarioData>> Login(Login.Ejecuta parametros)
         {
             return await MediadorHerencia.Send(parametros);
         }

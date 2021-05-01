@@ -1,5 +1,6 @@
 ﻿using Aplicacion.ConfiguracionLogin;
 using Aplicacion.ConfiguracionLogin.Contratos;
+using Aplicacion.ConfiguracionLogin.TokenSeguridad;
 using Dominio.Entidades;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
@@ -78,8 +79,7 @@ namespace WebApi
             services.TryAddSingleton<ISystemClock, SystemClock>();
 
             // injeccion de la libreria de seguridad y la interface en applicacion.contratos 
-            // y comenzar interfaces reconocibles parar logica de negocio
-            //services.AddScoped<IJwtGenerador, JwtGenerador>();
+            services.AddScoped<IJwtGenerador, JwtGenerador>();
 
             // dar a concer por el webApp la clase para reconocer l usuario en sesion acltualmente.
             //services.AddScoped<IUsuarioSesion, UsuarioSesion>();
