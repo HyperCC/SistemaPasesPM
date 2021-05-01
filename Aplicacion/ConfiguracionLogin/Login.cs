@@ -24,16 +24,19 @@ namespace Aplicacion.ConfiguracionLogin
         public class Manejador : IRequestHandler<Ejecuta, Usuario>
         {
             private readonly SistemaPasesContext _context;
-
+            private readonly UserManager<Usuario> _usuarioManager;
             private readonly SignInManager<Usuario> _signInManager;
 
-            public Manejador(SistemaPasesContext context, SignInManager<Usuario> signInManager)
+            public Manejador(SistemaPasesContext context,
+                UserManager<Usuario> usuarioManager,
+                SignInManager<Usuario> signInManager)
             {
                 this._context = context;
+                this._usuarioManager = usuarioManager;
                 this._signInManager = signInManager;
             }
 
-            public Task<Usuario> Handle(Ejecuta request, CancellationToken cancellationToken)
+            public async Task<Usuario> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }

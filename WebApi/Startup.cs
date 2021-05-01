@@ -1,4 +1,5 @@
 ﻿using Aplicacion.ConfiguracionLogin;
+using Aplicacion.ConfiguracionLogin.Contratos;
 using Dominio.Entidades;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
@@ -75,6 +76,13 @@ namespace WebApi
 
             // configuracion de los datos de prueba para las migraciones
             services.TryAddSingleton<ISystemClock, SystemClock>();
+
+            // injeccion de la libreria de seguridad y la interface en applicacion.contratos 
+            // y comenzar interfaces reconocibles parar logica de negocio
+            //services.AddScoped<IJwtGenerador, JwtGenerador>();
+
+            // dar a concer por el webApp la clase para reconocer l usuario en sesion acltualmente.
+            //services.AddScoped<IUsuarioSesion, UsuarioSesion>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
