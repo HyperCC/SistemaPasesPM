@@ -19,5 +19,14 @@ namespace WebApi.Controllers
             return await this.MediadorHerencia.Send(parametros);
         }
 
+
+        /// <summary>
+        /// Obtener todos los pases
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult<List<Pase>>> All()
+            => await this.MediadorHerencia.Send(new ListaPases.Ejecuta());
+
     }
 }

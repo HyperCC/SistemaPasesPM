@@ -23,9 +23,9 @@ namespace Persistencia.Seeders
         public static async Task InsertarData(SistemaPasesContext context, UserManager<Usuario> usuarioManager)
         {
             // de no haber usaurios en la base de datos se crea el inicial 
-            if (!usuarioManager.Users.Any())
+            if (await usuarioManager.FindByEmailAsync("admin@gmail.com") == null)
             {
-                Console.WriteLine("NO HAY USUARIO EN LA BASE DE DATOS..");
+                Console.WriteLine("NO HAY USUARIO ADMIN EN LA BASE DE DATOS..");
                 // nombres
                 var nombre1 = new TipoNombre
                 {
@@ -111,7 +111,8 @@ namespace Persistencia.Seeders
                 Console.WriteLine((resultUsuario.Succeeded) ? "CREAR EL USUARIO FUE OK" : "CREAR EL USUARIO NO FUNCIONO");
                 Console.WriteLine("---------------------------------------------------------------------------------");
             }
-            Console.WriteLine("YA HAY USUARIOS EN LA BASE DE DATOS NO FUNCIONARA EL SEEDER USAURIO..");
+            else
+                Console.WriteLine("YA HAY USUARIO ADMIN EN LA BASE DE DATOS..");
         }
     }
 }
