@@ -93,7 +93,7 @@ namespace WebApi
             // uso de Cors
             app.UseCors(MyAllowSpecificOrigins);
 
-            // nuevo midleware con los errores personalizados
+            // midleware con los errores personalizados
             app.UseMiddleware<ManejadorErrorMiddleware>();
 
             if (env.IsDevelopment())

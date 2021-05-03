@@ -23,7 +23,7 @@ namespace Persistencia.Seeders
         public static async Task InsertarData(SistemaPasesContext context, UserManager<Usuario> usuarioManager)
         {
             // de no haber usaurios en la base de datos se crea el inicial 
-            if (context.Usuario.Any())
+            if (!usuarioManager.Users.Any())
             {
                 // nombres
                 var nombre1 = new TipoNombre
@@ -79,18 +79,36 @@ namespace Persistencia.Seeders
                     });
                 }
 
+                var nuevaEmpresa = new Empresa
+                {
+                    EmpresaId = new Guid(),
+                    Nombre = "PMEJ",
+                    Rut = "1.222.333-0"
+                };
+                await context.Empresa.AddAsync(nuevaEmpresa);
+
                 var result = await context.SaveChangesAsync();
+                Console.WriteLine("---------------------------------------------------------------------------------");
                 Console.WriteLine((result > 0) ? "TODO FUE OK" : "NADA FUNCIONO");
+                Console.WriteLine("---------------------------------------------------------------------------------");
 
                 // usuario principal
                 var nuevoUsuario = new Usuario
                 {
                     UsuarioId = new Guid(),
                     Email = "admin@gmail.com",
-                    PersonaId = nuevaPersona.PersonaId
+                    UserName = "admin@gmail.com",
+                    PersonaId = nuevaPersona.PersonaId,
+                    EmpresaId = nuevaEmpresa.EmpresaId,
+                    Captcha = true,
+                    NoPerteneceEmpresa = true
                 };
                 // agregar el usuario y generar el hash de al clave
-                await usuarioManager.CreateAsync(nuevoUsuario, "P@ssw0rd");
+                var resultUsuario = await usuarioManager.CreateAsync(nuevoUsuario, "P@ssw0rd");
+
+                Console.WriteLine("---------------------------------------------------------------------------------");
+                Console.WriteLine((resultUsuario.Succeeded) ? "CREAR EL USUARIO FUE OK" : "CREAR EL USUARIO NO FUNCIONO");
+                Console.WriteLine("---------------------------------------------------------------------------------");
 
             }
         }

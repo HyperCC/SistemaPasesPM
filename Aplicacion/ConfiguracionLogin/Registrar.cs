@@ -80,6 +80,8 @@ namespace Aplicacion.ConfiguracionLogin
                 {
                     UsuarioId = new Guid(),
                     Email = request.Correo,
+                    Captcha = request.Captcha,
+                    NoPerteneceEmpresa = request.NoPerteneceEmpresa
                 };
 
                 // persona y relacion directa

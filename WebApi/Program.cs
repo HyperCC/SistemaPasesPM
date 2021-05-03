@@ -35,7 +35,7 @@ namespace WebApi
                     context.Database.Migrate();
 
                     // instancia del seeder de datos creado en Persistencia
-                    //UsuarioSeeder.InsertarData(context, usuarioManager).Wait();
+                    UsuarioSeeder.InsertarData(context, usuarioManager).Wait();
                 }
                 catch (Exception ex)
                 {
