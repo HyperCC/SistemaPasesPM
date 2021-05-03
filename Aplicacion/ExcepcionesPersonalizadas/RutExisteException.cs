@@ -6,9 +6,9 @@ using System.Text;
 namespace Aplicacion.ExcepcionesPersonalizadas
 {
     /// <summary>
-    /// Excepcion general para los metodos Manejador de los mediadores
+    /// Excepcion para un rut existente
     /// </summary>
-    public class ManejadorException : Exception
+    public class RutExisteException : Exception
     {
         // codigo http a devolver 
         public HttpStatusCode Codigo { get; }
@@ -16,7 +16,7 @@ namespace Aplicacion.ExcepcionesPersonalizadas
         // mensajes con los errores obtenidos
         public object Errores { get; }
 
-        public ManejadorException(HttpStatusCode codigo, object errores = null)
+        public RutExisteException(HttpStatusCode codigo, object errores = null)
         {
             this.Codigo = codigo;
             this.Errores = errores;

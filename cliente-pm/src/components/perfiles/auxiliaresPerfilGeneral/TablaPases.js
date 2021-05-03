@@ -12,9 +12,10 @@ const TablaPases = props => {
                 {/* Botones para crear nuevo pase y pases buscados */}
                 <div class="text-end flex-none">
                     <form class="flex-none md:flex w-full space-x-3">
-                        <button class="flex-shrink-0 block px-4 py-2 md:mt-0 mt-4 md:mx-0 mx-auto text-base font-semibold text-white bg-green-600 rounded-md shadow-md hover:bg-yellow-400 focus:outline-none transition duration-500" type="submit">
+                         <a href="/SolicitudPases"
+                            className="w-44 text-center flex-shrink-0 block px-4 py-2 md:mt-0 mt-4 md:mx-0 mx-auto text-base font-semibold text-white bg-verde-pm rounded-md shadow-md hover:bg-amarillo-pm focus:outline-none transition duration-500">
                             Nuevo Pase
-                        </button>
+                        </a>
                     </form>
                 </div>
             </div>
@@ -24,7 +25,7 @@ const TablaPases = props => {
                     <table class="min-w-full leading-normal">
                         <thead>
                             {/* HEADERS PARA LA TABLA */}
-                            <tr class="bg-gray-800 select-none text-sm uppercase text-gray-100 text-center border-b border-gray-200">
+                            <tr class="bg-azul-pm select-none text-sm uppercase text-gray-100 text-center border-b border-gray-200">
                                 <th scope="col" class="px-5 py-3 font-normal">
                                     Fecha Inicio
                                     </th>
@@ -86,10 +87,10 @@ const TablaPases = props => {
                                     </td>
 
                                     <td class="p-4 space-x-1">
-                                        <a href="#" class="rounded-md bg-green-600 hover:bg-yellow-400 text-white p-2 transition duration-500">
+                                        <a href="#" class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500">
                                             Revisar
                                         </a>
-                                        <a href="#" class="rounded-md bg-green-600 hover:bg-yellow-400 text-white p-2 transition duration-500">
+                                        <a href="#" class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500">
                                             Editar
                                         </a>
                                     </td>

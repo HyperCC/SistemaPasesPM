@@ -11,6 +11,8 @@ namespace Dominio.Entidades
         // atributos de la entidad
         public string Correo { get; set; }
         public string Contrasena { get; set; }
+        public bool Captcha { get; set; } = false;
+        public bool NoPerteneceEmpresa { get; set; } = false;
 
         // relacionamiento segun modelo R
         public Guid PersonaId { get; set; }

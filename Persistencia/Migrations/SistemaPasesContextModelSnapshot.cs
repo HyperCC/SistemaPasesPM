@@ -52,6 +52,9 @@ namespace Persistencia.Migrations
 
                     b.HasKey("AsesorPrevencionId");
 
+                    b.HasIndex("PaseId")
+                        .IsUnique();
+
                     b.HasIndex("PersonaId");
 
                     b.ToTable("AsesorPrevencion");
@@ -130,8 +133,6 @@ namespace Persistencia.Migrations
 
                     b.Property<string>("Motivo");
 
-                    b.Property<Guid?>("PersonaExternaRelPersonaExternaId");
-
                     b.Property<Guid>("UsuarioId");
 
                     b.Property<string>("UsuarioRelId");
@@ -141,8 +142,6 @@ namespace Persistencia.Migrations
                     b.HasKey("PaseId");
 
                     b.HasIndex("EmpresaId");
-
-                    b.HasIndex("PersonaExternaRelPersonaExternaId");
 
                     b.HasIndex("UsuarioRelId");
 
@@ -284,6 +283,8 @@ namespace Persistencia.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<bool>("Captcha");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -301,6 +302,8 @@ namespace Persistencia.Migrations
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<bool>("NoPerteneceEmpresa");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -462,6 +465,11 @@ namespace Persistencia.Migrations
 
             modelBuilder.Entity("Dominio.Entidades.AsesorPrevencion", b =>
                 {
+                    b.HasOne("Dominio.Entidades.Pase", "PaseRel")
+                        .WithOne("Asesor")
+                        .HasForeignKey("Dominio.Entidades.AsesorPrevencion", "PaseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Dominio.Entidades.Persona", "PersonaRel")
                         .WithMany()
                         .HasForeignKey("PersonaId")
@@ -501,10 +509,6 @@ namespace Persistencia.Migrations
                         .HasForeignKey("EmpresaId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Dominio.Entidades.PersonaExterna", "PersonaExternaRel")
-                        .WithMany()
-                        .HasForeignKey("PersonaExternaRelPersonaExternaId");
-
                     b.HasOne("Dominio.Entidades.Usuario", "UsuarioRel")
                         .WithMany()
                         .HasForeignKey("UsuarioRelId");
@@ -513,7 +517,7 @@ namespace Persistencia.Migrations
             modelBuilder.Entity("Dominio.Entidades.PasePersonaExterna", b =>
                 {
                     b.HasOne("Dominio.Entidades.Pase", "PaseRel")
-                        .WithMany()
+                        .WithMany("PersonasExternaRel")
                         .HasForeignKey("PaseId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -542,7 +546,7 @@ namespace Persistencia.Migrations
                         .HasForeignKey("PersonaId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Dominio.Entidades.TipoNombre", "TIpoNombreRel")
+                    b.HasOne("Dominio.Entidades.TipoNombre", "TipoNombreRel")
                         .WithMany("PersonasRel")
                         .HasForeignKey("TipoNombreId")
                         .OnDelete(DeleteBehavior.Cascade);

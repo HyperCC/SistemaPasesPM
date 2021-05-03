@@ -10,8 +10,8 @@ using Persistencia;
 namespace Persistencia.Migrations
 {
     [DbContext(typeof(SistemaPasesContext))]
-    [Migration("20210423222008_SistemaPasesInitial")]
-    partial class SistemaPasesInitial
+    [Migration("20210501172955_BaseDeDatosCompletaV2")]
+    partial class BaseDeDatosCompletaV2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,154 @@ namespace Persistencia.Migrations
                 .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Dominio.Entidades.AnexoContrato", b =>
+                {
+                    b.Property<Guid>("AnexoContratoId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Descripcion");
+
+                    b.Property<Guid>("DocumentoId");
+
+                    b.Property<Guid>("PersonaExternaId");
+
+                    b.HasKey("AnexoContratoId");
+
+                    b.HasIndex("PersonaExternaId");
+
+                    b.ToTable("AnexoContrato");
+                });
+
+            modelBuilder.Entity("Dominio.Entidades.AsesorPrevencion", b =>
+                {
+                    b.Property<Guid>("AsesorPrevencionId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("PaseId");
+
+                    b.Property<string>("PersonaIDPersona");
+
+                    b.Property<Guid>("PersonaId");
+
+                    b.Property<string>("RegistroSns");
+
+                    b.HasKey("AsesorPrevencionId");
+
+                    b.HasIndex("PaseId")
+                        .IsUnique();
+
+                    b.HasIndex("PersonaId");
+
+                    b.ToTable("AsesorPrevencion");
+                });
+
+            modelBuilder.Entity("Dominio.Entidades.Documento", b =>
+                {
+                    b.Property<Guid>("DocumentoId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("FechaCaducidad");
+
+                    b.Property<Guid>("PaseId");
+
+                    b.Property<string>("RutaDocumento");
+
+                    b.Property<Guid>("TipoDocumentoId");
+
+                    b.HasKey("DocumentoId");
+
+                    b.HasIndex("PaseId");
+
+                    b.HasIndex("TipoDocumentoId");
+
+                    b.ToTable("Documento");
+                });
+
+            modelBuilder.Entity("Dominio.Entidades.Empresa", b =>
+                {
+                    b.Property<Guid>("EmpresaId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Nombre");
+
+                    b.Property<string>("Rut");
+
+                    b.HasKey("EmpresaId");
+
+                    b.ToTable("Empresa");
+                });
+
+            modelBuilder.Entity("Dominio.Entidades.ExamenesCompetencia", b =>
+                {
+                    b.Property<Guid>("ExamenesCompetenciaId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("DocumentoId");
+
+                    b.Property<DateTime>("FechaVencimiento");
+
+                    b.Property<Guid>("PersonaExternaId");
+
+                    b.HasKey("ExamenesCompetenciaId");
+
+                    b.HasIndex("DocumentoId");
+
+                    b.HasIndex("PersonaExternaId");
+
+                    b.ToTable("ExamenesCompetencia");
+                });
+
+            modelBuilder.Entity("Dominio.Entidades.Pase", b =>
+                {
+                    b.Property<Guid>("PaseId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Area");
+
+                    b.Property<Guid>("EmpresaId");
+
+                    b.Property<string>("Estado");
+
+                    b.Property<DateTime>("FechaInicio");
+
+                    b.Property<DateTime>("FechaTermino");
+
+                    b.Property<string>("Motivo");
+
+                    b.Property<Guid>("UsuarioId");
+
+                    b.Property<string>("UsuarioRelId");
+
+                    b.Property<string>("tipo");
+
+                    b.HasKey("PaseId");
+
+                    b.HasIndex("EmpresaId");
+
+                    b.HasIndex("UsuarioRelId");
+
+                    b.ToTable("Pase");
+                });
+
+            modelBuilder.Entity("Dominio.Entidades.PasePersonaExterna", b =>
+                {
+                    b.Property<Guid>("PaseId");
+
+                    b.Property<Guid>("PersonaExternaId");
+
+                    b.Property<Guid?>("PasePersonaExternaPaseId");
+
+                    b.Property<Guid?>("PasePersonaExternaPersonaExternaId");
+
+                    b.HasKey("PaseId", "PersonaExternaId");
+
+                    b.HasIndex("PersonaExternaId");
+
+                    b.HasIndex("PasePersonaExternaPaseId", "PasePersonaExternaPersonaExternaId");
+
+                    b.ToTable("PasePersonaExterna");
+                });
 
             modelBuilder.Entity("Dominio.Entidades.Persona", b =>
                 {
@@ -33,6 +181,24 @@ namespace Persistencia.Migrations
                     b.ToTable("Persona");
                 });
 
+            modelBuilder.Entity("Dominio.Entidades.PersonaExterna", b =>
+                {
+                    b.Property<Guid>("PersonaExternaId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("PersonaId");
+
+                    b.Property<string>("nacionalidad");
+
+                    b.Property<string>("pasaporte");
+
+                    b.HasKey("PersonaExternaId");
+
+                    b.HasIndex("PersonaId");
+
+                    b.ToTable("PersonaExterna");
+                });
+
             modelBuilder.Entity("Dominio.Entidades.PersonaTipoNombre", b =>
                 {
                     b.Property<Guid>("PersonaId");
@@ -44,6 +210,24 @@ namespace Persistencia.Migrations
                     b.HasIndex("TipoNombreId");
 
                     b.ToTable("PersonaTipoNombre");
+                });
+
+            modelBuilder.Entity("Dominio.Entidades.RegistroPersona", b =>
+                {
+                    b.Property<Guid>("RegistroPersonaId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("DocumentoId");
+
+                    b.Property<DateTime>("FechaRegistro");
+
+                    b.Property<Guid>("PersonaExternaId");
+
+                    b.HasKey("RegistroPersonaId");
+
+                    b.HasIndex("PersonaExternaId");
+
+                    b.ToTable("RegistroPersona");
                 });
 
             modelBuilder.Entity("Dominio.Entidades.Rol", b =>
@@ -64,6 +248,20 @@ namespace Persistencia.Migrations
                     b.ToTable("Rol");
                 });
 
+            modelBuilder.Entity("Dominio.Entidades.TipoDocumento", b =>
+                {
+                    b.Property<Guid>("TipoDocumentoId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Obligatoriedad");
+
+                    b.Property<string>("Titulo");
+
+                    b.HasKey("TipoDocumentoId");
+
+                    b.ToTable("TipoDocumento");
+                });
+
             modelBuilder.Entity("Dominio.Entidades.TipoNombre", b =>
                 {
                     b.Property<Guid>("TipoNombreId")
@@ -71,9 +269,9 @@ namespace Persistencia.Migrations
 
                     b.Property<string>("Nombre");
 
-                    b.Property<string>("Posicion");
+                    b.Property<int>("Posicion");
 
-                    b.Property<string>("Tipo");
+                    b.Property<int>("Tipo");
 
                     b.HasKey("TipoNombreId");
 
@@ -87,6 +285,8 @@ namespace Persistencia.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<bool>("Captcha");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -99,9 +299,13 @@ namespace Persistencia.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<Guid>("EmpresaId");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<bool>("NoPerteneceEmpresa");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -127,6 +331,8 @@ namespace Persistencia.Migrations
                     b.Property<Guid>("UsuarioId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmpresaId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -251,6 +457,90 @@ namespace Persistencia.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Dominio.Entidades.AnexoContrato", b =>
+                {
+                    b.HasOne("Dominio.Entidades.PersonaExterna", "PersonaExternaRel")
+                        .WithMany()
+                        .HasForeignKey("PersonaExternaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Dominio.Entidades.AsesorPrevencion", b =>
+                {
+                    b.HasOne("Dominio.Entidades.Pase", "PaseRel")
+                        .WithOne("Asesor")
+                        .HasForeignKey("Dominio.Entidades.AsesorPrevencion", "PaseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Dominio.Entidades.Persona", "PersonaRel")
+                        .WithMany()
+                        .HasForeignKey("PersonaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Dominio.Entidades.Documento", b =>
+                {
+                    b.HasOne("Dominio.Entidades.Pase", "PaseRel")
+                        .WithMany("DocumentosRel")
+                        .HasForeignKey("PaseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Dominio.Entidades.TipoDocumento", "TipoDocumentoRel")
+                        .WithMany("DocumentoRel")
+                        .HasForeignKey("TipoDocumentoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Dominio.Entidades.ExamenesCompetencia", b =>
+                {
+                    b.HasOne("Dominio.Entidades.Documento", "DocumentoRel")
+                        .WithMany()
+                        .HasForeignKey("DocumentoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Dominio.Entidades.PersonaExterna", "PersonaExternaRel")
+                        .WithMany()
+                        .HasForeignKey("PersonaExternaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Dominio.Entidades.Pase", b =>
+                {
+                    b.HasOne("Dominio.Entidades.Empresa", "EmpresaRel")
+                        .WithMany()
+                        .HasForeignKey("EmpresaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Dominio.Entidades.Usuario", "UsuarioRel")
+                        .WithMany()
+                        .HasForeignKey("UsuarioRelId");
+                });
+
+            modelBuilder.Entity("Dominio.Entidades.PasePersonaExterna", b =>
+                {
+                    b.HasOne("Dominio.Entidades.Pase", "PaseRel")
+                        .WithMany("PersonasExternaRel")
+                        .HasForeignKey("PaseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Dominio.Entidades.PersonaExterna")
+                        .WithMany("PasesRel")
+                        .HasForeignKey("PersonaExternaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Dominio.Entidades.PasePersonaExterna")
+                        .WithMany("PersonasExternasRel")
+                        .HasForeignKey("PasePersonaExternaPaseId", "PasePersonaExternaPersonaExternaId");
+                });
+
+            modelBuilder.Entity("Dominio.Entidades.PersonaExterna", b =>
+                {
+                    b.HasOne("Dominio.Entidades.Persona", "PersonaRel")
+                        .WithMany()
+                        .HasForeignKey("PersonaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Dominio.Entidades.PersonaTipoNombre", b =>
                 {
                     b.HasOne("Dominio.Entidades.Persona", "PersonaRel")
@@ -264,6 +554,14 @@ namespace Persistencia.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Dominio.Entidades.RegistroPersona", b =>
+                {
+                    b.HasOne("Dominio.Entidades.PersonaExterna", "PersonaExternaRel")
+                        .WithMany()
+                        .HasForeignKey("PersonaExternaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Dominio.Entidades.Rol", b =>
                 {
                     b.HasOne("Dominio.Entidades.Usuario", "UsuarioRel")
@@ -273,6 +571,11 @@ namespace Persistencia.Migrations
 
             modelBuilder.Entity("Dominio.Entidades.Usuario", b =>
                 {
+                    b.HasOne("Dominio.Entidades.Empresa", "EmpresaRel")
+                        .WithMany()
+                        .HasForeignKey("EmpresaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Dominio.Entidades.Persona", "PersonaRel")
                         .WithMany()
                         .HasForeignKey("PersonaId")

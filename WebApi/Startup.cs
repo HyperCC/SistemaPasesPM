@@ -1,4 +1,6 @@
 ﻿using Aplicacion.ConfiguracionLogin;
+using Aplicacion.ConfiguracionLogin.Contratos;
+using Aplicacion.ConfiguracionLogin.TokenSeguridad;
 using Dominio.Entidades;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
@@ -76,6 +78,12 @@ namespace WebApi
             // configuracion de los datos de prueba para las migraciones
             services.TryAddSingleton<ISystemClock, SystemClock>();
 
+            // injeccion de la libreria de seguridad y la interface en applicacion.contratos 
+            services.AddScoped<IJwtGenerador, JwtGenerador>();
+
+            // dar a concer por el webApp la clase para reconocer l usuario en sesion acltualmente.
+            //services.AddScoped<IUsuarioSesion, UsuarioSesion>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -85,18 +93,19 @@ namespace WebApi
             // uso de Cors
             app.UseCors(MyAllowSpecificOrigins);
 
-            // nuevo midleware con los errores personalizados
+            // midleware con los errores personalizados
             app.UseMiddleware<ManejadorErrorMiddleware>();
 
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
             else
-            {
                 // The default HSTS value is 30 days. You may want to change this for 
                 // production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-            }
+
+            // indicar la inicializacion de la validacion para los resultados de los request de clientes
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
             app.UseMvc();

@@ -11,7 +11,7 @@ namespace Persistencia.Seeders
     {
         public static void IniciarSeederGlobal(SistemaPasesContext context, UserManager<Usuario> usuarioManager)
         {
-            UsuarioSeeder.InsertarData(context);
+            UsuarioSeeder.InsertarData(context, usuarioManager).Wait();
         }
     }
 }

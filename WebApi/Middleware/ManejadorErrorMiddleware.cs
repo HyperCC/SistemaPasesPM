@@ -42,7 +42,7 @@ namespace WebApi.Middleware
             }
         }
 
-        // evalua el tipo de excepcion ue pueden surgir y al respuesta
+        // evalua el tipo de excepcion que pueden surgir y al respuesta
         private async Task ManejadorExceptionAsincrono(HttpContext context,
             Exception ex,
             ILogger<ManejadorErrorMiddleware> logger)
@@ -52,6 +52,22 @@ namespace WebApi.Middleware
             // verificar el tipo de excepcion
             switch (ex)
             {
+                // throw excepcion para un rut ya existente
+                case RutExisteException ree:
+                    logger.LogError(ex, "EL RUT INGRESADO YA EXISTE EN EL SISTEMA Y NO SE PUEDE REGISTRAR!!");
+                    errores = ree.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)ree.Codigo;
+                    break;
+
+                // throw excepcion para un correo ya existente
+                case CorreoExistenteException cee:
+                    logger.LogError(ex, "EL CORREO INGRESADO YA EXISTE EN EL SISTEMA Y NO SE PUEDE REGISTRAR!!");
+                    errores = cee.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)cee.Codigo;
+                    break;
+
                 // si se lanza ManejadorExcepcion (excepcion personalizada), error de validacion para solicitudes http
                 case ManejadorException me:
                     logger.LogError(ex, "Manejador Error en clase ManejadorExcepcion");
