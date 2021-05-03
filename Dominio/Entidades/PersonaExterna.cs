@@ -9,7 +9,6 @@ namespace Dominio.Entidades
         public Guid PersonaExternaId { get; set; }
 
         // atributos de la entidad
-
         public string nacionalidad { get; set; }
 
         public string pasaporte { get; set; }
