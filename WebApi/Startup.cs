@@ -100,11 +100,12 @@ namespace WebApi
                 app.UseDeveloperExceptionPage();
 
             else
-            {
                 // The default HSTS value is 30 days. You may want to change this for 
                 // production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-            }
+
+            // indicar la inicializacion de la validacion para los resultados de los request de clientes
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
             app.UseMvc();

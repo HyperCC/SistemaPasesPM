@@ -1,4 +1,5 @@
-﻿using Aplicacion.ConfiguracionLogin.TokenSeguridad;
+﻿using Aplicacion.ConfiguracionLogin.Contratos;
+using Aplicacion.ConfiguracionLogin.TokenSeguridad;
 using Aplicacion.ExcepcionesPersonalizadas;
 using Dominio.Entidades;
 using Dominio.ModelosDto;
@@ -27,17 +28,14 @@ namespace Aplicacion.ConfiguracionLogin
 
         public class Manejador : IRequestHandler<Ejecuta, UsuarioData>
         {
-            private readonly SistemaPasesContext _context;
             private readonly UserManager<Usuario> _usuarioManager;
             private readonly SignInManager<Usuario> _signInManager;
-            private readonly JwtGenerador _jwtGenerador;
+            private readonly IJwtGenerador _jwtGenerador;
 
-            public Manejador(SistemaPasesContext context,
-                UserManager<Usuario> usuarioManager,
+            public Manejador(UserManager<Usuario> usuarioManager,
                 SignInManager<Usuario> signInManager,
-                 JwtGenerador jwtGenerador)
+                IJwtGenerador jwtGenerador)
             {
-                this._context = context;
                 this._usuarioManager = usuarioManager;
                 this._signInManager = signInManager;
                 this._jwtGenerador = jwtGenerador;

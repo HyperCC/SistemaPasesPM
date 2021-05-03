@@ -25,6 +25,7 @@ namespace Persistencia.Seeders
             // de no haber usaurios en la base de datos se crea el inicial 
             if (!usuarioManager.Users.Any())
             {
+                Console.WriteLine("NO HAY USUARIO EN LA BASE DE DATOS..");
                 // nombres
                 var nombre1 = new TipoNombre
                 {
@@ -109,8 +110,8 @@ namespace Persistencia.Seeders
                 Console.WriteLine("---------------------------------------------------------------------------------");
                 Console.WriteLine((resultUsuario.Succeeded) ? "CREAR EL USUARIO FUE OK" : "CREAR EL USUARIO NO FUNCIONO");
                 Console.WriteLine("---------------------------------------------------------------------------------");
-
             }
+            Console.WriteLine("YA HAY USUARIOS EN LA BASE DE DATOS NO FUNCIONARA EL SEEDER USAURIO..");
         }
     }
 }
