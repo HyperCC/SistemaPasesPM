@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState , Component} from 'react';
 import '../../App.css';
 import { registrarUsuario } from '../../actions/UsuarioAction';
+import Recaptcha from 'react-recaptcha';
 
 // pagina principal de registro
 export default function Registro() {
-
+    
     // atributos para el registro de usuario
     const [dataUsuario, setDataUsuario] = useState({
         Rut: '',
