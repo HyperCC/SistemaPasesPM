@@ -1,5 +1,6 @@
 ﻿using Dominio.Entidades;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistencia;
 using System;
 using System.Collections.Generic;
@@ -25,8 +26,7 @@ namespace Aplicacion.Pases
 
             public async Task<List<Pase>> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
-                await this._context.TipoDocumento.FindAsync(new Guid());
-                var pases = this._context.Pase.ToList();
+                var pases = await this._context.Pase.ToListAsync();
                 return pases;
             }
         }

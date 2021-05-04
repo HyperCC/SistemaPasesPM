@@ -34,6 +34,7 @@ namespace WebApi.Middleware
             {
                 // procesar la solicitu http
                 await this._next(context);
+                Console.WriteLine($"ACEPTACION DE LA SOLICITUD HTTP CORRECTA {context.Response.ToString()}");
             }
             catch (Exception ex)
             {
@@ -48,13 +49,12 @@ namespace WebApi.Middleware
             ILogger<ManejadorErrorMiddleware> logger)
         {
             object errores = null;
-
             // verificar el tipo de excepcion
             switch (ex)
             {
                 // throw excepcion para un rut ya existente
                 case RutExisteException ree:
-                    logger.LogError(ex, "EL RUT INGRESADO YA EXISTE EN EL SISTEMA Y NO SE PUEDE REGISTRAR!!");
+                    logger.LogError(ex, "EL RUT INGRESADO YA EXISTE EN EL SISTEMA Y NO SE PUEDE REGISTRAR..");
                     errores = ree.Errores;
                     // lanzar codigo de error especifico
                     context.Response.StatusCode = (int)ree.Codigo;
@@ -62,7 +62,7 @@ namespace WebApi.Middleware
 
                 // throw excepcion para un correo ya existente
                 case CorreoExistenteException cee:
-                    logger.LogError(ex, "EL CORREO INGRESADO YA EXISTE EN EL SISTEMA Y NO SE PUEDE REGISTRAR!!");
+                    logger.LogError(ex, "EL CORREO INGRESADO YA EXISTE EN EL SISTEMA Y NO SE PUEDE REGISTRAR..");
                     errores = cee.Errores;
                     // lanzar codigo de error especifico
                     context.Response.StatusCode = (int)cee.Codigo;
@@ -70,7 +70,7 @@ namespace WebApi.Middleware
 
                 // si se lanza ManejadorExcepcion (excepcion personalizada), error de validacion para solicitudes http
                 case ManejadorException me:
-                    logger.LogError(ex, "Manejador Error en clase ManejadorExcepcion");
+                    logger.LogError(ex, "ERROR GENERICO EN LOS MANEJADORES..");
                     errores = me.Errores;
                     // lanzar codigo de error especifico
                     context.Response.StatusCode = (int)me.Codigo;

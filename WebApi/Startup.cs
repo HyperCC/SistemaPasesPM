@@ -2,6 +2,8 @@
 using Aplicacion.ConfiguracionLogin.Contratos;
 using Aplicacion.ConfiguracionLogin.TokenSeguridad;
 using Dominio.Entidades;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -84,7 +86,9 @@ namespace WebApi
             // dar a concer por el webApp la clase para reconocer l usuario en sesion acltualmente.
             //services.AddScoped<IUsuarioSesion, UsuarioSesion>();
 
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddTransient<IValidator<Registrar.Ejecuta>, Registrar.EjecutaValidacion>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -96,10 +100,9 @@ namespace WebApi
             // midleware con los errores personalizados
             app.UseMiddleware<ManejadorErrorMiddleware>();
 
-            if (env.IsDevelopment())
-                app.UseDeveloperExceptionPage();
+            if (!env.IsDevelopment())
+                //app.UseDeveloperExceptionPage();
 
-            else
                 // The default HSTS value is 30 days. You may want to change this for 
                 // production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();

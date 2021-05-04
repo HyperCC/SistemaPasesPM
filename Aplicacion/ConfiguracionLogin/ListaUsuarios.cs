@@ -1,6 +1,8 @@
-﻿using Dominio.Entidades;
+﻿using Aplicacion.ExcepcionesPersonalizadas;
+using Dominio.Entidades;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Persistencia;
 using System;
 using System.Collections.Generic;
@@ -29,8 +31,7 @@ namespace Aplicacion.ConfiguracionLogin
 
             public async Task<List<Usuario>> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
-                await this._context.TipoDocumento.FindAsync(new Guid());
-                var usuarios = _usuarioManager.Users.ToList();
+                var usuarios = await _usuarioManager.Users.ToListAsync();
                 return usuarios;
             }
         }

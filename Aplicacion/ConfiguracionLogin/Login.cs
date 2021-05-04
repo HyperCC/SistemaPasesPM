@@ -1,4 +1,5 @@
-﻿using Aplicacion.ConfiguracionLogin.Contratos;
+﻿using Aplicacion.Auxiliares;
+using Aplicacion.ConfiguracionLogin.Contratos;
 using Aplicacion.ConfiguracionLogin.TokenSeguridad;
 using Aplicacion.ExcepcionesPersonalizadas;
 using Dominio.Entidades;
@@ -61,6 +62,7 @@ namespace Aplicacion.ConfiguracionLogin
                         Email = usuario.Email
                     };
 
+                // usuario no autorizado
                 throw new ManejadorException(HttpStatusCode.Unauthorized);
             }
         }

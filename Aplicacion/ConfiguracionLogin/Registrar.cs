@@ -1,5 +1,6 @@
 ﻿using Aplicacion.ExcepcionesPersonalizadas;
 using Dominio.Entidades;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,26 @@ namespace Aplicacion.ConfiguracionLogin
             // por defecto el capcha viene no validado
             public bool Captcha { get; set; }
             public bool NoPerteneceEmpresa { get; set; }
+            public Ejecuta()
+            {
+                this.Rut = null;
+                this.Nombres = null;
+                this.Apellidos = null;
+                this.Correo = null;
+                this.RutEmpresa = null;
+                this.NombreEmpresa = null;
+                this.Captcha = false;
+                this.NoPerteneceEmpresa = false;
+            }
+        }
+
+        public class EjecutaValidacion : AbstractValidator<Ejecuta>
+        {
+            public EjecutaValidacion()
+            {
+                this.RuleFor(x => x.Correo).NotEmpty().NotNull();
+                this.RuleFor(x => x.Rut).NotEmpty().NotNull();
+            }
         }
 
         /// <summary>
@@ -66,7 +87,7 @@ namespace Aplicacion.ConfiguracionLogin
 
                 if (correoExiste)
                     throw new CorreoExistenteException(HttpStatusCode.BadRequest,
-                        new { mensaje = $"Ya existe un usuario registrado con el Email {request.Correo}" });
+                      new { mensaje = $"Ya existe un usuario registrado con el Email {request.Correo}" });
 
                 // verificar que el rut sea unico o no exista ya en la DB
                 var rutExiste = await this._context.Persona.Where(x => x.Rut == request.Rut).AnyAsync();
@@ -193,15 +214,18 @@ namespace Aplicacion.ConfiguracionLogin
                 // guardar el usuario creado
                 await this._context.Usuario.AddAsync(usuarioGenerado);
 
+
                 // verificar si se pudo crear el UsuarioData y retornarlo
                 var resultado = await this._context.SaveChangesAsync();
                 if (resultado > 0)
                 {
-                    //TODO: agregar devolucion de usuario DTO
-                    return usuarioGenerado;
+                    var resultadoUser = await this._userManager.CreateAsync(usuarioGenerado);
+                    if (resultadoUser.Succeeded)
+                        //TODO: agregar devolucion de usuario DTO
+                        return usuarioGenerado;
                 }
 
-                throw new Exception("No se pudo agregar el nuevo usuario");
+                throw new Exception("Error en el servidor - No se pudo agregar el nuevo usuario..");
             }
         }
     }
