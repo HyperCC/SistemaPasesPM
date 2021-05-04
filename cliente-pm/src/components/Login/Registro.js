@@ -1,11 +1,27 @@
 import React, { useState , Component} from 'react';
 import '../../App.css';
 import { registrarUsuario } from '../../actions/UsuarioAction';
-import Recaptcha from 'react-recaptcha';
+import ReCAPTCHA from "react-google-recaptcha";
 
 // pagina principal de registro
 export default function Registro() {
-    
+    var isVerified = false;
+
+    function onChange(value) {
+        alert("Captcha value:", value);
+        isVerified = true;
+        alert(isVerified);
+    }
+
+    function Verificar(){
+        if (isVerified==true){
+            alert(isVerified);
+            botonRegistrarUsuario();
+        }else{
+            alert(isVerified)
+        }
+    }
+
     // atributos para el registro de usuario
     const [dataUsuario, setDataUsuario] = useState({
         Rut: '',
@@ -133,15 +149,18 @@ export default function Registro() {
                                 </div>
                             </div>
 
-                            <div class="mt-6 form-group px-4 md:px-8">
-                                <label class="font-light  text-gray-800 select-none" for="Captcha">
-                                    <input type="checkbox" checked={checkCaptcha} onClick={ingresarValoresMemoria} name="Captcha" /> Captcha
+                            <div class="mt-6 items-center justify-center form-group px-4 md:px-8">
+                                <label class="text-center font-light  text-gray-800 select-none" for="Captcha">
+                                    <ReCAPTCHA
+                                        sitekey="6LcoUMYaAAAAAPlwUFz02HrTJa5GJqnKhOrOoC6B"
+                                        onChange={onChange}
+                                    />
                                 </label>
                             </div>
 
                             {/* ENVIAR DATOS */}
                             <div class="mt-12 flex justify-center">
-                                <button type="submit" onClick={botonRegistrarUsuario}
+                                <button type="submit" onClick={Verificar}
                                     class="bg-blue-900 hover:bg-blue-800 shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                                     Guardar
                             </button>

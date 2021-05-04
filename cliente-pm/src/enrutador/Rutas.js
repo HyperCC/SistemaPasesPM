@@ -5,6 +5,7 @@ import Home from '../components/Login/Home';
 import PerfilGeneral from '../components/perfiles/PerfilGeneral';
 import Navbar from '../components/Navbar';
 import { Pases } from '../components/Pases/Pases';
+import { Visita } from '../components/Pases/Visita';
 
 const Rutas = () => {
     return (
@@ -23,6 +24,10 @@ const Rutas = () => {
                 <Route path="/SolicitudPases">
                     <Navbar />
                     <Pases />
+                </Route>
+                <Route path="/SolicitudVisita">
+                    <Navbar />
+                    <Visita />
                 </Route>
             </Switch>
         </Router>
