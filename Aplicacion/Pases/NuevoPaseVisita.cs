@@ -86,6 +86,8 @@ namespace Aplicacion.Pases
                     solicitudPaseNueva.EmpresaId = empresaExiste.EmpresaId;
                 }
 
+                await this._context.Pase.AddAsync(solicitudPaseNueva);
+
                 //LISTADO DE PERSONAS
                 if (request.listadoPersonas != null)
                 {
@@ -246,11 +248,17 @@ namespace Aplicacion.Pases
                         this._context.PasePersonaExterna.Add(nuevoPasePersona);
                     }
                 }
+
                 
 
-                await this._context.Pase.AddAsync(solicitudPaseNueva);
+                var resultado = await this._context.SaveChangesAsync();
+                if (resultado > 0)
+                {
+                    // agregar devolucion de usuario DTO
+                    return solicitudPaseNueva;
+                }
 
-                return solicitudPaseNueva;
+                throw new Exception("No se pudo agregar el nuevo pase");
 
                 throw new NotImplementedException();
             }

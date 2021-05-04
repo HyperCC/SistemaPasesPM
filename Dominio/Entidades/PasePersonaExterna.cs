@@ -14,6 +14,6 @@ namespace Dominio.Entidades
         // obtener los modelos relacionados 
         public Pase PaseRel { get; set; }
         
-        public ICollection<PasePersonaExterna> PersonasExternasRel { get; set; }
+        public PersonaExterna PersonaExternaRel { get; set; }
     }
 }
