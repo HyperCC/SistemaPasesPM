@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Controllers.ControllerPersonalizado;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers
 {
