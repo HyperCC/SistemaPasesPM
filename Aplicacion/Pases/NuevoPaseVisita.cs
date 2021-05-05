@@ -56,7 +56,7 @@ namespace Aplicacion.Pases
                     PaseId = new Guid(),
                     FechaInicio = request.fechaInicio,
                     FechaTermino = request.fechaTermino,
-                    tipo = "VISITA",
+                    Tipo = "VISITA",
                     Estado = "PENDIENTE",
                     Motivo = request.motivo,
                     Area = request.area
@@ -104,9 +104,9 @@ namespace Aplicacion.Pases
                         var nuevaPersonaExterna = new PersonaExterna
                         {
                             PersonaExternaId = new Guid(),
-                            nacionalidad = persona.nacionalidad,
+                            Nacionalidad = persona.nacionalidad,
                             //TODO Confirmar correspondencia del pasaporte
-                            pasaporte = (persona.nacionalidad != "CHILENA") ? persona.rut : null
+                            Pasaporte = (persona.nacionalidad != "CHILENA") ? persona.rut : null
                         };
 
                         //Buscamos si la persona ya esta registrada por su rut

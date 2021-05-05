@@ -1,24 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using static Dominio.Entidades.TipoNombre;
 
-namespace Dominio.Entidades
+namespace Dominio.ModelosDto
 {
-    public class TipoNombre
+    public class TipoNombreDto
     {
         public Guid TipoNombreId { get; set; }
-
-        // atributos de la entidad
         public string Nombre { get; set; }
         public TipoIdentificador Tipo { get; set; } // nombre o apellido
         public int Posicion { get; set; } // primero, segundo, tercero.
-
-        public enum TipoIdentificador
-        {
-            NOMBRE, APELLIDO
-        }
-
-        // obtener los modelos relacionados 
-        public ICollection<PersonaTipoNombre> PersonasRel { get; set; }
+        public ICollection<PersonaDto> Personas { get; set; }
     }
 }

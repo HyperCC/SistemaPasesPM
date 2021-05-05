@@ -13,5 +13,8 @@ namespace Dominio.Entidades
 
         // obtener los modelos relacionados 
         public ICollection<PersonaTipoNombre> TipoNombresRel { get; set; }
+        public Usuario UsuarioRel { get; set; }
+        public PersonaExterna PersonaExternaRel { get; set; }
+        public AsesorPrevencion AsesorPrevencionRel { get; set; }
     }
 }

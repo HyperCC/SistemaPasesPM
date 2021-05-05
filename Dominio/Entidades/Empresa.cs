@@ -9,16 +9,11 @@ namespace Dominio.Entidades
         public Guid EmpresaId { get; set; }
 
         // atributos de la entidad
-
         public string Nombre { get; set; }
-
         public string Rut { get; set; }
 
-        // relacionamiento segun modelo R
-
-
-
         // obtener los modelos relacionados 
-
+        public ICollection<Usuario> UsuariosRel { get; set; }
+        public ICollection<Pase> PasesRel { get; set; }
     }
 }
