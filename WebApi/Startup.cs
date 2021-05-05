@@ -107,7 +107,7 @@ namespace WebApi
             services.AddScoped<IJwtGenerador, JwtGenerador>();
 
             // dar a concer por el webApp la clase para reconocer l usuario en sesion acltualmente.
-            //services.AddScoped<IUsuarioSesion, UsuarioSesion>();
+            services.AddScoped<IUsuarioSesion, UsuarioSesion>();
 
             services.AddMvc(opt =>
             {

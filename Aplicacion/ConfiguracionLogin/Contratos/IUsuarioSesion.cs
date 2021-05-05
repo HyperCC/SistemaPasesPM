@@ -7,6 +7,5 @@ namespace Aplicacion.ConfiguracionLogin.Contratos
     public interface IUsuarioSesion
     {
         string ObtenerUsuarioSesion();
-
     }
 }
