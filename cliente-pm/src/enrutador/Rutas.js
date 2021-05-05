@@ -6,6 +6,8 @@ import PerfilGeneral from '../components/perfiles/PerfilGeneral';
 import Navbar from '../components/Navbar';
 import { Pases } from '../components/Pases/Pases';
 import { Visita } from '../components/Pases/Visita';
+import RecuperarClave from '../components/Login/RecuperarClave';
+import CambiarClave from '../components/Login/CambiarClave';
 
 const Rutas = () => {
     return (
@@ -28,6 +30,12 @@ const Rutas = () => {
                 <Route path="/SolicitudVisita">
                     <Navbar />
                     <Visita />
+                </Route>
+                <Route path="/RecuperarContraseña">
+                    <RecuperarClave />
+                </Route>
+                <Route path="/CambiarContraseña">
+                    <CambiarClave />
                 </Route>
             </Switch>
         </Router>

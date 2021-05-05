@@ -25,7 +25,8 @@ const Home = () => {
                         </form>
                         <div class="text-center pt-12 pb-12">
                             <p>¿No posees una cuenta? <a href="/registro" class="bm-azul-pm hover:bg-verde-pm underline font-semibold">Registrate Aqui.</a></p>
-                            <p>¿No recuerdas tu contraseña? <a href="/contraseña" class="bm-azul-pm hover:bg-verde-pm underline font-semibold">Recuperar Aqui</a></p>
+                            <p>¿No recuerdas su contraseña? <a href="/RecuperarContraseña" class="bm-azul-pm hover:bg-verde-pm underline font-semibold">Recuperar Aqui</a></p>
+                            <p>¿Desea cambiar contraseña? <a href="/CambiarContraseña" class="bm-azul-pm hover:bg-verde-pm underline font-semibold">Cambiar Aqui</a></p>
                         </div>
                     </div>    
                     
