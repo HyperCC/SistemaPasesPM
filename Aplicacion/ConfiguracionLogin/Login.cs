@@ -68,6 +68,7 @@ namespace Aplicacion.ConfiguracionLogin
                     {
                         Nombres = "nombres",
                         Apellidos = "apellidos",
+                        UserName = usuario.UserName,
                         Token = this._jwtGenerador.CreateToken(usuario, new List<string>()),
                         Email = usuario.Email
                     };

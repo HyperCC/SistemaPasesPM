@@ -239,6 +239,7 @@ namespace Aplicacion.ConfiguracionLogin
                         {
                             Nombres = "nombres",
                             Apellidos = "apellidos",
+                            UserName = usuarioGenerado.Email,
                             Token = null,
                             Email = usuarioGenerado.Email
                         };

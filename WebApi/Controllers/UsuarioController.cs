@@ -40,10 +40,14 @@ namespace WebApi.Controllers
             return await this.MediadorHerencia.Send(parametros);
         }
 
+        /// <summary>
+        /// Obtener el usuario actual en sesion 
+        /// </summary>
+        /// <returns>usuario con sesion</returns>
         [HttpGet]
-        public async Task<ActionResult<List<Usuario>>> All()
+        public async Task<ActionResult<UsuarioData>> UsuarioActual()
         {
-            return await this.MediadorHerencia.Send(new ListaUsuarios.Ejecuta());
+            return await this.MediadorHerencia.Send(new UsuarioActual.Ejecuta());
         }
     }
 }
