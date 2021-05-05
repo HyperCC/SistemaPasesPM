@@ -16,6 +16,9 @@ export const TablaTrabajadores = props => {
                             className="w-44 text-center flex-shrink-0 block px-4 py-2 md:mt-0 mt-4 md:mx-0 mx-auto text-base font-semibold text-white bg-verde-pm rounded-md shadow-md hover:bg-amarillo-pm focus:outline-none transition duration-500">
                             Agregar Persona
                         </a>
+                        <button type="submit" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+                            Guardar
+                        </button>
                     </form>
                 </div>
             </div>
