@@ -4,6 +4,9 @@ import { TablaTrabajadores } from './TablaTrabajadores';
 
 export const Visita = (props) => {
 
+    //Datos generales del pase
+
+
     const dataPaseGeneral = {
         RutEmpresa: '2.333.444-5',
         NombreEmpresa: 'Nortek SPA'

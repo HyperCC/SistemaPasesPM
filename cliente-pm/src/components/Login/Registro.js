@@ -163,7 +163,7 @@ export default function Registro() {
                                 <button type="submit" onClick={Verificar}
                                     class="bg-azul-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                                     Guardar
-                            </button>
+                                </button>
                             </div>
                         </form>
 
