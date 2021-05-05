@@ -8,10 +8,18 @@ namespace Aplicacion.ExcepcionesPersonalizadas
     /// <summary>
     /// Excepcion para un correo de usuario existente
     /// </summary>
-    public class CorreoExistenteException : ManejadorException
+    public class CorreoExistenteException : Exception
     {
+        // codigo http a devolver 
+        public HttpStatusCode Codigo { get; }
+
+        // mensajes con los errores obtenidos
+        public object Errores { get; }
+
         public CorreoExistenteException(HttpStatusCode codigo, object errores = null)
-            : base(codigo, errores)
-        { }
+        {
+            this.Codigo = codigo;
+            this.Errores = errores;
+        }
     }
 }
