@@ -8,18 +8,10 @@ namespace Aplicacion.ExcepcionesPersonalizadas
     /// <summary>
     /// Excepcion para un rut existente
     /// </summary>
-    public class RutExisteException : Exception
+    public class RutExisteException : ManejadorException
     {
-        // codigo http a devolver 
-        public HttpStatusCode Codigo { get; }
-
-        // mensajes con los errores obtenidos
-        public object Errores { get; }
-
         public RutExisteException(HttpStatusCode codigo, object errores = null)
-        {
-            this.Codigo = codigo;
-            this.Errores = errores;
-        }
+            : base(codigo, errores)
+        { }
     }
 }

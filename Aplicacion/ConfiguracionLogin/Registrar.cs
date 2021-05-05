@@ -1,5 +1,6 @@
 ﻿using Aplicacion.ExcepcionesPersonalizadas;
 using Dominio.Entidades;
+using Dominio.ModelosDto;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -23,7 +24,7 @@ namespace Aplicacion.ConfiguracionLogin
         /// <summary>
         /// Declaracion del mediador
         /// </summary>
-        public class Ejecuta : IRequest<Usuario>
+        public class Ejecuta : IRequest<UsuarioData>
         {
             // datos recibidos por formulario
             public string Rut { get; set; }
@@ -61,7 +62,7 @@ namespace Aplicacion.ConfiguracionLogin
         /// <summary>
         /// Logica principal del mediador
         /// </summary>
-        public class Manejador : IRequestHandler<Ejecuta, Usuario>
+        public class Manejador : IRequestHandler<Ejecuta, UsuarioData>
         {
             // atributos iniciales
             private readonly SistemaPasesContext _context;
@@ -80,27 +81,38 @@ namespace Aplicacion.ConfiguracionLogin
             /// <param name="request">datos recibidos por el controlador</param>
             /// <param name="cancellationToken">indicador de cancelacion de solicitud</param>
             /// <returns>codigo de estado http</returns>
-            public async Task<Usuario> Handle(Ejecuta request, CancellationToken cancellationToken)
+            public async Task<UsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
                 // verificar que el email sea unico o no exista ya en la DB
                 var correoExiste = await this._context.Usuario.Where(x => x.Email == request.Correo).AnyAsync();
 
                 if (correoExiste)
                     throw new CorreoExistenteException(HttpStatusCode.BadRequest,
-                      new { mensaje = $"Ya existe un usuario registrado con el Email {request.Correo}" });
+                      new
+                      {
+                          mensaje = $"Ya existe un usuario registrado con el Email {request.Correo}",
+                          status = HttpStatusCode.BadRequest,
+                          tipoError = "re-ce"
+                      });
 
                 // verificar que el rut sea unico o no exista ya en la DB
                 var rutExiste = await this._context.Persona.Where(x => x.Rut == request.Rut).AnyAsync();
 
                 if (rutExiste)
                     throw new RutExisteException(HttpStatusCode.BadRequest,
-                        new { mensaje = $"Ya existe un usuario registrado con el Rut {request.Rut}" });
+                        new
+                        {
+                            mensaje = $"Ya existe un usuario registrado con el Rut {request.Rut}",
+                            status = HttpStatusCode.BadRequest,
+                            tipoError = "re-re"
+                        });
 
                 // creacion del nuevo usuario y los datos relacionados
                 var usuarioGenerado = new Usuario
                 {
                     UsuarioId = new Guid(),
                     Email = request.Correo,
+                    UserName = request.Correo,
                     Captcha = request.Captcha,
                     NoPerteneceEmpresa = request.NoPerteneceEmpresa
                 };
@@ -212,17 +224,24 @@ namespace Aplicacion.ConfiguracionLogin
                 }
 
                 // guardar el usuario creado
-                await this._context.Usuario.AddAsync(usuarioGenerado);
-
+                //await this._context.Usuario.AddAsync(usuarioGenerado);
 
                 // verificar si se pudo crear el UsuarioData y retornarlo
                 var resultado = await this._context.SaveChangesAsync();
                 if (resultado > 0)
                 {
+                    // guardar el usuario creado
                     var resultadoUser = await this._userManager.CreateAsync(usuarioGenerado);
+
                     if (resultadoUser.Succeeded)
                         //TODO: agregar devolucion de usuario DTO
-                        return usuarioGenerado;
+                        return new UsuarioData
+                        {
+                            Nombres = "nombres",
+                            Apellidos = "apellidos",
+                            Token = null,
+                            Email = usuarioGenerado.Email
+                        };
                 }
 
                 throw new Exception("Error en el servidor - No se pudo agregar el nuevo usuario..");
