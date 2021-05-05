@@ -6,22 +6,27 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Persistencia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using WebApi.Middleware;
 
@@ -80,15 +85,39 @@ namespace WebApi
             // configuracion de los datos de prueba para las migraciones
             services.TryAddSingleton<ISystemClock, SystemClock>();
 
+            // creacion de la llave para la validacion de los controladores con seguridad
+            // la palabra secreta debe ser la misma ue en el JwtGenerador en la linea 34
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Mi palabra secreta"));
+            // habilitar la autenticacion por tokens para obtener datos desde la API
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    // cualquier request del cliente debe ser validado por el proyecto
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key,
+                    // personas por IP que pueden acceder al servicio
+                    ValidateAudience = false,
+                    // envio del token falso, ya que no hay seleccion de cliente especificos en ValidateAudience
+                    ValidateIssuer = false
+                };
+            });
+
             // injeccion de la libreria de seguridad y la interface en applicacion.contratos 
             services.AddScoped<IJwtGenerador, JwtGenerador>();
 
             // dar a concer por el webApp la clase para reconocer l usuario en sesion acltualmente.
             //services.AddScoped<IUsuarioSesion, UsuarioSesion>();
 
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddTransient<IValidator<Registrar.Ejecuta>, Registrar.EjecutaValidacion>();
+            services.AddMvc(opt =>
+            {
+                // reuiere ue el ususario este autenticado 
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                opt.Filters.Add(new AuthorizeFilter(policy));
+            })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                // agregar validaciones de fluent validation
+                .AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Registrar>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -101,6 +130,7 @@ namespace WebApi
             app.UseMiddleware<ManejadorErrorMiddleware>();
 
             if (!env.IsDevelopment())
+                // para ambientes de desarrollo
                 //app.UseDeveloperExceptionPage();
 
                 // The default HSTS value is 30 days. You may want to change this for 
