@@ -11,6 +11,7 @@ using WebApi.Controllers.ControllerPersonalizado;
 
 namespace WebApi.Controllers
 {
+    [AllowAnonymous]
     public class PasesController : PersonalController
     {
         [HttpPost("registrar")]

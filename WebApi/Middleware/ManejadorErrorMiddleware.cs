@@ -34,7 +34,6 @@ namespace WebApi.Middleware
             {
                 // procesar la solicitu http
                 await this._next(context);
-                Console.WriteLine($"ACEPTACION DE LA SOLICITUD HTTP CORRECTA {context.Response.ToString()}");
             }
             catch (Exception ex)
             {
