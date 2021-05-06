@@ -10,6 +10,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Dominio.ModelosDto;
 
 namespace Aplicacion.Pases
 {
@@ -18,15 +19,7 @@ namespace Aplicacion.Pases
         ///<summary>
         ///Agregar una nueva solicitud Pase de Vistia
         ///</summary>
-        public class PersonaSolicitudPaseVisita
-        {
-            
-            public string nombres { get; set; }
-            public string apellidoPaterno { get; set; }
-            public string apellidoMaterno { get; set; }
-            public string rut { get; set; }
-            public string nacionalidad { get; set; }
-        }
+        
         public class Ejecuta : IRequest<Pase>
         {
             //Datos recibidos por formulario
@@ -36,7 +29,7 @@ namespace Aplicacion.Pases
             public string area { get; set; }
             public string rutEmpresa { get; set; }
             public string nombreEmpresa { get; set; }
-            public ICollection<PersonaSolicitudPaseVisita> listadoPersonas { get; set; }
+            public ICollection<PersonaPaseVisita> listadoPersonas { get; set; }
 
         }
         public class Manejador : IRequestHandler<Ejecuta, Pase>
@@ -100,14 +93,7 @@ namespace Aplicacion.Pases
                             PaseId = solicitudPaseNueva.PaseId
                         };
 
-                        //Generamos la instancia de Persona Externa
-                        var nuevaPersonaExterna = new PersonaExterna
-                        {
-                            PersonaExternaId = new Guid(),
-                            nacionalidad = persona.nacionalidad,
-                            //TODO Confirmar correspondencia del pasaporte
-                            pasaporte = (persona.nacionalidad != "CHILENA") ? persona.rut : null
-                        };
+                        
 
                         //Buscamos si la persona ya esta registrada por su rut
                         var personaExiste = await this._context.Persona.Where(x => x.Rut == persona.rut).FirstOrDefaultAsync();
@@ -227,29 +213,62 @@ namespace Aplicacion.Pases
 
                             this._context.PersonaTipoNombre.Add(nuevoPersonaTipoApellido);
 
+                            //Generamos la instancia de Persona Externa
+                            var nuevaPersonaExterna = new PersonaExterna
+                            {
+                                PersonaExternaId = new Guid(),
+                                nacionalidad = persona.nacionalidad,
+                                //TODO Confirmar correspondencia del pasaporte
+                                pasaporte = (persona.nacionalidad != "CHILENA") ? persona.rut : null
+                            };
 
                             //Vinculamos la persona con PersonaExterna
                             nuevaPersonaExterna.PersonaId = personaNueva.PersonaId;
+
+                            await this._context.PersonaExterna.AddAsync(nuevaPersonaExterna);
+
+                            // Vinculamos con PasePersonaExterna
+                            nuevoPasePersona.PersonaExternaId = nuevaPersonaExterna.PersonaExternaId;
+
+                            this._context.PasePersonaExterna.Add(nuevoPasePersona);
                         }
                         else
                         {
-                            // Solo vinculamos la persona con Persona Externa
-                            nuevaPersonaExterna.PersonaId = personaExiste.PersonaId;
-                            
+                            // Buscamos si existe persona Externa vinculada al rut
+                            var personaExternaExiste = await this._context.PersonaExterna
+                                                    .Where(x => x.PersonaId == personaExiste.PersonaId)
+                                                    .FirstOrDefaultAsync();
+
+                            if (personaExternaExiste == null)
+                            {
+                                var nuevaPersonaExterna = new PersonaExterna
+                                {
+                                    PersonaExternaId = new Guid(),
+                                    nacionalidad = persona.nacionalidad,
+                                    //TODO Confirmar correspondencia del pasaporte
+                                    pasaporte = (persona.nacionalidad != "CHILENA") ? persona.rut : null
+                                };
+
+                                //Vinculamos la persona con PersonaExterna
+                                nuevaPersonaExterna.PersonaId = personaExiste.PersonaId;
+
+                                await this._context.PersonaExterna.AddAsync(nuevaPersonaExterna);
+
+                                // Vinculamos con PasePersonaExterna
+                                nuevoPasePersona.PersonaExternaId = nuevaPersonaExterna.PersonaExternaId;
+
+                                this._context.PasePersonaExterna.Add(nuevoPasePersona);
+                            }
+                            else
+                            {
+                                nuevoPasePersona.PersonaExternaId = personaExternaExiste.PersonaExternaId;
+                            }                           
                             
                         }
-                        //Agregamos la nueva Persona Externa a la BD
-                        await this._context.PersonaExterna.AddAsync(nuevaPersonaExterna);
-
-
-                        //Finalmente vinculamos la Persona Externa nueva con el Pase
-                        nuevoPasePersona.PersonaExternaId = nuevaPersonaExterna.PersonaExternaId;
-                        
+                                                
                         this._context.PasePersonaExterna.Add(nuevoPasePersona);
                     }
-                }
-
-                
+                }                
 
                 var resultado = await this._context.SaveChangesAsync();
                 if (resultado > 0)

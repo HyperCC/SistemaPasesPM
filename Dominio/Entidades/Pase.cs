@@ -21,6 +21,11 @@ namespace Dominio.Entidades
 
         public string Area { get; set; }
 
+        public enum EstadoPase
+        {
+            REVISION, ACTIVO, VENCIDO, RECHAZADO
+        }
+
         // relacionamiento segun modelo R
         public Guid EmpresaId { get; set; }
 
