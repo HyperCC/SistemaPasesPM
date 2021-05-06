@@ -87,7 +87,7 @@ namespace Aplicacion.ConfiguracionLogin
                 var correoExiste = await this._context.Usuario.Where(x => x.Email == request.Correo).AnyAsync();
 
                 if (correoExiste)
-                    throw new CorreoExistenteException(HttpStatusCode.BadRequest,
+                    throw new CorreoExisteException(HttpStatusCode.BadRequest,
                       new
                       {
                           mensaje = $"Ya existe un usuario registrado con el Email {request.Correo}",

@@ -17,9 +17,10 @@ namespace Aplicacion.Auxiliares
             CreateMap<TipoNombre, TipoNombreDto>()
                 // obtener la lista de Personas para un TipoNombre -> RELACIONES N-N
                 .ForMember(x => x.Personas, y => y.MapFrom(z => z.PersonasRel.Select(a => a.PersonaRel).ToList()));
-            
+
             CreateMap<PersonaTipoNombre, PersonaTipoNombreDto>();
             CreateMap<Persona, PersonaDto>();
+            CreateMap<Usuario, UsuarioData>();
         }
     }
 }

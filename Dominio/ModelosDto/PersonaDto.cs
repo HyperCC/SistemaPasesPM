@@ -10,5 +10,6 @@ namespace Dominio.ModelosDto
         public string Rut { get; set; }
 
         public ICollection<TipoNombreDto> TipoNombres { get; set; }
+        public UsuarioData UsuarioRel { get; set; }
     }
 }

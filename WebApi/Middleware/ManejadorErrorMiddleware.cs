@@ -60,11 +60,18 @@ namespace WebApi.Middleware
                     break;
 
                 // throw excepcion para un correo ya existente
-                case CorreoExistenteException cee:
+                case CorreoExisteException cee:
                     logger.LogError(ex, "EL CORREO INGRESADO YA EXISTE EN EL SISTEMA Y NO SE PUEDE REGISTRAR..");
                     errores = cee.Errores;
                     // lanzar codigo de error especifico
                     context.Response.StatusCode = (int)cee.Codigo;
+                    break;
+
+                case RolExisteException rolee:
+                    logger.LogError(ex, "EL ROL INGRESADO YA EXISTE EN EL SISTEMA Y NO SE PUEDE REGISTRAR..");
+                    errores = rolee.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)rolee.Codigo;
                     break;
 
                 // si se lanza ManejadorExcepcion (excepcion personalizada), error de validacion para solicitudes http

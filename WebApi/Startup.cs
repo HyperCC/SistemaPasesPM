@@ -77,6 +77,9 @@ namespace WebApi
             // inicializacion del modulo de identidad utilizando a usuario para los login
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
 
+            identityBuilder.AddRoles<IdentityRole>();
+            identityBuilder.AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<Usuario, IdentityRole>>();
+
             // instanciar el uso de roles de usuario con los datos pre contrstruidos de IdentityRole
             identityBuilder.AddEntityFrameworkStores<SistemaPasesContext>();
             // Claims comunicando las entidades Usuario y IdentityRole
