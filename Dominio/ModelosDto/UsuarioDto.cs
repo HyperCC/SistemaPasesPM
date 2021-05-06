@@ -4,15 +4,15 @@ using System.Text;
 
 namespace Dominio.ModelosDto
 {
-    /// <summary>
-    /// Datos a retornar para el usuario en sesion
-    /// </summary>
-    public class UsuarioData
+    public class UsuarioDto
     {
+        public Guid UsuarioId { get; set; }
         public string Nombres { get; set; }
         public string Apellidos { get; set; }
         public string UserName { get; set; }
         public string Token { get; set; }
         public string Email { get; set; }
+
+        public PersonaDto PersonaDtoRel { get; set; }
     }
 }

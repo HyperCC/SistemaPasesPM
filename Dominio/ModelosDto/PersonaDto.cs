@@ -9,7 +9,7 @@ namespace Dominio.ModelosDto
         public Guid PersonaId { get; set; }
         public string Rut { get; set; }
 
-        public ICollection<TipoNombreDto> TipoNombres { get; set; }
-        public UsuarioData UsuarioRel { get; set; }
+        public ICollection<TipoNombreDto> TipoNombresDtoRel { get; set; }
+        public UsuarioDto UsuarioDtoRel { get; set; }
     }
 }

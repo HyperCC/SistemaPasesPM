@@ -11,6 +11,6 @@ namespace Dominio.ModelosDto
         public string Nombre { get; set; }
         public TipoIdentificador Tipo { get; set; } // nombre o apellido
         public int Posicion { get; set; } // primero, segundo, tercero.
-        public ICollection<PersonaDto> Personas { get; set; }
+        public ICollection<PersonaDto> PersonasDtoRel { get; set; }
     }
 }

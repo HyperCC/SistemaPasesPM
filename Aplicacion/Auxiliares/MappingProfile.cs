@@ -14,13 +14,16 @@ namespace Aplicacion.Auxiliares
     {
         public MappingProfile()
         {
-            CreateMap<TipoNombre, TipoNombreDto>()
-                // obtener la lista de Personas para un TipoNombre -> RELACIONES N-N
-                .ForMember(x => x.Personas, y => y.MapFrom(z => z.PersonasRel.Select(a => a.PersonaRel).ToList()));
+            CreateMap<Usuario, UsuarioDto>()
+                .ForMember(x => x.PersonaDtoRel, y => y.MapFrom(z => z.PersonaRel));
 
+            CreateMap<TipoNombre, TipoNombreDto>();
             CreateMap<PersonaTipoNombre, PersonaTipoNombreDto>();
-            CreateMap<Persona, PersonaDto>();
-            CreateMap<Usuario, UsuarioData>();
+
+            CreateMap<Persona, PersonaDto>()
+                // obtener la lista de Personas para un TipoNombre -> RELACIONES N-N
+                .ForMember(x => x.TipoNombresDtoRel, y => y.MapFrom(z => z.TipoNombresRel.Select(a => a.TipoNombreRel).ToList()));
+
         }
     }
 }

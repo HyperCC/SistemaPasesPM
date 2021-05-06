@@ -51,7 +51,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<ActionResult<List<Usuario>>> All()
+        public async Task<ActionResult<List<UsuarioDto>>> All()
         {
             return await this.MediadorHerencia.Send(new ListaUsuarios.Ejecuta());
         }

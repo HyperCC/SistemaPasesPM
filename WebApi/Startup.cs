@@ -1,6 +1,7 @@
 ﻿using Aplicacion.ConfiguracionLogin;
 using Aplicacion.ConfiguracionLogin.Contratos;
 using Aplicacion.ConfiguracionLogin.TokenSeguridad;
+using AutoMapper;
 using Dominio.Entidades;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -77,7 +78,9 @@ namespace WebApi
             // inicializacion del modulo de identidad utilizando a usuario para los login
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
 
+            // instanciar el uso de roles de usuario con los datos pre contrstruidos de IdentityRole
             identityBuilder.AddRoles<IdentityRole>();
+            // Claims comunicando las entidades Usuario y IdentityRole
             identityBuilder.AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<Usuario, IdentityRole>>();
 
             // instanciar el uso de roles de usuario con los datos pre contrstruidos de IdentityRole
@@ -111,6 +114,9 @@ namespace WebApi
 
             // dar a concer por el webApp la clase para reconocer al usuario en sesion acltualmente.
             services.AddScoped<IUsuarioSesion, UsuarioSesion>();
+
+            // Inicializar injeccion del mapping de instructores en clasesDTO
+            services.AddAutoMapper(typeof(ListaUsuarios.Ejecuta));
 
             services.AddMvc(opt =>
             {
