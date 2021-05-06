@@ -35,6 +35,7 @@ namespace Aplicacion.ConfiguracionLogin
 
             public async Task<List<UsuarioDto>> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
+                // obtener los usuarios, sus personas y sus nombres respectivos
                 var usuarios = await this._context.Usuario
                     .Include(x => x.PersonaRel)
                     .Include(x => x.PersonaRel.TipoNombresRel)
@@ -44,14 +45,10 @@ namespace Aplicacion.ConfiguracionLogin
                 foreach (var usu in usuarios)
                 {
                     Console.WriteLine($"usuario email: {usu.Email}");
-
                     foreach (var per in usu.PersonaRel.TipoNombresRel)
-                    {
                         Console.WriteLine($"Nombre: {per.TipoNombreRel.Nombre}");
-                    }
                     Console.WriteLine();
                 }
-                   
 
                 var usuariosDto = this._mapper.Map<List<Usuario>, List<UsuarioDto>>(usuarios);
 
