@@ -6,23 +6,17 @@ namespace Dominio.Entidades
 {
     public class AnexoContrato
     {
-
         public Guid AnexoContratoId { get; set; }
 
         // atributos de la entidad
-
         public string Descripcion { get; set; }
 
         // relacionamiento segun modelo R
-
         public Guid DocumentoId { get; set; }
-
         public Guid PersonaExternaId { get; set; }
 
-
         // obtener los modelos relacionados 
-
-        //public Documento DocumentoRel { get; set; }
+        public Documento DocumentoRel { get; set; }
         public PersonaExterna PersonaExternaRel { get; set; }
     }
 }

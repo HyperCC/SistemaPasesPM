@@ -46,7 +46,6 @@ namespace WebApi
 
                 hostserver.Run();
             }
-
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)

@@ -1,8 +1,10 @@
-﻿using Aplicacion.ConfiguracionLogin.Contratos;
+﻿using Aplicacion.Auxiliares;
+using Aplicacion.ConfiguracionLogin.Contratos;
 using Aplicacion.ConfiguracionLogin.TokenSeguridad;
 using Aplicacion.ExcepcionesPersonalizadas;
 using Dominio.Entidades;
 using Dominio.ModelosDto;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Persistencia;
@@ -24,6 +26,15 @@ namespace Aplicacion.ConfiguracionLogin
         {
             public string Email { get; set; }
             public string Password { get; set; }
+        }
+
+        public class EjecutaValidacion : AbstractValidator<Ejecuta>
+        {
+            public EjecutaValidacion()
+            {
+                RuleFor(x => x.Email).NotEmpty();
+                RuleFor(x => x.Password).NotEmpty();
+            }
         }
 
         public class Manejador : IRequestHandler<Ejecuta, UsuarioData>
@@ -57,10 +68,12 @@ namespace Aplicacion.ConfiguracionLogin
                     {
                         Nombres = "nombres",
                         Apellidos = "apellidos",
+                        UserName = usuario.UserName,
                         Token = this._jwtGenerador.CreateToken(usuario, new List<string>()),
                         Email = usuario.Email
                     };
 
+                // usuario no autorizado
                 throw new ManejadorException(HttpStatusCode.Unauthorized);
             }
         }

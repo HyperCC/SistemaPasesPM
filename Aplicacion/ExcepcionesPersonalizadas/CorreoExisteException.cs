@@ -6,11 +6,11 @@ using System.Text;
 namespace Aplicacion.ExcepcionesPersonalizadas
 {
     /// <summary>
-    /// Excepcion para un rut existente
+    /// Excepcion para un correo de usuario existente
     /// </summary>
-    public class RutExisteException : ManejadorException
+    public class CorreoExisteException : ManejadorException
     {
-        public RutExisteException(HttpStatusCode codigo, object errores = null)
+        public CorreoExisteException(HttpStatusCode codigo, object errores = null)
             : base(codigo, errores)
         { }
     }

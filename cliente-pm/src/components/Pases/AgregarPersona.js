@@ -1,7 +1,6 @@
-import React from 'react';
-import '../../App.css';
+import React from 'react'
 
-function CambiarClave(props) {
+const AgregarPersona = () => {
     return (
         <div>
             <div class="bg-gray-100 min-h-screen">
@@ -10,39 +9,45 @@ function CambiarClave(props) {
 
                         <div class="text-center">
                             <p class="text-3xl text-grey-darkest pt-12 w-full select-none">
-                                Cambiar Contraseña
+                                Agregar Persona
                             </p>
                         </div>
 
                         <form>
-                            {/* DATOS PRINCIPALES PARA USUARIO */}
+                            {/* DATOS PRINCIPALES PARA TRABAJADOR */}
                             <div class="grid grid-cols-3 px-4 md:px-8 gap-4 mt-12">
                                 
                                 <div class="col-span-1 form-group">
-                                    <label class="font-light  text-gray-800 select-none" for="Correo">Correo Electrónico</label>
+                                    <label class="font-light  text-gray-800 select-none" for="Nombres">Nombres</label>
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="email" name="Correo" placeholder="e@mail.com" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
+                                    <input type="text" name="Nombres" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
                                 </div>
 
                                 <div class="col-span-1 form-group">
-                                    <label class="font-light  text-gray-800 select-none" for="ContraseñaActual">Contraseña Actual</label>
+                                    <label class="font-light  text-gray-800 select-none" for="ApellidoPaterno">Apellido Paterno</label>
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="text"  name="ContraseñaActual" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
+                                    <input type="text"  name="ApellidoPaterno" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
                                 </div>
 
                                 <div class="col-span-1 form-group">
-                                    <label class="font-light text-gray-800 select-none" for="NuevaContraseña">Nueva Contraseña</label>
+                                    <label class="font-light text-gray-800 select-none" for="ApellidoMaterno">Apellido Materno</label>
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="text" name="NuevaContraseña" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-gray-100" />
+                                    <input type="text" name="ApellidoMaterno" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-gray-100" />
                                 </div>
                                 <div class="col-span-1 form-group">
-                                    <label class="font-light text-gray-800 select-none" for="RepetirContraseña">Repetir Contraseña</label>
+                                    <label class="font-light text-gray-800 select-none" for="Rut">Rut</label>
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="text" name="RepetirContraseña" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-gray-100" />
+                                    <input type="text" name="Rut" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-gray-100" />
+                                </div>
+                                <div class="col-span-1 form-group">
+                                    <label class="font-light text-gray-800 select-none" for="Nacionalidad">Nacionalidad</label>
+                                </div>
+                                <div class="col-span-2">
+                                    <input type="text" name="Nacionalidad" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-gray-100" />
                                 </div>
                             </div>
 
@@ -59,7 +64,7 @@ function CambiarClave(props) {
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
-export default CambiarClave;
+export default AgregarPersona;
