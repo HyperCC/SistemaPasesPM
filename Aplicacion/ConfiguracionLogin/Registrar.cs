@@ -113,7 +113,6 @@ namespace Aplicacion.ConfiguracionLogin
                     UsuarioId = new Guid(),
                     Email = request.Correo,
                     UserName = request.Correo,
-                    Captcha = request.Captcha,
                     NoPerteneceEmpresa = request.NoPerteneceEmpresa
                 };
 

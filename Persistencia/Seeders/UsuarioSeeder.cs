@@ -101,7 +101,6 @@ namespace Persistencia.Seeders
                     UserName = "admin@gmail.com",
                     PersonaId = nuevaPersona.PersonaId,
                     EmpresaId = nuevaEmpresa.EmpresaId,
-                    Captcha = true,
                     NoPerteneceEmpresa = true
                 };
                 // agregar el usuario y generar el hash de al clave
