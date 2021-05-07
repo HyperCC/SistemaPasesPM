@@ -15,7 +15,7 @@ namespace WebApi.Controllers
     public class CuentaController : PersonalController
     {
         [HttpGet]
-        public async Task<ActionResult<UsuarioDto>> CuentaUsuario()
+        public async Task<ActionResult<CuentaUsuarioData>> CuentaUsuario()
         {
             return await this.MediadorHerencia.Send(new CuentaUsuario.Ejecuta());
         }

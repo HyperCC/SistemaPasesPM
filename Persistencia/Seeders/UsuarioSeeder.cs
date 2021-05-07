@@ -26,17 +26,21 @@ namespace Persistencia.Seeders
             if (await usuarioManager.FindByEmailAsync("admin@gmail.com") == null)
             {
                 Console.WriteLine("NO HAY USUARIO ADMIN EN LA BASE DE DATOS..");
+                Guid usuarioId = new Guid();
+
                 // nombres
                 var nombre1 = new TipoNombre
                 {
                     TipoNombreId = new Guid(),
                     Nombre = "camilo",
+                    Posicion = 1,
                     Tipo = TipoNombre.TipoIdentificador.NOMBRE
                 };
                 var nombre2 = new TipoNombre
                 {
                     TipoNombreId = new Guid(),
                     Nombre = "andres",
+                    Posicion = 2,
                     Tipo = TipoNombre.TipoIdentificador.NOMBRE
                 };
 
@@ -45,12 +49,14 @@ namespace Persistencia.Seeders
                 {
                     TipoNombreId = new Guid(),
                     Nombre = "moraga",
+                    Posicion = 1,
                     Tipo = TipoNombre.TipoIdentificador.APELLIDO
                 };
                 var apellido2 = new TipoNombre
                 {
                     TipoNombreId = new Guid(),
                     Nombre = "martinez",
+                    Posicion = 2,
                     Tipo = TipoNombre.TipoIdentificador.APELLIDO
                 };
                 // agregar los respectivos nombres
@@ -96,7 +102,7 @@ namespace Persistencia.Seeders
                 // usuario principal
                 var nuevoUsuario = new Usuario
                 {
-                    UsuarioId = new Guid(),
+                    UsuarioId = usuarioId,
                     Email = "admin@gmail.com",
                     UserName = "admin@gmail.com",
                     PersonaId = nuevaPersona.PersonaId,

@@ -17,10 +17,10 @@ namespace Aplicacion.Cuentas
 {
     public class CuentaUsuario
     {
-        public class Ejecuta : IRequest<UsuarioDto>
+        public class Ejecuta : IRequest<CuentaUsuarioData>
         { }
 
-        public class Manejador : IRequestHandler<Ejecuta, UsuarioDto>
+        public class Manejador : IRequestHandler<Ejecuta, CuentaUsuarioData>
         {
             // instancia de variables necesarias para obtener la sesion de un usuario
             private readonly UserManager<Usuario> _userManager;
@@ -42,19 +42,45 @@ namespace Aplicacion.Cuentas
                 this._mapper = mapper;
             }
 
-            public async Task<UsuarioDto> Handle(Ejecuta request, CancellationToken cancellationToken)
+            public async Task<CuentaUsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
                 // obtener al ususario con sesion actual 
-                var usuario = await this._userManager.FindByNameAsync(this._usuarioSesion.ObtenerUsuarioSesion());
+                //var usuario = await this._userManager.FindByNameAsync(this._usuarioSesion.ObtenerUsuarioSesion());
 
-                var usuar = await this._context.Usuario.Where(x => x.UserName == this._usuarioSesion.ObtenerUsuarioSesion())
-                    .Include(x => x.PersonaRel)
+                // obtencion de las entidades relacionadas
+                var usuario = await this._context.Usuario.Where(x => x.UserName == this._usuarioSesion.ObtenerUsuarioSesion())
                     .Include(x => x.EmpresaRel)
                     .Include(x => x.PasesRel)
+                    .Include(x => x.PersonaRel.TipoNombresRel)
+                    .ThenInclude(z => z.TipoNombreRel)
                     .FirstOrDefaultAsync();
+                var theId = usuario.Id;
 
-                var usuariosDto = (usuar == null) ? new UsuarioDto() : this._mapper.Map<Usuario, UsuarioDto>(usuar);
-                return usuariosDto;
+                var usuarioDto = this._mapper.Map<Usuario, UsuarioDto>(usuario);
+
+                string apellidos = "";
+                string nombres = "";
+
+                // obtencion del nombre completo
+                foreach (var nomb in usuario.PersonaRel.TipoNombresRel.OrderBy(x => x.TipoNombreRel.Posicion))
+                {
+                    // concatenacion de nombres y apellidos
+                    if (nomb.TipoNombreRel.Tipo == TipoNombre.TipoIdentificador.NOMBRE)
+                        nombres += nomb.TipoNombreRel.Nombre + " ";
+                    else
+                        apellidos += nomb.TipoNombreRel.Nombre + " ";
+                }
+
+                // modelo con los datos a usar en la cuenta del usuario comun
+                var cuentaUsuarioata = new CuentaUsuarioData
+                {
+                    NombreCompleto = (nombres + ((apellidos.Length > 0) ? apellidos.Remove(apellidos.Length - 1) : apellidos)),
+                    Rut = usuario.PersonaRel.Rut,
+                    NombreEmpresa = usuario.EmpresaRel.Nombre,
+                    PasesRel = usuario.PasesRel
+                };
+
+                return cuentaUsuarioata;
             }
         }
     }
