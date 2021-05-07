@@ -9,11 +9,22 @@ import { Visita } from '../components/Pases/Visita';
 import RecuperarClave from '../components/Login/RecuperarClave';
 import CambiarClave from '../components/Login/CambiarClave';
 import AgregarPersona from '../components/Pases/AgregarPersona';
+import { Contratista } from '../components/Pases/Contratista';
+import { DocumentosEmpresa } from '../components/Pases/DocumentosEmpresa';
+import { AgregarPersonaContratista } from '../components/Pases/AgregarPersonaContratista';
 
 const Rutas = () => {
     return (
         <Router>
             <Switch>
+                <Route path="/SolicitudVisita/AgregarPersona">
+                    <Navbar />
+                    <AgregarPersona />
+                </Route>
+                <Route path="/SolicitudContratista/AgregarPersona">
+                    <Navbar />
+                    <AgregarPersonaContratista />
+                </Route>
                 <Route path="/" exact>
                     <Home />
                 </Route>
@@ -38,10 +49,16 @@ const Rutas = () => {
                 <Route path="/CambiarContraseña">
                     <CambiarClave />
                 </Route>
-                <Route path="/AgregarPersona">
+                
+                <Route path="/SolicitudContratista">
                     <Navbar />
-                    <AgregarPersona />
+                    <Contratista />
                 </Route>
+                <Route path="/DocumentosEmpresa">
+                    <Navbar />
+                    <DocumentosEmpresa />
+                </Route>
+                
             </Switch>
         </Router>
     );
