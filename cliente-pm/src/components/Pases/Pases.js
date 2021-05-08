@@ -22,7 +22,7 @@ export const Pases = () => {
                             <div> <p>Aquellas personas que permanecen en la empresa por un periodo de tiempo, no superior a 120hrs, estas personas no realizan trabajos operativos, intervenciones a procesos o sistemas</p> </div>
                             
                             <div>
-                                <a href="/"
+                                <a href="/SolicitudContratista"
                                     className="w-44 text-center flex-shrink-0 block px-4 py-2 md:mt-0 mt-4 md:mx-0 mx-auto text-base font-semibold text-white bg-verde-pm rounded-md shadow-md hover:bg-amarillo-pm focus:outline-none transition duration-500">
                                      Contratista
                                 </a>

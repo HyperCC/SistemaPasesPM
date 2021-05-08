@@ -5,7 +5,7 @@ import { TablaTrabajadores } from './TablaTrabajadores';
 export const Visita = (props) => {
 
     //Datos generales del pase
-
+    const url = '/SolicitudVisita';
 
     const dataPaseGeneral = {
         RutEmpresa: '2.333.444-5',
@@ -48,7 +48,7 @@ export const Visita = (props) => {
                     <div class="h-8"></div>
                     {/** Parte inferior tabla de personas */}
                     
-                    <TablaTrabajadores datos={dataTablaGeneral} />
+                    <TablaTrabajadores datos={dataTablaGeneral} url = {url} />
                 </div>
             </div>
         </div>
