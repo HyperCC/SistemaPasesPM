@@ -26,8 +26,8 @@ namespace Persistencia.Seeders
             if (await usuarioManager.FindByEmailAsync("admin@gmail.com") == null)
             {
                 Console.WriteLine("NO HAY USUARIO ADMIN EN LA BASE DE DATOS..");
-                Guid usuarioId = new Guid();
-
+                Guid userId = new Guid();
+                Console.WriteLine($"EL id del usuario sera {userId}");
                 // nombres
                 var nombre1 = new TipoNombre
                 {
@@ -102,13 +102,14 @@ namespace Persistencia.Seeders
                 // usuario principal
                 var nuevoUsuario = new Usuario
                 {
-                    UsuarioId = usuarioId,
+                    UId = userId,
                     Email = "admin@gmail.com",
                     UserName = "admin@gmail.com",
                     PersonaId = nuevaPersona.PersonaId,
                     EmpresaId = nuevaEmpresa.EmpresaId,
                     NoPerteneceEmpresa = true
                 };
+
                 // agregar el usuario y generar el hash de al clave
                 var resultUsuario = await usuarioManager.CreateAsync(nuevoUsuario, "P@ssw0rd");
 

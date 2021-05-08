@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 
 namespace Dominio.Entidades
-{
+{ 
     public class Usuario : IdentityUser // herencia para login
     {
-        public Guid UsuarioId { get; set; }
+        public Guid UId { get; set; }
 
         // atributos de la entidad
         public string Correo { get; set; }

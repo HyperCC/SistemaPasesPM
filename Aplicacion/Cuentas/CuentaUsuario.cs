@@ -48,18 +48,16 @@ namespace Aplicacion.Cuentas
                 //var usuario = await this._userManager.FindByNameAsync(this._usuarioSesion.ObtenerUsuarioSesion());
 
                 // obtencion de las entidades relacionadas
-                var usuario = await this._context.Usuario.Where(x => x.UserName == this._usuarioSesion.ObtenerUsuarioSesion())
+                var usuario = await this._context.Usuario
                     .Include(x => x.EmpresaRel)
                     .Include(x => x.PasesRel)
                     .Include(x => x.PersonaRel.TipoNombresRel)
                     .ThenInclude(z => z.TipoNombreRel)
-                    .FirstOrDefaultAsync();
-                var theId = usuario.Id;
+                    .FirstOrDefaultAsync(x => x.UserName == this._usuarioSesion.ObtenerUsuarioSesion());
 
                 var usuarioDto = this._mapper.Map<Usuario, UsuarioDto>(usuario);
 
-                string apellidos = "";
-                string nombres = "";
+                string nombres = string.Empty, apellidos = string.Empty;
 
                 // obtencion del nombre completo
                 foreach (var nomb in usuario.PersonaRel.TipoNombresRel.OrderBy(x => x.TipoNombreRel.Posicion))
