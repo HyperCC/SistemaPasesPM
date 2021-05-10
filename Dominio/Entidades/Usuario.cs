@@ -3,15 +3,14 @@ using System;
 using System.Collections.Generic;
 
 namespace Dominio.Entidades
-{
+{ 
     public class Usuario : IdentityUser // herencia para login
     {
-        public Guid UsuarioId { get; set; }
+        public Guid UId { get; set; }
 
         // atributos de la entidad
         public string Correo { get; set; }
         public string Contrasena { get; set; }
-        public bool Captcha { get; set; } = false;
         public bool NoPerteneceEmpresa { get; set; } = false;
 
         // relacionamiento segun modelo R
@@ -22,5 +21,6 @@ namespace Dominio.Entidades
         public Persona PersonaRel { get; set; }
         public ICollection<Rol> RolsRel { get; set; }
         public Empresa EmpresaRel { get; set; }
+        public ICollection<Pase> PasesRel { get; set; }
     }
 }

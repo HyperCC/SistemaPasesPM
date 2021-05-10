@@ -15,7 +15,14 @@ namespace Aplicacion.Auxiliares
         public MappingProfile()
         {
             CreateMap<Usuario, UsuarioDto>()
-                .ForMember(x => x.PersonaDtoRel, y => y.MapFrom(z => z.PersonaRel));
+                // relacion N-N
+                .ForMember(x => x.PersonaDtoRel, y => y.MapFrom(z => z.PersonaRel))
+                // relacion 1-N
+                .ForMember(x => x.PasesDtoRel, y => y.MapFrom(z => z.PasesRel))
+                .ForMember(x => x.EmpresaDtoRel, y => y.MapFrom(z => z.EmpresaRel));
+
+            CreateMap<Empresa, EmpresaDto>();
+            CreateMap<Pase, PaseDto>();
 
             CreateMap<TipoNombre, TipoNombreDto>();
             CreateMap<PersonaTipoNombre, PersonaTipoNombreDto>();

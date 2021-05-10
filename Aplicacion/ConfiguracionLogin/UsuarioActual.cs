@@ -35,6 +35,7 @@ namespace Aplicacion.ConfiguracionLogin
             public async Task<UsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
                 var usuario = await this._userManager.FindByNameAsync(this._usuarioSesion.ObtenerUsuarioSesion());
+
                 Console.WriteLine("ACCESO DIRECTO AL USUSARIO ACTUAL");
                 // obtener lista de roles para el objeto usuario "usuario"
                 var listaRoles = new List<string>(await this._userManager.GetRolesAsync(usuario));

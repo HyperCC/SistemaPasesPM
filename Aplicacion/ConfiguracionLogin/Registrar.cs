@@ -37,25 +37,14 @@ namespace Aplicacion.ConfiguracionLogin
             // por defecto el capcha viene no validado
             public bool Captcha { get; set; }
             public bool NoPerteneceEmpresa { get; set; }
-            public Ejecuta()
-            {
-                this.Rut = null;
-                this.Nombres = null;
-                this.Apellidos = null;
-                this.Correo = null;
-                this.RutEmpresa = null;
-                this.NombreEmpresa = null;
-                this.Captcha = false;
-                this.NoPerteneceEmpresa = false;
-            }
         }
 
         public class EjecutaValidacion : AbstractValidator<Ejecuta>
         {
             public EjecutaValidacion()
             {
-                this.RuleFor(x => x.Correo).NotEmpty().NotNull();
-                this.RuleFor(x => x.Rut).NotEmpty().NotNull();
+                this.RuleFor(x => x.Correo).NotEmpty();
+                this.RuleFor(x => x.Rut).NotEmpty();
             }
         }
 
@@ -83,6 +72,11 @@ namespace Aplicacion.ConfiguracionLogin
             /// <returns>codigo de estado http</returns>
             public async Task<UsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
+                var usID = new Guid();
+                Console.WriteLine(".................................................");
+                Console.WriteLine($"EL GUID CREADO : {usID}");
+                Console.WriteLine(".................................................");
+
                 // verificar que el email sea unico o no exista ya en la DB
                 var correoExiste = await this._context.Usuario.Where(x => x.Email == request.Correo).AnyAsync();
 
@@ -108,12 +102,12 @@ namespace Aplicacion.ConfiguracionLogin
                         });
 
                 // creacion del nuevo usuario y los datos relacionados
+
                 var usuarioGenerado = new Usuario
                 {
-                    UsuarioId = new Guid(),
+                    UId = new Guid(),
                     Email = request.Correo,
                     UserName = request.Correo,
-                    Captcha = request.Captcha,
                     NoPerteneceEmpresa = request.NoPerteneceEmpresa
                 };
 
@@ -201,7 +195,9 @@ namespace Aplicacion.ConfiguracionLogin
                 }
 
                 // buscar empresa perteneciente.
-                var empresaExiste = await this._context.Empresa.Where(x => x.Rut == request.RutEmpresa).FirstOrDefaultAsync();
+                var empresaExiste = await this._context.Empresa
+                    .Where(x => x.Rut == request.RutEmpresa)
+                    .FirstOrDefaultAsync();
 
                 // si no existe la empresa se crea una nueva
                 if (empresaExiste == null)
@@ -231,7 +227,7 @@ namespace Aplicacion.ConfiguracionLogin
                 if (resultado > 0)
                 {
                     // guardar el usuario creado
-                    var resultadoUser = await this._userManager.CreateAsync(usuarioGenerado);
+                    var resultadoUser = await this._userManager.CreateAsync(usuarioGenerado, "Hol@Hol@123");
 
                     if (resultadoUser.Succeeded)
                         //TODO: agregar devolucion de usuario DTO
