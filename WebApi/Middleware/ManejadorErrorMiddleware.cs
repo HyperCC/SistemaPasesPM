@@ -74,6 +74,13 @@ namespace WebApi.Middleware
                     context.Response.StatusCode = (int)rolee.Codigo;
                     break;
 
+                case FormatoIncorrectoException fie:
+                    logger.LogError(ex, "LOS DATOS ENTREGADOS POR EL CLIENTE NO SON VALIDOS..");
+                    errores = fie.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)fie.Codigo;
+                    break;
+
                 // si se lanza ManejadorExcepcion (excepcion personalizada), error de validacion para solicitudes http
                 case ManejadorException me:
                     logger.LogError(ex, "ERROR GENERICO EN LOS MANEJADORES..");

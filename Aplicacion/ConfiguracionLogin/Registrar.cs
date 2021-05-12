@@ -78,19 +78,23 @@ namespace Aplicacion.ConfiguracionLogin
             /// <returns>codigo de estado http</returns>
             public async Task<UsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
+                // validacion del formato del request
                 EjecutaValidacion validator = new EjecutaValidacion();
                 var validacionesRes = validator.Validate(request);
+
+                // en caso de no obtener datos validos
                 if (!validacionesRes.IsValid)
                 {
                     List<string> erroresFV = new List<string>();
-
+                    // listar los mensajes de error obtenidos
                     foreach (var failure in validacionesRes.Errors)
                         erroresFV.Add(failure.ErrorMessage);
 
-                    throw new CorreoExisteException(HttpStatusCode.BadRequest,
+                    // devolver una excepcion y los erroes encontrados
+                    throw new FormatoIncorrectoException(HttpStatusCode.BadRequest,
                      new
                      {
-                         mensaje = $"Ya existe un usuario registrado con el Email {request.Correo}",
+                         mensaje = $"Los datos recibidos por el usaurio no cumplen con el formato solicitado.",
                          status = HttpStatusCode.BadRequest,
                          tipoError = erroresFV
                      });
