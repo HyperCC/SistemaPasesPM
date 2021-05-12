@@ -126,7 +126,7 @@ namespace WebApi
             })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 // agregar validaciones de fluent validation
-                .AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Registrar>());
+                .AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Registrar.EjecutaValidacion>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

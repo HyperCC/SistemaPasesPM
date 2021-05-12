@@ -9,6 +9,7 @@ using Persistencia;
 using Persistencia.AuxiliaresAlmacenamiento;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -46,6 +47,10 @@ namespace Aplicacion.ConfiguracionLogin
             {
                 this.RuleFor(x => x.Correo).NotEmpty();
                 this.RuleFor(x => x.Rut).NotEmpty();
+                this.RuleFor(x => x.Nombres).NotEmpty();
+                this.RuleFor(x => x.Apellidos).NotEmpty();
+                this.RuleFor(x => x.NombreEmpresa).NotEmpty();
+                this.RuleFor(x => x.RutEmpresa).NotEmpty();
             }
         }
 
@@ -73,10 +78,23 @@ namespace Aplicacion.ConfiguracionLogin
             /// <returns>codigo de estado http</returns>
             public async Task<UsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
-                var usID = new Guid();
-                Console.WriteLine(".................................................");
-                Console.WriteLine($"EL GUID CREADO : {usID}");
-                Console.WriteLine(".................................................");
+                EjecutaValidacion validator = new EjecutaValidacion();
+                var validacionesRes = validator.Validate(request);
+                if (!validacionesRes.IsValid)
+                {
+                    List<string> erroresFV = new List<string>();
+
+                    foreach (var failure in validacionesRes.Errors)
+                        erroresFV.Add(failure.ErrorMessage);
+
+                    throw new CorreoExisteException(HttpStatusCode.BadRequest,
+                     new
+                     {
+                         mensaje = $"Ya existe un usuario registrado con el Email {request.Correo}",
+                         status = HttpStatusCode.BadRequest,
+                         tipoError = erroresFV
+                     });
+                }
 
                 // verificar que el email sea unico o no exista ya en la DB
                 var correoExiste = await this._context.Usuario.Where(x => x.Email == request.Correo).AnyAsync();
