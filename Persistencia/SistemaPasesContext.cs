@@ -26,7 +26,6 @@ namespace Persistencia
             // declaracion de clave primaria compuesta para relaciones N-N
             modelBuilder.Entity<PersonaTipoNombre>().HasKey(ci => new { ci.PersonaId, ci.TipoNombreId });
             modelBuilder.Entity<PasePersonaExterna>().HasKey(ci => new { ci.PaseId, ci.PersonaExternaId });
-            modelBuilder.Entity<Usuario>().HasAlternateKey(ci => ci.UId);
         }
 
         // conversion de los modelos a entidades en la Solucion

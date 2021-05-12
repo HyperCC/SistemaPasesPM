@@ -34,7 +34,7 @@ namespace Persistencia.AuxiliaresAlmacenamiento
                 // buscar si existe el nombre
                 var nombreExiste = await _context.TipoNombre
                     .Where(x => x.Nombre == nombre
-                    && x.Tipo == TipoNombre.TipoIdentificador.NOMBRE
+                    && x.Tipo == TipoIdentificador.NOMBRE
                     && x.Posicion == currentIteration)
                     .FirstOrDefaultAsync();
 
@@ -44,7 +44,7 @@ namespace Persistencia.AuxiliaresAlmacenamiento
                 {
                     nuevoNombre.TipoNombreId = new Guid();
                     nuevoNombre.Nombre = nombre;
-                    nuevoNombre.Tipo = TipoNombre.TipoIdentificador.NOMBRE;
+                    nuevoNombre.Tipo = TipoIdentificador.NOMBRE;
                     nuevoNombre.Posicion = currentIteration;
                 }
                 _context.TipoNombre.Add(nuevoNombre);
@@ -73,7 +73,7 @@ namespace Persistencia.AuxiliaresAlmacenamiento
                 // buscar si existe el apellido
                 var apellidoExiste = await _context.TipoNombre
                     .Where(x => x.Nombre == apellido
-                    && x.Tipo == TipoNombre.TipoIdentificador.APELLIDO
+                    && x.Tipo == TipoIdentificador.APELLIDO
                     && x.Posicion == currentIteration)
                     .FirstOrDefaultAsync();
 
@@ -83,7 +83,7 @@ namespace Persistencia.AuxiliaresAlmacenamiento
                 {
                     nuevoApellido.TipoNombreId = new Guid();
                     nuevoApellido.Nombre = apellido;
-                    nuevoApellido.Tipo = TipoNombre.TipoIdentificador.APELLIDO;
+                    nuevoApellido.Tipo = TipoIdentificador.APELLIDO;
                     nuevoApellido.Posicion = currentIteration;
                 }
                 _context.TipoNombre.Add(nuevoApellido);

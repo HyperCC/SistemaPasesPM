@@ -26,22 +26,21 @@ namespace Persistencia.Seeders
             if (await usuarioManager.FindByEmailAsync("admin@gmail.com") == null)
             {
                 Console.WriteLine("NO HAY USUARIO ADMIN EN LA BASE DE DATOS..");
-                Guid userId = new Guid();
-                Console.WriteLine($"EL id del usuario sera {userId}");
+
                 // nombres
                 var nombre1 = new TipoNombre
                 {
                     TipoNombreId = new Guid(),
                     Nombre = "camilo",
                     Posicion = 1,
-                    Tipo = TipoNombre.TipoIdentificador.NOMBRE
+                    Tipo = TipoIdentificador.NOMBRE
                 };
                 var nombre2 = new TipoNombre
                 {
                     TipoNombreId = new Guid(),
                     Nombre = "andres",
                     Posicion = 2,
-                    Tipo = TipoNombre.TipoIdentificador.NOMBRE
+                    Tipo = TipoIdentificador.NOMBRE
                 };
 
                 // apellidos
@@ -50,14 +49,14 @@ namespace Persistencia.Seeders
                     TipoNombreId = new Guid(),
                     Nombre = "moraga",
                     Posicion = 1,
-                    Tipo = TipoNombre.TipoIdentificador.APELLIDO
+                    Tipo = TipoIdentificador.APELLIDO
                 };
                 var apellido2 = new TipoNombre
                 {
                     TipoNombreId = new Guid(),
                     Nombre = "martinez",
                     Posicion = 2,
-                    Tipo = TipoNombre.TipoIdentificador.APELLIDO
+                    Tipo = TipoIdentificador.APELLIDO
                 };
                 // agregar los respectivos nombres
                 await context.TipoNombre.AddRangeAsync(nombre1, nombre2, apellido1, apellido2);
@@ -102,7 +101,6 @@ namespace Persistencia.Seeders
                 // usuario principal
                 var nuevoUsuario = new Usuario
                 {
-                    UId = userId,
                     Email = "admin@gmail.com",
                     UserName = "admin@gmail.com",
                     PersonaId = nuevaPersona.PersonaId,

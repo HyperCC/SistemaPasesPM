@@ -106,7 +106,6 @@ namespace Aplicacion.ConfiguracionLogin
 
                 var usuarioGenerado = new Usuario
                 {
-                    UId = new Guid(),
                     Email = request.Correo,
                     UserName = request.Correo,
                     NoPerteneceEmpresa = request.NoPerteneceEmpresa

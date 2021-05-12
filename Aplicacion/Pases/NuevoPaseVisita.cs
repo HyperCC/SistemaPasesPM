@@ -20,7 +20,7 @@ namespace Aplicacion.Pases
         ///</summary>
         public class PersonaSolicitudPaseVisita
         {
-            
+
             public string nombres { get; set; }
             public string apellidoPaterno { get; set; }
             public string apellidoMaterno { get; set; }
@@ -132,7 +132,7 @@ namespace Aplicacion.Pases
                                 // Buscar si existe el nombre en la BD
                                 var nombreExiste = await this._context.TipoNombre
                                     .Where(x => x.Nombre == nombre
-                                    && x.Tipo == TipoNombre.TipoIdentificador.NOMBRE
+                                    && x.Tipo == TipoIdentificador.NOMBRE
                                     && x.Posicion == iteracion)
                                     .FirstOrDefaultAsync();
                                 // Agregar el nuevo nombre si no existe en la BD
@@ -142,7 +142,7 @@ namespace Aplicacion.Pases
                                     {
                                         TipoNombreId = new Guid(),
                                         Nombre = nombre,
-                                        Tipo = TipoNombre.TipoIdentificador.NOMBRE,
+                                        Tipo = TipoIdentificador.NOMBRE,
                                         Posicion = iteracion
                                     };
                                     // 
@@ -169,7 +169,7 @@ namespace Aplicacion.Pases
 
                             var apellidoExiste = await this._context.TipoNombre
                                 .Where(x => x.Nombre == persona.apellidoPaterno
-                                && x.Tipo == TipoNombre.TipoIdentificador.APELLIDO
+                                && x.Tipo == TipoIdentificador.APELLIDO
                                 && x.Posicion == 1)
                                 .FirstOrDefaultAsync();
 
@@ -179,7 +179,7 @@ namespace Aplicacion.Pases
                                 {
                                     TipoNombreId = new Guid(),
                                     Nombre = persona.apellidoPaterno,
-                                    Tipo = TipoNombre.TipoIdentificador.APELLIDO,
+                                    Tipo = TipoIdentificador.APELLIDO,
                                     Posicion = 1
                                 };
 
@@ -190,8 +190,8 @@ namespace Aplicacion.Pases
                             else
                             {
                                 nuevoPersonaTipoApellido.TipoNombreId = apellidoExiste.TipoNombreId;
-                            }  
-                            
+                            }
+
                             this._context.PersonaTipoNombre.Add(nuevoPersonaTipoApellido);
 
                             //APELLIDO MATERNO
@@ -202,7 +202,7 @@ namespace Aplicacion.Pases
 
                             apellidoExiste = await this._context.TipoNombre
                                 .Where(x => x.Nombre == persona.apellidoMaterno
-                                && x.Tipo == TipoNombre.TipoIdentificador.APELLIDO
+                                && x.Tipo == TipoIdentificador.APELLIDO
                                 && x.Posicion == 2)
                                 .FirstOrDefaultAsync();
 
@@ -212,7 +212,7 @@ namespace Aplicacion.Pases
                                 {
                                     TipoNombreId = new Guid(),
                                     Nombre = persona.apellidoMaterno,
-                                    Tipo = TipoNombre.TipoIdentificador.APELLIDO,
+                                    Tipo = TipoIdentificador.APELLIDO,
                                     Posicion = 2
                                 };
 
@@ -235,8 +235,8 @@ namespace Aplicacion.Pases
                         {
                             // Solo vinculamos la persona con Persona Externa
                             nuevaPersonaExterna.PersonaId = personaExiste.PersonaId;
-                            
-                            
+
+
                         }
                         //Agregamos la nueva Persona Externa a la BD
                         await this._context.PersonaExterna.AddAsync(nuevaPersonaExterna);
@@ -244,12 +244,12 @@ namespace Aplicacion.Pases
 
                         //Finalmente vinculamos la Persona Externa nueva con el Pase
                         nuevoPasePersona.PersonaExternaId = nuevaPersonaExterna.PersonaExternaId;
-                        
+
                         this._context.PasePersonaExterna.Add(nuevoPasePersona);
                     }
                 }
 
-                
+
 
                 var resultado = await this._context.SaveChangesAsync();
                 if (resultado > 0)

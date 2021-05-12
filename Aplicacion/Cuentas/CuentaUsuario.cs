@@ -63,7 +63,7 @@ namespace Aplicacion.Cuentas
                 foreach (var nomb in usuario.PersonaRel.TipoNombresRel.OrderBy(x => x.TipoNombreRel.Posicion))
                 {
                     // concatenacion de nombres y apellidos
-                    if (nomb.TipoNombreRel.Tipo == TipoNombre.TipoIdentificador.NOMBRE)
+                    if (nomb.TipoNombreRel.Tipo == TipoIdentificador.NOMBRE)
                         nombres += nomb.TipoNombreRel.Nombre + " ";
                     else
                         apellidos += nomb.TipoNombreRel.Nombre + " ";
