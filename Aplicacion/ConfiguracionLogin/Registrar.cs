@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistencia;
+using Persistencia.AuxiliaresAlmacenamiento;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -122,77 +123,8 @@ namespace Aplicacion.ConfiguracionLogin
                 await this._context.Persona.AddAsync(personaGenerada);
                 usuarioGenerado.PersonaId = personaGenerada.PersonaId;
 
-                // obtencion de nombres de la cadena bruta
-                string[] nombres = request.Nombres.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                // asignacion de los nuevos nombres
-                int currentIteration = 1;
-                foreach (var nombre in nombres)
-                {
-                    // buscar si existe el nombre
-                    var nombreExiste = await this._context.TipoNombre
-                        .Where(x => x.Nombre == nombre
-                        && x.Tipo == TipoNombre.TipoIdentificador.NOMBRE
-                        && x.Posicion == currentIteration)
-                        .FirstOrDefaultAsync();
-
-                    // agregar el nuevo nombre si no existe
-                    var nuevoNombre = new TipoNombre();
-                    if (nombreExiste == null)
-                    {
-                        nuevoNombre.TipoNombreId = new Guid();
-                        nuevoNombre.Nombre = nombre;
-                        nuevoNombre.Tipo = TipoNombre.TipoIdentificador.NOMBRE;
-                        nuevoNombre.Posicion = currentIteration;
-                    }
-                    this._context.TipoNombre.Add(nuevoNombre);
-
-                    // agregar tabla con nombres y personas 
-                    var nuevoPersonaTipoNombre = new PersonaTipoNombre
-                    {
-                        PersonaId = personaGenerada.PersonaId,
-                        TipoNombreId = (nombreExiste == null) ?
-                        nuevoNombre.TipoNombreId : nombreExiste.TipoNombreId
-                    };
-                    this._context.PersonaTipoNombre.Add(nuevoPersonaTipoNombre);
-
-                    currentIteration++;
-                }
-
-                // obtencion de apellidos de la cadena bruta
-                string[] apellidos = request.Apellidos.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                // asignacion de los nuevos apellidos
-                currentIteration = 1;
-                foreach (var apellido in apellidos)
-                {
-                    // buscar si existe el apellido
-                    var apellidoExiste = await this._context.TipoNombre
-                        .Where(x => x.Nombre == apellido
-                        && x.Tipo == TipoNombre.TipoIdentificador.APELLIDO
-                        && x.Posicion == currentIteration)
-                        .FirstOrDefaultAsync();
-
-                    // agregar el nuevo nombre si no existe
-                    var nuevoApellido = new TipoNombre();
-                    if (apellidoExiste == null)
-                    {
-                        nuevoApellido.TipoNombreId = new Guid();
-                        nuevoApellido.Nombre = apellido;
-                        nuevoApellido.Tipo = TipoNombre.TipoIdentificador.APELLIDO;
-                        nuevoApellido.Posicion = currentIteration;
-                    }
-                    this._context.TipoNombre.Add(nuevoApellido);
-
-                    // agregar tabla con nombres y personas 
-                    var nuevoPersonaTipoNombre = new PersonaTipoNombre
-                    {
-                        PersonaId = personaGenerada.PersonaId,
-                        TipoNombreId = (apellidoExiste == null) ?
-                        nuevoApellido.TipoNombreId : apellidoExiste.TipoNombreId
-                    };
-                    this._context.PersonaTipoNombre.Add(nuevoPersonaTipoNombre);
-
-                    currentIteration++;
-                }
+                // proceso completo de registrar nombres en la base de datos
+                await AlmacenarNombres.AgregarNombres(request.Nombres, request.Apellidos, this._context, personaGenerada.PersonaId);
 
                 // buscar empresa perteneciente.
                 var empresaExiste = await this._context.Empresa
@@ -236,7 +168,7 @@ namespace Aplicacion.ConfiguracionLogin
                             Nombres = "nombres",
                             Apellidos = "apellidos",
                             UserName = usuarioGenerado.Email,
-                            Token = null,
+                            Token = null, // agregar token 
                             Email = usuarioGenerado.Email
                         };
                 }
