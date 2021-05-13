@@ -4,6 +4,22 @@ using System.Text;
 
 namespace Dominio.Entidades
 {
+    /// <summary>
+    /// tipos de pase existentes
+    /// </summary>
+    public enum TipoPase
+    {
+        VISITA, CONTRATISTA, PROVEEDOR, USOMUELLE, TRIPULANTE
+    }
+
+    public enum EstadoPase
+    {
+        ACEPTADO, CADUCADO, PENDIENTE, RECHAZADO
+    }
+
+    /// <summary>
+    /// modelo para entidad Pase
+    /// </summary>
     public class Pase
     {
         public Guid PaseId { get; set; }
@@ -11,8 +27,8 @@ namespace Dominio.Entidades
         // atributos de la entidad
         public DateTime FechaInicio { get; set; }
         public DateTime FechaTermino { get; set; }
-        public string Tipo { get; set; }
-        public string Estado { get; set; }
+        public TipoPase Tipo { get; set; }
+        public EstadoPase Estado { get; set; }
         public string Motivo { get; set; }
         public string Area { get; set; }
 

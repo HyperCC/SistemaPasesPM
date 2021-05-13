@@ -30,5 +30,13 @@ namespace WebApi.Controllers
         public async Task<ActionResult<List<Pase>>> All()
             => await this.MediadorHerencia.Send(new ListaPases.Ejecuta());
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parametros"></param>
+        /// <returns></returns>
+        [HttpPost("ingresar")]
+        public async Task<ActionResult<Unit>> Ingresar(NuevoPaseProveedor.Ejecuta parametros)
+            => await this.MediadorHerencia.Send(parametros);
     }
 }

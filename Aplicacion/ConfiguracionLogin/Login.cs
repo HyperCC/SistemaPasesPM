@@ -54,6 +54,28 @@ namespace Aplicacion.ConfiguracionLogin
 
             public async Task<UsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
+                // validacion del formato del request
+                EjecutaValidacion validator = new EjecutaValidacion();
+                var validacionesRes = validator.Validate(request);
+
+                // en caso de no obtener datos validos
+                if (!validacionesRes.IsValid)
+                {
+                    List<string> erroresFV = new List<string>();
+                    // listar los mensajes de error obtenidos
+                    foreach (var failure in validacionesRes.Errors)
+                        erroresFV.Add(failure.ErrorMessage);
+
+                    // devolver una excepcion y los erroes encontrados
+                    throw new FormatoIncorrectoException(HttpStatusCode.BadRequest,
+                     new
+                     {
+                         mensaje = $"Los datos recibidos por el usaurio no cumplen con el formato solicitado.",
+                         status = HttpStatusCode.BadRequest,
+                         tipoError = erroresFV
+                     });
+                }
+
                 // verificar que el email del usuario existe 
                 var usuario = await this._usuarioManager.FindByEmailAsync(request.Email);
                 if (usuario == null)

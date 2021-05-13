@@ -56,8 +56,8 @@ namespace Aplicacion.Pases
                     PaseId = new Guid(),
                     FechaInicio = request.fechaInicio,
                     FechaTermino = request.fechaTermino,
-                    Tipo = "VISITA",
-                    Estado = "PENDIENTE",
+                    Tipo = TipoPase.VISITA,
+                    Estado = EstadoPase.PENDIENTE,
                     Motivo = request.motivo,
                     Area = request.area
                 };

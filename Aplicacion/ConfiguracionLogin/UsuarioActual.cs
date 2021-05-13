@@ -25,7 +25,9 @@ namespace Aplicacion.ConfiguracionLogin
             private readonly IJwtGenerador _jwtGenerador;
             private readonly IUsuarioSesion _usuarioSesion;
 
-            public Manejador(UserManager<Usuario> userManager, IJwtGenerador jwtGenerador, IUsuarioSesion sesion)
+            public Manejador(UserManager<Usuario> userManager, 
+                IJwtGenerador jwtGenerador, 
+                IUsuarioSesion sesion)
             {
                 this._userManager = userManager;
                 this._jwtGenerador = jwtGenerador;

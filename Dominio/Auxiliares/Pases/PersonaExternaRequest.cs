@@ -11,6 +11,8 @@ namespace Dominio.Auxiliares.Pases
     {
         public string Nombres { get; set; }
         public string Apellidos { get; set; }
+        public string PasaporteORut { get; set; }
+        public string Pasaporte { get; set; }
         public string Rut { get; set; }
         public string Nacionalidad { get; set; }
     }
