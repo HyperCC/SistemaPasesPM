@@ -14,13 +14,29 @@ namespace Persistencia.AuxiliaresAlmacenamiento
     /// </summary>
     public static class AlmacenarDocumentosEmpresa
     {
-        public static async Task AgregarDocumentosEmpresa(ICollection<DocumentoUnicoContratistaRequest> request,
+        public static async Task AgregarDocumentosEmpresa(DocumentosEmpresaContratistaRequest request,
             SistemaPasesContext context,
             Guid currentPaseId,
             Guid currentEmpresaId)
         {
+            // agregar asesor de prevencion
+            // buscar o agregar una persona por su rut
+            Persona buscarPersona = await BuscarOAlmacenarPersona.BuscarOAgregarPersona(context,
+                request.Rut,
+                request.Nombres,
+                request.Apellidos);
+
+            // nuevo asesor de prevencion
+            var nuevoContratista = new AsesorPrevencion
+            {
+                RegistroSns = request.ReistroSNS,
+                PersonaId = buscarPersona.PersonaId,
+                PaseId = currentPaseId
+            };
+
+
             // agregar los documentos al context
-            foreach (var doc in request)
+            foreach (var doc in request.Documentos)
             {
                 // buscar tipo de documento 
                 var currentTipoDocumento = await context.TipoDocumento.FirstOrDefaultAsync(t => t.Titulo == doc.Titulo);

@@ -40,7 +40,7 @@ namespace Aplicacion.Pases
             // Personas para pase contratista
             public ICollection<PersonaExternaContratistaRequest> PersonasContratista { get; set; } //nullable
             // documentos de empresa para pase contratista
-            public ICollection<DocumentoEmpresaContratistaRequest> Documentos { get; set; } // nulable
+            public DocumentosEmpresaContratistaRequest SeccionDocumentosEmpresa { get; set; } // nulable
         }
 
         /// <summary>
@@ -102,6 +102,7 @@ namespace Aplicacion.Pases
                 string tipoPaseRecibido = request.Tipo.ToString().ToUpper();
 
                 TipoPase tipoPaseValidado = tipoPaseRecibido == TipoPase.VISITA.ToString() ? TipoPase.VISITA
+                    : tipoPaseRecibido == TipoPase.CONTRATISTA.ToString() ? TipoPase.CONTRATISTA
                     : tipoPaseRecibido == TipoPase.PROVEEDOR.ToString() ? TipoPase.PROVEEDOR
                     : tipoPaseRecibido == TipoPase.USOMUELLE.ToString() ? TipoPase.USOMUELLE
                     : TipoPase.TRIPULANTE;
@@ -122,29 +123,25 @@ namespace Aplicacion.Pases
                 // agregar el nuevo pase 
                 await this._context.Pase.AddAsync(paseGenerado);
 
+
+                // agregar los documentos relacionados a una empresa en pase contratista
+                if (request.SeccionDocumentosEmpresa != null && tipoPaseRecibido.CompareTo(TipoPase.CONTRATISTA) == 0)
+                    await AlmacenarDocumentosEmpresa.AgregarDocumentosEmpresa(request.SeccionDocumentosEmpresa,
+                        this._context,
+                        paseGenerado.PaseId,
+                        buscarEmpresa.EmpresaId);
+
+
                 if (request.Personas != null)
                 {
                     // agregar las personas externas aderidas al pase 
                     foreach (var personaIndividual in request.Personas)
                     {
-                        // buscar si ya existe la persona 
-                        var buscarPersona = await this._context.Persona.FirstOrDefaultAsync(p => p.Rut == personaIndividual.Rut);
-
-                        if (buscarPersona == null)
-                        {
-                            // si no existe la persona se crea una y se almacena
-                            buscarPersona = new Persona
-                            {
-                                Rut = personaIndividual.Rut
-                            };
-                            await this._context.Persona.AddAsync(buscarPersona);
-
-                            // agregar los nombres respectivos de la persona
-                            await AlmacenarNombres.AgregarNombres(personaIndividual.Nombres,
-                                personaIndividual.Apellidos,
-                                this._context,
-                                buscarPersona.PersonaId);
-                        }
+                        // buscar o almacenar la persona por rut
+                        Persona buscarPersona = await BuscarOAlmacenarPersona.BuscarOAgregarPersona(this._context,
+                            personaIndividual.Rut,
+                            personaIndividual.Nombres,
+                            personaIndividual.Apellidos);
 
                         // buscar por la persona externa
                         var buscarPersonaExterna = await this._context.PersonaExterna.FirstOrDefaultAsync(p => p.PersonaId == buscarPersona.PersonaId);

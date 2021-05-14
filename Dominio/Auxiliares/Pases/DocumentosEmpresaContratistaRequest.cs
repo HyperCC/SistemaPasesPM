@@ -7,7 +7,7 @@ namespace Dominio.Auxiliares.Pases
     /// <summary>
     /// modelo para recibir documentos para la empresa por el request
     /// </summary>
-    public class DocumentoEmpresaContratistaRequest
+    public class DocumentosEmpresaContratistaRequest
     {
         //TODO: UNA EMPRESA DEBE TENER ASOCIADOS DOCUMENTOS 
 
