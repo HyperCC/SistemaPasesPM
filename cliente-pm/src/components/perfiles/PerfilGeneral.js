@@ -1,4 +1,5 @@
 import React from 'react';
+import CondicionActualEmpresa from './auxiliaresPerfilGeneral/CondicionActualEmpresa';
 import DatosUsuario from './auxiliaresPerfilGeneral/DatosUsuario';
 import TablaPases from './auxiliaresPerfilGeneral/TablaPases';
 
@@ -52,7 +53,9 @@ const PerfilGeneral = () => {
                 <div class="sm:px-8 px-4">
 
                     <DatosUsuario datos={dataUsuarioGeneral} />
+                    <div class="h-8"></div>
 
+                    <CondicionActualEmpresa datos={dataUsuarioGeneral.NombreEmpresa} />
                     <div class="h-8"></div>
 
                     <TablaPases datos={dataPasesGeneral} />

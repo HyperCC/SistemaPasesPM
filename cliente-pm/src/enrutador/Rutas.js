@@ -1,17 +1,17 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link, NavLink } from 'react-router-dom';
-import Registro from '../components/Login/Registro';
-import Home from '../components/Login/Home';
+import Registro from '../components/login/Registro';
+import Home from '../components/login/Home';
 import PerfilGeneral from '../components/perfiles/PerfilGeneral';
 import Navbar from '../components/Navbar';
-import { Pases } from '../components/Pases/Pases';
-import { Visita } from '../components/Pases/Visita';
-import RecuperarClave from '../components/Login/RecuperarClave';
-import CambiarClave from '../components/Login/CambiarClave';
-import AgregarPersona from '../components/Pases/AgregarPersona';
-import { Contratista } from '../components/Pases/Contratista';
-import { DocumentosEmpresa } from '../components/Pases/DocumentosEmpresa';
-import { AgregarPersonaContratista } from '../components/Pases/AgregarPersonaContratista';
+import { Pases } from '../components/pases/Pases';
+import { Visita } from '../components/pases/Visita';
+import RecuperarClave from '../components/login/RecuperarClave';
+import CambiarClave from '../components/login/CambiarClave';
+import AgregarPersona from '../components/pases/AgregarPersona';
+import { Contratista } from '../components/pases/Contratista';
+import { DocumentosEmpresa } from '../components/pases/DocumentosEmpresa';
+import { AgregarPersonaContratista } from '../components/pases/AgregarPersonaContratista';
 
 const Rutas = () => {
     return (

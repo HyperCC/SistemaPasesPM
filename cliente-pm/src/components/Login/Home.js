@@ -18,7 +18,7 @@ const Home = () => {
                             </div>
                             <div class="flex flex-col pt-4">
                                 <label for="password" class="text-lg">Contraseña</label>
-                                <input type="contraseña" id="contraseña" placeholder="Contraseña" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                                <input type="password" id="contraseña" placeholder="Contraseña" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
                                 </input>
                             </div>
                             <input type="submit" value="Entrar" class="bg-azul-pm rounded-lg shadow-md hover:bg-amarillo-pm text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8"></input>       

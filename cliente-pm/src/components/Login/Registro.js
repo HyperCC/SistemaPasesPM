@@ -1,4 +1,4 @@
-import React, { useState , Component} from 'react';
+import React, { useState, Component } from 'react';
 import '../../App.css';
 import { registrarUsuario } from '../../actions/UsuarioAction';
 import ReCAPTCHA from "react-google-recaptcha";
@@ -13,11 +13,11 @@ export default function Registro() {
         alert(isVerified);
     }
 
-    function Verificar(){
-        if (isVerified==true){
+    function Verificar() {
+        if (isVerified == true) {
             alert(isVerified);
             botonRegistrarUsuario();
-        }else{
+        } else {
             alert(isVerified)
         }
     }
@@ -149,13 +149,17 @@ export default function Registro() {
                                 </div>
                             </div>
 
-                            <div class="mt-6 items-center justify-center form-group px-4 md:px-8">
-                                <label class="text-center font-light  text-gray-800 select-none" for="Captcha">
-                                    <ReCAPTCHA
-                                        sitekey="6LcoUMYaAAAAAPlwUFz02HrTJa5GJqnKhOrOoC6B"
-                                        onChange={onChange}
-                                    />
-                                </label>
+                            <div class="grid md:grid-cols-3 grid-cols-1 px-4 md:px-8 gap-4 mt-6">
+                                <div class="md:col-span-2 md:col-start-2">
+                                    <div class="w-full">
+                                        <label class="text-center font-light  text-gray-800 select-none" for="Captcha">
+                                            <ReCAPTCHA
+                                                sitekey="6LcoUMYaAAAAAPlwUFz02HrTJa5GJqnKhOrOoC6B"
+                                                onChange={onChange}
+                                            />
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
 
                             {/* ENVIAR DATOS */}
