@@ -12,9 +12,12 @@ namespace Dominio.Entidades
         VISITA, CONTRATISTA, PROVEEDOR, USOMUELLE, TRIPULANTE
     }
 
+    /// <summary>
+    /// estado actual del pase
+    /// </summary>
     public enum EstadoPase
     {
-        ACEPTADO = 1, CADUCADO, PENDIENTE, RECHAZADO
+        ACEPTADO, CADUCADO, PENDIENTE, RECHAZADO
     }
 
     /// <summary>

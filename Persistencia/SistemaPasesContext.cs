@@ -1,6 +1,7 @@
 ﻿using Dominio.Entidades;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,6 +27,8 @@ namespace Persistencia
             // declaracion de clave primaria compuesta para relaciones N-N
             modelBuilder.Entity<PersonaTipoNombre>().HasKey(ci => new { ci.PersonaId, ci.TipoNombreId });
             modelBuilder.Entity<PasePersonaExterna>().HasKey(ci => new { ci.PaseId, ci.PersonaExternaId });
+            modelBuilder.Entity<Pase>().Property(p => p.Estado).HasConversion<string>();
+            modelBuilder.Entity<Pase>().Property(p => p.Tipo).HasConversion<string>();
         }
 
         // conversion de los modelos a entidades en la Solucion
