@@ -7,7 +7,7 @@ namespace Dominio.Auxiliares.Pases
     /// <summary>
     /// Clase para recibir los datos desde el cliente por cada persona externa
     /// </summary>
-    public class PersonaExternaRequest
+    public class PersonaExternaGenericaRequest
     {
         public string Nombres { get; set; }
         public string Apellidos { get; set; }

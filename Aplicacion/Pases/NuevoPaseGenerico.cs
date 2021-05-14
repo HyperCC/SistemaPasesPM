@@ -9,7 +9,6 @@ using Persistencia;
 using Persistencia.AuxiliaresAlmacenamiento;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,23 +16,36 @@ using System.Threading.Tasks;
 namespace Aplicacion.Pases
 {
     /// <summary>
-    /// Creacion de pases tipo Proveedor 
+    /// Creacion de un pase de cualuier tipo
     /// </summary>
-    public class NuevoPaseProveedor
+    public class NuevoPaseGenerico
     {
+        /// <summary>
+        /// atributos recibidos por el request
+        /// </summary>
         public class Ejecuta : IRequest
         {
-            public string Area { get; set; }
+            public string Area { get; set; } //nullable
             public string Motivo { get; set; }
             public string RutEmpresa { get; set; }
             public string NombreEmpresa { get; set; }
             public string Tipo { get; set; }
-            public bool Completo { get; set; }
+            public string ServicioAdjudicado { get; set; } // nullable
+            public bool Completitud { get; set; }
             public string FechaInicio { get; set; }
             public string FechaTermino { get; set; }
-            public ICollection<PersonaExternaGenericaRequest> Personas { get; set; }
+
+            // Personas para pase generico
+            public ICollection<PersonaExternaGenericaRequest> Personas { get; set; } // nullable
+            // Personas para pase contratista
+            public ICollection<PersonaExternaContratistaRequest> PersonasContratista { get; set; } //nullable
+            // documentos de empresa para pase contratista
+            public ICollection<DocumentoEmpresaContratistaRequest> Documentos { get; set; } // nulable
         }
 
+        /// <summary>
+        /// vaidacion de los datos recibidos en el request
+        /// </summary>
         public class EjecutaValidacion : AbstractValidator<Ejecuta>
         {
             public EjecutaValidacion()
@@ -42,8 +54,11 @@ namespace Aplicacion.Pases
                 this.RuleFor(x => x.Motivo).NotEmpty();
                 this.RuleFor(x => x.RutEmpresa).NotEmpty();
                 this.RuleFor(x => x.NombreEmpresa).NotEmpty();
+                this.RuleFor(x => x.Tipo).NotEmpty();
+                this.RuleFor(x => x.Completitud).NotEmpty();
                 this.RuleFor(x => x.FechaInicio).NotEmpty();
                 this.RuleFor(x => x.FechaTermino).NotEmpty();
+                this.RuleFor(x => x.Personas).NotEmpty();
             }
         }
 
@@ -64,10 +79,6 @@ namespace Aplicacion.Pases
 
             public async Task<Unit> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
-                Console.WriteLine("--------------------------------");
-                Console.WriteLine(request.RutEmpresa);
-                Console.WriteLine("--------------------------------");
-
                 // usuario en sesion actual
                 var usuarioActual = await this._userManager.FindByNameAsync(this._usuarioSesion.ObtenerUsuarioSesion());
 
