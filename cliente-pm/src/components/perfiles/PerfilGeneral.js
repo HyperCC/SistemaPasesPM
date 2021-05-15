@@ -12,6 +12,58 @@ const PerfilGeneral = () => {
         NombreEmpresa: 'Nortek SPA'
     };
 
+    //TODO: agregar datos de prueba y formatearlos
+    const dataDocumentosEmpresaPerfil = [
+        {
+            Titulo: 'CronogramaTrabajo',
+            FechaVencimiento: '12/03/2021'
+        },
+        {
+            Titulo: 'CertificadoMutualidad',
+            FechaVencimiento: '12/03/2021'
+        },
+        {
+            Titulo: 'CertificadoAccidentabilidad',
+            FechaVencimiento: '12/03/2021'
+        },
+        {
+            Titulo: 'ReglamentoInterno',
+            FechaVencimiento: '12/03/2021'
+        },
+        {
+            Titulo: 'MatrizRiesgos',
+            FechaVencimiento: '12/03/2021'
+        },
+        {
+            Titulo: 'ProcedimientoTrabajoSeguro',
+            FechaVencimiento: '12/03/2021'
+        },
+        {
+            Titulo: 'ProcedimientoTrabajoSeguro',
+            FechaVencimiento: '12/03/2021'
+        },
+        {
+            Titulo: 'ProcedimientoTrabajoSeguro',
+            FechaVencimiento: '12/03/2021'
+        },
+        {
+            Titulo: 'ProgramaPrevencionRiesgos',
+            FechaVencimiento: '12/03/2021'
+        },
+        {
+            Titulo: 'HdsSustanciasPelgrosas',
+            FechaVencimiento: '12/03/2021'
+        },
+        {
+            Titulo: 'HdsSustanciasPelgrosas',
+            FechaVencimiento: '12/03/2021'
+        },
+        {
+            Titulo: 'HdsSustanciasPelgrosas',
+            FechaVencimiento: '12/03/2021'
+        },
+    ];
+
     const dataPasesGeneral = [
         {
             FechaInicio: '05/04/2021',
@@ -55,7 +107,7 @@ const PerfilGeneral = () => {
                     <DatosUsuario datos={dataUsuarioGeneral} />
                     <div class="h-8"></div>
 
-                    <CondicionActualEmpresa datos={dataUsuarioGeneral.NombreEmpresa} />
+                    <CondicionActualEmpresa documentos={dataDocumentosEmpresaPerfil} empresa={dataUsuarioGeneral.NombreEmpresa} />
                     <div class="h-8"></div>
 
                     <TablaPases datos={dataPasesGeneral} />
