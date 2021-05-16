@@ -1,6 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react';
+
+const IsRutNow = (isRut) => {
+
+    return (
+        <div class="col-span-2" >
+            {isRut
+                ? <input placeholder="ingrese el rut" type="text" name="Rut" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-gray-100" />
+                : <input placeholder="ingrese el pasaporte" type="text" name="Pasaporte" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-gray-100" />
+            }
+        </div >
+    );
+};
 
 const AgregarPersona = () => {
+
+    const [isRut, setIsRut] = useState(true);
+    const changeIsRut = () => setIsRut(true);
+    const changeNotIsRut = () => setIsRut(false);
+
     return (
         <div>
             <div class="bg-gray-100 min-h-screen">
@@ -16,7 +33,7 @@ const AgregarPersona = () => {
                         <form>
                             {/* DATOS PRINCIPALES PARA TRABAJADOR */}
                             <div class="grid grid-cols-3 px-4 md:px-8 gap-4 mt-12">
-                                
+
                                 <div class="col-span-1 form-group">
                                     <label class="font-light  text-gray-800 select-none" for="Nombres">Nombres</label>
                                 </div>
@@ -25,24 +42,38 @@ const AgregarPersona = () => {
                                 </div>
 
                                 <div class="col-span-1 form-group">
-                                    <label class="font-light  text-gray-800 select-none" for="ApellidoPaterno">Apellido Paterno</label>
+                                    <label class="font-light  text-gray-800 select-none" for="PrimerApellido">Primer Apellido</label>
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="text"  name="ApellidoPaterno" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
+                                    <input type="text" name="PrimerApellido" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
                                 </div>
 
                                 <div class="col-span-1 form-group">
-                                    <label class="font-light text-gray-800 select-none" for="ApellidoMaterno">Apellido Materno</label>
+                                    <label class="font-light  text-gray-800 select-none" for="SegundoApellido">Segundo Apellido</label>
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="text" name="ApellidoMaterno" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-gray-100" />
+                                    <input type="text" name="SegundoApellido" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
                                 </div>
+
+                                {/* eleccion de utilizacion de rut o pasaporte*/}
                                 <div class="col-span-1 form-group">
-                                    <label class="font-light text-gray-800 select-none" for="Rut">Rut</label>
+                                    <div onClick={changeIsRut}>
+                                        <label class="inline-flex items-center">
+                                            <input type="radio" class="form-radio text-indigo-600 h-4 w-4" name="radio-colors" value="1" checked={isRut} />
+                                            <span class="ml-2">Rut</span>
+                                        </label>
+                                    </div>
+
+                                    <div onClick={changeNotIsRut}>
+                                        <label class="inline-flex items-center">
+                                            <input type="radio" class="form-radio text-green-500 h-4 w-4" name="radio-colors" value="2" />
+                                            <span class="ml-2">Pasaporte</span>
+                                        </label>
+                                    </div>
                                 </div>
-                                <div class="col-span-2">
-                                    <input type="text" name="Rut" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-gray-100" />
-                                </div>
+                                {/* input con rut o pasaporte */}
+                                {IsRutNow(isRut)}
+
                                 <div class="col-span-1 form-group">
                                     <label class="font-light text-gray-800 select-none" for="Nacionalidad">Nacionalidad</label>
                                 </div>

@@ -25,8 +25,8 @@ const CondicionActualEmpresa = props => {
                 Documentos Vigentes de Empresa {props.empresa}
             </p>
 
-            <div class="mx-0 md:mx-8">
-                <div class="grid md:grid-cols-2 grid-cols-1 mt-6 text-center md:gap-4 gap-2 min-w-full leading-normal">
+            <div class="mx-0 md:mx-8  mt-8">
+                <div class="grid md:grid-cols-2 grid-cols-1text-center md:gap-4 gap-2 min-w-full leading-normal">
 
                     {/* TABLA DE GENERAL Y LEGAL */}
                     <div class="overflow-x-auto">
