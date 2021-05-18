@@ -132,9 +132,6 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            // uso de Cors
-            app.UseCors(MyAllowSpecificOrigins);
-
             // midleware con los errores personalizados
             app.UseMiddleware<ManejadorErrorMiddleware>();
 
@@ -148,6 +145,9 @@ namespace WebApi
 
             // indicar la inicializacion de la validacion para los resultados de los request de clientes
             app.UseAuthentication();
+
+            // uso de Cors
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseHttpsRedirection();
             app.UseMvc();

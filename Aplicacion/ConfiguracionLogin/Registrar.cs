@@ -51,6 +51,8 @@ namespace Aplicacion.ConfiguracionLogin
                 this.RuleFor(x => x.Apellidos).NotEmpty();
                 this.RuleFor(x => x.NombreEmpresa).NotEmpty();
                 this.RuleFor(x => x.RutEmpresa).NotEmpty();
+                this.RuleFor(x => x.Captcha).NotEmpty();
+                this.RuleFor(x => x.NoPerteneceEmpresa).NotEmpty();
             }
         }
 
@@ -89,6 +91,11 @@ namespace Aplicacion.ConfiguracionLogin
                     // listar los mensajes de error obtenidos
                     foreach (var failure in validacionesRes.Errors)
                         erroresFV.Add(failure.ErrorMessage);
+
+                    foreach (var failure in validacionesRes.Errors)
+                        Console.WriteLine(failure);
+
+
 
                     // devolver una excepcion y los erroes encontrados
                     throw new FormatoIncorrectoException(HttpStatusCode.BadRequest,

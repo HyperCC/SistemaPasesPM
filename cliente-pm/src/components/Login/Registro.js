@@ -5,22 +5,6 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 // pagina principal de registro
 export default function Registro() {
-    var isVerified = false;
-
-    function onChange(value) {
-        alert("Captcha value:", value);
-        isVerified = true;
-        alert(isVerified);
-    }
-
-    function Verificar() {
-        if (isVerified == true) {
-            alert(isVerified);
-            botonRegistrarUsuario();
-        } else {
-            alert(isVerified)
-        }
-    }
 
     // atributos para el registro de usuario
     const [dataUsuario, setDataUsuario] = useState({
@@ -34,7 +18,6 @@ export default function Registro() {
         Captcha: false
     });
 
-    const [checkCaptcha, setCheckCaptcha] = useState(false);
     const [checkNoPerteneceEmpresa, setCheckNoPerteneceEmpresa] = useState(false);
 
     // asignar nuevos valores al state del registro
@@ -51,15 +34,7 @@ export default function Registro() {
                 [name]: !checkNoPerteneceEmpresa // solo cambiar el input mapeado
             }));
 
-            // actualizar el valor de Captcha segun el check
-        } else if (name === 'Captcha') {
-            setCheckCaptcha(!checkCaptcha);
-
-            setDataUsuario(anterior => ({
-                ...anterior, // mantener lo que existe antes
-                [name]: !checkCaptcha // solo cambiar el input mapeado
-            }));
-
+            // actualizar el valor de algun otro valor
         } else {
             // asignar el valor
             setDataUsuario(anterior => ({
@@ -69,8 +44,24 @@ export default function Registro() {
         }
     };
 
+    // validar el valor del captcha ya aceptado
+    function onChange(value) {
+
+        setDataUsuario(anterior => ({
+            ...anterior, // mantener lo que existe antes
+            ['Captcha']: true  // solo cambiar el input mapeado
+        }));
+
+        console.log('data usuario: ', dataUsuario);
+    };
+
     // boton para enviar el formulario
     const botonRegistrarUsuario = infoFormulario => {
+
+        // verificar que el captcha fue validado
+        if (!dataUsuario.Captcha)
+            console.log('ANTES DE ENVIAR EL FORMULARIO SE DEBE VALIDAR EL CAPTCHA.');
+
         // cancelar el envio inmediato del formulario
         infoFormulario.preventDefault();
 
@@ -164,7 +155,7 @@ export default function Registro() {
 
                             {/* ENVIAR DATOS */}
                             <div class="mt-12 flex justify-center">
-                                <button type="submit" onClick={Verificar}
+                                <button type="submit" onClick={botonRegistrarUsuario}
                                     class="bg-azul-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                                     Guardar
                                 </button>
