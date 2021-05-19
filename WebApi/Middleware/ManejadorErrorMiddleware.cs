@@ -81,6 +81,20 @@ namespace WebApi.Middleware
                     context.Response.StatusCode = (int)fie.Codigo;
                     break;
 
+                case UserManagerNoGuardadoException ume:
+                    logger.LogError(ex, "LOS DATOS A REGISTRAR COMO USER MANAGER NO FUERON ALMACENADOS CORRECTAMENTE..");
+                    errores = ume.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)ume.Codigo;
+                    break;
+
+                case DbContextNoGuardadoException dbe:
+                    logger.LogError(ex, "LOS DATOS NO PUDIERON SER ALMACENADOS EN LA BASE DE DATOS..");
+                    errores = dbe.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)dbe.Codigo;
+                    break;
+
                 // si se lanza ManejadorExcepcion (excepcion personalizada), error de validacion para solicitudes http
                 case ManejadorException me:
                     logger.LogError(ex, "ERROR GENERICO EN LOS MANEJADORES..");
