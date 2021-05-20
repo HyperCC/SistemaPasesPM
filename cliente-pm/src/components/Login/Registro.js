@@ -1,7 +1,8 @@
-import React, { useState, Component } from 'react';
+import React, { useState } from 'react';
 import '../../App.css';
 import { registrarUsuario } from '../../actions/UsuarioAction';
 import ReCAPTCHA from "react-google-recaptcha";
+import { LanzarNoritificaciones } from '../avisos/LanzarNotificaciones';
 
 // pagina principal de registro
 export default function Registro() {
@@ -19,6 +20,7 @@ export default function Registro() {
     });
 
     const [checkNoPerteneceEmpresa, setCheckNoPerteneceEmpresa] = useState(false);
+    const [currentNotification, setCurrentNotification] = useState('none');
 
     // asignar nuevos valores al state del registro
     const ingresarValoresMemoria = valorInput => {
@@ -59,8 +61,10 @@ export default function Registro() {
     const botonRegistrarUsuario = infoFormulario => {
 
         // verificar que el captcha fue validado
-        if (!dataUsuario.Captcha)
+        if (!dataUsuario.Captcha) {
             console.log('ANTES DE ENVIAR EL FORMULARIO SE DEBE VALIDAR EL CAPTCHA.');
+            return;
+        }
 
         // cancelar el envio inmediato del formulario
         infoFormulario.preventDefault();
@@ -70,6 +74,20 @@ export default function Registro() {
         // uso del action registrar
         registrarUsuario(dataUsuario).then(response => {
             console.log('se registro exitosamente el nuevo usuario. ', response);
+
+            // si se reciben errores
+            if (typeof response.data.errores !== 'undefined') {
+                console.log(response.data.errores.mensaje);
+
+                console.log('el tipo de error: ', response.data.errores.tipoError);
+                setCurrentNotification(response.data.errores.tipoError);
+                console.log('TIPO ACTUAL DE NOTIFICACION ', currentNotification);
+
+                // si toda la operacion salio ok
+            } else {
+                window.localStorage.setItem('mensaje_success', 'exi-uac000');
+            }
+
         });
     };
 
@@ -77,6 +95,9 @@ export default function Registro() {
         <div>
             <div class="bg-gray-100 min-h-screen">
                 <div class="sm:py-16 sm:px-6 px-2 py-8">
+
+                    <LanzarNoritificaciones codigo={currentNotification} />
+
                     <div class="max-w-xl mx-auto sm:px-6 px-4 pb-12 bg-white rounded-lg shadow-md">
 
                         <div class="text-center">

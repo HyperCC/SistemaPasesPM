@@ -37,8 +37,8 @@ namespace Aplicacion.ConfiguracionLogin
             public string NombreEmpresa { get; set; }
 
             // por defecto el capcha viene no validado
-            public bool Captcha { get; set; }
-            public bool NoPerteneceEmpresa { get; set; }
+            public bool Captcha { get; set; } = false;
+            public bool NoPerteneceEmpresa { get; set; } = false;
         }
 
         public class EjecutaValidacion : AbstractValidator<Ejecuta>
@@ -101,7 +101,8 @@ namespace Aplicacion.ConfiguracionLogin
                      {
                          mensaje = $"Los datos recibidos por el usaurio no cumplen con el formato solicitado.",
                          status = HttpStatusCode.BadRequest,
-                         tipoError = erroresFV
+                         tipoError = "adv-fie000",
+                         listaErrores = erroresFV
                      });
                 }
 
@@ -114,7 +115,7 @@ namespace Aplicacion.ConfiguracionLogin
                       {
                           mensaje = $"Ya existe un usuario registrado con el Email {request.Correo}",
                           status = HttpStatusCode.BadRequest,
-                          tipoError = "re-ce"
+                          tipoError = "adv-cee000"
                       });
 
                 // verificar que el rut sea unico o no exista ya en la DB
@@ -126,7 +127,7 @@ namespace Aplicacion.ConfiguracionLogin
                         {
                             mensaje = $"Ya existe un usuario registrado con el Rut {request.Rut}",
                             status = HttpStatusCode.BadRequest,
-                            tipoError = "re-re"
+                            tipoError = "adv-ree000"
                         });
 
                 // creacion del nuevo usuario y los datos relacionados
@@ -197,9 +198,24 @@ namespace Aplicacion.ConfiguracionLogin
                             Token = null, // agregar token 
                             Email = usuarioGenerado.Email
                         };
+                    else
+                    {
+                        throw new UserManagerNoGuardadoException(HttpStatusCode.BadRequest,
+                            new
+                            {
+                                mensaje = $"El sistema no pudo registrar al usuario {request.Correo}",
+                                status = HttpStatusCode.BadRequest,
+                                tipoError = "err-umnge0"
+                            });
+                    }
                 }
-
-                throw new Exception("Error en el servidor - No se pudo agregar el nuevo usuario..");
+                throw new DbContextNoGuardadoException(HttpStatusCode.BadRequest,
+                    new
+                    {
+                        mensaje = $"El sistema no pudo registrar los datos relacionados al usaurio al usuario {request.Correo}",
+                        status = HttpStatusCode.BadRequest,
+                        tipoError = "err-dbcng0"
+                    });
             }
         }
     }
