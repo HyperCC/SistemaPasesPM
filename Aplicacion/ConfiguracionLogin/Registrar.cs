@@ -45,14 +45,14 @@ namespace Aplicacion.ConfiguracionLogin
         {
             public EjecutaValidacion()
             {
-                this.RuleFor(x => x.Correo).NotEmpty();
                 this.RuleFor(x => x.Rut).NotEmpty();
                 this.RuleFor(x => x.Nombres).NotEmpty();
                 this.RuleFor(x => x.Apellidos).NotEmpty();
+                this.RuleFor(x => x.Correo).NotEmpty();
                 this.RuleFor(x => x.NombreEmpresa).NotEmpty();
                 this.RuleFor(x => x.RutEmpresa).NotEmpty();
                 this.RuleFor(x => x.Captcha).NotEmpty();
-                this.RuleFor(x => x.NoPerteneceEmpresa).NotEmpty();
+                this.RuleFor(x => x.NoPerteneceEmpresa).NotNull();
             }
         }
 

@@ -4,8 +4,12 @@ import { NotificacionAdvertencia, NotificacionError, NotificacionExito } from '.
 // mensajes de operaciones existosas
 const listaMensajesExito = [
     {
-        'cod': 'exi-uac000',
+        'cod': 'exi-re0000',
         'mess': 'El usuario fue registrado correctamente, debe revisar tu bandeja de Email para obtener su clave.'
+    },
+    {
+        'cod': 'exi-le0000',
+        'mess': 'Inicio de sesion exitoso. Bienvenido.'
     }
 ];
 
@@ -21,7 +25,19 @@ const listaMensajesAdvertencia = [
     },
     {
         'cod': 'adv-fie000',
-        'mess': 'Los siguientes datos ingresados no pudieron ser aceptados'
+        'mess': 'Los siguientes datos ingresados no pudieron ser aceptados: '
+    },
+    {
+        'cod': 'adv-cnee00',
+        'mess': 'El Email o la contraseña ingresados no coinciden con los registros. Intente otra vez.'
+    },
+    {
+        'cod': 'adv-pie000',
+        'mess': 'El Email o la contraseña ingresados no coinciden con los registros. Intente otra vez.'
+    },
+    {
+        'cod': 'adv-cnc000',
+        'mess': 'El captcha debe ser completado para registrarse.'
     }
 ];
 
@@ -33,7 +49,7 @@ const listaMensajesErrores = [
     },
     {
         'cod': 'err-dbcng0',
-        'mess': 'La plataforma no ha podid registrar los datos ingresados por el usuario'
+        'mess': 'La plataforma no ha podido registrar los datos ingresados por el usuario'
     }
 ];
 
@@ -52,9 +68,19 @@ export function LanzarNoritificaciones(props) {
             return <NotificacionExito texto={listaMensajesExito[message].mess} />;
 
     // asignacion de la notificacion a tipo advertencia
-    for (const message in listaMensajesAdvertencia)
-        if (props.codigo === listaMensajesAdvertencia[message].cod.toString())
+    for (const message in listaMensajesAdvertencia) {
+        if (props.codigo === 'adv-fie000' && listaMensajesAdvertencia[message].cod === props.codigo) {
+
+            let arrayErrores = '';
+            for (const invalidInput in props.camposInvalidos)
+                arrayErrores += (props.camposInvalidos[invalidInput] + '\n');
+
+            return <NotificacionAdvertencia texto={(listaMensajesAdvertencia[message].mess + ' - ' + arrayErrores)} />;
+
+        } else if (props.codigo === listaMensajesAdvertencia[message].cod.toString())
             return <NotificacionAdvertencia texto={listaMensajesAdvertencia[message].mess} />;
+    }
+
 
     // asignacion de la notificacion por errores en el servidor
     for (const message in listaMensajesErrores)

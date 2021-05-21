@@ -19,8 +19,12 @@ export default function Registro() {
         Captcha: false
     });
 
+    // verificar si se marco la casilla
     const [checkNoPerteneceEmpresa, setCheckNoPerteneceEmpresa] = useState(false);
+    // codigo actual de la notificacion a mostrar
     const [currentNotification, setCurrentNotification] = useState('none');
+    // posibles campos invalidos enviados por el usuario
+    const [currentCamposInvalidos, setCurrentCamposInvalidos] = useState([]);
 
     // asignar nuevos valores al state del registro
     const ingresarValoresMemoria = valorInput => {
@@ -60,16 +64,17 @@ export default function Registro() {
     // boton para enviar el formulario
     const botonRegistrarUsuario = infoFormulario => {
 
-        // verificar que el captcha fue validado
-        if (!dataUsuario.Captcha) {
-            console.log('ANTES DE ENVIAR EL FORMULARIO SE DEBE VALIDAR EL CAPTCHA.');
-            return;
-        }
-
         // cancelar el envio inmediato del formulario
         infoFormulario.preventDefault();
 
         console.log('data usuario: ', dataUsuario);
+
+        // verificar que el captcha fue validado
+        if (!dataUsuario.Captcha) {
+            console.log('ANTES DE ENVIAR EL FORMULARIO SE DEBE VALIDAR EL CAPTCHA.');
+            setCurrentNotification('adv-cnc000');
+            return;
+        }
 
         // uso del action registrar
         registrarUsuario(dataUsuario).then(response => {
@@ -83,11 +88,15 @@ export default function Registro() {
                 setCurrentNotification(response.data.errores.tipoError);
                 console.log('TIPO ACTUAL DE NOTIFICACION ', currentNotification);
 
+                if (typeof response.data.errores.listaErrores !== 'undefined')
+                    setCurrentCamposInvalidos(response.data.errores.listaErrores);
+
                 // si toda la operacion salio ok
             } else {
-                window.localStorage.setItem('mensaje_success', 'exi-uac000');
+                window.localStorage.setItem('mensaje_success', 'exi-re0000');
+                window.localStorage.setItem('mensaje_success_showed', false);
+                setCurrentNotification('exi-re0000');
             }
-
         });
     };
 
@@ -96,7 +105,7 @@ export default function Registro() {
             <div class="bg-gray-100 min-h-screen">
                 <div class="sm:py-16 sm:px-6 px-2 py-8">
 
-                    <LanzarNoritificaciones codigo={currentNotification} />
+                    <LanzarNoritificaciones codigo={currentNotification} camposInvalidos={currentCamposInvalidos} />
 
                     <div class="max-w-xl mx-auto sm:px-6 px-4 pb-12 bg-white rounded-lg shadow-md">
 
@@ -140,8 +149,12 @@ export default function Registro() {
 
                             <div class="mt-6 form-group px-4 md:px-8">
                                 <label class="font-light  text-gray-800 select-none" for="NoPerteneceEmpresa">
-                                    <input type="checkbox" checked={checkNoPerteneceEmpresa} onClick={ingresarValoresMemoria} name="NoPerteneceEmpresa" /> No pertenece a la Empresa
+                                    <input type="checkbox" checked={checkNoPerteneceEmpresa} value={dataUsuario.NoPerteneceEmpresa} onClick={ingresarValoresMemoria} name="NoPerteneceEmpresa" /> No pertenece a la Empresa
                                 </label>
+                            </div>
+
+                            <div>
+                                valor no pertenece {dataUsuario.NoPerteneceEmpresa.toString()}
                             </div>
 
                             {/* DATOS PRINCIPALES PARA EMPRESA */}

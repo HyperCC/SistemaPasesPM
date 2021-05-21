@@ -14,4 +14,14 @@ namespace Aplicacion.ExcepcionesPersonalizadas
             : base(codigo, errores)
         { }
     }
+
+    /// <summary>
+    /// Excepcion para un rut existente
+    /// </summary>
+    public class RutExisteException : ManejadorException
+    {
+        public RutExisteException(HttpStatusCode codigo, object errores = null)
+            : base(codigo, errores)
+        { }
+    }
 }

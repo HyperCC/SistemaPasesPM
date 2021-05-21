@@ -65,7 +65,7 @@ export const NotificacionAdvertencia = contenido => {
             <div class="text-center">
                 <div class={hideErrorAdv ? "hidden" : "p-2 bg-yellow-300 items-center relative text-gray-900 leading-none rounded-full flex lg:inline-flex"} role="alert">
                     <span class="flex rounded-full bg-yellow-200 uppercase px-2 py-1 text-xs font-bold mr-3">Validacion</span>
-                    <span class="font-semibold mr-2 text-left flex-auto">{contenido.texto}</span>
+                    <p class="font-semibold mr-2 text-left flex-auto">{contenido.texto}</p>
                     <span class="px-3">
                         <i class="bi bi-x text-xl fill-current text-black" onClick={ButtonHideAdv} role="button"></i>
                     </span>
