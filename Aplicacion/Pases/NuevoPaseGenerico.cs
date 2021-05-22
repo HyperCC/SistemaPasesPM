@@ -1,4 +1,5 @@
 ﻿using Aplicacion.ConfiguracionLogin.Contratos;
+using Aplicacion.ExcepcionesPersonalizadas;
 using Dominio.Auxiliares.Pases;
 using Dominio.Entidades;
 using FluentValidation;
@@ -9,6 +10,7 @@ using Persistencia;
 using Persistencia.AuxiliaresAlmacenamiento;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -79,6 +81,29 @@ namespace Aplicacion.Pases
 
             public async Task<Unit> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
+                // validacion del formato del request
+                EjecutaValidacion validator = new EjecutaValidacion();
+                var validacionesRes = validator.Validate(request);
+
+                // en caso de no obtener datos validos
+                if (!validacionesRes.IsValid)
+                {
+                    List<string> erroresFV = new List<string>();
+                    // listar los mensajes de error obtenidos
+                    foreach (var failure in validacionesRes.Errors)
+                        erroresFV.Add(failure.ErrorMessage);
+
+                    // devolver una excepcion y los erroes encontrados
+                    throw new FormatoIncorrectoException(HttpStatusCode.BadRequest,
+                     new
+                     {
+                         mensaje = $"Los datos recibidos por el usaurio no cumplen con el formato solicitado.",
+                         status = HttpStatusCode.BadRequest,
+                         tipoError = "adv-fie000",
+                         listaErrores = erroresFV
+                     });
+                }
+
                 // usuario en sesion actual
                 var usuarioActual = await this._userManager.FindByNameAsync(this._usuarioSesion.ObtenerUsuarioSesion());
 
@@ -125,11 +150,13 @@ namespace Aplicacion.Pases
 
 
                 // agregar los documentos relacionados a una empresa en pase contratista
+                /*
                 if (request.SeccionDocumentosEmpresa != null && tipoPaseRecibido.CompareTo(TipoPase.CONTRATISTA) == 0)
                     await AlmacenarDocumentosEmpresa.AgregarDocumentosEmpresa(request.SeccionDocumentosEmpresa,
                         this._context,
                         paseGenerado.PaseId,
                         buscarEmpresa.EmpresaId);
+                */
 
 
                 if (request.Personas != null)
@@ -153,7 +180,7 @@ namespace Aplicacion.Pases
                             {
                                 PersonaExternaId = new Guid(),
                                 Nacionalidad = personaIndividual.Nacionalidad,
-                                Pasaporte = personaIndividual.PasaporteORut == "PASAPORTE" ? personaIndividual.Pasaporte : null,
+                                Pasaporte = personaIndividual.PasaporteORut.ToUpper() == "PASAPORTE" ? personaIndividual.Pasaporte : null,
                                 PersonaId = buscarPersona.PersonaId
                             };
                             await this._context.PersonaExterna.AddAsync(buscarPersonaExterna);
@@ -166,7 +193,13 @@ namespace Aplicacion.Pases
                 if (result > 0)
                     return Unit.Value;
 
-                throw new Exception();
+                throw new DbContextNoGuardadoException(HttpStatusCode.BadRequest,
+                    new
+                    {
+                        mensaje = $"El sistema no pudo registrar el nuevo pase enviado por el usuario {usuarioActual.Email}",
+                        status = HttpStatusCode.BadRequest,
+                        tipoError = "err-dbcng0"
+                    });
             }
         }
     }

@@ -12,6 +12,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Persistencia;
 using AutoMapper;
+using Aplicacion.ExcepcionesPersonalizadas;
+using System.Net;
+using Dominio.ModelosDto.ModelosParaPerfil;
 
 namespace Aplicacion.Cuentas
 {
@@ -51,11 +54,24 @@ namespace Aplicacion.Cuentas
                 var usuario = await this._context.Usuario
                     .Include(x => x.EmpresaRel)
                     .Include(x => x.PasesRel)
+                    .ThenInclude(z => z.PersonaExternasRel)
                     .Include(x => x.PersonaRel.TipoNombresRel)
                     .ThenInclude(z => z.TipoNombreRel)
                     .FirstOrDefaultAsync(x => x.UserName == this._usuarioSesion.ObtenerUsuarioSesion());
 
-                var usuarioDto = this._mapper.Map<Usuario, UsuarioDto>(usuario);
+                // si en algun caso el Email del usuario ingresado no este almacenado
+                if (usuario == null)
+                {
+                    throw new CorreoNoExisteException(HttpStatusCode.Unauthorized,
+                       new
+                       {
+                           mensaje = $"Las credenciales de acceso entregadas no coinciden con los registros.",
+                           status = HttpStatusCode.Unauthorized,
+                           tipoError = "adv-cnee00"
+                       });
+                }
+
+                //var usuarioDto = this._mapper.Map<Usuario, UsuarioDto>(usuario);
 
                 string nombres = string.Empty, apellidos = string.Empty;
 
@@ -69,13 +85,49 @@ namespace Aplicacion.Cuentas
                         apellidos += nomb.TipoNombreRel.Nombre + " ";
                 }
 
+                // obtencion de los pases a devolver
+                ICollection<PasePerfil> pasesPerfil = new List<PasePerfil>();
+
+                foreach (var pase in usuario.PasesRel)
+                {
+                    ICollection<PersonaExternaPase> personasExternasPase = new List<PersonaExternaPase>();
+                    foreach (var personaExterna in pase.PersonaExternasRel)
+                    {
+                        var personaExternaEncontrada = await this._context.PersonaExterna
+                            .Include(x => x.PersonaRel.TipoNombresRel)
+                            .ThenInclude(z => z.TipoNombreRel)
+                            .FirstOrDefaultAsync(x => x.PersonaExternaId == personaExterna.PersonaExternaId);
+
+                        personasExternasPase.Add(new PersonaExternaPase
+                        {
+                            Nombres = "",
+                            PrimerApellido = "",
+                            SegundoApellido = "",
+                            Rut = personaExternaEncontrada.PersonaRel.Rut,
+                            Pasaporte = personaExternaEncontrada.Pasaporte,
+                            Nacionalidad = personaExternaEncontrada.Nacionalidad
+                        });
+                    }
+
+                    // agregar los pases mapeados
+                    pasesPerfil.Add(new PasePerfil
+                    {
+                        FechaInicio = pase.FechaInicio.ToString(),
+                        FechaTermino = pase.FechaTermino.ToString(),
+                        Motivo = pase.Motivo,
+                        Area = pase.Area,
+                        Tipo = pase.Tipo.ToString(),
+                        Estado = pase.Estado.ToString()
+                    });
+                }
+
                 // modelo con los datos a usar en la cuenta del usuario comun
                 var cuentaUsuarioata = new CuentaUsuarioData
                 {
                     NombreCompleto = (nombres + ((apellidos.Length > 0) ? apellidos.Remove(apellidos.Length - 1) : apellidos)),
                     Rut = usuario.PersonaRel.Rut,
                     NombreEmpresa = usuario.EmpresaRel.Nombre,
-                    PasesRel = usuario.PasesRel
+                    PasesRel = pasesPerfil
                 };
 
                 return cuentaUsuarioata;

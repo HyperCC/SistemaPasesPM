@@ -92,9 +92,6 @@ namespace Aplicacion.ConfiguracionLogin
                     foreach (var failure in validacionesRes.Errors)
                         erroresFV.Add(failure.ErrorMessage);
 
-                    foreach (var failure in validacionesRes.Errors)
-                        Console.WriteLine("la gran failure is: " + failure.ErrorMessage);
-
                     // devolver una excepcion y los erroes encontrados
                     throw new FormatoIncorrectoException(HttpStatusCode.BadRequest,
                      new
@@ -212,7 +209,7 @@ namespace Aplicacion.ConfiguracionLogin
                 throw new DbContextNoGuardadoException(HttpStatusCode.BadRequest,
                     new
                     {
-                        mensaje = $"El sistema no pudo registrar los datos relacionados al usaurio al usuario {request.Correo}",
+                        mensaje = $"El sistema no pudo registrar los datos relacionados al usaurio {request.Correo}",
                         status = HttpStatusCode.BadRequest,
                         tipoError = "err-dbcng0"
                     });
