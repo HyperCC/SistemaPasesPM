@@ -160,7 +160,6 @@ namespace Aplicacion.Pases
 
 
                 if (request.Personas != null)
-                {
                     // agregar las personas externas aderidas al pase 
                     foreach (var personaIndividual in request.Personas)
                     {
@@ -170,29 +169,20 @@ namespace Aplicacion.Pases
                             personaIndividual.Nombres,
                             personaIndividual.Apellidos);
 
-                        // buscar por la persona externa
-                        var buscarPersonaExterna = await this._context.PersonaExterna.FirstOrDefaultAsync(p => p.PersonaId == buscarPersona.PersonaId);
-
-                        if (buscarPersonaExterna == null)
-                        {
-                            // si no existe la persona externa se crea y se almacena
-                            buscarPersonaExterna = new PersonaExterna
-                            {
-                                PersonaExternaId = new Guid(),
-                                Nacionalidad = personaIndividual.Nacionalidad,
-                                Pasaporte = personaIndividual.PasaporteORut.ToUpper() == "PASAPORTE" ? personaIndividual.Pasaporte : null,
-                                PersonaId = buscarPersona.PersonaId
-                            };
-                            await this._context.PersonaExterna.AddAsync(buscarPersonaExterna);
-                        }
+                        // buscar por la persona externa segun la Persona ya encontrada
+                        var buscarPersonaExterna = await BuscarOAlmacenarPersonaExterna.BuscarOAgregarPersonaExterna(this._context,
+                            buscarPersona.PersonaId,
+                            paseGenerado.PaseId,
+                            personaIndividual.Pasaporte,
+                            personaIndividual.Nacionalidad);
                     }
-                }
 
                 // guarar los cambios hechos en el context
                 var result = await this._context.SaveChangesAsync();
                 if (result > 0)
                     return Unit.Value;
 
+                // si por algun motivo la base de datos no almacena los cambios
                 throw new DbContextNoGuardadoException(HttpStatusCode.BadRequest,
                     new
                     {

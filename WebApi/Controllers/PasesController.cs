@@ -36,7 +36,7 @@ namespace WebApi.Controllers
         /// <param name="parametros"></param>
         /// <returns></returns>
         [HttpPost("ingresar")]
-        public async Task<ActionResult<Unit>> Ingresar(NuevoPaseProveedor.Ejecuta parametros)
+        public async Task<ActionResult<Unit>> Ingresar(NuevoPaseGenerico.Ejecuta parametros)
             => await this.MediadorHerencia.Send(parametros);
     }
 }

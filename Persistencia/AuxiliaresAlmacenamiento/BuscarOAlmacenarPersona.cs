@@ -15,7 +15,8 @@ namespace Persistencia.AuxiliaresAlmacenamiento
             string apellidos)
         {
             // buscar si la persona existe
-            var buscarPersona = await context.Persona.FirstOrDefaultAsync(p => p.Rut == rut);
+            var buscarPersona = await context.Persona
+                .FirstOrDefaultAsync(p => p.Rut == rut);
 
             if (buscarPersona == null)
             {

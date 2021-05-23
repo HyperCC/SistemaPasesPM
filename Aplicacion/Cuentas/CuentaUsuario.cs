@@ -55,6 +55,7 @@ namespace Aplicacion.Cuentas
                     .Include(x => x.EmpresaRel)
                     .Include(x => x.PasesRel)
                     .ThenInclude(z => z.PersonaExternasRel)
+                    .ThenInclude(y => y.PersonaExternaRel)
                     .Include(x => x.PersonaRel.TipoNombresRel)
                     .ThenInclude(z => z.TipoNombreRel)
                     .FirstOrDefaultAsync(x => x.UserName == this._usuarioSesion.ObtenerUsuarioSesion());
@@ -90,9 +91,12 @@ namespace Aplicacion.Cuentas
 
                 foreach (var pase in usuario.PasesRel)
                 {
+                    Console.WriteLine("PERSONAS EXTERNAS EN UN PASE " + pase.Area.ToString());
                     ICollection<PersonaExternaPase> personasExternasPase = new List<PersonaExternaPase>();
                     foreach (var personaExterna in pase.PersonaExternasRel)
                     {
+                        Console.WriteLine(personaExterna.PersonaExternaRel.Nacionalidad);
+
                         var personaExternaEncontrada = await this._context.PersonaExterna
                             .Include(x => x.PersonaRel.TipoNombresRel)
                             .ThenInclude(z => z.TipoNombreRel)
@@ -117,7 +121,8 @@ namespace Aplicacion.Cuentas
                         Motivo = pase.Motivo,
                         Area = pase.Area,
                         Tipo = pase.Tipo.ToString(),
-                        Estado = pase.Estado.ToString()
+                        Estado = pase.Estado.ToString(),
+                        PersonaExternasRel = personasExternasPase
                     });
                 }
 
