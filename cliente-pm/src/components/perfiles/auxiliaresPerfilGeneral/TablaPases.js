@@ -50,6 +50,8 @@ const TablaPases = props => {
                             </tr>
                         </thead>
 
+                        {console.log('DATOS RECIBIDOS APIAPI ',props.datos)}
+
                         <tbody>
                             {/* CICLO FOR CON TODOS LOS DATOS PARA CADA PASE */}
                             {props.datos.map((value, index) => {

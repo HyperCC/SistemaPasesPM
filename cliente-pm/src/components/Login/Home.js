@@ -31,31 +31,39 @@ const Home = () => {
 
 
     // boton para enviar el formulario
-    const botonRegistrarUsuario = infoFormulario => {
+    const botonLoginUsuario = infoFormulario => {
 
         // cancelar el envio inmediato del formulario
         infoFormulario.preventDefault();
         console.log('data usuario: ', dataUsuario);
 
         loginUsuario(dataUsuario).then(response => {
-            console.log('se registro exitosamente el nuevo usuario. ', response);
 
-            // si se reciben errores
-            if (typeof response.data.errores !== 'undefined') {
-                console.log(response.data.errores.mensaje);
+            if (typeof response !== 'undefined') {
 
-                console.log('el tipo de error: ', response.data.errores.tipoError);
-                setCurrentNotification(response.data.errores.tipoError);
-                console.log('TIPO ACTUAL DE NOTIFICACION ', currentNotification);
+                console.log('se registro exitosamente el nuevo usuario. ', response);
 
-                if (typeof response.data.errores.listaErrores !== 'undefined')
-                    setCurrentCamposInvalidos(response.data.errores.listaErrores);
+                // si se reciben errores
+                if (typeof response.data.errores !== 'undefined') {
+                    console.log(response.data.errores.mensaje);
 
-                // si toda la operacion salio ok
+                    console.log('el tipo de error: ', response.data.errores.tipoError);
+                    setCurrentNotification(response.data.errores.tipoError);
+                    console.log('TIPO ACTUAL DE NOTIFICACION ', currentNotification);
+
+                    if (typeof response.data.errores.listaErrores !== 'undefined')
+                        setCurrentCamposInvalidos(response.data.errores.listaErrores);
+
+                    // si toda la operacion salio ok
+                } else {
+                    window.localStorage.setItem('mensaje_success', 'exi-le0000');
+                    window.localStorage.setItem('mensaje_success_showed', false);
+                    setCurrentNotification('exi-le0000');
+                }
+                
+                // si no hay conexion con el servidor pero si al cliente.
             } else {
-                window.localStorage.setItem('mensaje_success', 'exi-le0000');
-                window.localStorage.setItem('mensaje_success_showed', false);
-                setCurrentNotification('exi-le0000');
+                setCurrentNotification('err-nhc000');
             }
         });
     };
@@ -81,7 +89,7 @@ const Home = () => {
                                 <input type="password" name="Password" value={dataUsuario.Password} onChange={ingresarValoresMemoria} placeholder="Contraseña" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" />
                             </div>
 
-                            <button type="submit" onClick={botonRegistrarUsuario}
+                            <button type="submit" onClick={botonLoginUsuario}
                                 class="bg-azul-pm rounded-lg shadow-md hover:bg-amarillo-pm text-white font-bold text-lg  p-2 mt-8 transition duration-500">
                                 Ingresar
                             </button>

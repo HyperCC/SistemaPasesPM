@@ -4,6 +4,11 @@ using System.Text;
 
 namespace Dominio.Auxiliares.Pases
 {
+    enum SeleccionarPasaporteORut
+    {
+        RUT, PASAPORTE
+    }
+
     /// <summary>
     /// Clase para recibir los datos desde el cliente por cada persona externa
     /// </summary>

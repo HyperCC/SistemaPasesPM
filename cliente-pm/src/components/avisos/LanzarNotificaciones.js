@@ -10,6 +10,10 @@ const listaMensajesExito = [
     {
         'cod': 'exi-le0000',
         'mess': 'Inicio de sesion exitoso. Bienvenido.'
+    },
+    {
+        'cod': 'exi-pe0000',
+        'mess': 'Datos obtenidos para el perfil obtenidos correctamente.'
     }
 ];
 
@@ -45,11 +49,15 @@ const listaMensajesAdvertencia = [
 const listaMensajesErrores = [
     {
         'cod': 'err-umnge0',
-        'mess': 'La plataforma no ha podido registrar al usuario'
+        'mess': 'La plataforma no ha podido registrar al usuario.'
     },
     {
         'cod': 'err-dbcng0',
-        'mess': 'La plataforma no ha podido registrar los datos ingresados por el usuario'
+        'mess': 'La plataforma no ha podido registrar los datos ingresados por el usuario.'
+    },
+    {
+        'cod': 'err-nhc000',
+        'mess': 'No hay conexion con la plataforma actualmente.'
     }
 ];
 
@@ -81,11 +89,10 @@ export function LanzarNoritificaciones(props) {
             return <NotificacionAdvertencia texto={listaMensajesAdvertencia[message].mess} />;
     }
 
-
     // asignacion de la notificacion por errores en el servidor
     for (const message in listaMensajesErrores)
-        if (props.codigo === listaMensajesAdvertencia[message].cod.toString())
-            return <NotificacionError texto={listaMensajesAdvertencia[message].mess} />;
+        if (props.codigo === listaMensajesErrores[message].cod.toString())
+            return <NotificacionError texto={listaMensajesErrores[message].mess} />;
 
     // en caso de haber un codigo de error no registrado
     return <NotificacionError texto="La plataforma presenta un error no reconocido, intente mas tarde." />

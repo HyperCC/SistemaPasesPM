@@ -78,24 +78,32 @@ export default function Registro() {
 
         // uso del action registrar
         registrarUsuario(dataUsuario).then(response => {
-            console.log('se registro exitosamente el nuevo usuario. ', response);
 
-            // si se reciben errores
-            if (typeof response.data.errores !== 'undefined') {
-                console.log(response.data.errores.mensaje);
+            if (typeof response !== 'undefined') {
 
-                console.log('el tipo de error: ', response.data.errores.tipoError);
-                setCurrentNotification(response.data.errores.tipoError);
-                console.log('TIPO ACTUAL DE NOTIFICACION ', currentNotification);
+                console.log('se registro exitosamente el nuevo usuario. ', response);
 
-                if (typeof response.data.errores.listaErrores !== 'undefined')
-                    setCurrentCamposInvalidos(response.data.errores.listaErrores);
+                // si se reciben errores
+                if (typeof response.data.errores !== 'undefined') {
+                    console.log(response.data.errores.mensaje);
 
-                // si toda la operacion salio ok
+                    console.log('el tipo de error: ', response.data.errores.tipoError);
+                    setCurrentNotification(response.data.errores.tipoError);
+                    console.log('TIPO ACTUAL DE NOTIFICACION ', currentNotification);
+
+                    if (typeof response.data.errores.listaErrores !== 'undefined')
+                        setCurrentCamposInvalidos(response.data.errores.listaErrores);
+
+                    // si toda la operacion salio ok
+                } else {
+                    window.localStorage.setItem('mensaje_success', 'exi-re0000');
+                    window.localStorage.setItem('mensaje_success_showed', false);
+                    setCurrentNotification('exi-re0000');
+                }
+
+                // si no hay conexion con el servidor pero si al cliente.
             } else {
-                window.localStorage.setItem('mensaje_success', 'exi-re0000');
-                window.localStorage.setItem('mensaje_success_showed', false);
-                setCurrentNotification('exi-re0000');
+                setCurrentNotification('err-nhc000');
             }
         });
     };

@@ -19,7 +19,10 @@ namespace Persistencia.AuxiliaresAlmacenamiento
         /// <param name="nombres"></param>
         /// <param name="apellidos"></param>
         /// <param name="_context"></param>
-        public static async Task AgregarNombres(string nombresContatenados, string apellidosContatenados, SistemaPasesContext _context, Guid _personaId)
+        public static async Task AgregarNombres(string nombresContatenados,
+            string apellidosContatenados,
+            SistemaPasesContext _context,
+            Guid _personaId)
         {
 
             // obtencion de nombres de la cadena bruta
@@ -32,34 +35,36 @@ namespace Persistencia.AuxiliaresAlmacenamiento
             foreach (var nombre in nombres)
             {
                 // buscar si existe el nombre
-                var nombreExiste = await _context.TipoNombre
+                TipoNombre nombreExiste = await _context.TipoNombre
                     .Where(x => x.Nombre == nombre
                     && x.Tipo == TipoIdentificador.NOMBRE
                     && x.Posicion == currentIteration)
                     .FirstOrDefaultAsync();
 
                 // agregar el nuevo nombre si no existe
-                var nuevoNombre = new TipoNombre();
                 if (nombreExiste == null)
                 {
-                    nuevoNombre.TipoNombreId = new Guid();
-                    nuevoNombre.Nombre = nombre;
-                    nuevoNombre.Tipo = TipoIdentificador.NOMBRE;
-                    nuevoNombre.Posicion = currentIteration;
-                }
-                _context.TipoNombre.Add(nuevoNombre);
+                    nombreExiste = new TipoNombre
+                    {
+                        TipoNombreId = new Guid(),
+                        Nombre = nombre,
+                        Tipo = TipoIdentificador.NOMBRE,
+                        Posicion = currentIteration
+                    };
+                    _context.TipoNombre.Add(nombreExiste);
+                };
 
                 // agregar tabla con nombres y personas 
-                var nuevoPersonaTipoNombre = new PersonaTipoNombre
+                PersonaTipoNombre nuevoPersonaTipoNombre = new PersonaTipoNombre
                 {
                     PersonaId = _personaId,
-                    TipoNombreId = (nombreExiste == null) ?
-                    nuevoNombre.TipoNombreId : nombreExiste.TipoNombreId
+                    TipoNombreId = nombreExiste.TipoNombreId
                 };
                 _context.PersonaTipoNombre.Add(nuevoPersonaTipoNombre);
 
                 currentIteration++;
             }
+
 
             // obtencion de apellidos de la cadena bruta
             string[] apellidos = apellidosContatenados.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -71,29 +76,30 @@ namespace Persistencia.AuxiliaresAlmacenamiento
             foreach (var apellido in apellidos)
             {
                 // buscar si existe el apellido
-                var apellidoExiste = await _context.TipoNombre
+                TipoNombre apellidoExiste = await _context.TipoNombre
                     .Where(x => x.Nombre == apellido
                     && x.Tipo == TipoIdentificador.APELLIDO
                     && x.Posicion == currentIteration)
                     .FirstOrDefaultAsync();
 
                 // agregar el nuevo nombre si no existe
-                var nuevoApellido = new TipoNombre();
                 if (apellidoExiste == null)
                 {
-                    nuevoApellido.TipoNombreId = new Guid();
-                    nuevoApellido.Nombre = apellido;
-                    nuevoApellido.Tipo = TipoIdentificador.APELLIDO;
-                    nuevoApellido.Posicion = currentIteration;
+                    apellidoExiste = new TipoNombre
+                    {
+                        TipoNombreId = new Guid(),
+                        Nombre = apellido,
+                        Tipo = TipoIdentificador.APELLIDO,
+                        Posicion = currentIteration
+                    };
+                    _context.TipoNombre.Add(apellidoExiste);
                 }
-                _context.TipoNombre.Add(nuevoApellido);
 
                 // agregar tabla con nombres y personas 
-                var nuevoPersonaTipoNombre = new PersonaTipoNombre
+                PersonaTipoNombre nuevoPersonaTipoNombre = new PersonaTipoNombre
                 {
                     PersonaId = _personaId,
-                    TipoNombreId = (apellidoExiste == null) ?
-                    nuevoApellido.TipoNombreId : apellidoExiste.TipoNombreId
+                    TipoNombreId = apellidoExiste.TipoNombreId
                 };
                 _context.PersonaTipoNombre.Add(nuevoPersonaTipoNombre);
 

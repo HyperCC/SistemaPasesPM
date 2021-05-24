@@ -104,11 +104,13 @@ namespace Aplicacion.Pases
                      });
                 }
 
+
                 // usuario en sesion actual
                 var usuarioActual = await this._userManager.FindByNameAsync(this._usuarioSesion.ObtenerUsuarioSesion());
 
                 // buscar si la empresa existe 
-                var buscarEmpresa = await this._context.Empresa.FirstOrDefaultAsync(x => x.Rut == request.RutEmpresa);
+                var buscarEmpresa = await this._context.Empresa
+                    .FirstOrDefaultAsync(x => x.Rut == request.RutEmpresa);
 
                 // en caso se no existir la empresa
                 if (buscarEmpresa == null)
@@ -163,6 +165,11 @@ namespace Aplicacion.Pases
                     // agregar las personas externas aderidas al pase 
                     foreach (var personaIndividual in request.Personas)
                     {
+                        if(personaIndividual.PasaporteORut == "RUT")
+                        {
+
+                        }
+
                         // buscar o almacenar la persona por rut
                         Persona buscarPersona = await BuscarOAlmacenarPersona.BuscarOAgregarPersona(this._context,
                             personaIndividual.Rut,

@@ -58,7 +58,7 @@ namespace Aplicacion.Cuentas
                     .ThenInclude(y => y.PersonaExternaRel)
                     .Include(x => x.PersonaRel.TipoNombresRel)
                     .ThenInclude(z => z.TipoNombreRel)
-                    .FirstOrDefaultAsync(x => x.UserName == this._usuarioSesion.ObtenerUsuarioSesion());
+                    .FirstOrDefaultAsync(x => x.UserName == "admin@gmail.com");
 
                 // si en algun caso el Email del usuario ingresado no este almacenado
                 if (usuario == null)
@@ -102,11 +102,30 @@ namespace Aplicacion.Cuentas
                             .ThenInclude(z => z.TipoNombreRel)
                             .FirstOrDefaultAsync(x => x.PersonaExternaId == personaExterna.PersonaExternaId);
 
+                        string nombresPE = string.Empty;
+                        string primerApellidoPE = string.Empty;
+                        string segundoApellidoPE = string.Empty;
+
+                        // obtencion del nombre completo
+                        foreach (var nomb in personaExternaEncontrada.PersonaRel.TipoNombresRel.OrderBy(x => x.TipoNombreRel.Posicion))
+                        {
+                            // concatenacion de nombres y apellidos
+                            if (nomb.TipoNombreRel.Tipo == TipoIdentificador.NOMBRE)
+                                nombresPE += nomb.TipoNombreRel.Nombre + " ";
+                            else
+                            {
+                                if (nomb.TipoNombreRel.Posicion == 1)
+                                    primerApellidoPE = nomb.TipoNombreRel.Nombre;
+                                else
+                                    segundoApellidoPE = nomb.TipoNombreRel.Nombre;
+                            }
+                        }
+
                         personasExternasPase.Add(new PersonaExternaPase
                         {
-                            Nombres = "",
-                            PrimerApellido = "",
-                            SegundoApellido = "",
+                            Nombres = nombresPE,
+                            PrimerApellido = primerApellidoPE,
+                            SegundoApellido = segundoApellidoPE,
                             Rut = personaExternaEncontrada.PersonaRel.Rut,
                             Pasaporte = personaExternaEncontrada.Pasaporte,
                             Nacionalidad = personaExternaEncontrada.Nacionalidad

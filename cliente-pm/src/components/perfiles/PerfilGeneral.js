@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CondicionActualEmpresa from './auxiliaresPerfilGeneral/CondicionActualEmpresa';
 import DatosUsuario from './auxiliaresPerfilGeneral/DatosUsuario';
 import TablaPases from './auxiliaresPerfilGeneral/TablaPases';
+import { perfilUsuario } from '../../actions/UsuarioAction';
+import { LanzarNoritificaciones } from '../avisos/LanzarNotificaciones';
+
 
 // vista principal para el perfil general
 const PerfilGeneral = () => {
@@ -99,12 +102,63 @@ const PerfilGeneral = () => {
         }
     ];
 
+
+    // atributos para el perfil del usuario
+    const [dataUsuario, setDataUsuario] = useState({});
+    // codigo actual de la notificacion a mostrar
+    const [currentNotification, setCurrentNotification] = useState('none');
+
+
+    // asignar nuevos valores al state del login
+    function ingresarValoresMemoria(valorInput) {
+        setDataUsuario(valorInput);
+    };
+
+
+    // boton para enviar el formulario
+    const recolectarDatosPerfil = () => {
+
+        perfilUsuario().then(response => {
+
+            if (typeof response !== 'undefined') {
+
+                // si se reciben errores
+                if (typeof response.data.errores !== 'undefined') {
+                    console.log(response.data.errores.mensaje);
+
+                    console.log('el tipo de error: ', response.data.errores.tipoError);
+                    //setCurrentNotification(response.data.errores.tipoError);
+                    //console.log('TIPO ACTUAL DE NOTIFICACION ', currentNotification);
+
+                    //if (typeof response.data.errores.listaErrores !== 'undefined')
+                    //setCurrentCamposInvalidos(response.data.errores.listaErrores);
+
+                    // si toda la operacion salio ok
+                } else {
+                    window.localStorage.setItem('mensaje_success', 'exi-le0000');
+                    window.localStorage.setItem('mensaje_success_showed', false);
+                    console.log('se tomaron odos los datos');
+                    ingresarValoresMemoria(response.data);
+                    //setCurrentNotification('exi-le0000');
+                }
+
+                // si no hay conexion con el servidor pero si al cliente.
+            } else {
+                setCurrentNotification('err-nhc000');
+            }
+
+        });
+    };
+
     return (
         <div class="bg-gray-100 min-h-screen">
             <div class="md:max-w-6xl w-full mx-auto py-8">
                 <div class="sm:px-8 px-4">
 
-                    <DatosUsuario datos={dataUsuarioGeneral} />
+                    {recolectarDatosPerfil()}
+                    <LanzarNoritificaciones codigo={currentNotification} />
+
+                    <DatosUsuario datos={dataUsuario} />
                     <div class="h-8"></div>
 
                     <CondicionActualEmpresa documentos={dataDocumentosEmpresaPerfil} empresa={dataUsuarioGeneral.NombreEmpresa} />
