@@ -16,6 +16,8 @@ const Home = () => {
     const [currentNotification, setCurrentNotification] = useState('none');
     // posibles campos invalidos enviados por el usuario
     const [currentCamposInvalidos, setCurrentCamposInvalidos] = useState([]);
+    //mostrar una notificacion
+    const [currentOpenNotificacion, setCurrentOpenNotificacion] = useState(false);
 
     // asignar nuevos valores al state del login
     const ingresarValoresMemoria = valorInput => {
@@ -58,25 +60,28 @@ const Home = () => {
                 } else {
                     window.localStorage.setItem('mensaje_success', 'exi-le0000');
                     window.localStorage.setItem('mensaje_success_showed', false);
+
                     setCurrentNotification('exi-le0000');
+                    setCurrentOpenNotificacion(true);
                 }
-                
+
                 // si no hay conexion con el servidor pero si al cliente.
             } else {
                 setCurrentNotification('err-nhc000');
+                setCurrentOpenNotificacion(true);
             }
         });
     };
 
     return (
         <div>
-            <div class="w-full flex flex-wrap">
-                <div class="w-full md:w-1/2 flex flex-col">
+            <div class="w-full grid grid-cols-1 md:grid-cols-2">
+                <div class="w-full col-span-1">
 
-                    <LanzarNoritificaciones codigo={currentNotification} camposInvalidos={currentCamposInvalidos} />
+                    <LanzarNoritificaciones codigo={currentNotification} camposInvalidos={currentCamposInvalidos} openNotificacion={currentOpenNotificacion} />
 
                     <div class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
-                        <p class="text-center text-5xl">Gestión de pases PMEJ</p>
+                        <p class="text-center text-5xl p-8 md:mt-8">Gestión de pases PMEJ</p>
                         <form class="flex flex-col pt-3 md:pt-8">
 
                             <div class="flex flex-col pt-4">
@@ -95,18 +100,17 @@ const Home = () => {
                             </button>
 
                         </form>
-                        <div class="text-center pt-12 pb-12">
+                        <div class="text-center mx-auto text-sm py-12">
                             <p>¿No posees una cuenta? <a href="/registro" class="bm-azul-pm hover:text-gray-700 underline font-semibold">Registrate Aquí</a></p>
-                            <p class="p-1">¿No recuerdas su contraseña? <a href="/RecuperarContraseña" class="bm-azul-pm hover:text-gray-700 underline font-semibold">Recuperar Aquí</a></p>
+                            <p class="py-1">¿No recuerdas su contraseña? <a href="/RecuperarContraseña" class="bm-azul-pm hover:text-gray-700 underline font-semibold">Recuperar Aquí</a></p>
                             <p>¿Desea cambiar contraseña? <a href="/CambiarContraseña" class="bm-azul-pm hover:text-gray-700 underline font-semibold">Cambiar Aquí</a></p>
                         </div>
                     </div>
 
                 </div>
-                <div class="w-1/2  h-screen justify-center shadow-2xl bg-azul-pm">
-                    <img class="m-auto bg-cover rounded place-self-center" src={Image}></img>
+                <div class="md:min-h-screen flex justify-center align-middle col-span-1 bg-azul-pm">
+                    <img class="m-auto inline-block p-8 md:p-16 bg-cover" src={Image} />
                 </div>
-
             </div>
         </div>
     );

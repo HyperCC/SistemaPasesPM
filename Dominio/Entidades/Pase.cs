@@ -17,7 +17,7 @@ namespace Dominio.Entidades
     /// </summary>
     public enum EstadoPase
     {
-        ACEPTADO, CADUCADO, PENDIENTE, RECHAZADO
+        APROBADO, FINALIZADO, PENDIENTE, RECHAZADO
     }
 
     /// <summary>

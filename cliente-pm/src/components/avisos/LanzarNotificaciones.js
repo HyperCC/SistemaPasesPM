@@ -73,7 +73,7 @@ export function LanzarNoritificaciones(props) {
     // asignacion de la notificacion a tipo advertencia
     for (const message in listaMensajesExito)
         if (props.codigo === listaMensajesExito[message].cod.toString())
-            return <NotificacionExito texto={listaMensajesExito[message].mess} />;
+            return <NotificacionExito texto={listaMensajesExito[message].mess} openError={props.openNotificacion} />;
 
     // asignacion de la notificacion a tipo advertencia
     for (const message in listaMensajesAdvertencia) {
@@ -83,16 +83,16 @@ export function LanzarNoritificaciones(props) {
             for (const invalidInput in props.camposInvalidos)
                 arrayErrores += (props.camposInvalidos[invalidInput] + '\n');
 
-            return <NotificacionAdvertencia texto={(listaMensajesAdvertencia[message].mess + ' - ' + arrayErrores)} />;
+            return <NotificacionAdvertencia texto={(listaMensajesAdvertencia[message].mess + ' - ' + arrayErrores)} openError={props.openNotificacion} />;
 
         } else if (props.codigo === listaMensajesAdvertencia[message].cod.toString())
-            return <NotificacionAdvertencia texto={listaMensajesAdvertencia[message].mess} />;
+            return <NotificacionAdvertencia texto={listaMensajesAdvertencia[message].mess} openError={props.openNotificacion} />;
     }
 
     // asignacion de la notificacion por errores en el servidor
     for (const message in listaMensajesErrores)
         if (props.codigo === listaMensajesErrores[message].cod.toString())
-            return <NotificacionError texto={listaMensajesErrores[message].mess} />;
+            return <NotificacionError texto={listaMensajesErrores[message].mess} openError={props.openNotificacion} />;
 
     // en caso de haber un codigo de error no registrado
     return <NotificacionError texto="La plataforma presenta un error no reconocido, intente mas tarde." />
