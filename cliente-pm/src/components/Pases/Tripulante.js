@@ -2,16 +2,22 @@ import React, { useState } from 'react';
 import { DatosPase } from './DatosPase';
 import { TablaTrabajadores } from './TablaTrabajadores';
 
-export const Visita = (props) => {
+export const Tripulante = (props) => {
 
     //Datos generales del pase
-    const URL = '/SolicitudVisita';
-    const TITULO = 'Visita';
+    const URL = '/SolicitudTripulante';
+    const TITULO = 'Tripulante';
 
-    const dataPaseGeneral = {
-        RutEmpresa: '2.333.444-5',
-        NombreEmpresa: 'Nortek SPA'
-    };
+    // datos para enviar a la API
+    const [dataPaseGeneral, setDataPaseGeneral] = useState({
+        Area: null,
+        RutEmpresa: null,
+        NombreEmpresa: null,
+        Motivo: null,
+        ServicioAdjudicado: null,
+        FechaInicio: null,
+        FechaTermino: null
+    });
 
     const dataTablaGeneral = [
         {
@@ -36,6 +42,17 @@ export const Visita = (props) => {
         }
     ];
 
+    // asignar nuevos valores al state del registro
+    const ingresarValoresMemoria = valorInput => {
+        // obtener el valor
+        const { name, value } = valorInput.target;
+
+        // asignar el valor
+        setDataPaseGeneral(anterior => ({
+            ...anterior, // mantener lo que existe antes
+            [name]: value // solo cambiar el input mapeado
+        }));
+    };
 
     return (
         <div class="bg-gray-100 min-h-screen">
@@ -52,5 +69,5 @@ export const Visita = (props) => {
                 </div>
             </div>
         </div>
-    )
+    );
 }

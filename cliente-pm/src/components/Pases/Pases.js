@@ -31,7 +31,7 @@ export const Pases = () => {
                             <div> <p>Todo personal que mantiene contrato vigente con empresas colaboradoras y con las cuales existe una relación contractual de prestación de servicios directos a la T y/o PMEJ</p> </div>
 
                             <div>
-                                <a href="/"
+                                <a href="/SolicitudProveedor"
                                     className="w-44 text-center flex-shrink-0 block px-4 py-2 md:mt-0 mt-4 md:mx-0 mx-auto text-base font-semibold text-white bg-verde-pm rounded-md shadow-md hover:bg-amarillo-pm focus:outline-none transition duration-500">
                                      Proveedor
                                 </a>
@@ -40,7 +40,7 @@ export const Pases = () => {
                             <div> <p>Serán aquellas personas naturales o juridicas que esporádicamente realizan entregas de productos, por otro lado, los prestadores de servicios realizarán servicios de forma regular o no, pudiendo tener interacción con las operaciones o bien solo servicios de consultoría en oficinas</p> </div>
 
                             <div>
-                                <a href="/"
+                                <a href="/SolicitudUsoDeMuelle"
                                     className="w-44 text-center flex-shrink-0 block px-4 py-2 md:mt-0 mt-4 md:mx-0 mx-auto text-base font-semibold text-white bg-verde-pm rounded-md shadow-md hover:bg-amarillo-pm focus:outline-none transition duration-500">
                                      Uso de Muelle
                                 </a>
@@ -49,7 +49,7 @@ export const Pases = () => {
                             <div> <p>Evaluación realizada a través del área de operaciones</p> </div>
 
                             <div>
-                                <a href="/"
+                                <a href="/SolicitudTripulante"
                                     className="w-44 text-center flex-shrink-0 block px-4 py-2 md:mt-0 mt-4 md:mx-0 mx-auto text-base font-semibold text-white bg-verde-pm rounded-md shadow-md hover:bg-amarillo-pm focus:outline-none transition duration-500">
                                      Tripulante
                                 </a>

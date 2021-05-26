@@ -12,6 +12,8 @@ import AgregarPersona from '../components/pases/AgregarPersona';
 import { Contratista } from '../components/pases/Contratista';
 import { DocumentosEmpresa } from '../components/pases/DocumentosEmpresa';
 import { AgregarPersonaContratista } from '../components/pases/AgregarPersonaContratista';
+import { Tripulante } from '../components/pases/Tripulante';
+import { UsoDeMuelle } from '../components/pases/UsoDeMuelle';
 
 const Rutas = () => {
     return (
@@ -57,6 +59,16 @@ const Rutas = () => {
                 <Route path="/DocumentosEmpresa">
                     <Navbar />
                     <DocumentosEmpresa />
+                </Route>
+
+                <Route path="/SolicitudUsoDeMuelle">
+                    <Navbar />
+                    <UsoDeMuelle />
+                </Route>
+
+                <Route path="/SolicitudTripulante">
+                    <Navbar />
+                    <Tripulante />
                 </Route>
 
             </Switch>
