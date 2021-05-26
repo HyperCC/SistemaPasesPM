@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { DatosPase } from './DatosPase';
 import { TablaTrabajadores } from './TablaTrabajadores';
 
-export const Visita = (props) => {
+export const Tripulante = (props) => {
 
     //Datos generales del pase
-    const URL = '/SolicitudVisita';
-    const TITULO = 'Visita';
+    const URL = '/SolicitudTripulante';
+    const TITULO = 'Tripulante';
 
     // datos para enviar a la API
     const [dataPaseGeneral, setDataPaseGeneral] = useState({
@@ -42,6 +42,7 @@ export const Visita = (props) => {
         }
     ];
 
+    // asignar nuevos valores al state del registro
     // asignar nuevos valores al state del registro
     const ingresarValoresMemoria = (name, date) => {
         setDataPaseGeneral(anterior => ({

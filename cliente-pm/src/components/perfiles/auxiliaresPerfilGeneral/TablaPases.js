@@ -1,6 +1,9 @@
 import React from 'react';
 
 const TablaPases = props => {
+
+    console.log(props.soloPases);
+
     return (
         <div class="bg-white p-4 md:p-8 rounded-lg shadow-md">
 
@@ -12,7 +15,7 @@ const TablaPases = props => {
                 {/* Botones para crear nuevo pase y pases buscados */}
                 <div class="text-end flex-none">
                     <form class="flex-none md:flex w-full space-x-3">
-                         <a href="/SolicitudPases"
+                        <a href="/SolicitudPases"
                             className="w-44 text-center flex-shrink-0 block px-4 py-2 md:mt-0 mt-4 md:mx-0 mx-auto text-base font-semibold text-white bg-verde-pm rounded-md shadow-md hover:bg-amarillo-pm focus:outline-none transition duration-500">
                             Nuevo Pase
                         </a>
@@ -50,41 +53,39 @@ const TablaPases = props => {
                             </tr>
                         </thead>
 
-                        {console.log('DATOS RECIBIDOS APIAPI ',props.datos)}
-
                         <tbody>
                             {/* CICLO FOR CON TODOS LOS DATOS PARA CADA PASE */}
-                            {props.datos.map((value, index) => {
+                            {props.soloPases && props.soloPases.map((value, index) => {
                                 return <tr key={index} class={index % 2 == 0 ? "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap"
                                     : "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap bg-gray-100"} >
 
                                     <td class="p-4">
-                                        {value.FechaInicio}
+                                        {value.fechaInicio}
                                     </td>
                                     <td class="p-4">
-                                        {value.FechaTermino}
+                                        {value.fechaTermino}
                                     </td>
                                     <td class="p-4">
-                                        {value.Motivo}
+                                        {value.motivo}
                                     </td>
                                     <td class="p-4">
-                                        {value.Area}
+                                        {value.area}
                                     </td>
-                                    <td class="p-4">
-                                        {value.Tipo}
+                                    <td class="p-4 lowercase">
+                                        {value.tipo}
                                     </td>
 
                                     {/* ELECCION DEL COLOR DEL ESTADO PARA EL PASE */}
                                     <td class="p-4">
                                         <span class={(() => {
                                             switch (value.Estado) {
-                                                case "Finalizado": return "px-3 py-1 bg-purple-100 rounded-full font-semibold text-green-900 leading-tight mx-auto";
-                                                case "Revision": return "px-3 py-1 bg-yellow-100 rounded-full font-semibold text-green-900 leading-tight mx-auto";
-                                                case "Aprobado": return "px-3 py-1 bg-green-100 rounded-full font-semibold text-green-900 leading-tight mx-auto";
-                                                default: return "px-3 py-1 bg-red-100 rounded-full font-semibold text-green-900 leading-tight mx-auto";
+                                                case "FINALIZADO": return "px-3 py-1 bg-purple-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
+                                                case "PENDIENTE": return "px-3 py-1 bg-yellow-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
+                                                case "APROBADO": return "px-3 py-1 bg-green-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
+                                                default: return "px-3 py-1 bg-red-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
                                             }
                                         })()}>
-                                            {value.Estado}
+                                            {value.estado}
                                         </span>
                                     </td>
 

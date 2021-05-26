@@ -45,7 +45,7 @@ export const Contratista = () => {
                     {/** Parte superior */}
                     <div class="bg-white p-4 md:p-8 rounded-lg shadow-md">
                         <p class="text-2xl leading-tight mx-8 text-center md:text-left md:ml-16">
-                            Información general - Pase Visita
+                            Información general - Pase Contratista
                         </p>
 
                         <div class="grid grid-cols-7 gap-6 md:grid-cols-6 mt-6 mx-8 mb-2 md:mb-0">

@@ -161,10 +161,6 @@ export default function Registro() {
                                 </label>
                             </div>
 
-                            <div>
-                                valor no pertenece {dataUsuario.NoPerteneceEmpresa.toString()}
-                            </div>
-
                             {/* DATOS PRINCIPALES PARA EMPRESA */}
                             <div class="grid grid-cols-3 px-4 md:px-8 gap-4 mt-6">
                                 <div class="col-span-1 form-group">

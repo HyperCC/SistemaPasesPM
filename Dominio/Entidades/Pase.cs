@@ -17,7 +17,7 @@ namespace Dominio.Entidades
     /// </summary>
     public enum EstadoPase
     {
-        ACEPTADO, CADUCADO, PENDIENTE, RECHAZADO
+        APROBADO, FINALIZADO, PENDIENTE, RECHAZADO
     }
 
     /// <summary>
@@ -34,6 +34,7 @@ namespace Dominio.Entidades
         public EstadoPase Estado { get; set; }
         public string Motivo { get; set; }
         public string Area { get; set; }
+        public string ServicioAdjudicado { get; set; }
 
         // relacionamiento segun modelo R
         public Guid EmpresaId { get; set; }

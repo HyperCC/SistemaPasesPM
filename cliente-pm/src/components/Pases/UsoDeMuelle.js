@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { DatosPase } from './DatosPase';
 import { TablaTrabajadores } from './TablaTrabajadores';
 
-export const Visita = (props) => {
+export const UsoDeMuelle = (props) => {
 
     //Datos generales del pase
-    const URL = '/SolicitudVisita';
-    const TITULO = 'Visita';
+    const URL = '/SolicitudUsoDeMuelle';
+    const TITULO = 'Uso de Muelle';
 
     // datos para enviar a la API
     const [dataPaseGeneral, setDataPaseGeneral] = useState({
