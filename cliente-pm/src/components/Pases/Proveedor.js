@@ -43,16 +43,13 @@ export const Proveedor = (props) => {
     ];
 
     // asignar nuevos valores al state del registro
-    const ingresarValoresMemoria = valorInput => {
-        // obtener el valor
-        const { name, value } = valorInput.target;
-
-        // asignar el valor
+    const ingresarValoresMemoria = (name, date) => {
         setDataPaseGeneral(anterior => ({
             ...anterior, // mantener lo que existe antes
-            [name]: value // solo cambiar el input mapeado
+            [name]: date // solo cambiar el input mapeado
         }));
     };
+
 
     return (
         <div class="bg-gray-100 min-h-screen">
@@ -60,7 +57,8 @@ export const Proveedor = (props) => {
                 <div class="sm:px-8 px-4">
 
                     {/** Parte superior de la vista */}
-                    <DatosPase datos={dataPaseGeneral} tituloPase={TITULO} />
+                    <DatosPase _dataPaseGeneral={dataPaseGeneral} tituloPase={TITULO}
+                        _ingresoValoresMemoria={ingresarValoresMemoria} />
 
                     <div class="h-8"></div>
 
@@ -70,4 +68,4 @@ export const Proveedor = (props) => {
             </div>
         </div>
     );
-}
+};

@@ -61,6 +61,11 @@ const Rutas = () => {
                     <DocumentosEmpresa />
                 </Route>
 
+                <Route path="/SolicitudProveedor">
+                    <Navbar />
+                    <UsoDeMuelle />
+                </Route>
+
                 <Route path="/SolicitudUsoDeMuelle">
                     <Navbar />
                     <UsoDeMuelle />
