@@ -4,7 +4,7 @@ import Registro from '../components/login/Registro';
 import Home from '../components/login/Home';
 import PerfilGeneral from '../components/perfiles/PerfilGeneral';
 import Navbar from '../components/Navbar';
-import { Pases } from '../components/pases/Pases';
+import { Pases } from '../components/pases/SeleccionPases';
 import { Visita } from '../components/pases/Visita';
 import RecuperarClave from '../components/login/RecuperarClave';
 import CambiarClave from '../components/login/CambiarClave';
@@ -14,6 +14,7 @@ import { DocumentosEmpresa } from '../components/pases/DocumentosEmpresa';
 import { AgregarPersonaContratista } from '../components/pases/AgregarPersonaContratista';
 import { Tripulante } from '../components/pases/Tripulante';
 import { UsoDeMuelle } from '../components/pases/UsoDeMuelle';
+import { Proveedor } from '../components/pases/Proveedor';
 
 const Rutas = () => {
     return (
@@ -63,7 +64,7 @@ const Rutas = () => {
 
                 <Route path="/SolicitudProveedor">
                     <Navbar />
-                    <UsoDeMuelle />
+                    <Proveedor />
                 </Route>
 
                 <Route path="/SolicitudUsoDeMuelle">

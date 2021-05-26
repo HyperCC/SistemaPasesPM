@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react';
 
 export const TablaTrabajadores = props => {
-    const url = props.url;
-    
+
     return (
         <div class="bg-white p-4 md:p-8 rounded-lg shadow-md">
 
@@ -14,7 +13,7 @@ export const TablaTrabajadores = props => {
                 {/* Botones para crear nuevo pase y pases buscados */}
                 <div class="text-end flex-none">
                     <form class="flex-none md:flex w-full space-x-3">
-                         <a href={url+"/AgregarPersona"}
+                        <a href={props.url + "/AgregarPersona"}
                             className="w-44 text-center flex-shrink-0 block px-4 py-2 md:mt-0 mt-4 md:mx-0 mx-auto text-base font-semibold text-white bg-verde-pm rounded-md shadow-md hover:bg-amarillo-pm focus:outline-none transition duration-500">
                             Agregar Persona
                         </a>

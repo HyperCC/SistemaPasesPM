@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-const IsRutNow = (isRut) => {
+const IsRutNow = (option) => {
 
     return (
         <div class="col-span-2" >
-            {isRut
+            {option.currentOptionIsRut
                 ? <input placeholder="ingrese el rut" type="text" name="Rut" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-gray-100" />
                 : <input placeholder="ingrese el pasaporte" type="text" name="Pasaporte" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-gray-100" />
             }
@@ -17,6 +17,17 @@ const AgregarPersona = () => {
     const [isRut, setIsRut] = useState(true);
     const changeIsRut = () => setIsRut(true);
     const changeNotIsRut = () => setIsRut(false);
+
+    // datos a guardar para el form
+    //TODO: ENLAZAR ESTOS DATOS A LOS INPUT
+    const [personExterna, setPersonaExterna] = useState({
+        Nombres: null,
+        PrimerApellido: null,
+        SegundoApellido: null,
+        Rut: null,
+        Pasaporte: null,
+        Nacionalidad: null
+    });
 
     return (
         <div>
@@ -71,8 +82,8 @@ const AgregarPersona = () => {
                                         </label>
                                     </div>
                                 </div>
-                                {/* input con rut o pasaporte */}
-                                {IsRutNow(isRut)}
+
+                                <IsRutNow currentOptionIsRut={isRut} />
 
                                 <div class="col-span-1 form-group">
                                     <label class="font-light text-gray-800 select-none" for="Nacionalidad">Nacionalidad</label>
@@ -81,6 +92,7 @@ const AgregarPersona = () => {
                                     <input type="text" name="Nacionalidad" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-gray-100" />
                                 </div>
                             </div>
+
 
                             {/* ENVIAR DATOS */}
                             <div class="mt-12 flex justify-center">
@@ -95,7 +107,7 @@ const AgregarPersona = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default AgregarPersona;
