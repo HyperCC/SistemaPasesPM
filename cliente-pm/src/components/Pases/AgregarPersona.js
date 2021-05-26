@@ -1,33 +1,33 @@
 import React, { useState } from 'react';
 
-const IsRutNow = (option) => {
-
-    return (
-        <div class="col-span-2" >
-            {option.currentOptionIsRut
-                ? <input placeholder="ingrese el rut" type="text" name="Rut" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-gray-100" />
-                : <input placeholder="ingrese el pasaporte" type="text" name="Pasaporte" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-gray-100" />
-            }
-        </div >
-    );
-};
-
 const AgregarPersona = () => {
 
+    // datos a guardar para el form
+    const [personaExterna, setPersonaExterna] = useState({
+        Nombres: null,
+        PrimerApellido: null,
+        SegundoApellido: null,
+        Rut: '',
+        Pasaporte: '',
+        Nacionalidad: null
+    });
+
+    // cambio por radiobutton para el rut o pasaporte
     const [isRut, setIsRut] = useState(true);
     const changeIsRut = () => setIsRut(true);
     const changeNotIsRut = () => setIsRut(false);
 
-    // datos a guardar para el form
-    //TODO: ENLAZAR ESTOS DATOS A LOS INPUT
-    const [personExterna, setPersonaExterna] = useState({
-        Nombres: null,
-        PrimerApellido: null,
-        SegundoApellido: null,
-        Rut: null,
-        Pasaporte: null,
-        Nacionalidad: null
-    });
+    // asignar nuevos valores al state del registro
+    const ingresarValoresMemoria = valorInput => {
+        // obtener el valor
+        const { name, value } = valorInput.target;
+
+        // asignar el valor
+        setPersonaExterna(anterior => ({
+            ...anterior, // mantener lo que existe antes
+            [name]: value // solo cambiar el input mapeado
+        }));
+    };
 
     return (
         <div>
@@ -41,29 +41,38 @@ const AgregarPersona = () => {
                             </p>
                         </div>
 
+                        <div>
+                            <div>nombres: {personaExterna.Nombres}</div>
+                            <div>primer apellido: {personaExterna.PrimerApellido}</div>
+                            <div>segundo apellido: {personaExterna.SegundoApellido}</div>
+                            <div>rut: {personaExterna.Rut}</div>
+                            <div>pasaporte: {personaExterna.Pasaporte}</div>
+                            <div>nacionalidad: {personaExterna.Nacionalidad}</div>
+                        </div>
+
                         <form>
                             {/* DATOS PRINCIPALES PARA TRABAJADOR */}
                             <div class="grid grid-cols-3 px-4 md:px-8 gap-4 mt-12">
 
                                 <div class="col-span-1 form-group">
-                                    <label class="font-light  text-gray-800 select-none" for="Nombres">Nombres</label>
+                                    <label class="font-light text-gray-800 select-none" for="Nombres">Nombres</label>
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="text" name="Nombres" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
+                                    <input type="text" value={personaExterna.Nombres} onChange={ingresarValoresMemoria} name="Nombres" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
                                 </div>
 
                                 <div class="col-span-1 form-group">
-                                    <label class="font-light  text-gray-800 select-none" for="PrimerApellido">Primer Apellido</label>
+                                    <label class="font-light text-gray-800 select-none" for="PrimerApellido">Primer Apellido</label>
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="text" name="PrimerApellido" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
+                                    <input type="text" value={personaExterna.PrimerApellido} onChange={ingresarValoresMemoria} name="PrimerApellido" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
                                 </div>
 
                                 <div class="col-span-1 form-group">
-                                    <label class="font-light  text-gray-800 select-none" for="SegundoApellido">Segundo Apellido</label>
+                                    <label class="font-light text-gray-800 select-none" for="SegundoApellido">Segundo Apellido</label>
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="text" name="SegundoApellido" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
+                                    <input type="text" value={personaExterna.SegundoApellido} onChange={ingresarValoresMemoria} name="SegundoApellido" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
                                 </div>
 
                                 {/* eleccion de utilizacion de rut o pasaporte*/}
@@ -83,13 +92,18 @@ const AgregarPersona = () => {
                                     </div>
                                 </div>
 
-                                <IsRutNow currentOptionIsRut={isRut} />
+                                <div class="col-span-2" >
+                                    {isRut
+                                        ? <input placeholder="ingrese el rut" type="text" name="Rut" value={personaExterna.Rut} onChange={ingresarValoresMemoria} class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-green-300" />
+                                        : <input placeholder="ingrese el pasaporte" type="text" name="Pasaporte" value={personaExterna.Pasaporte} onChange={ingresarValoresMemoria} class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-red-300" />
+                                    }
+                                </div >
 
                                 <div class="col-span-1 form-group">
                                     <label class="font-light text-gray-800 select-none" for="Nacionalidad">Nacionalidad</label>
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="text" name="Nacionalidad" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-gray-100" />
+                                    <input type="text" value={personaExterna.Nacionalidad} onChange={ingresarValoresMemoria} name="Nacionalidad" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-gray-100" />
                                 </div>
                             </div>
 
