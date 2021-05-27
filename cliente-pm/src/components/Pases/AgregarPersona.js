@@ -5,12 +5,12 @@ const AgregarPersona = props => {
 
     // datos a guardar para el form
     const [personaExterna, setPersonaExterna] = useState({
-        Nombres: 'algunNombre',
-        PrimerApellido: 'apellido1',
-        SegundoApellido: 'apellido2',
-        Rut: '11222333-7',
+        Nombres: '',
+        PrimerApellido: '',
+        SegundoApellido: '',
+        Rut: '',
         Pasaporte: '',
-        Nacionalidad: 'chile'
+        Nacionalidad: ''
     });
 
     // cambio por radiobutton para el rut o pasaporte
@@ -35,8 +35,8 @@ const AgregarPersona = props => {
         infoFormulario.preventDefault();
         //alert("The URL of this page is: " + window.location.href);
 
-        props._guardarPersonaExterna(personaExterna);
-        console.log('PERSONA EXTERNA ENVIADA ', personaExterna);
+        //props._guardarPersonaExterna(personaExterna);
+        window.localStorage.setItem('nueva_persona_externa', JSON.stringify(personaExterna));
     };
 
     return (

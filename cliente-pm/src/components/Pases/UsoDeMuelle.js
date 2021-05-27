@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AgregarPersona from './AgregarPersona';
 import { DatosPase } from './DatosPase';
 import { TablaTrabajadores } from './TablaTrabajadores';
@@ -10,15 +10,31 @@ export const UsoDeMuelle = (props) => {
     const TITULO = 'Uso de Muelle';
 
     // datos para enviar a la API
-    const [dataPaseGeneral, setDataPaseGeneral] = useState({
-        Area: null,
-        RutEmpresa: null,
-        NombreEmpresa: null,
-        Motivo: null,
-        ServicioAdjudicado: null,
-        FechaInicio: null,
-        FechaTermino: null,
-        PersonasExternas: []
+    const [dataPaseGeneral, setDataPaseGeneral] = useState(() => {
+        const variables = JSON.parse(window.localStorage.getItem('datos_pase_general'));
+        if (variables === null) {
+            return {
+                Area: null,
+                RutEmpresa: null,
+                NombreEmpresa: null,
+                Motivo: null,
+                ServicioAdjudicado: null,
+                FechaInicio: null,
+                FechaTermino: null,
+                PersonasExternas: []
+            }
+        } else {
+            return {
+                Area: variables.Area,
+                RutEmpresa: variables.RutEmpresa,
+                NombreEmpresa: variables.NombreEmpresa,
+                Motivo: variables.Motivo,
+                ServicioAdjudicado: variables.ServicioAdjudicado,
+                FechaInicio: variables.FechaInicio,
+                FechaTermino: variables.FechaTermino,
+                PersonasExternas: []
+            }
+        }
     });
 
     // asignar nuevos valores al state del registro
@@ -34,6 +50,25 @@ export const UsoDeMuelle = (props) => {
         window.localStorage.getItem('lista_personas_externas') === null ?
             [] :
             JSON.parse(window.localStorage.getItem('lista_personas_externas')));
+
+    // al cargar la pagina verifica si hay persona externas por agregar
+    useEffect(() => {
+        const newPersona = window.localStorage.getItem('nueva_persona_externa');
+        if (newPersona !== null) {
+            if (!JSON.stringify(personaExterna).includes(newPersona)) {
+                setPersonaExterna(persona => [...persona, JSON.parse(newPersona)]);
+                window.localStorage.removeItem('nueva_persona_externa');
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        // esperar actualizacion de personas actuales
+        window.localStorage.setItem('lista_personas_externas', JSON.stringify(personaExterna));
+    }, [personaExterna]);
+    useEffect(() => {
+        window.localStorage.setItem('datos_pase_general', JSON.stringify(dataPaseGeneral));
+    }, [dataPaseGeneral])
 
     // guardar una persona externa
     const guardarPersonaExterna = jsonPersona => {
@@ -75,11 +110,6 @@ export const UsoDeMuelle = (props) => {
         <div class="bg-gray-100 min-h-screen">
             <div class="md:max-w-6xl w-full mx-auto py-8">
                 <div class="sm:px-8 px-4">
-
-                    <div>
-                        <button onClick={actualizarDatosEnMemoria} class="bg-blue-700 text-white">salvar datos actuales</button>
-                    </div>
-                    <AgregarPersona _guardarPersonaExterna={guardarPersonaExterna} />
 
                     {/** Parte superior de la vista */}
                     <DatosPase _dataPaseGeneral={dataPaseGeneral} tituloPase={TITULO}
