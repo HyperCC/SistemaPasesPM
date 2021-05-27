@@ -25,3 +25,4 @@ yarn-error.log*
 # carpetas para configuracion de editores
 /.vscode
 /.idea
+/src/files
