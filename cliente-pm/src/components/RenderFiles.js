@@ -29,7 +29,7 @@ export default function RenderFiles() {
         setPageNumber(pageNumber-1)
     }
 
-    const file = File2
+    const file = File
     var fileExtension = file.split('.').pop();
     const type = fileExtension;
     

@@ -13,7 +13,6 @@ import { Contratista } from '../components/pases/Contratista';
 import { DocumentosEmpresa } from '../components/pases/DocumentosEmpresa';
 import { AgregarPersonaContratista } from '../components/pases/AgregarPersonaContratista';
 import RenderFiles from '../components/RenderFiles';
-
 import { Tripulante } from '../components/pases/Tripulante';
 import { UsoDeMuelle } from '../components/pases/UsoDeMuelle';
 import { Proveedor } from '../components/pases/Proveedor';

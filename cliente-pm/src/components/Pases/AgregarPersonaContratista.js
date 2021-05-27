@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useHistory } from "react-router-dom";
+import Popup from 'reactjs-popup';
 
 export const AgregarPersonaContratista = () => {
     const [contratoDate, setContratoDate] = useState(new Date());
@@ -17,6 +18,8 @@ export const AgregarPersonaContratista = () => {
     const [operadorDate, setOperadorDate] = useState(new Date());
     const [riggerDate, setRiggerDate] = useState(new Date());
     const [otrosDate, setOtrosDate] = useState(new Date());
+    const [anexosDate, setAnexoDate] = useState(new Date());
+    
 
     {/** Parte de manejo de los documentos */}
     const [files, setFiles] = useState([]);
@@ -129,9 +132,67 @@ export const AgregarPersonaContratista = () => {
                                 Anexo de Contrato
                             </p>
 
-                            <div>
+                            <div class="grid grid-cols-4 gap-4 md:grid-cols-4 mt-6 mx-8 mb-2 md:mb-0">
+                                <div class="col-span-1 col-start-1 row-start-1"> <p></p> </div>
+                                <div class="col-span-1 col-start-2 row-start-1 md:col-span-1">
+                                    <Popup trigger={<button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500"> Agregar Anexo</button>} modal nested>
+                                        { close => (
+                                        <div className="modal">
+                                            {/** 
+                                            <button className="close" onClick={close}>
+                                            &times;
+                                            </button>
+                                            */}
+                                            <div className="header"> Agregar Nuevo Anexo de Contrato </div>
+                                            <div className="content">
 
+                                                <div class="grid grid-cols-4 gap-4 md:grid-cols-4 mt-6 mx-8 mb-2 md:mb-0">
+                                                    <div class="col-span-2 col-start-1 pl-14"> <p>Fecha Vencimiento</p> </div>
+                                                    <div class="col-span-2 col-start-2 md:col-span-2">
+                                                        <DatePicker selected={anexosDate} onChange={date => setAnexoDate(date)} />
+                                                    </div>                
+                                                    
 
+                                                    <div class="col-span-2 col-start-1 pl-14"> <p>Contrato de Trabajo</p> </div>
+                                                    <div class="col-span-2 col-start-2 md:col-span-2">
+                                                        <label for="Anexo" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                                            Seleccionar archivo
+                                                        </label>
+                                                        <input onChange={onFileUpload} id="Anexo" type="file" style={{display: "none"}}/>
+                                                    </div> 
+
+                                                    <div class="col-span-1 row-span-2 col-start-1 pl-14"><p>Descripción</p></div>
+                                                    <div class="col-span-3 row-span-2 col-start-2 "><textarea type="range" value="" onChange={ingresarValoresMemoria} name="Descripccion" placeholder="range...." class="border w-full app border-gray-300 p-2 my-2 rounded-md focus:outline-none focus:ring-2 ring-azul-pm"> </textarea></div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="actions flex justify-between py-8 px-8">
+                    
+                                                <button
+                                                    class="bg-verde-pm pl-4 hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500"
+                                                    onClick={() => {
+                                                    console.log('modal closed ');
+                                                    close();
+                                                    }}
+                                                >
+                                                    Cerrar
+                                                </button>
+
+                                                <button
+                                                    class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500"
+                                                    onClick={() => {
+                                                    console.log('modal closed ');
+                                                    close();
+                                                    }}
+                                                >
+                                                    Guardar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        )}
+                                    </Popup>
+                                </div>
                             </div>    
 
                             {/** Parte de documentos */}

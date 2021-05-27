@@ -1,6 +1,8 @@
-import React from 'react'
+import React from 'react';
+
 
 export const AgregarAnexo = () => {
+    
     return (
         <div class="bg-gray-100 min-h-screen">
             <div class="md:max-w-6xl w-full mx-auto py-8">
