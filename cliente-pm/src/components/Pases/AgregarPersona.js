@@ -32,7 +32,6 @@ const AgregarPersona = props => {
 
     // enviar persona completa para almacenarlo
     const GuardarUnaPersona = infoFormulario => {
-
         infoFormulario.preventDefault();
         //alert("The URL of this page is: " + window.location.href);
 
