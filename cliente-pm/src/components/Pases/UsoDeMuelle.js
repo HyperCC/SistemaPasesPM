@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AgregarPersona from './AgregarPersona';
 import { DatosPase } from './DatosPase';
 import { TablaTrabajadores } from './TablaTrabajadores';
 
@@ -16,31 +17,9 @@ export const UsoDeMuelle = (props) => {
         Motivo: null,
         ServicioAdjudicado: null,
         FechaInicio: null,
-        FechaTermino: null
+        FechaTermino: null,
+        PersonasExternas: []
     });
-
-    const dataTablaGeneral = [
-        {
-            Nombre: 'Daniel Castillo Vasquez',
-            RutPasaporte: '11.222.333-4',
-            Nacionalidad: 'Chilena'
-        },
-        {
-            Nombre: 'Mariá Angelica Domínguez Soto',
-            RutPasaporte: '55.666.777-8',
-            Nacionalidad: 'Chilena'
-        },
-        {
-            Nombre: 'Nombre prueba',
-            RutPasaporte: '11.111.111-1',
-            Nacionalidad: 'Chilena'
-        },
-        {
-            Nombre: 'Nombre prueba 2',
-            RutPasaporte: '22.222.222-2',
-            Nacionalidad: 'Chilena'
-        }
-    ];
 
     // asignar nuevos valores al state del registro
     const ingresarValoresMemoria = (name, date) => {
@@ -50,11 +29,57 @@ export const UsoDeMuelle = (props) => {
         }));
     };
 
+    // tomar una lista de personas en memoria o iniciar una nueva lista
+    const [personaExterna, setPersonaExterna] = useState(
+        window.localStorage.getItem('lista_personas_externas') === null ?
+            [] :
+            JSON.parse(window.localStorage.getItem('lista_personas_externas')));
+
+    // guardar una persona externa
+    const guardarPersonaExterna = jsonPersona => {
+        console.log('PERSONA EXTERNA RECIBIDA', jsonPersona);
+
+        // agregar un nuevo usuario a la lista de personas externas
+        setPersonaExterna(persona => [...persona, jsonPersona]);
+
+        //window.localStorage.setItem('lista_personas_externas', JSON.stringify(personaExterna));
+        console.log(window.localStorage.getItem('lista_personas_externas'));
+    };
+
+    // actualizar la memoria volatil para persistir los cambbios actuales
+    const actualizarDatosEnMemoria = () => {
+
+        // agregar la lista de usuario al pase
+        setDataPaseGeneral(anterior => ({
+            ...anterior, // mantener lo que existe antes
+            ['PersonasExternas']: personaExterna
+        }));
+
+        // TODO: hacer la reasignacion de datos almacenados
+        window.localStorage.setItem('datos_pase_general', JSON.stringify({
+            'Area': dataPaseGeneral.Area,
+            'RutEmpresa': dataPaseGeneral.RutEmpresa,
+            'NombreEmpresa': dataPaseGeneral.NombreEmpresa,
+            'Motivo': dataPaseGeneral.Motivo,
+            'ServicioAdjudicado': dataPaseGeneral.ServicioAdjudicado,
+            'FechaInicio': dataPaseGeneral.FechaInicio,
+            'FechaTermino': dataPaseGeneral.FechaTermino,
+        }));
+
+        window.localStorage.setItem('lista_personas_externas', JSON.stringify(personaExterna));
+        console.log('personas externas: ', window.localStorage.getItem('lista_personas_externas'));
+        console.log('datos pase: ', window.localStorage.getItem('datos_pase_general'));
+    };
 
     return (
         <div class="bg-gray-100 min-h-screen">
             <div class="md:max-w-6xl w-full mx-auto py-8">
                 <div class="sm:px-8 px-4">
+
+                    <div>
+                        <button onClick={actualizarDatosEnMemoria} class="bg-blue-700 text-white">salvar datos actuales</button>
+                    </div>
+                    <AgregarPersona _guardarPersonaExterna={guardarPersonaExterna} />
 
                     {/** Parte superior de la vista */}
                     <DatosPase _dataPaseGeneral={dataPaseGeneral} tituloPase={TITULO}
@@ -63,7 +88,8 @@ export const UsoDeMuelle = (props) => {
                     <div class="h-8"></div>
 
                     {/** Parte inferior tabla de personas */}
-                    <TablaTrabajadores datos={dataTablaGeneral} url={URL} />
+                    <TablaTrabajadores datos={personaExterna} url={URL}
+                        _guardarPersonaExterna={guardarPersonaExterna} />
                 </div>
             </div>
         </div>
