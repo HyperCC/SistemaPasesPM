@@ -25,10 +25,27 @@ const Rutas = () => {
                     <Navbar />
                     <AgregarPersona />
                 </Route>
+
                 <Route path="/SolicitudContratista/AgregarPersona">
                     <Navbar />
                     <AgregarPersonaContratista />
                 </Route>
+
+                <Route path="/SolicitudTripulante/AgregarPersona">
+                    <Navbar />
+                    <AgregarPersona />
+                </Route>
+
+                <Route path="/SolicitudUsoDeMuelle/AgregarPersona">
+                    <Navbar />
+                    <AgregarPersona />
+                </Route>
+
+                <Route path="/SolicitudProveedor/AgregarPersona">
+                    <Navbar />
+                    <AgregarPersona />
+                </Route>
+
                 <Route path="/" exact>
                     <Home />
                 </Route>
