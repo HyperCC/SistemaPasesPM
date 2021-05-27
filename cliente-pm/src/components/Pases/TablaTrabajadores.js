@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react'
+import { useHistory } from "react-router-dom";
 
 export const TablaTrabajadores = props => {
+    const url = props.url;
+    let history = useHistory();
 
     return (
         <div class="bg-white p-4 md:p-8 rounded-lg shadow-md">
@@ -103,6 +106,15 @@ export const TablaTrabajadores = props => {
                         </svg>
                     </button>
                 </div>
+            </div>
+            <div class="flex justify-between items-center py-4 p-4">
+                <button onClick={() => history.goBack()} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+                    Cancelar
+                </button>
+
+                <button type="submit" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+                    Guardar
+                </button>
             </div>
         </div>
     )
