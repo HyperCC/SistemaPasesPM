@@ -38,11 +38,11 @@ namespace Aplicacion.Pases
             public string FechaTermino { get; set; }
 
             // Personas para pase generico
-            public ICollection<PersonaExternaGenericaRequest> Personas { get; set; } // nullable
+            public ICollection<PersonaExternaGenericaRequest> PersonasExternas { get; set; } // nullable
             // Personas para pase contratista
             public ICollection<PersonaExternaContratistaRequest> PersonasContratista { get; set; } //nullable
             // documentos de empresa para pase contratista
-            public DocumentosEmpresaContratistaRequest SeccionDocumentosEmpresa { get; set; } // nulable
+            public ICollection<DocumentosEmpresaContratistaRequest> SeccionDocumentosEmpresa { get; set; } // nulable
         }
 
         /// <summary>
@@ -57,10 +57,9 @@ namespace Aplicacion.Pases
                 this.RuleFor(x => x.RutEmpresa).NotEmpty();
                 this.RuleFor(x => x.NombreEmpresa).NotEmpty();
                 this.RuleFor(x => x.Tipo).NotEmpty();
-                this.RuleFor(x => x.Completitud).NotEmpty();
                 this.RuleFor(x => x.FechaInicio).NotEmpty();
                 this.RuleFor(x => x.FechaTermino).NotEmpty();
-                this.RuleFor(x => x.Personas).NotEmpty();
+                this.RuleFor(x => x.PersonasExternas).NotEmpty();
             }
         }
 
@@ -81,6 +80,10 @@ namespace Aplicacion.Pases
 
             public async Task<Unit> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
+                Console.WriteLine("---------------------------------------");
+                Console.WriteLine($"VALOR DE LA COMPLETITUD {request.Completitud}");
+                Console.WriteLine("---------------------------------------");
+
                 // validacion del formato del request
                 EjecutaValidacion validator = new EjecutaValidacion();
                 var validacionesRes = validator.Validate(request);
@@ -106,7 +109,7 @@ namespace Aplicacion.Pases
 
 
                 // usuario en sesion actual
-                var usuarioActual = await this._userManager.FindByNameAsync(this._usuarioSesion.ObtenerUsuarioSesion());
+                var usuarioActual = await this._userManager.FindByNameAsync("admin@gmail.com");
 
                 // buscar si la empresa existe 
                 var buscarEmpresa = await this._context.Empresa
@@ -161,20 +164,15 @@ namespace Aplicacion.Pases
                 */
 
 
-                if (request.Personas != null)
+                if (request.PersonasExternas != null)
                     // agregar las personas externas aderidas al pase 
-                    foreach (var personaIndividual in request.Personas)
+                    foreach (var personaIndividual in request.PersonasExternas)
                     {
-                        if(personaIndividual.PasaporteORut == "RUT")
-                        {
-
-                        }
-
                         // buscar o almacenar la persona por rut
                         Persona buscarPersona = await BuscarOAlmacenarPersona.BuscarOAgregarPersona(this._context,
                             personaIndividual.Rut,
                             personaIndividual.Nombres,
-                            personaIndividual.Apellidos);
+                            (personaIndividual.PrimerApellido + " " + personaIndividual.SegundoApellido));
 
                         // buscar por la persona externa segun la Persona ya encontrada
                         var buscarPersonaExterna = await BuscarOAlmacenarPersonaExterna.BuscarOAgregarPersonaExterna(this._context,

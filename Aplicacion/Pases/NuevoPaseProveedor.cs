@@ -130,7 +130,7 @@ namespace Aplicacion.Pases
 
                             // agregar los nombres respectivos de la persona
                             await AlmacenarNombres.AgregarNombres(personaIndividual.Nombres,
-                                personaIndividual.Apellidos,
+                                (personaIndividual.PrimerApellido + " " + personaIndividual.SegundoApellido),
                                 this._context,
                                 buscarPersona.PersonaId);
                         }
@@ -145,7 +145,7 @@ namespace Aplicacion.Pases
                             {
                                 PersonaExternaId = new Guid(),
                                 Nacionalidad = personaIndividual.Nacionalidad,
-                                Pasaporte = personaIndividual.PasaporteORut == "PASAPORTE" ? personaIndividual.Pasaporte : null,
+                                //Pasaporte = personaIndividual.PasaporteORut == "PASAPORTE" ? personaIndividual.Pasaporte : null,
                                 PersonaId = buscarPersona.PersonaId
                             };
                             await this._context.PersonaExterna.AddAsync(buscarPersonaExterna);

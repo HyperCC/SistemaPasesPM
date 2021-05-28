@@ -14,7 +14,27 @@ const listaMensajesExito = [
     {
         'cod': 'exi-pe0000',
         'mess': 'Datos obtenidos para el perfil obtenidos correctamente.'
-    }
+    },
+    {
+        'cod': 'exi-ptre00',
+        'mess': 'Pase de tipo Tripulante generado existosamente.'
+    },
+    {
+        'cod': 'exi-pumre0',
+        'mess': 'Pase de tipo Uso de Muelle generado existosamente.'
+    },
+    {
+        'cod': 'exi-ppre00',
+        'mess': 'Pase de tipo Proveedor de servicio generado existosamente.'
+    },
+    {
+        'cod': 'exi-pcre00',
+        'mess': 'Pase de tipo Contratista generado existosamente.'
+    },
+    {
+        'cod': 'exi-pvre00',
+        'mess': 'Pase de tipo Visita generado existosamente.'
+    },
 ];
 
 // errores por parte del usuario

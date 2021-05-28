@@ -31,7 +31,7 @@ namespace WebApi.Controllers
             => await this.MediadorHerencia.Send(new ListaPases.Ejecuta());
 
         /// <summary>
-        /// 
+        /// registrar un pase generico
         /// </summary>
         /// <param name="parametros"></param>
         /// <returns></returns>

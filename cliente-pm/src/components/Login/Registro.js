@@ -101,7 +101,7 @@ export default function Registro() {
                     setCurrentNotification('exi-re0000');
                 }
 
-                // si no hay conexion con el servidor pero si al cliente.
+                // si no hay conexion con la API
             } else {
                 setCurrentNotification('err-nhc000');
             }

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { DatosPase } from './DatosPase';
 import { TablaTrabajadores } from './TablaTrabajadores';
 import { useHistory } from "react-router-dom";
+import { registrarPaseGenerico } from '../../actions/UsuarioAction';
+import { LanzarNoritificaciones } from '../avisos/LanzarNotificaciones';
+
 
 export const Tripulante = (props) => {
 
@@ -10,30 +13,44 @@ export const Tripulante = (props) => {
     const TITULO = 'Tripulante';
     const history = useHistory();
 
+    // codigo actual de la notificacion a mostrar
+    const [currentNotification, setCurrentNotification] = useState('none');
+    // posibles campos invalidos enviados por el usuario
+    const [currentCamposInvalidos, setCurrentCamposInvalidos] = useState([]);
+
     // datos para enviar a la API
     const [dataPaseGeneral, setDataPaseGeneral] = useState(() => {
         const variables = JSON.parse(window.localStorage.getItem('datos_pase_general_tripulante'));
         if (variables === null) {
             return {
-                Area: null,
-                RutEmpresa: null,
-                NombreEmpresa: null,
-                Motivo: null,
-                ServicioAdjudicado: null,
-                FechaInicio: null,
-                FechaTermino: null,
-                PersonasExternas: []
+                Area: '',
+                Motivo: '',
+                RutEmpresa: '',
+                NombreEmpresa: '',
+                Tipo: 'TRIPULANTE',
+                ServicioAdjudicado: '',
+                Completitud: true, //bool
+                FechaInicio: '',
+                FechaTermino: '',
+                PersonasExternas: [],
+                PersonasContratista: [],
+                SeccionDocumentosEmpresa: []
             }
+
         } else {
             return {
                 Area: variables.Area,
+                Motivo: variables.Motivo,
                 RutEmpresa: variables.RutEmpresa,
                 NombreEmpresa: variables.NombreEmpresa,
-                Motivo: variables.Motivo,
+                Tipo: variables.Tipo,
                 ServicioAdjudicado: variables.ServicioAdjudicado,
+                Completitud: false, //bool
                 FechaInicio: variables.FechaInicio,
                 FechaTermino: variables.FechaTermino,
-                PersonasExternas: []
+                PersonasExternas: [],
+                PersonasContratista: [],
+                SeccionDocumentosEmpresa: []
             }
         }
     });
@@ -66,50 +83,63 @@ export const Tripulante = (props) => {
         };
     }, []);
 
+    // cuando cambien los datos en personaExterna
     useEffect(() => {
         // esperar actualizacion de personas actuales
         window.localStorage.setItem('lista_personas_externas_tripulante', JSON.stringify(personaExterna));
+
+        // agregar la lista de usuario al pase para enviar
+        setDataPaseGeneral(anterior => ({
+            ...anterior, // mantener lo que existe antes
+            ['PersonasExternas']: personaExterna
+        }));
     }, [personaExterna]);
 
+    // cuando cambien los datos en dataPaseGeneral
     useEffect(() => {
         // esperar actualizacion de los datos generales en el pase
         window.localStorage.setItem('datos_pase_general_tripulante', JSON.stringify(dataPaseGeneral));
     }, [dataPaseGeneral])
 
-    // guardar una persona externa
-    const guardarPersonaExterna = jsonPersona => {
-        console.log('PERSONA EXTERNA RECIBIDA', jsonPersona);
-
-        // agregar un nuevo usuario a la lista de personas externas
-        setPersonaExterna(persona => [...persona, jsonPersona]);
-
-        //window.localStorage.setItem('lista_personas_externas_tripulante', JSON.stringify(personaExterna));
-        console.log(window.localStorage.getItem('lista_personas_externas_tripulante'));
-    };
-
     // actualizar la memoria volatil para persistir los cambbios actuales
-    const actualizarDatosEnMemoria = () => {
+    const enviarFormulario = inforFormulario => {
 
-        // agregar la lista de usuario al pase
-        setDataPaseGeneral(anterior => ({
-            ...anterior, // mantener lo que existe antes
-            ['PersonasExternas']: personaExterna
-        }));
+        inforFormulario.preventDefault();
+        console.log('todos los datos para enviar: ', dataPaseGeneral);
 
-        // TODO: hacer la reasignacion de datos almacenados
-        window.localStorage.setItem('datos_pase_general_tripulante', JSON.stringify({
-            'Area': dataPaseGeneral.Area,
-            'RutEmpresa': dataPaseGeneral.RutEmpresa,
-            'NombreEmpresa': dataPaseGeneral.NombreEmpresa,
-            'Motivo': dataPaseGeneral.Motivo,
-            'ServicioAdjudicado': dataPaseGeneral.ServicioAdjudicado,
-            'FechaInicio': dataPaseGeneral.FechaInicio,
-            'FechaTermino': dataPaseGeneral.FechaTermino,
-        }));
+        // enviar los datos a la API
+        registrarPaseGenerico(dataPaseGeneral).then(response => {
 
-        window.localStorage.setItem('lista_personas_externas_tripulante', JSON.stringify(personaExterna));
-        console.log('personas externas: ', window.localStorage.getItem('lista_personas_externas_tripulante'));
-        console.log('datos pase: ', window.localStorage.getItem('datos_pase_general_tripulante'));
+            // si existe alguna respuesta de la API
+            if (typeof response !== 'undefined') {
+                console.log('si existe conexion con la api. ', response);
+
+                // si se reciben errores
+                if (typeof response.data.errores != 'undefined') {
+                    console.log('existen errores en la respuesta: ', response.data.errores.mensaje);
+
+                    console.log('el tipo de error: ', response.data.errores.tipoError);
+                    setCurrentNotification(response.data.errores.tipoError);
+                    console.log('TIPO ACTUAL DE NOTIFICACION ', currentNotification);
+
+                    if (typeof response.data.errores.listaErrores !== 'undefined')
+                        setCurrentCamposInvalidos(response.data.errores.listaErrores);
+
+                    // si toda la operacion salio ok
+                } else {
+                    console.log('toda la operacion fue correcta');
+                    //window.localStorage.setItem('mensaje_success', 'exi-ptre00');
+                    //window.localStorage.setItem('mensaje_success_showed', false);
+                    setCurrentNotification('exi-ptre00');
+                    // limpiar las memorias locales
+                    cancelarGuardado();
+                }
+
+                // si no hay conexion con la API
+            } else {
+                setCurrentNotification('err-nhc000');
+            }
+        });
     };
 
     // cancelar el guardado del pase y limpiar memoria
@@ -124,7 +154,9 @@ export const Tripulante = (props) => {
     return (
         <div class="bg-gray-100 min-h-screen">
             <div class="md:max-w-6xl w-full mx-auto py-8">
-                <div class="sm:px-8 px-4">
+                <form class="sm:px-8 px-4">
+
+                    <LanzarNoritificaciones codigo={currentNotification} camposInvalidos={currentCamposInvalidos} />
 
                     {/** Parte superior de la vista */}
                     <DatosPase _dataPaseGeneral={dataPaseGeneral} tituloPase={TITULO}
@@ -134,10 +166,10 @@ export const Tripulante = (props) => {
 
                     {/** Parte inferior tabla de personas */}
                     <TablaTrabajadores datos={personaExterna} url={URL}
-                        _guardarPersonaExterna={guardarPersonaExterna}
+                        _enviarFormulario={enviarFormulario}
                         _cancelarGuardado={cancelarGuardado} />
 
-                </div>
+                </form>
             </div>
         </div>
     );

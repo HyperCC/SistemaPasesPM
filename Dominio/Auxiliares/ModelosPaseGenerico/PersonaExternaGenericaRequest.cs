@@ -15,8 +15,8 @@ namespace Dominio.Auxiliares.Pases
     public class PersonaExternaGenericaRequest
     {
         public string Nombres { get; set; }
-        public string Apellidos { get; set; }
-        public string PasaporteORut { get; set; }
+        public string PrimerApellido { get; set; }
+        public string SegundoApellido { get; set; }
         public string Pasaporte { get; set; }
         public string Rut { get; set; }
         public string Nacionalidad { get; set; }

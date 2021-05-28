@@ -21,7 +21,7 @@ export const TablaTrabajadores = props => {
                             Agregar Persona
                         </a>
 
-                        <button type="submit" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+                        <button type="submit" onClick={props._enviarFormulario} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                             Guardar
                         </button>
 

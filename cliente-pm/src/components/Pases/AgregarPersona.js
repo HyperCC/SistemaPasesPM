@@ -77,7 +77,7 @@ const AgregarPersona = props => {
                             </p>
                         </div>
 
-                        <form>
+                        <div>
                             {/* DATOS PRINCIPALES PARA TRABAJADOR */}
                             <div class="grid grid-cols-3 px-4 md:px-8 gap-4 mt-12">
 
@@ -148,7 +148,7 @@ const AgregarPersona = props => {
                                     Guardar
                             </button>
                             </div>
-                        </form>
+                        </div>
 
                     </div>
                 </div>
