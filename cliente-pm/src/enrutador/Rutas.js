@@ -16,6 +16,8 @@ import RenderFiles from '../components/RenderFiles';
 import { Tripulante } from '../components/pases/Tripulante';
 import { UsoDeMuelle } from '../components/pases/UsoDeMuelle';
 import { Proveedor } from '../components/pases/Proveedor';
+import AreaContacto from '../components/aprobacionPases/AreaContacto';
+
 
 const Rutas = () => {
     return (
@@ -98,6 +100,11 @@ const Rutas = () => {
                 <Route path="/SolicitudTripulante">
                     <Navbar />
                     <Tripulante />
+                </Route>
+
+                <Route path="/areaContacto">
+                    <Navbar />
+                    <AreaContacto />
                 </Route>
 
             </Switch>

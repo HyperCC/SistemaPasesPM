@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
+import AgregarPersona from './AgregarPersona';
 import { DatosPase } from './DatosPase';
 import { TablaTrabajadores } from './TablaTrabajadores';
 
@@ -9,46 +10,101 @@ export const Tripulante = (props) => {
     const TITULO = 'Tripulante';
 
     // datos para enviar a la API
-    const [dataPaseGeneral, setDataPaseGeneral] = useState({
-        Area: null,
-        RutEmpresa: null,
-        NombreEmpresa: null,
-        Motivo: null,
-        ServicioAdjudicado: null,
-        FechaInicio: null,
-        FechaTermino: null
+    const [dataPaseGeneral, setDataPaseGeneral] = useState(() => {
+        const variables = JSON.parse(window.localStorage.getItem('datos_pase_general'));
+        if (variables === null) {
+            return {
+                Area: null,
+                RutEmpresa: null,
+                NombreEmpresa: null,
+                Motivo: null,
+                ServicioAdjudicado: null,
+                FechaInicio: null,
+                FechaTermino: null,
+                PersonasExternas: []
+            }
+        } else {
+            return {
+                Area: variables.Area,
+                RutEmpresa: variables.RutEmpresa,
+                NombreEmpresa: variables.NombreEmpresa,
+                Motivo: variables.Motivo,
+                ServicioAdjudicado: variables.ServicioAdjudicado,
+                FechaInicio: variables.FechaInicio,
+                FechaTermino: variables.FechaTermino,
+                PersonasExternas: []
+            }
+        }
     });
 
-    const dataTablaGeneral = [
-        {
-            Nombre: 'Daniel Castillo Vasquez',
-            RutPasaporte: '11.222.333-4',
-            Nacionalidad: 'Chilena'
-        },
-        {
-            Nombre: 'Mariá Angelica Domínguez Soto',
-            RutPasaporte: '55.666.777-8',
-            Nacionalidad: 'Chilena'
-        },
-        {
-            Nombre: 'Nombre prueba',
-            RutPasaporte: '11.111.111-1',
-            Nacionalidad: 'Chilena'
-        },
-        {
-            Nombre: 'Nombre prueba 2',
-            RutPasaporte: '22.222.222-2',
-            Nacionalidad: 'Chilena'
-        }
-    ];
-
-    // asignar nuevos valores al state del registro
-    // asignar nuevos valores al state del registro
+     // asignar nuevos valores al state del registro
     const ingresarValoresMemoria = (name, date) => {
         setDataPaseGeneral(anterior => ({
             ...anterior, // mantener lo que existe antes
             [name]: date // solo cambiar el input mapeado
         }));
+    };
+
+
+    // tomar una lista de personas en memoria o iniciar una nueva lista
+    const [personaExterna, setPersonaExterna] = useState(
+        window.localStorage.getItem('lista_personas_externas') === null ?
+            [] :
+            JSON.parse(window.localStorage.getItem('lista_personas_externas')));
+
+    // al cargar la pagina verifica si hay persona externas por agregar
+    useEffect(() => {
+        const newPersona = window.localStorage.getItem('nueva_persona_externa');
+        if (newPersona !== null) {
+            if (!JSON.stringify(personaExterna).includes(newPersona)) {
+                setPersonaExterna(persona => [...persona, JSON.parse(newPersona)]);
+                window.localStorage.removeItem('nueva_persona_externa');
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        // esperar actualizacion de personas actuales
+        window.localStorage.setItem('lista_personas_externas', JSON.stringify(personaExterna));
+    }, [personaExterna]);
+    useEffect(() => {
+        window.localStorage.setItem('datos_pase_general', JSON.stringify(dataPaseGeneral));
+    }, [dataPaseGeneral])
+
+    // guardar una persona externa
+    const guardarPersonaExterna = jsonPersona => {
+        console.log('PERSONA EXTERNA RECIBIDA', jsonPersona);
+
+        // agregar un nuevo usuario a la lista de personas externas
+        setPersonaExterna(persona => [...persona, jsonPersona]);
+
+        //window.localStorage.setItem('lista_personas_externas', JSON.stringify(personaExterna));
+        console.log(window.localStorage.getItem('lista_personas_externas'));
+    };
+
+    // actualizar la memoria volatil para persistir los cambbios actuales
+    const actualizarDatosEnMemoria = () => {
+
+        // agregar la lista de usuario al pase
+        setDataPaseGeneral(anterior => ({
+            ...anterior, // mantener lo que existe antes
+            ['PersonasExternas']: personaExterna
+        }));
+
+        // TODO: hacer la reasignacion de datos almacenados
+        window.localStorage.setItem('datos_pase_general', JSON.stringify({
+            'Area': dataPaseGeneral.Area,
+            'RutEmpresa': dataPaseGeneral.RutEmpresa,
+            'NombreEmpresa': dataPaseGeneral.NombreEmpresa,
+            'Motivo': dataPaseGeneral.Motivo,
+            'ServicioAdjudicado': dataPaseGeneral.ServicioAdjudicado,
+            'FechaInicio': dataPaseGeneral.FechaInicio,
+            'FechaTermino': dataPaseGeneral.FechaTermino,
+        }));
+
+        window.localStorage.setItem('lista_personas_externas', JSON.stringify(personaExterna));
+        console.log('personas externas: ', window.localStorage.getItem('lista_personas_externas'));
+        console.log('datos pase: ', window.localStorage.getItem('datos_pase_general'));
     };
 
 
@@ -64,7 +120,8 @@ export const Tripulante = (props) => {
                     <div class="h-8"></div>
 
                     {/** Parte inferior tabla de personas */}
-                    <TablaTrabajadores datos={dataTablaGeneral} url={URL} />
+                    <TablaTrabajadores datos={personaExterna} url={URL} 
+                    _guardarPersonaExterna={guardarPersonaExterna} />
                 </div>
             </div>
         </div>
