@@ -117,7 +117,7 @@ const AgregarPersona = props => {
 
                             {/* ENVIAR DATOS */}
                             <div class="mt-12 flex justify-center">
-                                <button type="submit" onClick={GuardarUnaPersona}
+                                <button type="submit" onClick={GuardarUnaPersona} href=""
                                     class="bg-azul-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                                     Guardar
                             </button>
