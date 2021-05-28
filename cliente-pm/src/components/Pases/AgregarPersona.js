@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { guardarPersonaExterna2 } from './UsoDeMuelle';
+import { useHistory } from "react-router-dom";
 
 const AgregarPersona = props => {
+
+    const history = useHistory();
 
     // datos a guardar para el form
     const [personaExterna, setPersonaExterna] = useState({
@@ -33,10 +35,35 @@ const AgregarPersona = props => {
     // enviar persona completa para almacenarlo
     const GuardarUnaPersona = infoFormulario => {
         infoFormulario.preventDefault();
-        //alert("The URL of this page is: " + window.location.href);
+        //window.alert("The URL of this page is: " + window.location.hostname + ":" + window.location.port);
+
+        const currentLocation = window.location.href;
+
+        if (currentLocation.includes('SolicitudVisita')) {
+            window.localStorage.setItem('nueva_persona_externa_visita', JSON.stringify(personaExterna));
+            history.push("/SolicitudVisita");
+
+        } else if (currentLocation.includes('SolicitudContratista')) {
+            window.localStorage.setItem('nueva_persona_externa_contratista', JSON.stringify(personaExterna));
+            history.push("/SolicitudContratista");
+
+        } else if (currentLocation.includes('SolicitudProveedor')) {
+            window.localStorage.setItem('nueva_persona_externa_proveedor', JSON.stringify(personaExterna));
+            history.push("/SolicitudProveedor");
+
+        } else if (currentLocation.includes('SolicitudUsoDeMuelle')) {
+            window.localStorage.setItem('nueva_persona_externa_uso_muelle', JSON.stringify(personaExterna));
+            history.push("/SolicitudUsoDeMuelle");
+
+        } else {
+            window.localStorage.setItem('nueva_persona_externa_uso_tripulante', JSON.stringify(personaExterna));
+            history.push("/SolicitudTripulante");
+
+        }
+
 
         //props._guardarPersonaExterna(personaExterna);
-        window.localStorage.setItem('nueva_persona_externa', JSON.stringify(personaExterna));
+        //window.localStorage.setItem('nueva_persona_externa', JSON.stringify(personaExterna));
     };
 
     return (

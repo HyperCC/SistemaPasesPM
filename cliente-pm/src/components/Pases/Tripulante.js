@@ -1,5 +1,4 @@
-import React, {useEffect, useState } from 'react';
-import AgregarPersona from './AgregarPersona';
+import React, { useEffect, useState } from 'react';
 import { DatosPase } from './DatosPase';
 import { TablaTrabajadores } from './TablaTrabajadores';
 
@@ -11,7 +10,7 @@ export const Tripulante = (props) => {
 
     // datos para enviar a la API
     const [dataPaseGeneral, setDataPaseGeneral] = useState(() => {
-        const variables = JSON.parse(window.localStorage.getItem('datos_pase_general'));
+        const variables = JSON.parse(window.localStorage.getItem('datos_pase_general_tripulante'));
         if (variables === null) {
             return {
                 Area: null,
@@ -37,7 +36,7 @@ export const Tripulante = (props) => {
         }
     });
 
-     // asignar nuevos valores al state del registro
+    // asignar nuevos valores al state del registro
     const ingresarValoresMemoria = (name, date) => {
         setDataPaseGeneral(anterior => ({
             ...anterior, // mantener lo que existe antes
@@ -48,27 +47,31 @@ export const Tripulante = (props) => {
 
     // tomar una lista de personas en memoria o iniciar una nueva lista
     const [personaExterna, setPersonaExterna] = useState(
-        window.localStorage.getItem('lista_personas_externas') === null ?
+        window.localStorage.getItem('lista_personas_externas_tripulante') === null ?
             [] :
-            JSON.parse(window.localStorage.getItem('lista_personas_externas')));
+            JSON.parse(window.localStorage.getItem('lista_personas_externas_tripulante')));
 
     // al cargar la pagina verifica si hay persona externas por agregar
     useEffect(() => {
-        const newPersona = window.localStorage.getItem('nueva_persona_externa');
+        const newPersona = window.localStorage.getItem('nueva_persona_externa_tripulante');
+
+        // se almacenan los datos de agregar persona que se enviaron anteriormente
         if (newPersona !== null) {
             if (!JSON.stringify(personaExterna).includes(newPersona)) {
                 setPersonaExterna(persona => [...persona, JSON.parse(newPersona)]);
-                window.localStorage.removeItem('nueva_persona_externa');
+                window.localStorage.removeItem('nueva_persona_externa_tripulante');
             }
         };
     }, []);
 
     useEffect(() => {
         // esperar actualizacion de personas actuales
-        window.localStorage.setItem('lista_personas_externas', JSON.stringify(personaExterna));
+        window.localStorage.setItem('lista_personas_externas_tripulante', JSON.stringify(personaExterna));
     }, [personaExterna]);
+    
     useEffect(() => {
-        window.localStorage.setItem('datos_pase_general', JSON.stringify(dataPaseGeneral));
+        // esperar actualizacion de los datos generales en el pase
+        window.localStorage.setItem('datos_pase_general_tripulante', JSON.stringify(dataPaseGeneral));
     }, [dataPaseGeneral])
 
     // guardar una persona externa
@@ -78,8 +81,8 @@ export const Tripulante = (props) => {
         // agregar un nuevo usuario a la lista de personas externas
         setPersonaExterna(persona => [...persona, jsonPersona]);
 
-        //window.localStorage.setItem('lista_personas_externas', JSON.stringify(personaExterna));
-        console.log(window.localStorage.getItem('lista_personas_externas'));
+        //window.localStorage.setItem('lista_personas_externas_tripulante', JSON.stringify(personaExterna));
+        console.log(window.localStorage.getItem('lista_personas_externas_tripulante'));
     };
 
     // actualizar la memoria volatil para persistir los cambbios actuales
@@ -92,7 +95,7 @@ export const Tripulante = (props) => {
         }));
 
         // TODO: hacer la reasignacion de datos almacenados
-        window.localStorage.setItem('datos_pase_general', JSON.stringify({
+        window.localStorage.setItem('datos_pase_general_tripulante', JSON.stringify({
             'Area': dataPaseGeneral.Area,
             'RutEmpresa': dataPaseGeneral.RutEmpresa,
             'NombreEmpresa': dataPaseGeneral.NombreEmpresa,
@@ -102,9 +105,9 @@ export const Tripulante = (props) => {
             'FechaTermino': dataPaseGeneral.FechaTermino,
         }));
 
-        window.localStorage.setItem('lista_personas_externas', JSON.stringify(personaExterna));
-        console.log('personas externas: ', window.localStorage.getItem('lista_personas_externas'));
-        console.log('datos pase: ', window.localStorage.getItem('datos_pase_general'));
+        window.localStorage.setItem('lista_personas_externas_tripulante', JSON.stringify(personaExterna));
+        console.log('personas externas: ', window.localStorage.getItem('lista_personas_externas_tripulante'));
+        console.log('datos pase: ', window.localStorage.getItem('datos_pase_general_tripulante'));
     };
 
 
@@ -120,8 +123,8 @@ export const Tripulante = (props) => {
                     <div class="h-8"></div>
 
                     {/** Parte inferior tabla de personas */}
-                    <TablaTrabajadores datos={personaExterna} url={URL} 
-                    _guardarPersonaExterna={guardarPersonaExterna} />
+                    <TablaTrabajadores datos={personaExterna} url={URL}
+                        _guardarPersonaExterna={guardarPersonaExterna} />
                 </div>
             </div>
         </div>
