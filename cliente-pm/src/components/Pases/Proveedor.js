@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { DatosPase } from './DatosPase';
 import { TablaTrabajadores } from './TablaTrabajadores';
+import { useHistory } from "react-router-dom";
 
 export const Proveedor = (props) => {
 
     //Datos generales del pase
     const URL = '/SolicitudProveedor';
     const TITULO = 'Proveedor';
+    const history = useHistory();
 
     // datos para enviar a la API
     const [dataPaseGeneral, setDataPaseGeneral] = useState(() => {
@@ -110,6 +112,14 @@ export const Proveedor = (props) => {
         console.log('datos pase: ', window.localStorage.getItem('datos_pase_general_proveedor'));
     };
 
+    // cancelar el guardado del pase y limpiar memoria
+    const cancelarGuardado = () => {
+        window.localStorage.removeItem('lista_personas_externas_proveedor');
+        window.localStorage.removeItem('datos_pase_general_proveedor');
+        window.localStorage.removeItem('nueva_persona_externa_proveedor');
+        history.push("/Perfil");
+    };
+
 
     return (
         <div class="bg-gray-100 min-h-screen">
@@ -124,7 +134,8 @@ export const Proveedor = (props) => {
 
                     {/** Parte inferior tabla de personas */}
                     <TablaTrabajadores datos={personaExterna} url={URL}
-                        _guardarPersonaExterna={guardarPersonaExterna} />
+                        _guardarPersonaExterna={guardarPersonaExterna}
+                        _cancelarGuardado={cancelarGuardado} />
 
                 </div>
             </div>

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { DatosPase } from './DatosPase';
 import { TablaTrabajadores } from './TablaTrabajadores';
+import { useHistory } from "react-router-dom";
 
 export const Tripulante = (props) => {
 
     //Datos generales del pase
     const URL = '/SolicitudTripulante';
     const TITULO = 'Tripulante';
+    const history = useHistory();
 
     // datos para enviar a la API
     const [dataPaseGeneral, setDataPaseGeneral] = useState(() => {
@@ -68,7 +70,7 @@ export const Tripulante = (props) => {
         // esperar actualizacion de personas actuales
         window.localStorage.setItem('lista_personas_externas_tripulante', JSON.stringify(personaExterna));
     }, [personaExterna]);
-    
+
     useEffect(() => {
         // esperar actualizacion de los datos generales en el pase
         window.localStorage.setItem('datos_pase_general_tripulante', JSON.stringify(dataPaseGeneral));
@@ -110,6 +112,14 @@ export const Tripulante = (props) => {
         console.log('datos pase: ', window.localStorage.getItem('datos_pase_general_tripulante'));
     };
 
+    // cancelar el guardado del pase y limpiar memoria
+    const cancelarGuardado = () => {
+        window.localStorage.removeItem('lista_personas_externas_tripulante');
+        window.localStorage.removeItem('datos_pase_general_tripulante');
+        window.localStorage.removeItem('nueva_persona_externa_tripulante');
+        history.push("/Perfil");
+    };
+
 
     return (
         <div class="bg-gray-100 min-h-screen">
@@ -124,7 +134,9 @@ export const Tripulante = (props) => {
 
                     {/** Parte inferior tabla de personas */}
                     <TablaTrabajadores datos={personaExterna} url={URL}
-                        _guardarPersonaExterna={guardarPersonaExterna} />
+                        _guardarPersonaExterna={guardarPersonaExterna}
+                        _cancelarGuardado={cancelarGuardado} />
+
                 </div>
             </div>
         </div>

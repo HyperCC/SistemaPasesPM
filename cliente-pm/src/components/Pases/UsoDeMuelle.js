@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { DatosPase } from './DatosPase';
 import { TablaTrabajadores } from './TablaTrabajadores';
+import { useHistory } from "react-router-dom";
 
 export const UsoDeMuelle = (props) => {
 
     //Datos generales del pase
     const URL = '/SolicitudUsoDeMuelle';
     const TITULO = 'Uso de Muelle';
+    const history = useHistory();
 
     // datos para enviar a la API
     const [dataPaseGeneral, setDataPaseGeneral] = useState(() => {
@@ -109,6 +111,15 @@ export const UsoDeMuelle = (props) => {
         console.log('datos pase: ', window.localStorage.getItem('datos_pase_general_uso_muelle'));
     };
 
+    // cancelar el guardado del pase y limpiar memoria
+    const cancelarGuardado = () => {
+        window.localStorage.removeItem('lista_personas_externas_uso_muelle');
+        window.localStorage.removeItem('datos_pase_general_uso_muelle');
+        window.localStorage.removeItem('nueva_persona_externa_uso_muelle');
+        history.push("/Perfil");
+    };
+
+
     return (
         <div class="bg-gray-100 min-h-screen">
             <div class="md:max-w-6xl w-full mx-auto py-8">
@@ -122,7 +133,9 @@ export const UsoDeMuelle = (props) => {
 
                     {/** Parte inferior tabla de personas */}
                     <TablaTrabajadores datos={personaExterna} url={URL}
-                        _guardarPersonaExterna={guardarPersonaExterna} />
+                        _guardarPersonaExterna={guardarPersonaExterna}
+                        _cancelarGuardado={cancelarGuardado} />
+
                 </div>
             </div>
         </div>

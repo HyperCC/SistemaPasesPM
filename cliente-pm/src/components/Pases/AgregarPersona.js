@@ -55,12 +55,11 @@ const AgregarPersona = props => {
             window.localStorage.setItem('nueva_persona_externa_uso_muelle', JSON.stringify(personaExterna));
             history.push("/SolicitudUsoDeMuelle");
 
-        } else {
-            window.localStorage.setItem('nueva_persona_externa_uso_tripulante', JSON.stringify(personaExterna));
+        } else if(currentLocation.includes('SolicitudTripulante')){
+            window.localStorage.setItem('nueva_persona_externa_tripulante', JSON.stringify(personaExterna));
             history.push("/SolicitudTripulante");
 
         }
-
 
         //props._guardarPersonaExterna(personaExterna);
         //window.localStorage.setItem('nueva_persona_externa', JSON.stringify(personaExterna));

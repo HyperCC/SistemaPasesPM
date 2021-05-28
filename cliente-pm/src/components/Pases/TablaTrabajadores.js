@@ -15,15 +15,20 @@ export const TablaTrabajadores = props => {
 
                 {/* Botones para crear nuevo pase y pases buscados */}
                 <div class="text-end flex-none">
-                    <form class="flex-none md:flex w-full space-x-3">
+                    <div class="flex-none md:flex w-full space-x-3">
                         <a href={props.url + "/AgregarPersona"} faker={'faker'}
-                            className="w-44 text-center flex-shrink-0 block px-4 py-2 md:mt-0 mt-4 md:mx-0 mx-auto text-base font-semibold text-white bg-verde-pm rounded-md shadow-md hover:bg-amarillo-pm focus:outline-none transition duration-500">
+                            className="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                             Agregar Persona
                         </a>
+
                         <button type="submit" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                             Guardar
                         </button>
-                    </form>
+
+                        <button type="button" onClick={props._cancelarGuardado} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+                            Cancelar
+                        </button>
+                    </div>
                 </div>
             </div>
 
