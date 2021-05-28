@@ -92,7 +92,7 @@ const TablaPases = props => {
                                     </td>
 
                                     <td class="p-4 space-x-1">
-                                        <Popup trigger={<button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500"> Agregar Anexo</button>} modal nested>
+                                        <Popup trigger={<button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500"> Aprobar</button>} modal nested>
                                             { close => (
                                             <div className="modal">
                                         
@@ -142,8 +142,8 @@ const TablaPases = props => {
                                                     <button
                                                         class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500"
                                                         onClick={() => {
-                                                        console.log('modal closed ');
-                                                        close();
+                                                            console.log('modal closed ');
+                                                            close();
                                                         }}
                                                     >
                                                         Aprobar
