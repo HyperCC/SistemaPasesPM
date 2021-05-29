@@ -43,8 +43,6 @@ const Home = () => {
 
             if (typeof response !== 'undefined') {
 
-                console.log('se registro exitosamente el nuevo usuario. ', response);
-
                 // si se reciben errores
                 if (typeof response.data.errores !== 'undefined') {
                     console.log(response.data.errores.mensaje);
@@ -58,8 +56,10 @@ const Home = () => {
 
                     // si toda la operacion salio ok
                 } else {
-                    window.localStorage.setItem('mensaje_success', 'exi-le0000');
-                    window.localStorage.setItem('mensaje_success_showed', false);
+                    //window.localStorage.setItem('mensaje_success', 'exi-le0000');
+                    //window.localStorage.setItem('mensaje_success_showed', false);
+                    window.localStorage.setItem('token_seguridad', '');
+                    console.log('EL LOGIN FUE EXISTO ', response.data);
 
                     setCurrentNotification('exi-le0000');
                     setCurrentOpenNotificacion(true);

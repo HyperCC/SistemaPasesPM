@@ -8,7 +8,7 @@ export const registrarUsuario = usuario => {
                 resolve(response);
             })
             .catch(error => {
-                console.log('ERROR DEL RESPONSE EN REGISTRO USUARIO: ', eject);
+                console.log('ERROR DEL RESPONSE EN REGISTRO USUARIO: ', error.toString());
                 resolve(error.response);
             });
     });
@@ -22,7 +22,7 @@ export const loginUsuario = credenciales => {
                 resolve(response);
             })
             .catch(error => {
-                console.log(error);
+                console.log('erro durante el login', error.toString());
                 resolve(error.response);
             });
     });

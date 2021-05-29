@@ -13,6 +13,11 @@ export const UsoDeMuelle = (props) => {
     const TITULO = 'Uso de Muelle';
     const history = useHistory();
 
+    // codigo actual de la notificacion a mostrar
+    const [currentNotification, setCurrentNotification] = useState('none');
+    // posibles campos invalidos enviados por el usuario
+    const [currentCamposInvalidos, setCurrentCamposInvalidos] = useState([]);
+
     // datos para enviar a la API
     const [dataPaseGeneral, setDataPaseGeneral] = useState(() => {
         const variables = JSON.parse(window.localStorage.getItem('datos_pase_general_uso_muelle'));
