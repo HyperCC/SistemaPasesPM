@@ -1,4 +1,9 @@
 import ClienteHttp from '../serviciosWeb/ClienteHttp';
+import axios from 'axios';
+
+const instancia = axios.create();
+instancia.CancelToken = axios.CancelToken;
+instancia.isCancel = axios.isCancel;
 
 // registro de usuarios
 export const registrarUsuario = usuario => {
@@ -15,10 +20,17 @@ export const registrarUsuario = usuario => {
 };
 
 // login
-export const loginUsuario = credenciales => {
+export const loginUsuario = (credenciales, dispatch) => {
     return new Promise((resolve, eject) => {
-        ClienteHttp.post('/Usuario/login', credenciales)
+        instancia.post('/Usuario/login', credenciales)
             .then(response => {
+
+                dispatch({
+                    type: "INICIAR_SESION",
+                    sesion: response.data,
+                    autenticado: true
+                });
+
                 resolve(response);
             })
             .catch(error => {
@@ -33,6 +45,7 @@ export const perfilUsuario = () => {
     return new Promise((resolve, eject) => {
         ClienteHttp.get('/Cuenta')
             .then(response => {
+                console.log('response', response);
                 resolve(response);
             })
             .catch(error => {

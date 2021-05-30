@@ -15,6 +15,7 @@ using AutoMapper;
 using Aplicacion.ExcepcionesPersonalizadas;
 using System.Net;
 using Dominio.ModelosDto.ModelosParaPerfil;
+using Aplicacion.ConfiguracionLogin;
 
 namespace Aplicacion.Cuentas
 {
@@ -30,26 +31,23 @@ namespace Aplicacion.Cuentas
             private readonly IJwtGenerador _jwtGenerador;
             private readonly IUsuarioSesion _usuarioSesion;
             private readonly SistemaPasesContext _context;
-            private readonly IMapper _mapper;
 
             public Manejador(UserManager<Usuario> userManager,
                 IJwtGenerador jwtGenerador,
                 IUsuarioSesion sesion,
-                SistemaPasesContext context,
-                IMapper mapper)
+                SistemaPasesContext context)
             {
                 this._userManager = userManager;
                 this._jwtGenerador = jwtGenerador;
                 this._usuarioSesion = sesion;
                 this._context = context;
-                this._mapper = mapper;
             }
 
             public async Task<CuentaUsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
                 // obtener al ususario con sesion actual 
                 //var usuario = await this._userManager.FindByNameAsync(this._usuarioSesion.ObtenerUsuarioSesion());
-
+                Console.WriteLine("EL SUSUARIO ACTUAL ES ESTE : " + this._usuarioSesion.ObtenerUsuarioSesion());
                 // obtencion de las entidades relacionadas
                 var usuario = await this._context.Usuario
                     .Include(x => x.EmpresaRel)
@@ -58,7 +56,7 @@ namespace Aplicacion.Cuentas
                     .ThenInclude(y => y.PersonaExternaRel)
                     .Include(x => x.PersonaRel.TipoNombresRel)
                     .ThenInclude(z => z.TipoNombreRel)
-                    .FirstOrDefaultAsync(x => x.UserName == "admin@gmail.com");
+                    .FirstOrDefaultAsync(x => x.UserName == this._usuarioSesion.ObtenerUsuarioSesion());
 
                 // si en algun caso el Email del usuario ingresado no este almacenado
                 if (usuario == null)

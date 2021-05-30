@@ -3,11 +3,11 @@ import axios from 'axios';
 axios.defaults.baseURL = 'https://localhost:5001/api';
 
 // agregar los token una validadas las credenciales 
-/*
+
 axios.interceptors.request.use((config) => {
     const token_seguridad = window.localStorage.getItem('token_seguridad');
     if (token_seguridad) {
-        config.headers.Authorization = 'Bearer ' + token_seguridad;
+        config.headers.Authorization = token_seguridad;
         console.log('todo el registro de token fue bien ', config);
         return config;
     }
@@ -15,7 +15,6 @@ axios.interceptors.request.use((config) => {
 }, error =>
     Promise.reject(error.toString())
 );
-*/
 
 // respuestas para verbos http con axios
 const requestGenerico = {

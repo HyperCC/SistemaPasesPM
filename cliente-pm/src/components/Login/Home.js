@@ -3,8 +3,12 @@ import { loginUsuario } from '../../actions/UsuarioAction';
 import '../../App.css';
 import Image from '../../images/Blanco.png';
 import { LanzarNoritificaciones } from '../avisos/LanzarNotificaciones';
+import { useStateValue } from '../../contexto/Store';
+import { useHistory } from "react-router-dom";
 
 const Home = () => {
+    const history = useHistory();
+    const [{ usuarioSesion }, dispatch] = useStateValue();
 
     // atributos para el registro de usuario
     const [dataUsuario, setDataUsuario] = useState({
@@ -39,7 +43,7 @@ const Home = () => {
         infoFormulario.preventDefault();
         console.log('data usuario: ', dataUsuario);
 
-        loginUsuario(dataUsuario).then(response => {
+        loginUsuario(dataUsuario, dispatch).then(response => {
 
             if (typeof response !== 'undefined') {
 
@@ -58,11 +62,12 @@ const Home = () => {
                 } else {
                     //window.localStorage.setItem('mensaje_success', 'exi-le0000');
                     //window.localStorage.setItem('mensaje_success_showed', false);
-                    window.localStorage.setItem('token_seguridad', '');
-                    console.log('EL LOGIN FUE EXISTO ', response.data);
+                    window.localStorage.setItem('token_seguridad', 'Bearer ' + response.data.token);
+                    console.log('EL LOGIN FUE EXISTO ', response.data.token);
 
                     setCurrentNotification('exi-le0000');
                     setCurrentOpenNotificacion(true);
+                    history.push('/Perfil');
                 }
 
                 // si no hay conexion con el servidor pero si al cliente.

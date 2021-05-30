@@ -4,10 +4,12 @@ import DatosUsuario from './auxiliaresPerfilGeneral/DatosUsuario';
 import TablaPases from './auxiliaresPerfilGeneral/TablaPases';
 import { perfilUsuario } from '../../actions/UsuarioAction';
 import { LanzarNoritificaciones } from '../avisos/LanzarNotificaciones';
+import { useStateValue } from "../../contexto/Store";
 
 
 // vista principal para el perfil general
 const PerfilGeneral = () => {
+    const [{ sesionUsuario }, dispatch] = useStateValue();
 
     const dataUsuarioGeneral = {
         NombreCompleto: 'Camilo Cortes Egaña',
@@ -67,42 +69,6 @@ const PerfilGeneral = () => {
         },
     ];
 
-    const dataPasesGeneral = [
-        {
-            FechaInicio: '05/04/2021',
-            FechaTermino: '23/04/2021',
-            Motivo: 'Entrevista para desarrollo',
-            Area: 'HSEQ',
-            Tipo: 'Visita',
-            Estado: 'Finalizado'
-        },
-        {
-            FechaInicio: '28/04/2021',
-            FechaTermino: '28/04/2021',
-            Motivo: 'Muestra de avance',
-            Area: 'Informatica',
-            Tipo: 'Visita',
-            Estado: 'Revision'
-        },
-        {
-            FechaInicio: '28/04/2021',
-            FechaTermino: '28/04/2021',
-            Motivo: 'Muestra de avance',
-            Area: 'Informatica',
-            Tipo: 'Visita',
-            Estado: 'Aprobado'
-        },
-        {
-            FechaInicio: '28/04/2021',
-            FechaTermino: '28/04/2021',
-            Motivo: 'Muestra de avance',
-            Area: 'Informatica',
-            Tipo: 'Visita',
-            Estado: 'Rechazado'
-        }
-    ];
-
-
     // atributos para el perfil del usuario
     const [dataUsuario, setDataUsuario] = useState({});
     // codigo actual de la notificacion a mostrar
@@ -117,6 +83,8 @@ const PerfilGeneral = () => {
     // obtener los datos desde el perfil directamente.
     useEffect(() => {
         perfilUsuario().then(response => {
+
+            console.log('probando si hay conexion');
 
             // si no hay respuesta del servidor
             if (typeof response !== 'undefined') {
@@ -135,6 +103,7 @@ const PerfilGeneral = () => {
                 }
 
             } else {
+                console.log('no hay conexion con la api');
                 setCurrentNotification('err-nhc000');
             }
         });
