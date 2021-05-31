@@ -74,8 +74,8 @@ namespace Aplicacion.Pases
                     PaseId = new Guid(),
                     FechaInicio = request.FechaInicio,
                     FechaTermino = request.FechaTermino,
-                    Tipo = "PROVEEDOR",
-                    Estado = "PENDIENTE",
+                    Tipo = Pase.TipoPase.PROVEEDOR,
+                    Estado = Pase.EstadoPase.REVISION,
                     Area = request.Area,
                     Motivo = request.Motivo,
                     EmpresaId = empresa.EmpresaId

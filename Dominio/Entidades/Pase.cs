@@ -11,11 +11,15 @@ namespace Dominio.Entidades
         // atributos de la entidad
         public DateTime FechaInicio { get; set; }
         public DateTime FechaTermino { get; set; }
-        public string Tipo { get; set; }
-        public string Estado { get; set; }
+        public TipoPase Tipo { get; set; }
+        public EstadoPase Estado { get; set; }
         public string Motivo { get; set; }
         public string Area { get; set; }
 
+        public enum TipoPase
+        {
+            VISITA, PROVEEDOR, CONTRATISA, MUELLE, TRIPULANTE
+        }
         public enum EstadoPase
         {
             REVISION, ACTIVO, VENCIDO, RECHAZADO

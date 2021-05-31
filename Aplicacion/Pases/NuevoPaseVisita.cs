@@ -49,8 +49,8 @@ namespace Aplicacion.Pases
                     PaseId = new Guid(),
                     FechaInicio = request.fechaInicio,
                     FechaTermino = request.fechaTermino,
-                    tipo = "VISITA",
-                    Estado = "PENDIENTE",
+                    Tipo = Pase.TipoPase.VISITA,
+                    Estado = Pase.EstadoPase.REVISION,
                     Motivo = request.motivo,
                     Area = request.area
                 };
@@ -217,9 +217,9 @@ namespace Aplicacion.Pases
                             var nuevaPersonaExterna = new PersonaExterna
                             {
                                 PersonaExternaId = new Guid(),
-                                nacionalidad = persona.nacionalidad,
+                                Nacionalidad = persona.nacionalidad,
                                 //TODO Confirmar correspondencia del pasaporte
-                                pasaporte = (persona.nacionalidad != "CHILENA") ? persona.rut : null
+                                Pasaporte = (persona.nacionalidad != "CHILENA") ? persona.rut : null
                             };
 
                             //Vinculamos la persona con PersonaExterna
@@ -244,9 +244,9 @@ namespace Aplicacion.Pases
                                 var nuevaPersonaExterna = new PersonaExterna
                                 {
                                     PersonaExternaId = new Guid(),
-                                    nacionalidad = persona.nacionalidad,
+                                    Nacionalidad = persona.nacionalidad,
                                     //TODO Confirmar correspondencia del pasaporte
-                                    pasaporte = (persona.nacionalidad != "CHILENA") ? persona.rut : null
+                                    Pasaporte = (persona.nacionalidad != "CHILENA") ? persona.rut : null
                                 };
 
                                 //Vinculamos la persona con PersonaExterna
