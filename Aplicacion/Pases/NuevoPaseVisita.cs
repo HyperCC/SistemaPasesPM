@@ -49,8 +49,8 @@ namespace Aplicacion.Pases
                     PaseId = new Guid(),
                     FechaInicio = request.fechaInicio,
                     FechaTermino = request.fechaTermino,
-                    Tipo = Pase.TipoPase.VISITA,
-                    Estado = Pase.EstadoPase.REVISION,
+                    Tipo = TipoPase.VISITA,
+                    Estado = EstadoPase.PENDIENTE,
                     Motivo = request.motivo,
                     Area = request.area
                 };
@@ -118,7 +118,7 @@ namespace Aplicacion.Pases
                                 // Buscar si existe el nombre en la BD
                                 var nombreExiste = await this._context.TipoNombre
                                     .Where(x => x.Nombre == nombre
-                                    && x.Tipo == TipoNombre.TipoIdentificador.NOMBRE
+                                    && x.Tipo == TipoIdentificador.NOMBRE
                                     && x.Posicion == iteracion)
                                     .FirstOrDefaultAsync();
                                 // Agregar el nuevo nombre si no existe en la BD
@@ -128,7 +128,7 @@ namespace Aplicacion.Pases
                                     {
                                         TipoNombreId = new Guid(),
                                         Nombre = nombre,
-                                        Tipo = TipoNombre.TipoIdentificador.NOMBRE,
+                                        Tipo = TipoIdentificador.NOMBRE,
                                         Posicion = iteracion
                                     };
                                     // 
@@ -155,7 +155,7 @@ namespace Aplicacion.Pases
 
                             var apellidoExiste = await this._context.TipoNombre
                                 .Where(x => x.Nombre == persona.apellidoPaterno
-                                && x.Tipo == TipoNombre.TipoIdentificador.APELLIDO
+                                && x.Tipo == TipoIdentificador.APELLIDO
                                 && x.Posicion == 1)
                                 .FirstOrDefaultAsync();
 
@@ -165,7 +165,7 @@ namespace Aplicacion.Pases
                                 {
                                     TipoNombreId = new Guid(),
                                     Nombre = persona.apellidoPaterno,
-                                    Tipo = TipoNombre.TipoIdentificador.APELLIDO,
+                                    Tipo = TipoIdentificador.APELLIDO,
                                     Posicion = 1
                                 };
 
@@ -176,8 +176,8 @@ namespace Aplicacion.Pases
                             else
                             {
                                 nuevoPersonaTipoApellido.TipoNombreId = apellidoExiste.TipoNombreId;
-                            }  
-                            
+                            }
+
                             this._context.PersonaTipoNombre.Add(nuevoPersonaTipoApellido);
 
                             //APELLIDO MATERNO
@@ -188,7 +188,7 @@ namespace Aplicacion.Pases
 
                             apellidoExiste = await this._context.TipoNombre
                                 .Where(x => x.Nombre == persona.apellidoMaterno
-                                && x.Tipo == TipoNombre.TipoIdentificador.APELLIDO
+                                && x.Tipo == TipoIdentificador.APELLIDO
                                 && x.Posicion == 2)
                                 .FirstOrDefaultAsync();
 
@@ -198,7 +198,7 @@ namespace Aplicacion.Pases
                                 {
                                     TipoNombreId = new Guid(),
                                     Nombre = persona.apellidoMaterno,
-                                    Tipo = TipoNombre.TipoIdentificador.APELLIDO,
+                                    Tipo = TipoIdentificador.APELLIDO,
                                     Posicion = 2
                                 };
 

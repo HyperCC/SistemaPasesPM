@@ -12,7 +12,7 @@ namespace Dominio.Entidades
         public string Titulo { get; set; }
 
         // relacionamiento segun modelo R
-        public Guid UsuarioId { get; set; }
+        public string UsuarioId { get; set; }
 
         // obtener los modelos relacionados 
         public Usuario UsuarioRel { get; set; }

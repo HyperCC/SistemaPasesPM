@@ -37,6 +37,29 @@ namespace Aplicacion.ConfiguracionLogin
 
             public async Task<Unit> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
+                // validacion del formato del request
+                EjecutaValidacion validator = new EjecutaValidacion();
+                var validacionesRes = validator.Validate(request);
+
+                // en caso de no obtener datos validos
+                if (!validacionesRes.IsValid)
+                {
+                    List<string> erroresFV = new List<string>();
+                    // listar los mensajes de error obtenidos
+                    foreach (var failure in validacionesRes.Errors)
+                        erroresFV.Add(failure.ErrorMessage);
+
+                    // devolver una excepcion y los erroes encontrados
+                    throw new FormatoIncorrectoException(HttpStatusCode.BadRequest,
+                     new
+                     {
+                         mensaje = $"Los datos recibidos por el usaurio no cumplen con el formato solicitado.",
+                         status = HttpStatusCode.BadRequest,
+                         tipoError = erroresFV
+                     });
+                }
+
+                // buscar si existe el rola agregar
                 var role = await this._roleManager.FindByNameAsync(request.Titulo);
                 if (role != null)
                     throw new RolExisteException(HttpStatusCode.BadRequest,

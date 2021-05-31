@@ -67,9 +67,13 @@ namespace Persistencia.Migrations
                     b.Property<Guid>("DocumentoId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<Guid?>("EmpresaId");
+
                     b.Property<DateTime>("FechaCaducidad");
 
                     b.Property<Guid>("PaseId");
+
+                    b.Property<Guid?>("PersonaExternaId");
 
                     b.Property<string>("RutaDocumento");
 
@@ -128,7 +132,8 @@ namespace Persistencia.Migrations
 
                     b.Property<Guid>("EmpresaId");
 
-                    b.Property<string>("Estado");
+                    b.Property<string>("Estado")
+                        .IsRequired();
 
                     b.Property<DateTime>("FechaInicio");
 
@@ -136,17 +141,18 @@ namespace Persistencia.Migrations
 
                     b.Property<string>("Motivo");
 
-                    b.Property<string>("Tipo");
+                    b.Property<string>("ServicioAdjudicado");
 
-                    b.Property<Guid>("UsuarioId");
+                    b.Property<string>("Tipo")
+                        .IsRequired();
 
-                    b.Property<string>("UsuarioRelId");
+                    b.Property<string>("UsuarioId");
 
                     b.HasKey("PaseId");
 
                     b.HasIndex("EmpresaId");
 
-                    b.HasIndex("UsuarioRelId");
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Pase");
                 });
@@ -236,13 +242,11 @@ namespace Persistencia.Migrations
 
                     b.Property<string>("Titulo");
 
-                    b.Property<Guid>("UsuarioId");
-
-                    b.Property<string>("UsuarioRelId");
+                    b.Property<string>("UsuarioId");
 
                     b.HasKey("RolId");
 
-                    b.HasIndex("UsuarioRelId");
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Rol");
                 });
@@ -322,14 +326,10 @@ namespace Persistencia.Migrations
 
                     b.Property<bool>("TwoFactorEnabled");
 
-                    b.Property<Guid>("UId");
-
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
-
-                    b.HasAlternateKey("UId");
 
                     b.HasIndex("EmpresaId");
 
@@ -518,7 +518,7 @@ namespace Persistencia.Migrations
 
                     b.HasOne("Dominio.Entidades.Usuario", "UsuarioRel")
                         .WithMany("PasesRel")
-                        .HasForeignKey("UsuarioRelId");
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("Dominio.Entidades.PasePersonaExterna", b =>
@@ -572,7 +572,7 @@ namespace Persistencia.Migrations
                 {
                     b.HasOne("Dominio.Entidades.Usuario", "UsuarioRel")
                         .WithMany("RolsRel")
-                        .HasForeignKey("UsuarioRelId");
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("Dominio.Entidades.Usuario", b =>

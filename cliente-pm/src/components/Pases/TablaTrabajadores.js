@@ -1,8 +1,10 @@
 import React from 'react'
+import { useHistory } from "react-router-dom";
 
 export const TablaTrabajadores = props => {
     const url = props.url;
-    
+    let history = useHistory();
+
     return (
         <div class="bg-white p-4 md:p-8 rounded-lg shadow-md">
 
@@ -13,15 +15,20 @@ export const TablaTrabajadores = props => {
 
                 {/* Botones para crear nuevo pase y pases buscados */}
                 <div class="text-end flex-none">
-                    <form class="flex-none md:flex w-full space-x-3">
-                         <a href={url+"/AgregarPersona"}
-                            className="w-44 text-center flex-shrink-0 block px-4 py-2 md:mt-0 mt-4 md:mx-0 mx-auto text-base font-semibold text-white bg-verde-pm rounded-md shadow-md hover:bg-amarillo-pm focus:outline-none transition duration-500">
+                    <div class="flex-none md:flex w-full space-x-3">
+                        <a href={props.url + "/AgregarPersona"} faker={'faker'}
+                            className="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                             Agregar Persona
                         </a>
-                        <button type="submit" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+
+                        <button type="submit" onClick={props._enviarFormulario} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                             Guardar
                         </button>
-                    </form>
+
+                        <button type="button" onClick={props._cancelarGuardado} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+                            Cancelar
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -48,15 +55,15 @@ export const TablaTrabajadores = props => {
 
                         <tbody>
                             {/* CICLO FOR CON TODOS LOS DATOS PARA CADA PASE */}
-                            {props.datos.map((value, index) => {
+                            {props.datos && props.datos.map((value, index) => {
                                 return <tr key={index} class={index % 2 == 0 ? "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap"
                                     : "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap bg-gray-100"} >
 
                                     <td class="p-4">
-                                        {value.Nombre}
+                                        {value.Nombres} {value.PrimerApellido} {value.SegundoApellido}
                                     </td>
                                     <td class="p-4">
-                                        {value.RutPasaporte}
+                                        {value.Rut === "" ? value.Pasaporte : value.Rut}
                                     </td>
                                     <td class="p-4">
                                         {value.Nacionalidad}
@@ -104,6 +111,15 @@ export const TablaTrabajadores = props => {
                         </svg>
                     </button>
                 </div>
+            </div>
+            <div class="flex justify-between items-center py-4 p-4">
+                <button onClick={() => history.goBack()} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+                    Cancelar
+                </button>
+
+                <button type="submit" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+                    Guardar
+                </button>
             </div>
         </div>
     )

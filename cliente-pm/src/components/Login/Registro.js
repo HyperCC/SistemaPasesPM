@@ -1,26 +1,11 @@
-import React, { useState , Component} from 'react';
+import React, { useState } from 'react';
 import '../../App.css';
 import { registrarUsuario } from '../../actions/UsuarioAction';
 import ReCAPTCHA from "react-google-recaptcha";
+import { LanzarNoritificaciones } from '../avisos/LanzarNotificaciones';
 
 // pagina principal de registro
 export default function Registro() {
-    var isVerified = false;
-
-    function onChange(value) {
-        alert("Captcha value:", value);
-        isVerified = true;
-        alert(isVerified);
-    }
-
-    function Verificar(){
-        if (isVerified==true){
-            alert(isVerified);
-            botonRegistrarUsuario();
-        }else{
-            alert(isVerified)
-        }
-    }
 
     // atributos para el registro de usuario
     const [dataUsuario, setDataUsuario] = useState({
@@ -34,8 +19,12 @@ export default function Registro() {
         Captcha: false
     });
 
-    const [checkCaptcha, setCheckCaptcha] = useState(false);
+    // verificar si se marco la casilla
     const [checkNoPerteneceEmpresa, setCheckNoPerteneceEmpresa] = useState(false);
+    // codigo actual de la notificacion a mostrar
+    const [currentNotification, setCurrentNotification] = useState('none');
+    // posibles campos invalidos enviados por el usuario
+    const [currentCamposInvalidos, setCurrentCamposInvalidos] = useState([]);
 
     // asignar nuevos valores al state del registro
     const ingresarValoresMemoria = valorInput => {
@@ -51,15 +40,7 @@ export default function Registro() {
                 [name]: !checkNoPerteneceEmpresa // solo cambiar el input mapeado
             }));
 
-            // actualizar el valor de Captcha segun el check
-        } else if (name === 'Captcha') {
-            setCheckCaptcha(!checkCaptcha);
-
-            setDataUsuario(anterior => ({
-                ...anterior, // mantener lo que existe antes
-                [name]: !checkCaptcha // solo cambiar el input mapeado
-            }));
-
+            // actualizar el valor de algun otro valor
         } else {
             // asignar el valor
             setDataUsuario(anterior => ({
@@ -69,16 +50,62 @@ export default function Registro() {
         }
     };
 
-    // boton para enviar el formulario
-    const botonRegistrarUsuario = infoFormulario => {
-        // cancelar el envio inmediato del formulario
-        infoFormulario.preventDefault();
+    // validar el valor del captcha ya aceptado
+    function onChange(value) {
+
+        setDataUsuario(anterior => ({
+            ...anterior, // mantener lo que existe antes
+            ['Captcha']: true  // solo cambiar el input mapeado
+        }));
 
         console.log('data usuario: ', dataUsuario);
+    };
+
+    // boton para enviar el formulario
+    const botonRegistrarUsuario = infoFormulario => {
+
+        // cancelar el envio inmediato del formulario
+        infoFormulario.preventDefault();
+        console.log('data usuario: ', dataUsuario);
+        setCurrentNotification('inf-cgu000');
+
+        // verificar que el captcha fue validado
+        if (!dataUsuario.Captcha) {
+            console.log('ANTES DE ENVIAR EL FORMULARIO SE DEBE VALIDAR EL CAPTCHA.');
+            setCurrentNotification('adv-cnc000');
+            return;
+        }
+        setCurrentNotification('inf-cgp0000'); // notificacion de carga de datos
 
         // uso del action registrar
         registrarUsuario(dataUsuario).then(response => {
-            console.log('se registro exitosamente el nuevo usuario. ', response);
+
+            if (typeof response !== 'undefined') {
+
+                console.log('se registro exitosamente el nuevo usuario. ', response);
+
+                // si se reciben errores
+                if (typeof response.data.errores !== 'undefined') {
+                    console.log(response.data.errores.mensaje);
+
+                    console.log('el tipo de error: ', response.data.errores.tipoError);
+                    setCurrentNotification(response.data.errores.tipoError);
+                    console.log('TIPO ACTUAL DE NOTIFICACION ', currentNotification);
+
+                    if (typeof response.data.errores.listaErrores !== 'undefined')
+                        setCurrentCamposInvalidos(response.data.errores.listaErrores);
+
+                    // si toda la operacion salio ok
+                } else {
+                    window.localStorage.setItem('mensaje_success', 'exi-re0000');
+                    window.localStorage.setItem('mensaje_success_showed', false);
+                    setCurrentNotification('exi-re0000');
+                }
+
+                // si no hay conexion con la API
+            } else {
+                setCurrentNotification('err-nhc000');
+            }
         });
     };
 
@@ -86,6 +113,9 @@ export default function Registro() {
         <div>
             <div class="bg-gray-100 min-h-screen">
                 <div class="sm:py-16 sm:px-6 px-2 py-8">
+
+                    <LanzarNoritificaciones codigo={currentNotification} camposInvalidos={currentCamposInvalidos} />
+
                     <div class="max-w-xl mx-auto sm:px-6 px-4 pb-12 bg-white rounded-lg shadow-md">
 
                         <div class="text-center">
@@ -128,7 +158,7 @@ export default function Registro() {
 
                             <div class="mt-6 form-group px-4 md:px-8">
                                 <label class="font-light  text-gray-800 select-none" for="NoPerteneceEmpresa">
-                                    <input type="checkbox" checked={checkNoPerteneceEmpresa} onClick={ingresarValoresMemoria} name="NoPerteneceEmpresa" /> No pertenece a la Empresa
+                                    <input type="checkbox" checked={checkNoPerteneceEmpresa} value={dataUsuario.NoPerteneceEmpresa} onClick={ingresarValoresMemoria} name="NoPerteneceEmpresa" /> No pertenece a la Empresa
                                 </label>
                             </div>
 
@@ -149,18 +179,22 @@ export default function Registro() {
                                 </div>
                             </div>
 
-                            <div class="mt-6 items-center justify-center form-group px-4 md:px-8">
-                                <label class="text-center font-light  text-gray-800 select-none" for="Captcha">
-                                    <ReCAPTCHA
-                                        sitekey="6LcoUMYaAAAAAPlwUFz02HrTJa5GJqnKhOrOoC6B"
-                                        onChange={onChange}
-                                    />
-                                </label>
+                            <div class="grid md:grid-cols-3 grid-cols-1 px-4 md:px-8 gap-4 mt-6">
+                                <div class="md:col-span-2 md:col-start-2">
+                                    <div class="w-full">
+                                        <label class="text-center font-light  text-gray-800 select-none" for="Captcha">
+                                            <ReCAPTCHA
+                                                sitekey="6LcoUMYaAAAAAPlwUFz02HrTJa5GJqnKhOrOoC6B"
+                                                onChange={onChange}
+                                            />
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
 
                             {/* ENVIAR DATOS */}
                             <div class="mt-12 flex justify-center">
-                                <button type="submit" onClick={Verificar}
+                                <button type="submit" onClick={botonRegistrarUsuario}
                                     class="bg-azul-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                                     Guardar
                                 </button>

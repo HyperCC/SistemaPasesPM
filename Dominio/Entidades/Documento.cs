@@ -15,6 +15,8 @@ namespace Dominio.Entidades
         // relacionamiento segun modelo R
         public Guid TipoDocumentoId { get; set; }
         public Guid PaseId { get; set; }
+        public Guid? PersonaExternaId { get; set; } // TODO: agregar relacion en modelo R
+        public Guid? EmpresaId { get; set; } // TODO: agregar relacion en modelo R
 
         // obtener los modelos relacionados 
         public TipoDocumento TipoDocumentoRel { get; set; }

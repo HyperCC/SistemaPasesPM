@@ -6,8 +6,10 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistencia;
+using Persistencia.AuxiliaresAlmacenamiento;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -35,16 +37,22 @@ namespace Aplicacion.ConfiguracionLogin
             public string NombreEmpresa { get; set; }
 
             // por defecto el capcha viene no validado
-            public bool Captcha { get; set; }
-            public bool NoPerteneceEmpresa { get; set; }
+            public bool Captcha { get; set; } = false;
+            public bool NoPerteneceEmpresa { get; set; } = false;
         }
 
         public class EjecutaValidacion : AbstractValidator<Ejecuta>
         {
             public EjecutaValidacion()
             {
-                this.RuleFor(x => x.Correo).NotEmpty();
                 this.RuleFor(x => x.Rut).NotEmpty();
+                this.RuleFor(x => x.Nombres).NotEmpty();
+                this.RuleFor(x => x.Apellidos).NotEmpty();
+                this.RuleFor(x => x.Correo).NotEmpty();
+                this.RuleFor(x => x.NombreEmpresa).NotEmpty();
+                this.RuleFor(x => x.RutEmpresa).NotEmpty();
+                this.RuleFor(x => x.Captcha).NotEmpty();
+                this.RuleFor(x => x.NoPerteneceEmpresa).NotNull();
             }
         }
 
@@ -72,10 +80,28 @@ namespace Aplicacion.ConfiguracionLogin
             /// <returns>codigo de estado http</returns>
             public async Task<UsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
-                var usID = new Guid();
-                Console.WriteLine(".................................................");
-                Console.WriteLine($"EL GUID CREADO : {usID}");
-                Console.WriteLine(".................................................");
+                // validacion del formato del request
+                EjecutaValidacion validator = new EjecutaValidacion();
+                var validacionesRes = validator.Validate(request);
+
+                // en caso de no obtener datos validos
+                if (!validacionesRes.IsValid)
+                {
+                    List<string> erroresFV = new List<string>();
+                    // listar los mensajes de error obtenidos
+                    foreach (var failure in validacionesRes.Errors)
+                        erroresFV.Add(failure.ErrorMessage);
+
+                    // devolver una excepcion y los erroes encontrados
+                    throw new FormatoIncorrectoException(HttpStatusCode.BadRequest,
+                     new
+                     {
+                         mensaje = $"Los datos recibidos por el usaurio no cumplen con el formato solicitado.",
+                         status = HttpStatusCode.BadRequest,
+                         tipoError = "adv-fie000",
+                         listaErrores = erroresFV
+                     });
+                }
 
                 // verificar que el email sea unico o no exista ya en la DB
                 var correoExiste = await this._context.Usuario.Where(x => x.Email == request.Correo).AnyAsync();
@@ -86,7 +112,7 @@ namespace Aplicacion.ConfiguracionLogin
                       {
                           mensaje = $"Ya existe un usuario registrado con el Email {request.Correo}",
                           status = HttpStatusCode.BadRequest,
-                          tipoError = "re-ce"
+                          tipoError = "adv-cee000"
                       });
 
                 // verificar que el rut sea unico o no exista ya en la DB
@@ -98,14 +124,13 @@ namespace Aplicacion.ConfiguracionLogin
                         {
                             mensaje = $"Ya existe un usuario registrado con el Rut {request.Rut}",
                             status = HttpStatusCode.BadRequest,
-                            tipoError = "re-re"
+                            tipoError = "adv-ree000"
                         });
 
                 // creacion del nuevo usuario y los datos relacionados
 
                 var usuarioGenerado = new Usuario
                 {
-                    UId = new Guid(),
                     Email = request.Correo,
                     UserName = request.Correo,
                     NoPerteneceEmpresa = request.NoPerteneceEmpresa
@@ -122,77 +147,8 @@ namespace Aplicacion.ConfiguracionLogin
                 await this._context.Persona.AddAsync(personaGenerada);
                 usuarioGenerado.PersonaId = personaGenerada.PersonaId;
 
-                // obtencion de nombres de la cadena bruta
-                string[] nombres = request.Nombres.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                // asignacion de los nuevos nombres
-                int currentIteration = 1;
-                foreach (var nombre in nombres)
-                {
-                    // buscar si existe el nombre
-                    var nombreExiste = await this._context.TipoNombre
-                        .Where(x => x.Nombre == nombre
-                        && x.Tipo == TipoNombre.TipoIdentificador.NOMBRE
-                        && x.Posicion == currentIteration)
-                        .FirstOrDefaultAsync();
-
-                    // agregar el nuevo nombre si no existe
-                    var nuevoNombre = new TipoNombre();
-                    if (nombreExiste == null)
-                    {
-                        nuevoNombre.TipoNombreId = new Guid();
-                        nuevoNombre.Nombre = nombre;
-                        nuevoNombre.Tipo = TipoNombre.TipoIdentificador.NOMBRE;
-                        nuevoNombre.Posicion = currentIteration;
-                    }
-                    this._context.TipoNombre.Add(nuevoNombre);
-
-                    // agregar tabla con nombres y personas 
-                    var nuevoPersonaTipoNombre = new PersonaTipoNombre
-                    {
-                        PersonaId = personaGenerada.PersonaId,
-                        TipoNombreId = (nombreExiste == null) ?
-                        nuevoNombre.TipoNombreId : nombreExiste.TipoNombreId
-                    };
-                    this._context.PersonaTipoNombre.Add(nuevoPersonaTipoNombre);
-
-                    currentIteration++;
-                }
-
-                // obtencion de apellidos de la cadena bruta
-                string[] apellidos = request.Apellidos.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                // asignacion de los nuevos apellidos
-                currentIteration = 1;
-                foreach (var apellido in apellidos)
-                {
-                    // buscar si existe el apellido
-                    var apellidoExiste = await this._context.TipoNombre
-                        .Where(x => x.Nombre == apellido
-                        && x.Tipo == TipoNombre.TipoIdentificador.APELLIDO
-                        && x.Posicion == currentIteration)
-                        .FirstOrDefaultAsync();
-
-                    // agregar el nuevo nombre si no existe
-                    var nuevoApellido = new TipoNombre();
-                    if (apellidoExiste == null)
-                    {
-                        nuevoApellido.TipoNombreId = new Guid();
-                        nuevoApellido.Nombre = apellido;
-                        nuevoApellido.Tipo = TipoNombre.TipoIdentificador.APELLIDO;
-                        nuevoApellido.Posicion = currentIteration;
-                    }
-                    this._context.TipoNombre.Add(nuevoApellido);
-
-                    // agregar tabla con nombres y personas 
-                    var nuevoPersonaTipoNombre = new PersonaTipoNombre
-                    {
-                        PersonaId = personaGenerada.PersonaId,
-                        TipoNombreId = (apellidoExiste == null) ?
-                        nuevoApellido.TipoNombreId : apellidoExiste.TipoNombreId
-                    };
-                    this._context.PersonaTipoNombre.Add(nuevoPersonaTipoNombre);
-
-                    currentIteration++;
-                }
+                // proceso completo de registrar nombres en la base de datos
+                await AlmacenarNombres.AgregarNombres(request.Nombres, request.Apellidos, this._context, personaGenerada.PersonaId);
 
                 // buscar empresa perteneciente.
                 var empresaExiste = await this._context.Empresa
@@ -236,12 +192,27 @@ namespace Aplicacion.ConfiguracionLogin
                             Nombres = "nombres",
                             Apellidos = "apellidos",
                             UserName = usuarioGenerado.Email,
-                            Token = null,
+                            Token = null, // agregar token 
                             Email = usuarioGenerado.Email
                         };
+                    else
+                    {
+                        throw new UserManagerNoGuardadoException(HttpStatusCode.BadRequest,
+                            new
+                            {
+                                mensaje = $"El sistema no pudo registrar al usuario {request.Correo}",
+                                status = HttpStatusCode.BadRequest,
+                                tipoError = "err-umnge0"
+                            });
+                    }
                 }
-
-                throw new Exception("Error en el servidor - No se pudo agregar el nuevo usuario..");
+                throw new DbContextNoGuardadoException(HttpStatusCode.BadRequest,
+                    new
+                    {
+                        mensaje = $"El sistema no pudo registrar los datos relacionados al usaurio {request.Correo}",
+                        status = HttpStatusCode.BadRequest,
+                        tipoError = "err-dbcng0"
+                    });
             }
         }
     }

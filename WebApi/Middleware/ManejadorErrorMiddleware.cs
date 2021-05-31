@@ -74,6 +74,41 @@ namespace WebApi.Middleware
                     context.Response.StatusCode = (int)rolee.Codigo;
                     break;
 
+                case FormatoIncorrectoException fie:
+                    logger.LogError(ex, "LOS DATOS ENTREGADOS POR EL CLIENTE NO SON VALIDOS..");
+                    errores = fie.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)fie.Codigo;
+                    break;
+
+                case UserManagerNoGuardadoException ume:
+                    logger.LogError(ex, "LOS DATOS A REGISTRAR COMO USER MANAGER NO FUERON ALMACENADOS CORRECTAMENTE..");
+                    errores = ume.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)ume.Codigo;
+                    break;
+
+                case CorreoNoExisteException cnee:
+                    logger.LogError(ex, "EL CORREO INGRESADO PARA EL LOGIN NO TIENE REGISTROS ALMACENADOS..");
+                    errores = cnee.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)cnee.Codigo;
+                    break;
+
+                case PasswordIncorrectoException pic:
+                    logger.LogError(ex, "LA CLAVE INGRESADA PARA EL LOGIN NO COINCIDE CON EL CORREO SUMINISTRADO..");
+                    errores = pic.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)pic.Codigo;
+                    break;
+
+                case DbContextNoGuardadoException dbe:
+                    logger.LogError(ex, "LOS DATOS NO PUDIERON SER ALMACENADOS EN LA BASE DE DATOS..");
+                    errores = dbe.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)dbe.Codigo;
+                    break;
+
                 // si se lanza ManejadorExcepcion (excepcion personalizada), error de validacion para solicitudes http
                 case ManejadorException me:
                     logger.LogError(ex, "ERROR GENERICO EN LOS MANEJADORES..");

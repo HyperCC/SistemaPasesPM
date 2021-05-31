@@ -4,6 +4,25 @@ using System.Text;
 
 namespace Dominio.Entidades
 {
+    /// <summary>
+    /// tipos de pase existentes
+    /// </summary>
+    public enum TipoPase
+    {
+        VISITA, CONTRATISTA, PROVEEDOR, USOMUELLE, TRIPULANTE
+    }
+
+    /// <summary>
+    /// estado actual del pase
+    /// </summary>
+    public enum EstadoPase
+    {
+        APROBADO, FINALIZADO, PENDIENTE, RECHAZADO
+    }
+
+    /// <summary>
+    /// modelo para entidad Pase
+    /// </summary>
     public class Pase
     {
         public Guid PaseId { get; set; }
@@ -15,6 +34,7 @@ namespace Dominio.Entidades
         public EstadoPase Estado { get; set; }
         public string Motivo { get; set; }
         public string Area { get; set; }
+        public string ServicioAdjudicado { get; set; }
 
         public enum TipoPase
         {
@@ -27,7 +47,7 @@ namespace Dominio.Entidades
 
         // relacionamiento segun modelo R
         public Guid EmpresaId { get; set; }
-        public Guid UsuarioId { get; set; }
+        public string UsuarioId { get; set; }
 
         // obtener los modelos relacionados 
         public AsesorPrevencion AsesorPrevencionRel { get; set; }

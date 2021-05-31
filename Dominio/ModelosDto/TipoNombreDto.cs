@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Dominio.Entidades;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using static Dominio.Entidades.TipoNombre;
 
 namespace Dominio.ModelosDto
 {

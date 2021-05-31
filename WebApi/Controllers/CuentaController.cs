@@ -1,5 +1,6 @@
 ﻿using Aplicacion.Cuentas;
 using Dominio.ModelosDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace WebApi.Controllers
     /// <summary>
     /// Cotrolador para los distintos usuarios
     /// </summary>
+    [AllowAnonymous]
     public class CuentaController : PersonalController
     {
         [HttpGet]
