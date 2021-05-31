@@ -55,5 +55,11 @@ namespace WebApi.Controllers
         {
             return await this.MediadorHerencia.Send(new ListaUsuarios.Ejecuta());
         }
+
+        [HttpPost("reset")]
+        public async Task<ActionResult<Usuario>> ResetPass(ResetContrasena.Ejecuta parametros)
+        {
+            return await this.MediadorHerencia.Send(parametros);
+        }
     }
 }
