@@ -36,15 +36,6 @@ namespace Dominio.Entidades
         public string Area { get; set; }
         public string ServicioAdjudicado { get; set; }
 
-        public enum TipoPase
-        {
-            VISITA, PROVEEDOR, CONTRATISA, MUELLE, TRIPULANTE
-        }
-        public enum EstadoPase
-        {
-            REVISION, ACTIVO, VENCIDO, RECHAZADO
-        }
-
         // relacionamiento segun modelo R
         public Guid EmpresaId { get; set; }
         public string UsuarioId { get; set; }
