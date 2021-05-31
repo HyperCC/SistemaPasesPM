@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DatosPase } from './DatosPase';
 import { TablaTrabajadores } from './TablaTrabajadores';
 import { useHistory } from "react-router-dom";
-import { registrarPaseGenerico } from '../../actions/UsuarioAction';
+import { registrarPaseGenerico } from '../../actions/PaseAction';
 import { LanzarNoritificaciones } from '../avisos/LanzarNotificaciones';
 
 

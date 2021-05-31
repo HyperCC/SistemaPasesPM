@@ -55,7 +55,7 @@ const TablaPases = props => {
 
                         <tbody>
                             {/* CICLO FOR CON TODOS LOS DATOS PARA CADA PASE */}
-                            {props.soloPases && props.soloPases.map((value, index) => {
+                            {props.soloPases == [] ? props.soloPases.map((value, index) => {
                                 return <tr key={index} class={index % 2 == 0 ? "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap"
                                     : "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap bg-gray-100"} >
 
@@ -98,7 +98,7 @@ const TablaPases = props => {
                                         </a>
                                     </td>
                                 </tr>
-                            })}
+                            }) : <tr class="text-center"><td class="p-4" colSpan="7">No hay pases registrados</td></tr>}
                         </tbody>
                     </table>
                 </div>

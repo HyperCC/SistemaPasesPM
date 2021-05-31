@@ -1,5 +1,5 @@
 import React from 'react';
-import { NotificacionAdvertencia, NotificacionError, NotificacionExito } from './NotificacionesFlotantes';
+import { NotificacionAdvertencia, NotificacionError, NotificacionExito, NotificacionInformacion } from './NotificacionesFlotantes';
 
 // mensajes de operaciones existosas
 const listaMensajesExito = [
@@ -34,6 +34,21 @@ const listaMensajesExito = [
     {
         'cod': 'exi-pvre00',
         'mess': 'Pase de tipo Visita generado existosamente.'
+    },
+];
+
+const listaMensajesInfo = [
+    {
+        'cod': 'inf-cvc000', // cargando validacion de credenciales
+        'mess': 'Verificando las credenciales..'
+    },
+    {
+        'cod': 'inf-cdp000', // cargando datos del perfil
+        'mess': 'Cargando datos del perfil..'
+    },
+    {
+        'cod': 'inf-cgp0000', // cargando guardado de pase
+        'mess': 'Guardando pase..'
     },
 ];
 
@@ -76,6 +91,10 @@ const listaMensajesErrores = [
         'mess': 'La plataforma no ha podido registrar los datos ingresados por el usuario.'
     },
     {
+        'cod': 'err-pnrkv0', // plataforma no recibio un token valido
+        'mess': 'La plataforma no ha podido cargar los datos del usuario.'
+    },
+    {
         'cod': 'err-nhc000',
         'mess': 'No hay conexion con la plataforma actualmente.'
     }
@@ -94,6 +113,10 @@ export function LanzarNoritificaciones(props) {
     for (const message in listaMensajesExito)
         if (props.codigo === listaMensajesExito[message].cod.toString())
             return <NotificacionExito texto={listaMensajesExito[message].mess} openError={props.openNotificacion} />;
+
+    for (const message in listaMensajesInfo)
+        if (props.codigo === listaMensajesInfo[message].cod.toString())
+            return <NotificacionInformacion texto={listaMensajesInfo[message].mess} openError={props.openNotificacion} />
 
     // asignacion de la notificacion a tipo advertencia
     for (const message in listaMensajesAdvertencia) {

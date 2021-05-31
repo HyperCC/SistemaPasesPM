@@ -1,7 +1,7 @@
 import sesionUsuarioReducer from './SesionUsuarioReducer';
 
-export const mainReducer = ({sesionUsuario, openSnackbar}, action) => {
+export const mainReducer = ({ sesionUsuario }, action) => {
     return {
-        sesionUsuario : sesionUsuarioReducer(sesionUsuario, action)
-    }
-}
+        sesionUsuario: sesionUsuarioReducer(sesionUsuario, action)
+    };
+};

@@ -7,7 +7,7 @@ axios.defaults.baseURL = 'https://localhost:5001/api';
 axios.interceptors.request.use((config) => {
     const token_seguridad = window.localStorage.getItem('token_seguridad');
     if (token_seguridad) {
-        config.headers.Authorization = token_seguridad;
+        config.headers.Authorization = 'Bearer ' + token_seguridad;
         console.log('todo el registro de token fue bien ', config);
         return config;
     }

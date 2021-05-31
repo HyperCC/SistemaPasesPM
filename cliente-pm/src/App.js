@@ -7,13 +7,13 @@ import Table from './components/Table';
 import Rutas from './enrutador/Rutas';
 import home from './pages/home';
 import menu from './pages/menu';
-import { useStateValue } from "./contexto/Store";
+import { useStateValue } from "./contexto/store";
 import { perfilUsuario } from './actions/UsuarioAction';
 
 
 function App() {
 
-  const [dispatch] = useStateValue();
+  const [{ usuarioSesion }, dispatch] = useStateValue();
 
   const [iniciaApp, setIniciaApp] = useState(false);
 

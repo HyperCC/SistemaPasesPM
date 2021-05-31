@@ -8,7 +8,7 @@ instancia.isCancel = axios.isCancel;
 // registro de usuarios
 export const registrarUsuario = usuario => {
     return new Promise((resolve, eject) => {
-        ClienteHttp.post('/Usuario/registrar', usuario)
+        instancia.post('/Usuario/registrar', usuario)
             .then(response => {
                 resolve(response);
             })
@@ -41,11 +41,18 @@ export const loginUsuario = (credenciales, dispatch) => {
 };
 
 // datos del perfil 
-export const perfilUsuario = () => {
+export const perfilUsuario = (dispatch) => {
     return new Promise((resolve, eject) => {
         ClienteHttp.get('/Cuenta')
             .then(response => {
                 console.log('response', response);
+
+                dispatch({
+                    type: "INICIAR_SESION",
+                    sesion: response.data,
+                    autenticado: true,
+                });
+
                 resolve(response);
             })
             .catch(error => {
@@ -55,17 +62,3 @@ export const perfilUsuario = () => {
             });
     });
 };
-
-// generar un nuevo pase generico
-export const registrarPaseGenerico = pase => {
-    return new Promise((resolve, eject) => {
-        ClienteHttp.post('/Pases/ingresar', pase)
-            .then(response => {
-                resolve(response);
-            })
-            .catch(error => {
-                console.log('ERROR DEL RESPONSE EN REGISTRO DE PASE GENERICO: ', eject.error);
-                resolve(error.response);
-            });
-    });
-}

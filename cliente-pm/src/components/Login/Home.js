@@ -3,11 +3,10 @@ import { loginUsuario } from '../../actions/UsuarioAction';
 import '../../App.css';
 import Image from '../../images/Blanco.png';
 import { LanzarNoritificaciones } from '../avisos/LanzarNotificaciones';
-import { useStateValue } from '../../contexto/Store';
-import { useHistory } from "react-router-dom";
+import { useStateValue } from '../../contexto/store';
+import { withRouter } from 'react-router';
 
-const Home = () => {
-    const history = useHistory();
+const Home = props => {
     const [{ usuarioSesion }, dispatch] = useStateValue();
 
     // atributos para el registro de usuario
@@ -42,6 +41,7 @@ const Home = () => {
         // cancelar el envio inmediato del formulario
         infoFormulario.preventDefault();
         console.log('data usuario: ', dataUsuario);
+        setCurrentNotification('inf-cvc000');
 
         loginUsuario(dataUsuario, dispatch).then(response => {
 
@@ -62,12 +62,12 @@ const Home = () => {
                 } else {
                     //window.localStorage.setItem('mensaje_success', 'exi-le0000');
                     //window.localStorage.setItem('mensaje_success_showed', false);
-                    window.localStorage.setItem('token_seguridad', 'Bearer ' + response.data.token);
+                    window.localStorage.setItem('token_seguridad', response.data.token);
                     console.log('EL LOGIN FUE EXISTO ', response.data.token);
 
                     setCurrentNotification('exi-le0000');
                     setCurrentOpenNotificacion(true);
-                    history.push('/Perfil');
+                    props.history.push('/Perfil');
                 }
 
                 // si no hay conexion con el servidor pero si al cliente.
@@ -87,8 +87,8 @@ const Home = () => {
 
                     <div class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
                         <p class="text-center text-5xl p-8 md:mt-8">Gestión de pases PMEJ</p>
-                        <form class="flex flex-col pt-3 md:pt-8">
 
+                        <form class="flex flex-col pt-3 md:pt-8">
                             <div class="flex flex-col pt-4">
                                 <label for="Email" class="text-lg">Correo Electronico</label>
                                 <input type="email" name="Email" value={dataUsuario.Email} onChange={ingresarValoresMemoria} placeholder="your@email.com" autoFocus class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" />
@@ -121,4 +121,4 @@ const Home = () => {
     );
 }
 
-export default Home;
+export default withRouter(Home);

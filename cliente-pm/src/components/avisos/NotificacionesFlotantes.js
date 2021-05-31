@@ -40,7 +40,12 @@ export const NotificacionInformacion = contenido => {
             <div class=" text-center">
                 <div class={hideErrorInfo ? "hidden" : "p-2 bg-indigo-700 items-center relative text-gray-100 leading-none rounded-full flex lg:inline-flex"} role="alert">
                     <span class="flex rounded-full bg-indigo-500 uppercase px-2 py-1 text-xs font-bold mr-3">Info</span>
-                    <span class="font-semibold mr-2 text-left flex-auto">{contenido.texto}</span>
+
+                    <span>
+                        <img class="animate-spin" src="https://img.icons8.com/ios-glyphs/30/ffffff/spinner-frame-5.png" />
+                    </span>
+
+                    <span class="font-semibold mx-2 text-left flex-auto">{contenido.texto}</span>
                     <span class="px-3">
                         <i class="bi bi-x text-xl fill-current text-white" onClick={ButtonHideInfo} role="button"></i>
                     </span>

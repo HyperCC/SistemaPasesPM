@@ -75,6 +75,7 @@ export default function Registro() {
             setCurrentNotification('adv-cnc000');
             return;
         }
+        setCurrentNotification('inf-cgp0000'); // notificacion de carga de datos
 
         // uso del action registrar
         registrarUsuario(dataUsuario).then(response => {

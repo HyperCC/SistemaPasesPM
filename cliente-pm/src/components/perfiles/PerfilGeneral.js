@@ -4,7 +4,7 @@ import DatosUsuario from './auxiliaresPerfilGeneral/DatosUsuario';
 import TablaPases from './auxiliaresPerfilGeneral/TablaPases';
 import { perfilUsuario } from '../../actions/UsuarioAction';
 import { LanzarNoritificaciones } from '../avisos/LanzarNotificaciones';
-import { useStateValue } from "../../contexto/Store";
+import { useStateValue } from "../../contexto/store";
 
 
 // vista principal para el perfil general
@@ -82,7 +82,8 @@ const PerfilGeneral = () => {
 
     // obtener los datos desde el perfil directamente.
     useEffect(() => {
-        perfilUsuario().then(response => {
+        setCurrentNotification('inf-cdp000');
+        perfilUsuario(dispatch).then(response => {
 
             console.log('probando si hay conexion');
 
@@ -93,6 +94,7 @@ const PerfilGeneral = () => {
                 if (typeof response.data.errores !== 'undefined') {
                     console.log(response.data.errores.mensaje);
                     console.log('el tipo de error: ', response.data.errores.tipoError);
+                    setCurrentNotification('err-pnrkv0');
 
                     // si toda la operacion salio ok
                 } else {
@@ -123,7 +125,7 @@ const PerfilGeneral = () => {
                     <CondicionActualEmpresa documentos={dataDocumentosEmpresaPerfil} empresa={dataUsuarioGeneral.NombreEmpresa} />
                     <div class="h-8"></div>
 
-                    <TablaPases soloPases={dataUsuario.pasesRel} />
+                    <TablaPases soloPases={dataUsuario.pasesRel = []} />
                 </div>
             </div>
         </div>
