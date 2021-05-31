@@ -29,7 +29,7 @@ function App() {
     }
   }, [iniciaApp]);
 
-  return iniciaApp === false ? null : (
+  return iniciaApp == false ? null : (
     <div className="App">
       <Rutas />
     </div>

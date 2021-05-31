@@ -52,14 +52,12 @@ namespace Aplicacion.Pases
         {
             public EjecutaValidacion()
             {
-                this.RuleFor(x => x.Area).NotEmpty();
                 this.RuleFor(x => x.Motivo).NotEmpty();
                 this.RuleFor(x => x.RutEmpresa).NotEmpty();
                 this.RuleFor(x => x.NombreEmpresa).NotEmpty();
                 this.RuleFor(x => x.Tipo).NotEmpty();
                 this.RuleFor(x => x.FechaInicio).NotEmpty();
                 this.RuleFor(x => x.FechaTermino).NotEmpty();
-                this.RuleFor(x => x.PersonasExternas).NotEmpty();
             }
         }
 

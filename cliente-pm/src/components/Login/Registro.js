@@ -66,8 +66,8 @@ export default function Registro() {
 
         // cancelar el envio inmediato del formulario
         infoFormulario.preventDefault();
-
         console.log('data usuario: ', dataUsuario);
+        setCurrentNotification('inf-cgu000');
 
         // verificar que el captcha fue validado
         if (!dataUsuario.Captcha) {

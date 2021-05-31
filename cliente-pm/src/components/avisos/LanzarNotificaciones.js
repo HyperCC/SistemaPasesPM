@@ -43,6 +43,10 @@ const listaMensajesInfo = [
         'mess': 'Verificando las credenciales..'
     },
     {
+        'cod': 'inf-cgu000', // cargando validacion de credenciales
+        'mess': 'Guardando datos de usuario..'
+    },
+    {
         'cod': 'inf-cdp000', // cargando datos del perfil
         'mess': 'Cargando datos del perfil..'
     },

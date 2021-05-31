@@ -125,7 +125,7 @@ const PerfilGeneral = () => {
                     <CondicionActualEmpresa documentos={dataDocumentosEmpresaPerfil} empresa={dataUsuarioGeneral.NombreEmpresa} />
                     <div class="h-8"></div>
 
-                    <TablaPases soloPases={dataUsuario.pasesRel = []} />
+                    <TablaPases soloPases={dataUsuario.pasesRel} />
                 </div>
             </div>
         </div>

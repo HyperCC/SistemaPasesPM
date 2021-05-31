@@ -104,6 +104,7 @@ export const Visita = (props) => {
 
         inforFormulario.preventDefault();
         console.log('todos los datos para enviar: ', dataPaseGeneral);
+        setCurrentNotification('inf-cgu000');
 
         // enviar los datos a la API
         registrarPaseGenerico(dataPaseGeneral).then(response => {
