@@ -116,6 +116,15 @@ namespace Persistencia.Seeders
                 Console.WriteLine("---------------------------------------------------------------------------------");
                 Console.WriteLine((resultUsuario.Succeeded) ? "CREAR EL USUARIO FUE OK" : "CREAR EL USUARIO NO FUNCIONO");
                 Console.WriteLine("---------------------------------------------------------------------------------");
+
+
+                var tipoDocumento1 = new TipoDocumento
+                {
+                    TipoDocumentoId = new Guid(),
+                    Titulo = "Induccion"
+                };
+
+                await context.TipoDocumento.AddAsync(tipoDocumento1);
             }
             else
                 Console.WriteLine("YA HAY USUARIO ADMIN EN LA BASE DE DATOS..");

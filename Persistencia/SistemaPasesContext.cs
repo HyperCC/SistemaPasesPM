@@ -27,6 +27,9 @@ namespace Persistencia
             modelBuilder.Entity<PersonaTipoNombre>().HasKey(ci => new { ci.PersonaId, ci.TipoNombreId });
             modelBuilder.Entity<PasePersonaExterna>().HasKey(ci => new { ci.PaseId, ci.PersonaExternaId });
             modelBuilder.Entity<Usuario>().HasAlternateKey(ci => ci.UId);
+
+            modelBuilder.Entity<Pase>().Property(p => p.Tipo).HasConversion<string>();
+            modelBuilder.Entity<Pase>().Property(p => p.Estado).HasConversion<string>();
         }
 
         // conversion de los modelos a entidades en la Solucion
