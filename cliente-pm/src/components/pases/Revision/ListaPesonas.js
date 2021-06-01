@@ -1,27 +1,16 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import React from 'react'
+import { useHistory } from 'react-router-dom';
 
-const TablaPases = props => {
+export const ListaPersonas = props => {
+    const history = useHistory();
 
-    console.log(props.soloPases);
-
-    return (
+    return(
         <div class="bg-white p-4 md:p-8 rounded-lg shadow-md">
 
             <div class="mx-8 md:flex flex-row md:justify-between">
                 <p class="text-2xl leading-tight text-center md:text-left md:ml-8 md:w-max">
-                    Listado de Pases Solicitados
+                    Listado de Personas
                 </p>
-
-                {/* Botones para crear nuevo pase y pases buscados */}
-                <div class="text-end flex-none">
-                    <form class="flex-none md:flex w-full space-x-3">
-                        <a href="/SolicitudPases"
-                            className="w-44 text-center flex-shrink-0 block px-4 py-2 md:mt-0 mt-4 md:mx-0 mx-auto text-base font-semibold text-white bg-verde-pm rounded-md shadow-md hover:bg-amarillo-pm focus:outline-none transition duration-500">
-                            Nuevo Pase
-                        </a>
-                    </form>
-                </div>
             </div>
 
             <div class="mt-6 mx-0 md:mx-8 mb-2 md:mb-1 overflow-x-auto shadow-md rounded-lg">
@@ -31,22 +20,13 @@ const TablaPases = props => {
                             {/* HEADERS PARA LA TABLA */}
                             <tr class="bg-azul-pm select-none text-sm uppercase text-gray-100 text-center border-b border-gray-200">
                                 <th scope="col" class="px-5 py-3 font-normal">
-                                    Fecha Inicio
+                                    Nombre Completo
                                     </th>
                                 <th scope="col" class="px-5 py-3 font-normal">
-                                    Fecha Termino
+                                    Rut o Pasaporte
                                     </th>
                                 <th scope="col" class="px-5 py-3 font-normal">
-                                    Motivo
-                                    </th>
-                                <th scope="col" class="px-5 py-3 font-normal">
-                                    Area
-                                    </th>
-                                <th scope="col" class="px-5 py-3 font-normal">
-                                    Tipo
-                                    </th>
-                                <th scope="col" class="px-5 py-3 font-normal">
-                                    Estado
+                                    Nacionalidad
                                     </th>
                                 <th scope="col" class="px-5 py-3 font-normal">
                                     Acciones
@@ -56,63 +36,26 @@ const TablaPases = props => {
 
                         <tbody>
                             {/* CICLO FOR CON TODOS LOS DATOS PARA CADA PASE */}
-                            {props.soloPases ? props.soloPases.map((value, index) => {
+                            {props.datos && props.datos.map((value, index) => {
                                 return <tr key={index} class={index % 2 == 0 ? "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap"
                                     : "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap bg-gray-100"} >
 
                                     <td class="p-4">
-                                        {value.fechaInicio}
+                                        {value.Nombres} {value.PrimerApellido} {value.SegundoApellido}
                                     </td>
                                     <td class="p-4">
-                                        {value.fechaTermino}
+                                        {value.Rut === "" ? value.Pasaporte : value.Rut}
                                     </td>
                                     <td class="p-4">
-                                        {value.motivo}
+                                        {value.Nacionalidad}
                                     </td>
-                                    <td class="p-4">
-                                        {value.area}
-                                    </td>
-                                    <td class="p-4 lowercase">
-                                        {value.tipo}
-                                    </td>
-
-                                    {/* ELECCION DEL COLOR DEL ESTADO PARA EL PASE */}
-                                    <td class="p-4">
-                                        <span class={(() => {
-                                            switch (value.estado) {
-                                                case "FINALIZADO": return "px-3 py-1 bg-purple-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
-                                                case "PENDIENTE": return "px-3 py-1 bg-yellow-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
-                                                case "APROBADO": return "px-3 py-1 bg-green-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
-                                                default: return "px-3 py-1 bg-red-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
-                                            }
-                                        })()}>
-                                            {value.estado}
-                                        </span>
-                                    </td>
-                                    
                                     <td class="p-4 space-x-1">
-                                        <Link class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500"
-                                         to={{
-                                            pathname: "/RevisarPase",
-                                            state: {
-                                                fechaInicio: value.fechaInicio,
-                                                fechaTermino: value.fechaTermino,
-                                                motivo: value.motivo,
-                                                area: value.area,
-                                                tipo: value.tipo,
-                                                estado: value.estado,
-                                                personas: value.personasExternasRel
-                                            }
-                                        }}>
-                                            Revisar
-                                        </Link>
-                                        
                                         <a href="#" class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500">
-                                            Editar
+                                            Ver
                                         </a>
                                     </td>
                                 </tr>
-                            }) : <tr class="text-center"><td class="p-4" colSpan="7">No hay pases registrados</td></tr>}
+                            })}
                         </tbody>
                     </table>
                 </div>
@@ -147,8 +90,12 @@ const TablaPases = props => {
                     </button>
                 </div>
             </div>
+            <div class="flex justify-between items-center py-4 p-4">
+                <button onClick={() => history.goBack()} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+                    Volver
+                </button>
+            </div>
         </div>
-    );
+    )
+    
 }
-
-export default TablaPases;

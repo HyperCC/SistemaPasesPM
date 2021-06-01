@@ -18,6 +18,7 @@ import { UsoDeMuelle } from '../components/pases/UsoDeMuelle';
 import { Proveedor } from '../components/pases/Proveedor';
 import AreaContacto from '../components/aprobacionPases/AreaContacto';
 import RutaSegura from './RutaSegura';
+import {RevisionPase} from '../components/pases/Revision/RevisionPase';
 
 
 const Rutas = () => {
@@ -106,9 +107,13 @@ const Rutas = () => {
                     path="/SolicitudTripulante"
                     component={Tripulante} />
 
-                <Route path="/areaContacto">
+                <Route path="/AreaContacto">
                     <Navbar />
                     <AreaContacto />
+                </Route>
+
+                <Route path="/RevisarPase">
+                    <RevisionPase />
                 </Route>
 
             </Switch>
