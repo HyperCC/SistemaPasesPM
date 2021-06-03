@@ -11,12 +11,6 @@ import { useStateValue } from "../../contexto/store";
 const PerfilGeneral = () => {
     const [{ sesionUsuario }, dispatch] = useStateValue();
 
-    const dataUsuarioGeneral = {
-        NombreCompleto: 'Camilo Cortes Egaña',
-        Rut: '2.333.444-5',
-        NombreEmpresa: 'Nortek SPA'
-    };
-
     //TODO: agregar datos de prueba y formatearlos
     const dataDocumentosEmpresaPerfil = [
         {
@@ -122,8 +116,10 @@ const PerfilGeneral = () => {
                     <DatosUsuario datos={dataUsuario} soloPases={dataUsuario.pasesRel} />
                     <div class="h-8"></div>
 
-                    <CondicionActualEmpresa documentos={dataDocumentosEmpresaPerfil} empresa={dataUsuarioGeneral.NombreEmpresa} />
+                    {/*
+                    <CondicionActualEmpresa documentos={dataDocumentosEmpresaPerfil} empresa={dataUsuario.NombreEmpresa} />
                     <div class="h-8"></div>
+                    */} 
 
                     <TablaPases soloPases={dataUsuario.pasesRel} />
                 </div>

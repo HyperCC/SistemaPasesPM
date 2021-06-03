@@ -3,9 +3,11 @@ import '../../App.css';
 import { registrarUsuario } from '../../actions/UsuarioAction';
 import ReCAPTCHA from "react-google-recaptcha";
 import { LanzarNoritificaciones } from '../avisos/LanzarNotificaciones';
+import { withRouter } from 'react-router';
+
 
 // pagina principal de registro
-export default function Registro() {
+const Registro = props => {
 
     // atributos para el registro de usuario
     const [dataUsuario, setDataUsuario] = useState({
@@ -100,6 +102,12 @@ export default function Registro() {
                     window.localStorage.setItem('mensaje_success', 'exi-re0000');
                     window.localStorage.setItem('mensaje_success_showed', false);
                     setCurrentNotification('exi-re0000');
+
+                    const sleep = (milliseconds) =>
+                        new Promise(resolve => setTimeout(resolve, milliseconds));
+                    sleep(1000).then(() => {
+                        props.history.push('/');
+                    });
                 }
 
                 // si no hay conexion con la API
@@ -207,3 +215,5 @@ export default function Registro() {
         </div>
     );
 };
+
+export default withRouter(Registro);

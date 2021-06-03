@@ -1,9 +1,9 @@
 export const initialState = {
   usuario: {
-    nombres: "",
-    apellidos: "",
+    nombreCompleto: "",
+    rut: "",
+    nombreEmpresa: "",
     email: "",
-    username: "",
     token: ""
   },
   autenticado: false,

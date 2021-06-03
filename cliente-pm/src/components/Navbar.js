@@ -12,13 +12,17 @@ const Navbar = (props) => {
         console.log('cerrando la sesion actual');
         localStorage.removeItem('token_seguridad');
 
-        dispatch({
-            type: 'SALIR_SESION',
-            nuevoUsuario: null,
-            autenticado: false
-        });
+        const sleep = (milliseconds) =>
+            new Promise(resolve => setTimeout(resolve, milliseconds));
 
-        props.history.push('/');
+        sleep(1000).then(() => {
+            dispatch({
+                type: 'SALIR_SESION',
+                nuevoUsuario: null,
+                autenticado: false
+            });
+            props.history.push('/');
+        });
     };
 
     return sesionUsuario

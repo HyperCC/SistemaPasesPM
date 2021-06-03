@@ -67,7 +67,12 @@ const Home = props => {
 
                     setCurrentNotification('exi-le0000');
                     setCurrentOpenNotificacion(true);
-                    props.history.push('/Perfil');
+
+                    const sleep = (milliseconds) =>
+                        new Promise(resolve => setTimeout(resolve, milliseconds));
+                    sleep(1000).then(() => {
+                        props.history.push('/Perfil');
+                    });
                 }
 
                 // si no hay conexion con el servidor pero si al cliente.

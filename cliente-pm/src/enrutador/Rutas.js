@@ -18,7 +18,7 @@ import { UsoDeMuelle } from '../components/pases/UsoDeMuelle';
 import { Proveedor } from '../components/pases/Proveedor';
 import AreaContacto from '../components/aprobacionPases/AreaContacto';
 import RutaSegura from './RutaSegura';
-import {RevisionPase} from '../components/pases/Revision/RevisionPase';
+import { RevisionPase } from '../components/pases/Revision/RevisionPase';
 
 
 const Rutas = () => {
@@ -27,30 +27,27 @@ const Rutas = () => {
             <Navbar />
 
             <Switch>
-                <Route path="/SolicitudVisita/AgregarPersona">
-                    <Navbar />
-                    <AgregarPersona />
-                </Route>
 
-                <Route path="/SolicitudContratista/AgregarPersona">
-                    <Navbar />
-                    <AgregarPersonaContratista />
-                </Route>
+                <RutaSegura exact
+                    path="/SolicitudVisita/AgregarPersona"
+                    component={AgregarPersona} />
 
-                <Route path="/SolicitudTripulante/AgregarPersona">
-                    <Navbar />
-                    <AgregarPersona />
-                </Route>
+                <RutaSegura exact
+                    path="/SolicitudContratista/AgregarPersona"
+                    component={AgregarPersona} />
 
-                <Route path="/SolicitudUsoDeMuelle/AgregarPersona">
-                    <Navbar />
-                    <AgregarPersona />
-                </Route>
+                <RutaSegura exact
+                    path="/SolicitudTripulante/AgregarPersona"
+                    component={AgregarPersona} />
 
-                <Route path="/SolicitudProveedor/AgregarPersona">
-                    <Navbar />
-                    <AgregarPersona />
-                </Route>
+                <RutaSegura exact
+                    path="/SolicitudUsoDeMuelle/AgregarPersona"
+                    component={AgregarPersona} />
+
+                <RutaSegura exact
+                    path="/SolicitudProveedor/AgregarPersona"
+                    component={AgregarPersona} />
+
 
                 <Route path="/" exact>
                     <Home />
@@ -64,14 +61,13 @@ const Rutas = () => {
                     <Registro />
                 </Route>
 
-
-
                 <Route path="/RecuperarContraseña">
                     <RecuperarClave />
                 </Route>
                 <Route path="/CambiarContraseña">
                     <CambiarClave />
                 </Route>
+
 
                 <Route path="/DocumentosEmpresa">
                     <Navbar />
