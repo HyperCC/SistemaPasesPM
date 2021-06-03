@@ -63,7 +63,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("change")]
-        public async Task<ActionResult<UsuarioData>> ChangePass(CambiarContrasena.Ejecuta parametros)
+        public async Task<ActionResult<Unit>> ChangePass(CambiarContrasena.Ejecuta parametros)
         {
             return await this.MediadorHerencia.Send(parametros);
         }

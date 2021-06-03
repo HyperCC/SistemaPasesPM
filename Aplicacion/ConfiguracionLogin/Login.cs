@@ -66,9 +66,6 @@ namespace Aplicacion.ConfiguracionLogin
                     foreach (var failure in validacionesRes.Errors)
                         erroresFV.Add(failure.ErrorMessage);
 
-                    foreach (var failure in validacionesRes.Errors)
-                        Console.WriteLine("la gran failure is: " + failure.ErrorMessage);
-
                     // devolver una excepcion y los erroes encontrados
                     throw new FormatoIncorrectoException(HttpStatusCode.BadRequest,
                      new
