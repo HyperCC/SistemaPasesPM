@@ -109,6 +109,20 @@ namespace WebApi.Middleware
                     context.Response.StatusCode = (int)dbe.Codigo;
                     break;
 
+                case PasswordDuplicadaException pde:
+                    logger.LogError(ex, "EL PASSWORD INGRESADO PARA ACTUALIZAR ES IDENTICO AL ANTERIOR..");
+                    errores = pde.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)pde.Codigo;
+                    break;
+
+                case PasswordSintaxisException pie:
+                    logger.LogError(ex, "EL PASSWORD INGRESADO PARA ACTUALIZAR PRESENTA MULTIPLES ERRORES DE SINTAXIS EN SUS CARACTERES..");
+                    errores = pie.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)pie.Codigo;
+                    break;
+
                 // si se lanza ManejadorExcepcion (excepcion personalizada), error de validacion para solicitudes http
                 case ManejadorException me:
                     logger.LogError(ex, "ERROR GENERICO EN LOS MANEJADORES..");

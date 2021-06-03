@@ -125,7 +125,7 @@ namespace Aplicacion.ConfiguracionLogin
                                 break;
 
                             default:
-                                erroresUMP.Add("error de formato en password desconocido: " + err.Code);
+                                erroresUMP.Add("error de formato en password desconocido: " + err.Description);
                                 break;
                         }
                     }
