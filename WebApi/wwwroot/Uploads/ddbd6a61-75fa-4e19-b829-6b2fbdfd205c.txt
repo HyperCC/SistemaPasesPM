@@ -1,0 +1,133 @@
+ID:
+USUARIO: cualquiera
+NOMBRE: Registro de cuenta
+PRIORIDAD:
+RIESGO:
+PUNTOS ESTIMADOS:
+ITERACION :
+PROGRAMADOR:
+DESCRIPCION: El sistema debe permitir el registro de una nueva cuenta a un usuario a través de un formulario, para lo cual se necesita los sgtes. datos: RUT, nombre y apellidos, correo electrónico, el si pertenece a una empresa y por consecuente el rut y nombre de la empresa.
+Se envía un correo con una clave temporal tras la creación exitosa de una nueva cuenta.
+VALIDACION: Rut, nombre, correo son obligatorios, los demás campos del formulario dependeran de si pertenece a una empresa o no.
+
+ID:
+USUARIO:
+NOMBRE: Cambio de clave
+PRIORIDAD:
+RIESGO:
+PUNTOS ESTIMADOS:
+ITERACION :
+PROGRAMADOR:
+DESCRIPCION: El sistema debe permitir el cambio de la clave de ingreso al sistema en la pantalla principal, a través de un formulario, para lo cual requerirá el correo electrónico, la clave actual, la nueva clave.
+Al realizar el cambio exitoso se enviará un correo con la confirmación de este cambio.
+VALIDACION: Todos los campos del formulario son obligatorios. El correo debe existir en el sistema para el cambio de clave.
+La clave actual debe coincidir con la correspondiente al correo.
+
+ID:
+USUARIO: cualquiera
+NOMBRE: Recuperación de clave
+PRIORIDAD:
+RIESGO:
+PUNTOS ESTIMADOS:
+ITERACION :
+PROGRAMADOR:
+DESCRIPCION: El sistema debe permitir la recuperación de la clave en caso de que el usuario no logre recordarla. Se hace mediante un formulario que solicita el correo correspondiente a la cuenta que se quiere recuperar la clave.
+El sistema luego de comprobar la correspondencia de datos genera una nueva clave, evíandola por correo.
+VALIDACION: correo obligatorio en el formulario y este debe estar ya registrado en el sistema.
+
+ID:
+USUARIO: cualquiera
+NOMBRE: Ingreso al sistema
+PRIORIDAD:
+RIESGO:
+PUNTOS ESTIMADOS:
+ITERACION :
+PROGRAMADOR:
+DESCRIPCION: El usuario hará ingreso al sistema mediante el formulario típico de ingreso, requeriendo el correo electrónico y la clave. Tras validar los datos se redirecciona a la página principal de la aplicación.
+VALIDACION: correo y clave son campos obligatorios, y el correo debe estar ya registrado en el sistema.
+
+ID:
+USUARIO: cualquiera
+NOMBRE: Mostrar pantalla principal
+PRIORIDAD:
+RIESGO:
+PUNTOS ESTIMADOS:
+ITERACION :
+PROGRAMADOR:
+DESCRIPCION: el sistema mostrará en una parte de la pantalla principal de la aplicación:
+-nombre
+-nombre empresa
+-rut
+
+Además el sistema mostrará en una parte de la pantalla principal de la aplicación el listado de pases con el histórico de pases solicitados, mostrando:
+-fecha inicio
+-fecha termino
+-motivo
+-area
+-tipo
+VALIDACION: 
+
+USUARIO: cualquiera
+NOMBRE: Ver listado de pases
+PRIORIDAD:
+RIESGO:
+PUNTOS ESTIMADOS:
+ITERACION :
+PROGRAMADOR:
+DESCRIPCION: el sistema mostrará en una parte de la pantalla principal de la aplicación el listado de pases con el histórico de pases solicitados, mostrando:
+-fecha inicio
+-fecha termino
+-motivo
+-area
+-tipo
+VALIDACION: 
+
+USUARIO: cualquiera
+NOMBRE: solicitar pases
+PRIORIDAD:
+RIESGO:
+PUNTOS ESTIMADOS:
+ITERACION :
+PROGRAMADOR:
+DESCRIPCION: el sistema debera permitir el solicitar uno de los 5 pases disponibles a cada usuario
+-visita
+-contratista
+-proveedor
+-uso de muelle
+-tripulante
+VALIDACION: 
+
+
+USUARIO: solicitante
+NOMBRE: solicitar pase visita
+PRIORIDAD:
+RIESGO:
+PUNTOS ESTIMADOS:
+ITERACION :
+PROGRAMADOR:
+DESCRIPCION: el sistema debera permitir el solicitar pase de visita que requiera
+-area
+-rut empresa
+-motivo
+-fecha inicio
+-fecha termino
+Para agregar personas
+El sistema debe enviar dos correos, uno indicando al solicitante que su peticion se encuentra en espera de aprobacion, y otro al encargado de area de contacto para acpetar la solicitud
+VALIDACION: Las personas que no cuenten con RUT, deberán ingresar número de pasaporte para
+ser incorporados. Esto será validado una vez seleccionada la nacionalidad.
+
+USUARIO: solicitante
+NOMBRE: agregar persona al pase de visita
+PRIORIDAD:
+RIESGO:
+PUNTOS ESTIMADOS:
+ITERACION :
+PROGRAMADOR:
+DESCRIPCION: el sistema debera permitir agregar personas al pase de visita
+-nombres
+-apellido paterno
+-appelido materno
+-rut
+-nacionalidad
+
+VALIDACION: 
