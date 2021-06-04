@@ -19,6 +19,20 @@ export const registrarUsuario = usuario => {
     });
 };
 
+// cambiar la clave de un usuario
+export const cambiarPassword = usuario => {
+    return new Promise((resolve, eject) => {
+        instancia.post('/Usuario/change', usuario)
+            .then(response => {
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('ERROR DEL RESPONSE EN CAMBIAR PASSWORD: ', error.toString());
+                resolve(error.response);
+            });
+    });
+}
+
 // login
 export const loginUsuario = (credenciales, dispatch) => {
     return new Promise((resolve, eject) => {

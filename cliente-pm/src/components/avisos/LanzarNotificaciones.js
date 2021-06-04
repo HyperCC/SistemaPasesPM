@@ -35,6 +35,10 @@ const listaMensajesExito = [
         'cod': 'exi-pvre00',
         'mess': 'Pase de tipo Visita generado existosamente.'
     },
+    {
+        'cod': 'exi-cce000',
+        'mess': 'Cambio de clave existoso.'
+    }
 ];
 
 const listaMensajesInfo = [
@@ -54,6 +58,10 @@ const listaMensajesInfo = [
         'cod': 'inf-cgp0000', // cargando guardado de pase
         'mess': 'Guardando pase..'
     },
+    {
+        'cod': 'inf-cgnc00', // cargando guardado de nueva clave
+        'mess': 'Guardando nueva contraseña..'
+    }
 ];
 
 // errores por parte del usuario
@@ -81,6 +89,18 @@ const listaMensajesAdvertencia = [
     {
         'cod': 'adv-cnc000',
         'mess': 'El captcha debe ser completado para registrarse.'
+    },
+    {
+        'cod': 'adv-pnmce0',
+        'mess': 'La confirmacion de la nueva contraseña no coincide con la nueva contraseña.'
+    },
+    {
+        'cod': 'adv-pde000',
+        'mess': 'La nueva contraseña debe ser distinta a la actual.'
+    },
+    {
+        'cod': 'adv-pse000',
+        'mess': 'La nueva contraseña presenta los siguientes errores: '
     }
 ];
 
@@ -124,7 +144,8 @@ export function LanzarNoritificaciones(props) {
 
     // asignacion de la notificacion a tipo advertencia
     for (const message in listaMensajesAdvertencia) {
-        if (props.codigo === 'adv-fie000' && listaMensajesAdvertencia[message].cod === props.codigo) {
+        if ((props.codigo === 'adv-fie000' && listaMensajesAdvertencia[message].cod === props.codigo)
+            || (props.codigo === 'adv-pse000' && listaMensajesAdvertencia[message].cod === props.codigo)) {
 
             let arrayErrores = '';
             for (const invalidInput in props.camposInvalidos)

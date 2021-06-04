@@ -57,13 +57,14 @@ const Rutas = () => {
                     path="/perfil"
                     component={PerfilGeneral} />
 
-                <Route path="/registro">
+                <Route path="/Registro">
                     <Registro />
                 </Route>
 
                 <Route path="/RecuperarContraseña">
                     <RecuperarClave />
                 </Route>
+
                 <Route path="/CambiarContraseña">
                     <CambiarClave />
                 </Route>

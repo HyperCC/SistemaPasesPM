@@ -22,6 +22,7 @@ namespace Aplicacion.ConfiguracionLogin
             public string Email { get; set; }
             public string Password { get; set; }
             public string NewPassword { get; set; }
+            public string ConfirmedNewPassword { get; set; }
         }
 
         public class EjecutaValidacion : AbstractValidator<Ejecuta>
@@ -31,6 +32,7 @@ namespace Aplicacion.ConfiguracionLogin
                 RuleFor(x => x.Email).NotEmpty();
                 RuleFor(x => x.Password).NotEmpty();
                 RuleFor(x => x.NewPassword).NotEmpty();
+                RuleFor(x => x.ConfirmedNewPassword).NotEmpty();
             }
         }
 
@@ -51,6 +53,39 @@ namespace Aplicacion.ConfiguracionLogin
 
             public async Task<Unit> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
+                // validacion del formato del request
+                EjecutaValidacion validator = new EjecutaValidacion();
+                var validacionesRes = validator.Validate(request);
+
+                // en caso de no obtener datos validos
+                if (!validacionesRes.IsValid)
+                {
+                    List<string> erroresFV = new List<string>();
+                    // listar los mensajes de error obtenidos
+                    foreach (var failure in validacionesRes.Errors)
+                        erroresFV.Add(failure.ErrorMessage);
+
+                    // devolver una excepcion y los erroes encontrados
+                    throw new FormatoIncorrectoException(HttpStatusCode.BadRequest,
+                     new
+                     {
+                         mensaje = $"Los datos recibidos por el usuario no cumplen con el formato solicitado.",
+                         status = HttpStatusCode.BadRequest,
+                         tipoError = "adv-fie000",
+                         listaErrores = erroresFV
+                     });
+                }
+
+                // verificar si la confirmacion del nuevo password es correcta
+                if (request.NewPassword != request.ConfirmedNewPassword)
+                    throw new PasswordNuevaMalConfirmadaException(HttpStatusCode.BadRequest,
+                            new
+                            {
+                                mensaje = "Las confirmacion de el nuevo password no coincide con el nuevo password.",
+                                status = HttpStatusCode.Unauthorized,
+                                tipoError = "adv-pnmce0"
+                            });
+
                 // verificar que el email del usuario existe 
                 var usuario = await this._usuarioManager.FindByEmailAsync(request.Email);
                 if (usuario == null)

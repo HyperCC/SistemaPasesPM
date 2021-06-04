@@ -70,7 +70,7 @@ namespace Aplicacion.ConfiguracionLogin
                     throw new FormatoIncorrectoException(HttpStatusCode.BadRequest,
                      new
                      {
-                         mensaje = $"Los datos recibidos por el usaurio no cumplen con el formato solicitado.",
+                         mensaje = $"Los datos recibidos por el usuario no cumplen con el formato solicitado.",
                          status = HttpStatusCode.BadRequest,
                          tipoError = "adv-fie000",
                          listaErrores = erroresFV

@@ -24,4 +24,14 @@ namespace Aplicacion.ExcepcionesPersonalizadas
                : base(codigo, errores)
         { }
     }
+
+    /// <summary>
+    /// verificar que la nueva password y su confirmacion coincidan
+    /// </summary>
+    public class PasswordNuevaMalConfirmadaException : ManejadorException
+    {
+        public PasswordNuevaMalConfirmadaException(HttpStatusCode codigo, object errores = null)
+               : base(codigo, errores)
+        { }
+    }
 }

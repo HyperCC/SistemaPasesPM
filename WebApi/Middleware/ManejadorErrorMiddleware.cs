@@ -123,6 +123,13 @@ namespace WebApi.Middleware
                     context.Response.StatusCode = (int)pie.Codigo;
                     break;
 
+                case PasswordNuevaMalConfirmadaException pnmce:
+                    logger.LogError(ex, "LA CONFIRMACION PARA EL NUEVO PASSWORD NO COINCIDE CON EL NUEVO PASSWORD INGRESADO..");
+                    errores = pnmce.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)pnmce.Codigo;
+                    break;
+
                 // si se lanza ManejadorExcepcion (excepcion personalizada), error de validacion para solicitudes http
                 case ManejadorException me:
                     logger.LogError(ex, "ERROR GENERICO EN LOS MANEJADORES..");

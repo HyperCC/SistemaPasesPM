@@ -83,8 +83,7 @@ const Registro = props => {
         registrarUsuario(dataUsuario).then(response => {
 
             if (typeof response !== 'undefined') {
-
-                console.log('se registro exitosamente el nuevo usuario. ', response);
+                console.log('la API esta conectada', response);
 
                 // si se reciben errores
                 if (typeof response.data.errores !== 'undefined') {
@@ -112,6 +111,7 @@ const Registro = props => {
 
                 // si no hay conexion con la API
             } else {
+                console.log('la API no esta conectada', response);
                 setCurrentNotification('err-nhc000');
             }
         });
