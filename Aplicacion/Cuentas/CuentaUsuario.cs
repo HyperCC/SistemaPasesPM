@@ -87,7 +87,7 @@ namespace Aplicacion.Cuentas
                 // obtencion de los pases a devolver
                 ICollection<PasePerfil> pasesPerfil = new List<PasePerfil>();
 
-                foreach (var pase in usuario.PasesRel)
+                foreach (var pase in usuario.PasesRel.Reverse())
                 {
                     Console.WriteLine("PERSONAS EXTERNAS EN UN PASE " + pase.Area.ToString());
                     ICollection<PersonaExternaPase> personasExternasPase = new List<PersonaExternaPase>();

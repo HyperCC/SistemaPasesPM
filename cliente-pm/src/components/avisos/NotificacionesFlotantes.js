@@ -11,7 +11,7 @@ export const NotificacionExito = contenido => {
     }
 
     return (
-        <div class="m-4 max-w-xl mx-auto">
+        <div class="p-4 max-w-xl mx-auto">
             <div class=" text-center">
                 <div class={hideErrorExito ? "hidden" : "p-2 bg-green-500 items-center relative text-gray-100 leading-none rounded-full flex lg:inline-flex"} role="alert">
                     <span class="flex rounded-full bg-green-400 uppercase px-2 py-1 text-xs font-bold mr-3">Exito</span>
@@ -36,7 +36,7 @@ export const NotificacionInformacion = contenido => {
     }
 
     return (
-        <div class="m-4 max-w-xl mx-auto">
+        <div class="p-4 max-w-xl mx-auto">
             <div class=" text-center">
                 <div class={hideErrorInfo ? "hidden" : "p-2 bg-indigo-700 items-center relative text-gray-100 leading-none rounded-full flex lg:inline-flex"} role="alert">
                     <span class="flex rounded-full bg-indigo-500 uppercase px-2 py-1 text-xs font-bold mr-3">Info</span>
@@ -66,7 +66,7 @@ export const NotificacionAdvertencia = contenido => {
     }
 
     return (
-        <div class="m-4 max-w-xl mx-auto">
+        <div class="p-4 max-w-xl mx-auto">
             <div class="text-center">
                 <div class={hideErrorAdv ? "hidden" : "p-2 bg-yellow-300 items-center relative text-gray-900 leading-none rounded-full flex lg:inline-flex"} role="alert">
                     <span class="flex rounded-full bg-yellow-200 uppercase px-2 py-1 text-xs font-bold mr-3">Validacion</span>
@@ -91,7 +91,7 @@ export const NotificacionError = contenido => {
     }
 
     return (
-        <div class="m-4 max-w-xl mx-auto">
+        <div class="p-4 max-w-xl mx-auto">
             <div class=" text-center">
                 <div class={hideErrorError ? "hidden" : "p-2 bg-red-600 items-center relative text-gray-100 leading-none rounded-full flex lg:inline-flex"} role="alert">
                     <span class="flex rounded-full bg-red-400 uppercase px-2 py-1 text-xs font-bold mr-3">Error</span>

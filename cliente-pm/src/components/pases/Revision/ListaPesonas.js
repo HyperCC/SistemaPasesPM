@@ -4,7 +4,9 @@ import { useHistory } from 'react-router-dom';
 export const ListaPersonas = props => {
     const history = useHistory();
 
-    return(
+    console.log('los datos recibidos son estos: ', props.datos);
+
+    return (
         <div class="bg-white p-4 md:p-8 rounded-lg shadow-md">
 
             <div class="mx-8 md:flex flex-row md:justify-between">
@@ -36,26 +38,32 @@ export const ListaPersonas = props => {
 
                         <tbody>
                             {/* CICLO FOR CON TODOS LOS DATOS PARA CADA PASE */}
-                            {props.datos && props.datos.map((value, index) => {
-                                return <tr key={index} class={index % 2 == 0 ? "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap"
-                                    : "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap bg-gray-100"} >
+                            {props.datos ?
+                                props.datos.length > 0 ?
+                                    props.datos.map((value, index) => {
+                                        return <tr key={index} class={index % 2 == 0 ? "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap"
+                                            : "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap bg-gray-100"} >
 
-                                    <td class="p-4">
-                                        {value.Nombres} {value.PrimerApellido} {value.SegundoApellido}
-                                    </td>
-                                    <td class="p-4">
-                                        {value.Rut === "" ? value.Pasaporte : value.Rut}
-                                    </td>
-                                    <td class="p-4">
-                                        {value.Nacionalidad}
-                                    </td>
-                                    <td class="p-4 space-x-1">
-                                        <a href="#" class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500">
-                                            Ver
-                                        </a>
-                                    </td>
-                                </tr>
-                            })}
+                                            <td class="p-4">
+                                                {value.nombres} {value.primerApellido} {value.segundoApellido}
+                                            </td>
+                                            <td class="p-4">
+                                                {value.rut === "" ? value.pasaporte : value.rut}
+                                            </td>
+                                            <td class="p-4">
+                                                {value.nacionalidad}
+                                            </td>
+                                            <td class="p-4 space-x-1">
+                                                <a href="#" class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500">
+                                                    Ver
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    })
+                                    : <tr class="text-center"><td class="p-4" colSpan="7">No hay personas asociadas</td></tr>
+                                : <tr class="text-center"><td class="p-4" colSpan="7">No hay personas asociadas</td></tr>
+                            }
+
                         </tbody>
                     </table>
                 </div>
@@ -97,5 +105,5 @@ export const ListaPersonas = props => {
             </div>
         </div>
     )
-    
+
 }

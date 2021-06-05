@@ -105,7 +105,7 @@ const Home = props => {
                             </div>
 
                             <button type="submit" onClick={botonLoginUsuario}
-                                class="bg-azul-pm rounded-lg shadow-md hover:bg-amarillo-pm text-white font-bold text-lg  p-2 mt-8 transition duration-500">
+                                class="bg-azul-pm rounded-lg shadow-md hover:bg-amarillo-pm text-white font-bold text-lg p-2 mt-8 transition duration-500">
                                 Ingresar
                             </button>
 

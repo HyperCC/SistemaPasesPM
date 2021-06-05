@@ -55,29 +55,35 @@ export const TablaTrabajadores = props => {
 
                         <tbody>
                             {/* CICLO FOR CON TODOS LOS DATOS PARA CADA PASE */}
-                            {props.datos && props.datos.map((value, index) => {
-                                return <tr key={index} class={index % 2 == 0 ? "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap"
-                                    : "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap bg-gray-100"} >
+                            {props.datos ?
+                                props.datos.length > 0 ?
+                                    props.datos.map((value, index) => {
+                                        return <tr key={index} class={index % 2 == 0 ? "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap"
+                                            : "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap bg-gray-100"} >
 
-                                    <td class="p-4">
-                                        {value.Nombres} {value.PrimerApellido} {value.SegundoApellido}
-                                    </td>
-                                    <td class="p-4">
-                                        {value.Rut === "" ? value.Pasaporte : value.Rut}
-                                    </td>
-                                    <td class="p-4">
-                                        {value.Nacionalidad}
-                                    </td>
-                                    <td class="p-4 space-x-1">
-                                        <a href="#" class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500">
-                                            Editar
-                                        </a>
-                                        <a href="#" class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500">
-                                            Eliminar
-                                        </a>
-                                    </td>
-                                </tr>
-                            })}
+                                            <td class="p-4">
+                                                {value.Nombres} {value.PrimerApellido} {value.SegundoApellido}
+                                            </td>
+                                            <td class="p-4">
+                                                {value.Rut === "" ? value.Pasaporte : value.Rut}
+                                            </td>
+                                            <td class="p-4">
+                                                {value.Nacionalidad}
+                                            </td>
+                                            <td class="p-4 space-x-1">
+                                                <button class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500">
+                                                    Editar
+                                                </button>
+                                                <button class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500">
+                                                    Eliminar
+                                                 </button>
+                                            </td>
+                                        </tr>
+                                    })
+                                    : <tr class="text-center"><td class="p-4" colSpan="7">No hay personas asociadas</td></tr>
+                                : <tr class="text-center"><td class="p-4" colSpan="7">No hay personas asociadas</td></tr>
+                            }
+
                         </tbody>
                     </table>
                 </div>
@@ -111,15 +117,6 @@ export const TablaTrabajadores = props => {
                         </svg>
                     </button>
                 </div>
-            </div>
-            <div class="flex justify-between items-center py-4 p-4">
-                <button onClick={() => history.goBack()} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
-                    Cancelar
-                </button>
-
-                <button type="submit" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
-                    Guardar
-                </button>
             </div>
         </div>
     )

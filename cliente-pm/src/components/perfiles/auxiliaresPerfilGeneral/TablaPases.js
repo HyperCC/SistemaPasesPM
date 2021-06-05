@@ -56,63 +56,69 @@ const TablaPases = props => {
 
                         <tbody>
                             {/* CICLO FOR CON TODOS LOS DATOS PARA CADA PASE */}
-                            {props.soloPases ? props.soloPases.map((value, index) => {
-                                return <tr key={index} class={index % 2 == 0 ? "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap"
-                                    : "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap bg-gray-100"} >
+                            {props.soloPases ?
+                                props.soloPases.length > 0 ?
+                                    props.soloPases.map((value, index) => {
+                                        return <tr key={index} class={index % 2 == 0 ? "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap"
+                                            : "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap bg-gray-100"} >
 
-                                    <td class="p-4">
-                                        {value.fechaInicio}
-                                    </td>
-                                    <td class="p-4">
-                                        {value.fechaTermino}
-                                    </td>
-                                    <td class="p-4">
-                                        {value.motivo}
-                                    </td>
-                                    <td class="p-4">
-                                        {value.area}
-                                    </td>
-                                    <td class="p-4 lowercase">
-                                        {value.tipo}
-                                    </td>
+                                            <td class="p-4">
+                                                {value.fechaInicio}
+                                            </td>
+                                            <td class="p-4">
+                                                {value.fechaTermino}
+                                            </td>
+                                            <td class="p-4">
+                                                {value.motivo}
+                                            </td>
+                                            <td class="p-4">
+                                                {value.area}
+                                            </td>
+                                            <td class="p-4 lowercase">
+                                                {value.tipo}
+                                            </td>
 
-                                    {/* ELECCION DEL COLOR DEL ESTADO PARA EL PASE */}
-                                    <td class="p-4">
-                                        <span class={(() => {
-                                            switch (value.estado) {
-                                                case "FINALIZADO": return "px-3 py-1 bg-purple-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
-                                                case "PENDIENTE": return "px-3 py-1 bg-yellow-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
-                                                case "APROBADO": return "px-3 py-1 bg-green-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
-                                                default: return "px-3 py-1 bg-red-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
-                                            }
-                                        })()}>
-                                            {value.estado}
-                                        </span>
-                                    </td>
-                                    
-                                    <td class="p-4 space-x-1">
-                                        <Link class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500"
-                                         to={{
-                                            pathname: "/RevisarPase",
-                                            state: {
-                                                fechaInicio: value.fechaInicio,
-                                                fechaTermino: value.fechaTermino,
-                                                motivo: value.motivo,
-                                                area: value.area,
-                                                tipo: value.tipo,
-                                                estado: value.estado,
-                                                personas: value.personasExternasRel
-                                            }
-                                        }}>
-                                            Revisar
-                                        </Link>
-                                        
-                                        <a href="#" class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500">
-                                            Editar
-                                        </a>
-                                    </td>
-                                </tr>
-                            }) : <tr class="text-center"><td class="p-4" colSpan="7">No hay pases registrados</td></tr>}
+                                            {/* ELECCION DEL COLOR DEL ESTADO PARA EL PASE */}
+                                            <td class="p-4">
+                                                <span class={(() => {
+                                                    switch (value.estado) {
+                                                        case "FINALIZADO": return "px-3 py-1 bg-purple-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
+                                                        case "PENDIENTE": return "px-3 py-1 bg-yellow-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
+                                                        case "APROBADO": return "px-3 py-1 bg-green-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
+                                                        default: return "px-3 py-1 bg-red-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
+                                                    }
+                                                })()}>
+                                                    {value.estado}
+                                                </span>
+                                            </td>
+
+                                            <td class="p-4 space-x-1">
+                                                <Link class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500"
+                                                    to={{
+                                                        pathname: "/RevisarPase",
+                                                        state: {
+                                                            fechaInicio: value.fechaInicio,
+                                                            fechaTermino: value.fechaTermino,
+                                                            motivo: value.motivo,
+                                                            area: value.area,
+                                                            tipo: value.tipo,
+                                                            estado: value.estado,
+                                                            personas: value.personaExternasRel
+                                                        }
+                                                    }}>
+                                                    Revisar
+                                                </Link>
+
+                                                <a href="#" class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500">
+                                                    Editar
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    })
+                                    : <tr class="text-center"><td class="p-4" colSpan="7">No hay pases registrados</td></tr>
+                                : <tr class="text-center"><td class="p-4" colSpan="7">Cargando los pases registrados</td></tr>
+                            }
+
                         </tbody>
                     </table>
                 </div>

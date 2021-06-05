@@ -108,7 +108,7 @@ const PerfilGeneral = () => {
 
     return (
         <div class="bg-gray-100 min-h-screen">
-            <div class="md:max-w-6xl w-full mx-auto py-8">
+            <div class="md:max-w-6xl w-full mx-auto pb-8">
                 <div class="sm:px-8 px-4">
 
                     <LanzarNoritificaciones codigo={currentNotification} />
@@ -119,7 +119,7 @@ const PerfilGeneral = () => {
                     {/*
                     <CondicionActualEmpresa documentos={dataDocumentosEmpresaPerfil} empresa={dataUsuario.NombreEmpresa} />
                     <div class="h-8"></div>
-                    */} 
+                    */}
 
                     <TablaPases soloPases={dataUsuario.pasesRel} />
                 </div>

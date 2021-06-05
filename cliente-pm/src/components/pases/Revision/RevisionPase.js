@@ -11,7 +11,6 @@ export const RevisionPase = props => {
     let TITULO = data.state.tipo;
     
     let pase = {
-
         fechaInicio: data.state.fechaInicio,
         fechaInicio: data.state.fechaInicio,
         fechaTermino: data.state.fechaTermino,
