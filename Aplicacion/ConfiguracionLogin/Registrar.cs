@@ -26,7 +26,7 @@ namespace Aplicacion.ConfiguracionLogin
         /// <summary>
         /// Declaracion del mediador
         /// </summary>
-        public class Ejecuta : IRequest<UsuarioData>
+        public class Ejecuta : IRequest
         {
             // datos recibidos por formulario
             public string Rut { get; set; }
@@ -59,7 +59,7 @@ namespace Aplicacion.ConfiguracionLogin
         /// <summary>
         /// Logica principal del mediador
         /// </summary>
-        public class Manejador : IRequestHandler<Ejecuta, UsuarioData>
+        public class Manejador : IRequestHandler<Ejecuta>
         {
             // atributos iniciales
             private readonly SistemaPasesContext _context;
@@ -78,7 +78,7 @@ namespace Aplicacion.ConfiguracionLogin
             /// <param name="request">datos recibidos por el controlador</param>
             /// <param name="cancellationToken">indicador de cancelacion de solicitud</param>
             /// <returns>codigo de estado http</returns>
-            public async Task<UsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
+            public async Task<Unit> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
                 // validacion del formato del request
                 EjecutaValidacion validator = new EjecutaValidacion();
@@ -186,15 +186,15 @@ namespace Aplicacion.ConfiguracionLogin
                     var resultadoUser = await this._userManager.CreateAsync(usuarioGenerado, "Hol@Hol@123");
 
                     if (resultadoUser.Succeeded)
+                    {
+                        // agregar el rol correspondiente
+                        var usuarioNuevoActual = await this._userManager.FindByNameAsync(usuarioGenerado.UserName);
+                        await this._userManager.AddToRoleAsync(usuarioNuevoActual, "SOLICITANTE");
+
                         //TODO: agregar devolucion de usuario DTO
-                        return new UsuarioData
-                        {
-                            Nombres = "nombres",
-                            Apellidos = "apellidos",
-                            UserName = usuarioGenerado.Email,
-                            Token = null, // agregar token 
-                            Email = usuarioGenerado.Email
-                        };
+                        return Unit.Value;
+                    }
+
                     else
                     {
                         throw new UserManagerNoGuardadoException(HttpStatusCode.BadRequest,

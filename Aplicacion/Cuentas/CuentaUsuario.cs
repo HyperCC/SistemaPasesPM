@@ -143,12 +143,17 @@ namespace Aplicacion.Cuentas
                     });
                 }
 
+                // obtener los roles del usuario
+                var getUsuarioManager = await this._userManager.FindByNameAsync(usuario.UserName);
+                var roles = await this._userManager.GetRolesAsync(getUsuarioManager);
+
                 // modelo con los datos a usar en la cuenta del usuario comun
                 var cuentaUsuarioata = new CuentaUsuarioData
                 {
                     NombreCompleto = (nombres + ((apellidos.Length > 0) ? apellidos.Remove(apellidos.Length - 1) : apellidos)),
                     Rut = usuario.PersonaRel.Rut,
                     NombreEmpresa = usuario.EmpresaRel.Nombre,
+                    Rol = roles[0],
                     PasesRel = pasesPerfil
                 };
 

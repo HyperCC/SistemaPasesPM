@@ -13,6 +13,7 @@ namespace Dominio.ModelosDto
         public string NombreCompleto { get; set; }
         public string Rut { get; set; }
         public string NombreEmpresa { get; set; }
+        public string Rol { get; set; }
         public ICollection<PasePerfil> PasesRel { get; set; }
     }
 }

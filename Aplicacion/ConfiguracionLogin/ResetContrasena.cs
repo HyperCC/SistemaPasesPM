@@ -19,14 +19,14 @@ namespace Aplicacion.ConfiguracionLogin
     {
         public class Ejecuta: IRequest<Usuario>
         {
-            public string correo;
+            public string Email;
         }
 
         public class EjecutaValidacion : AbstractValidator<Ejecuta>
         {
             public EjecutaValidacion()
             {
-                this.RuleFor(x => x.correo).NotEmpty().NotNull();
+                this.RuleFor(x => x.Email).NotEmpty().NotNull();
             }
         }
         public class Manejador : IRequestHandler<Ejecuta, Usuario>
@@ -43,8 +43,8 @@ namespace Aplicacion.ConfiguracionLogin
             }
             public async Task<Usuario> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
-                var pass = PasswordGenerator.GeneratePassword(true, true, true, true, 10);
-                var user = await this._userManager.FindByEmailAsync(request.correo);
+                var pass = PasswordGenerator.GeneratePassword(true, true, true, true, 16);
+                var user = await this._userManager.FindByEmailAsync(request.Email);
 
                 if (user == null)
                     throw new CorreoNoExisteException(HttpStatusCode.Unauthorized,

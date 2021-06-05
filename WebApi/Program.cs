@@ -28,14 +28,19 @@ namespace WebApi
                 var services = ambiente.ServiceProvider;
                 try
                 {
+                    // servicios requeridos para inyectar
                     var usuarioManager = services.GetRequiredService<UserManager<Usuario>>();
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
                     // llamar el uso de CursosOnlineContext
                     var context = services.GetRequiredService<SistemaPasesContext>();
+
                     // hacer la migracion directamente a la DB de no existir las tablas
                     context.Database.Migrate();
 
                     // instancia del seeder de datos creado en Persistencia
-                    UsuarioSeeder.InsertarData(context, usuarioManager).Wait();
+                    //UsuarioSeeder.InsertarData(context, usuarioManager).Wait();
+                    DatabaseSeeder.IniciarSeederGlobal(context, usuarioManager, roleManager);
                 }
                 catch (Exception ex)
                 {

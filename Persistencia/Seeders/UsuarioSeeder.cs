@@ -114,7 +114,10 @@ namespace Persistencia.Seeders
                 Console.WriteLine("---------------------------------------------------------------------------------");
                 Console.WriteLine((resultUsuario.Succeeded) ? "CREAR EL USUARIO FUE OK" : "CREAR EL USUARIO NO FUNCIONO");
                 Console.WriteLine("---------------------------------------------------------------------------------");
-
+                
+                var usuarioAdmin = await usuarioManager.FindByNameAsync(nuevoUsuario.UserName);
+                // agregar rol correspondiente al admin
+                await usuarioManager.AddToRoleAsync(usuarioAdmin, "ADMIN");
 
                 var tipoDocumento1 = new TipoDocumento
                 {

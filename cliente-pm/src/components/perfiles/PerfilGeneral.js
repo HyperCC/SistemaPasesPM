@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import CondicionActualEmpresa from './auxiliaresPerfilGeneral/CondicionActualEmpresa';
+//import CondicionActualEmpresa from './auxiliaresPerfilGeneral/CondicionActualEmpresa';
 import DatosUsuario from './auxiliaresPerfilGeneral/DatosUsuario';
 import TablaPases from './auxiliaresPerfilGeneral/TablaPases';
 import { perfilUsuario } from '../../actions/UsuarioAction';

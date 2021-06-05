@@ -35,7 +35,7 @@ namespace WebApi.Controllers
         /// <param name="parametros">datos del formulario del cliente</param>
         /// <returns>codigo de estado http y datos relacionados</returns>
         [HttpPost("registrar")]
-        public async Task<ActionResult<UsuarioData>> Registrar(Registrar.Ejecuta parametros)
+        public async Task<ActionResult<Unit>> Registrar(Registrar.Ejecuta parametros)
         {
             return await this.MediadorHerencia.Send(parametros);
         }
@@ -62,6 +62,11 @@ namespace WebApi.Controllers
             return await this.MediadorHerencia.Send(parametros);
         }
 
+        /// <summary>
+        /// Cambiar la contraseña actual
+        /// </summary>
+        /// <param name="parametros"></param>
+        /// <returns></returns>
         [HttpPost("change")]
         public async Task<ActionResult<Unit>> ChangePass(CambiarContrasena.Ejecuta parametros)
         {
