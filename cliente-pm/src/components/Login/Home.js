@@ -63,6 +63,7 @@ const Home = props => {
                     //window.localStorage.setItem('mensaje_success', 'exi-le0000');
                     //window.localStorage.setItem('mensaje_success_showed', false);
                     window.localStorage.setItem('token_seguridad', response.data.token);
+                    window.localStorage.setItem('data_current_usuario', JSON.stringify(response.data));
                     console.log('EL LOGIN FUE EXISTO ', response.data.token);
 
                     setCurrentNotification('exi-le0000');

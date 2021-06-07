@@ -16,6 +16,10 @@ namespace WebApi.Controllers
     [AllowAnonymous]
     public class CuentaController : PersonalController
     {
+        /// <summary>
+        /// Cuenta de un usuario segun rol 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<CuentaUsuarioData>> CuentaUsuario()
         {

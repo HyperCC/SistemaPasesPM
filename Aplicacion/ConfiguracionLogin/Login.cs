@@ -7,9 +7,11 @@ using Dominio.ModelosDto;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Persistencia;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -42,14 +44,17 @@ namespace Aplicacion.ConfiguracionLogin
             private readonly UserManager<Usuario> _usuarioManager;
             private readonly SignInManager<Usuario> _signInManager;
             private readonly IJwtGenerador _jwtGenerador;
+            private readonly SistemaPasesContext _context;
 
             public Manejador(UserManager<Usuario> usuarioManager,
                 SignInManager<Usuario> signInManager,
-                IJwtGenerador jwtGenerador)
+                IJwtGenerador jwtGenerador,
+                SistemaPasesContext context)
             {
                 this._usuarioManager = usuarioManager;
                 this._signInManager = signInManager;
                 this._jwtGenerador = jwtGenerador;
+                this._context = context;
             }
 
             public async Task<UsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
@@ -93,14 +98,54 @@ namespace Aplicacion.ConfiguracionLogin
 
                 // devolver datos del usuario logueado o lanzar 401
                 if (resultado.Succeeded)
+                {
+                    // obtener los roles del usuario
+                    var roles = await this._usuarioManager.GetRolesAsync(usuario);
+
+                    if (roles[0] == "SOLICITANTE")
+                    {
+                        // obtener datos de la cuenta 
+                        var usuarioDatosComplementarios = await this._context.Usuario
+                            .Include(x => x.EmpresaRel)
+                            .Include(x => x.PersonaRel.TipoNombresRel)
+                            .ThenInclude(z => z.TipoNombreRel)
+                            .FirstOrDefaultAsync(x => x.Email == request.Email);
+
+                        string nombres = string.Empty, apellidos = string.Empty;
+
+                        // obtencion del nombre completo
+                        foreach (var nomb in usuario.PersonaRel.TipoNombresRel.OrderBy(x => x.TipoNombreRel.Posicion))
+                        {
+                            // concatenacion de nombres y apellidos
+                            if (nomb.TipoNombreRel.Tipo == TipoIdentificador.NOMBRE)
+                                nombres += nomb.TipoNombreRel.Nombre + " ";
+                            else
+                                apellidos += nomb.TipoNombreRel.Nombre + " ";
+                        }
+
+                        // perfil del usuario solicitante
+                        return new UsuarioData
+                        {
+                            NombreCompleto = (nombres + ((apellidos.Length > 0) ? apellidos.Remove(apellidos.Length - 1) : apellidos)),
+                            Rut = usuarioDatosComplementarios.PersonaRel.Rut,
+                            NombreEmpresa = usuarioDatosComplementarios.EmpresaRel.Nombre,
+                            Rol = roles[0],
+                            Token = this._jwtGenerador.CreateToken(usuario, new List<string>()),
+                            Email = usuario.Email
+                        };
+                    }
+
+                    // perfil del resto de los roles
                     return new UsuarioData
                     {
-                        Nombres = "nombres",
-                        Apellidos = "apellidos",
-                        UserName = usuario.UserName,
+                        NombreCompleto = "",
+                        Rut = "",
+                        NombreEmpresa = "",
+                        Rol = roles[0],
                         Token = this._jwtGenerador.CreateToken(usuario, new List<string>()),
                         Email = usuario.Email
                     };
+                }
 
                 // usuario no autorizado
                 throw new PasswordIncorrectoException(HttpStatusCode.Unauthorized,

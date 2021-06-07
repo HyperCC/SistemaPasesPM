@@ -50,12 +50,9 @@ namespace Aplicacion.Cuentas
                 Console.WriteLine("EL SUSUARIO ACTUAL ES ESTE : " + this._usuarioSesion.ObtenerUsuarioSesion());
                 // obtencion de las entidades relacionadas
                 var usuario = await this._context.Usuario
-                    .Include(x => x.EmpresaRel)
                     .Include(x => x.PasesRel)
                     .ThenInclude(z => z.PersonaExternasRel)
                     .ThenInclude(y => y.PersonaExternaRel)
-                    .Include(x => x.PersonaRel.TipoNombresRel)
-                    .ThenInclude(z => z.TipoNombreRel)
                     .FirstOrDefaultAsync(x => x.UserName == this._usuarioSesion.ObtenerUsuarioSesion());
 
                 // si en algun caso el Email del usuario ingresado no este almacenado
@@ -70,21 +67,7 @@ namespace Aplicacion.Cuentas
                        });
                 }
 
-                //var usuarioDto = this._mapper.Map<Usuario, UsuarioDto>(usuario);
-
-                string nombres = string.Empty, apellidos = string.Empty;
-
-                // obtencion del nombre completo
-                foreach (var nomb in usuario.PersonaRel.TipoNombresRel.OrderBy(x => x.TipoNombreRel.Posicion))
-                {
-                    // concatenacion de nombres y apellidos
-                    if (nomb.TipoNombreRel.Tipo == TipoIdentificador.NOMBRE)
-                        nombres += nomb.TipoNombreRel.Nombre + " ";
-                    else
-                        apellidos += nomb.TipoNombreRel.Nombre + " ";
-                }
-
-                // obtencion de los pases a devolver
+                // obtencion de los pases
                 ICollection<PasePerfil> pasesPerfil = new List<PasePerfil>();
 
                 foreach (var pase in usuario.PasesRel.Reverse())
@@ -143,17 +126,13 @@ namespace Aplicacion.Cuentas
                     });
                 }
 
-                // obtener los roles del usuario
-                var getUsuarioManager = await this._userManager.FindByNameAsync(usuario.UserName);
-                var roles = await this._userManager.GetRolesAsync(getUsuarioManager);
-
                 // modelo con los datos a usar en la cuenta del usuario comun
                 var cuentaUsuarioata = new CuentaUsuarioData
                 {
-                    NombreCompleto = (nombres + ((apellidos.Length > 0) ? apellidos.Remove(apellidos.Length - 1) : apellidos)),
-                    Rut = usuario.PersonaRel.Rut,
-                    NombreEmpresa = usuario.EmpresaRel.Nombre,
-                    Rol = roles[0],
+                    NombreCompleto = "",
+                    Rut = "",
+                    NombreEmpresa = "",
+                    Rol = "",
                     PasesRel = pasesPerfil
                 };
 

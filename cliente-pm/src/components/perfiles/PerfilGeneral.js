@@ -65,6 +65,8 @@ const PerfilGeneral = () => {
 
     // atributos para el perfil del usuario
     const [dataUsuario, setDataUsuario] = useState({});
+    const [pasesUsuario, setPasesUsuario] = useState({});
+
     // codigo actual de la notificacion a mostrar
     const [currentNotification, setCurrentNotification] = useState('none');
 
@@ -77,6 +79,8 @@ const PerfilGeneral = () => {
     // obtener los datos desde el perfil directamente.
     useEffect(() => {
         setCurrentNotification('inf-cdp000');
+        setDataUsuario(JSON.parse(window.localStorage.getItem('data_current_usuario')));
+
         perfilUsuario(dispatch).then(response => {
 
             console.log('probando si hay conexion');
@@ -92,7 +96,8 @@ const PerfilGeneral = () => {
 
                     // si toda la operacion salio ok
                 } else {
-                    ingresarValoresMemoria(response.data);
+                    setPasesUsuario(response.data);
+                    //ingresarValoresMemoria(response.data);
                     console.log('el objeto obtenido correctamente es: ', response);
                     setCurrentNotification('exi-pe0000');
                     console.log('los valores en memoria son: ', dataUsuario);
@@ -113,7 +118,7 @@ const PerfilGeneral = () => {
 
                     <LanzarNoritificaciones codigo={currentNotification} />
 
-                    <DatosUsuario datos={dataUsuario} soloPases={dataUsuario.pasesRel} />
+                    <DatosUsuario datos={dataUsuario} />
                     <div class="h-8"></div>
 
                     {/*
@@ -121,7 +126,7 @@ const PerfilGeneral = () => {
                     <div class="h-8"></div>
                     */}
 
-                    <TablaPases soloPases={dataUsuario.pasesRel} />
+                    <TablaPases currentRol={dataUsuario.rol} soloPases={pasesUsuario.pasesRel} />
                 </div>
             </div>
         </div>

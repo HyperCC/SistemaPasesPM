@@ -25,8 +25,8 @@ namespace Aplicacion.ConfiguracionLogin
             private readonly IJwtGenerador _jwtGenerador;
             private readonly IUsuarioSesion _usuarioSesion;
 
-            public Manejador(UserManager<Usuario> userManager, 
-                IJwtGenerador jwtGenerador, 
+            public Manejador(UserManager<Usuario> userManager,
+                IJwtGenerador jwtGenerador,
                 IUsuarioSesion sesion)
             {
                 this._userManager = userManager;
@@ -38,15 +38,15 @@ namespace Aplicacion.ConfiguracionLogin
             {
                 var usuario = await this._userManager.FindByNameAsync(this._usuarioSesion.ObtenerUsuarioSesion());
 
-                Console.WriteLine("ACCESO DIRECTO AL USUSARIO ACTUAL");
                 // obtener lista de roles para el objeto usuario "usuario"
                 var listaRoles = new List<string>(await this._userManager.GetRolesAsync(usuario));
 
                 return new UsuarioData
                 {
-                    Nombres = "nombres",
-                    Apellidos = "apellidos",
-                    UserName = usuario.UserName,
+                    NombreCompleto = "nombres",
+                    Rut = "rut",
+                    NombreEmpresa = "nombre empresa",
+                    Rol = "el rol",
                     Token = this._jwtGenerador.CreateToken(usuario, listaRoles),
                     Email = usuario.Email
                 };

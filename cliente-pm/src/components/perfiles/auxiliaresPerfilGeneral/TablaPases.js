@@ -4,24 +4,27 @@ import { Link } from "react-router-dom";
 const TablaPases = props => {
 
     console.log(props.soloPases);
+    const currentRol = props.currentRol;
 
     return (
         <div class="bg-white p-4 md:p-8 rounded-lg shadow-md">
 
             <div class="mx-8 md:flex flex-row md:justify-between">
                 <p class="text-2xl leading-tight text-center md:text-left md:ml-8 md:w-max">
-                    Listado de Pases Solicitados
+                    Listado de Pases {currentRol == 'SOLICITANTE' ? 'Solicitados' : 'Asignados'}
                 </p>
 
                 {/* Botones para crear nuevo pase y pases buscados */}
-                <div class="text-end flex-none">
-                    <form class="flex-none md:flex w-full space-x-3">
-                        <a href="/SolicitudPases"
-                            className="w-44 text-center flex-shrink-0 block px-4 py-2 md:mt-0 mt-4 md:mx-0 mx-auto text-base font-semibold text-white bg-verde-pm rounded-md shadow-md hover:bg-amarillo-pm focus:outline-none transition duration-500">
-                            Nuevo Pase
-                        </a>
-                    </form>
-                </div>
+                {currentRol == 'SOLICITANTE' &&
+                    <div class="text-end flex-none">
+                        <form class="flex-none md:flex w-full space-x-3">
+                            <a href="/SolicitudPases"
+                                className="w-44 text-center flex-shrink-0 block px-4 py-2 md:mt-0 mt-4 md:mx-0 mx-auto text-base font-semibold text-white bg-verde-pm rounded-md shadow-md hover:bg-amarillo-pm focus:outline-none transition duration-500">
+                                Nuevo Pase
+                            </a>
+                        </form>
+                    </div>
+                }
             </div>
 
             <div class="mt-6 mx-0 md:mx-8 mb-2 md:mb-1 overflow-x-auto shadow-md rounded-lg">

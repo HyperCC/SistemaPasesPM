@@ -19,7 +19,12 @@ namespace Persistencia.Seeders
         /// <returns></returns>
         public static async Task InsertarData(RoleManager<IdentityRole> roleManager)
         {
-            string[] roles = { "ADMIN", "SOLICITANTE", "HSEQ", "JEFEO_PERACIONES", "CONTACTO", "OPIP" };
+            string[] roles = { "ADMIN",
+                "SOLICITANTE",
+                "HSEQ",
+                "JEFEO_PERACIONES",
+                "CONTACTO",
+                "OPIP" };
 
             // agregar los roles siempre que no existan
             foreach (var rol in roles)

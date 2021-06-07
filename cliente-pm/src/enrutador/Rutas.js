@@ -27,7 +27,6 @@ const Rutas = () => {
             <Navbar />
 
             <Switch>
-
                 <RutaSegura exact
                     path="/SolicitudVisita/AgregarPersona"
                     component={AgregarPersona} />
