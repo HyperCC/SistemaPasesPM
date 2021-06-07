@@ -11,7 +11,8 @@ const Navbar = (props) => {
     // cerrar ession y eliminar credenciales del navegador
     const cerrarSesion = () => {
         console.log('cerrando la sesion actual');
-        localStorage.removeItem('token_seguridad');
+        window.localStorage.removeItem('token_seguridad');
+        window.localStorage.removeItem('data_current_usuario');
 
         const sleep = (milliseconds) =>
             new Promise(resolve => setTimeout(resolve, milliseconds));

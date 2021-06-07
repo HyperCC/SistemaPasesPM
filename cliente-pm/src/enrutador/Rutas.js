@@ -11,7 +11,6 @@ import CambiarClave from '../components/login/CambiarClave';
 import AgregarPersona from '../components/pases/AgregarPersona';
 import { Contratista } from '../components/pases/Contratista';
 import { DocumentosEmpresa } from '../components/pases/DocumentosEmpresa';
-import { AgregarPersonaContratista } from '../components/pases/AgregarPersonaContratista';
 import RenderFiles from '../components/RenderFiles';
 import { Tripulante } from '../components/pases/Tripulante';
 import { UsoDeMuelle } from '../components/pases/UsoDeMuelle';

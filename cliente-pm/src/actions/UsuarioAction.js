@@ -55,9 +55,16 @@ export const loginUsuario = (credenciales, dispatch) => {
 };
 
 // datos del perfil 
-export const perfilUsuario = (dispatch) => {
+export const perfilUsuario = (dispatch, currentRol) => {
     return new Promise((resolve, eject) => {
-        ClienteHttp.get('/Cuenta')
+
+        const toDirection = currentRol == 'ADMIN' ? '/Cuenta/admin'
+            : currentRol == 'SOLICITANTE' ? '/Cuenta/solicitante'
+                : '/Cuenta/aprobador'
+
+        console.log('THE DIRECCION ACTUAL: ', toDirection);
+        
+        ClienteHttp.get(toDirection)
             .then(response => {
                 console.log('response', response);
 

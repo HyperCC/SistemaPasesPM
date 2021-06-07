@@ -21,14 +21,13 @@ namespace Aplicacion.Cuentas
 {
     public class CuentaUsuario
     {
-        public class Ejecuta : IRequest<CuentaUsuarioData>
+        public class Ejecuta : IRequest<PasesUsuarioData>
         { }
 
-        public class Manejador : IRequestHandler<Ejecuta, CuentaUsuarioData>
+        public class Manejador : IRequestHandler<Ejecuta, PasesUsuarioData>
         {
-            // instancia de variables necesarias para obtener la sesion de un usuario
+            // variables para obtener los pases generados
             private readonly UserManager<Usuario> _userManager;
-            private readonly IJwtGenerador _jwtGenerador;
             private readonly IUsuarioSesion _usuarioSesion;
             private readonly SistemaPasesContext _context;
 
@@ -38,16 +37,15 @@ namespace Aplicacion.Cuentas
                 SistemaPasesContext context)
             {
                 this._userManager = userManager;
-                this._jwtGenerador = jwtGenerador;
                 this._usuarioSesion = sesion;
                 this._context = context;
             }
 
-            public async Task<CuentaUsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
+            public async Task<PasesUsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
                 // obtener al ususario con sesion actual 
                 //var usuario = await this._userManager.FindByNameAsync(this._usuarioSesion.ObtenerUsuarioSesion());
-                Console.WriteLine("EL SUSUARIO ACTUAL ES ESTE : " + this._usuarioSesion.ObtenerUsuarioSesion());
+
                 // obtencion de las entidades relacionadas
                 var usuario = await this._context.Usuario
                     .Include(x => x.PasesRel)
@@ -72,12 +70,10 @@ namespace Aplicacion.Cuentas
 
                 foreach (var pase in usuario.PasesRel.Reverse())
                 {
-                    Console.WriteLine("PERSONAS EXTERNAS EN UN PASE " + pase.Area.ToString());
                     ICollection<PersonaExternaPase> personasExternasPase = new List<PersonaExternaPase>();
                     foreach (var personaExterna in pase.PersonaExternasRel)
                     {
-                        Console.WriteLine(personaExterna.PersonaExternaRel.Nacionalidad);
-
+                        // asociar las personas externas correspondientes
                         var personaExternaEncontrada = await this._context.PersonaExterna
                             .Include(x => x.PersonaRel.TipoNombresRel)
                             .ThenInclude(z => z.TipoNombreRel)
@@ -127,16 +123,12 @@ namespace Aplicacion.Cuentas
                 }
 
                 // modelo con los datos a usar en la cuenta del usuario comun
-                var cuentaUsuarioata = new CuentaUsuarioData
+                var pasesUsuarioAll = new PasesUsuarioData
                 {
-                    NombreCompleto = "",
-                    Rut = "",
-                    NombreEmpresa = "",
-                    Rol = "",
                     PasesRel = pasesPerfil
                 };
 
-                return cuentaUsuarioata;
+                return pasesUsuarioAll;
             }
         }
     }

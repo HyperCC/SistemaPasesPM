@@ -12,6 +12,7 @@ namespace Dominio.ModelosDto
         public string Rol { get; set; }
         public string NombreCompleto { get; set; }
         public string Rut { get; set; }
+        public string Pasaporte { get; set; }
         public string NombreEmpresa { get; set; }
         public string Token { get; set; }
         public string Email { get; set; }

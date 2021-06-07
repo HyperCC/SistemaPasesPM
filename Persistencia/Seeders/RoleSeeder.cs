@@ -21,9 +21,9 @@ namespace Persistencia.Seeders
         {
             string[] roles = { "ADMIN",
                 "SOLICITANTE",
+                "CONTACTO",
                 "HSEQ",
                 "JEFEO_PERACIONES",
-                "CONTACTO",
                 "OPIP" };
 
             // agregar los roles siempre que no existan

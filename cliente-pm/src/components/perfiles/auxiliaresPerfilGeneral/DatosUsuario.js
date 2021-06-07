@@ -21,7 +21,7 @@ const DatosUsuario = props => {
     const rolFormateado = currentRol == 'ADMIN' ?
         'Administrador'
         : currentRol == 'SOLICITANTE' ?
-            'Perfil General'
+            'Solicitante'
             : currentRol == 'HSEQ' ?
                 'HSEQ'
                 : currentRol == 'JEFEO_PERACIONES' ?

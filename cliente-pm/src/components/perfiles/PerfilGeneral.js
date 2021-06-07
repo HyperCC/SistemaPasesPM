@@ -5,11 +5,13 @@ import TablaPases from './auxiliaresPerfilGeneral/TablaPases';
 import { perfilUsuario } from '../../actions/UsuarioAction';
 import { LanzarNoritificaciones } from '../avisos/LanzarNotificaciones';
 import { useStateValue } from "../../contexto/store";
+import { TablaAllUsuarios } from '../pases/TablaAllUsuarios';
 
 
 // vista principal para el perfil general
 const PerfilGeneral = () => {
     const [{ sesionUsuario }, dispatch] = useStateValue();
+    const rolCuenta = JSON.parse(window.localStorage.getItem('data_current_usuario')).rol;
 
     //TODO: agregar datos de prueba y formatearlos
     const dataDocumentosEmpresaPerfil = [
@@ -70,18 +72,16 @@ const PerfilGeneral = () => {
     // codigo actual de la notificacion a mostrar
     const [currentNotification, setCurrentNotification] = useState('none');
 
-
-    // asignar nuevos valores al state del login
-    function ingresarValoresMemoria(valorInput) {
-        setDataUsuario(valorInput);
-    };
+    useEffect(() => {
+        console.log('datos en use effect: ', pasesUsuario);
+    }, [pasesUsuario]);
 
     // obtener los datos desde el perfil directamente.
     useEffect(() => {
         setCurrentNotification('inf-cdp000');
         setDataUsuario(JSON.parse(window.localStorage.getItem('data_current_usuario')));
 
-        perfilUsuario(dispatch).then(response => {
+        perfilUsuario(dispatch, rolCuenta).then(response => {
 
             console.log('probando si hay conexion');
 
@@ -98,7 +98,7 @@ const PerfilGeneral = () => {
                 } else {
                     setPasesUsuario(response.data);
                     //ingresarValoresMemoria(response.data);
-                    console.log('el objeto obtenido correctamente es: ', response);
+                    console.log('el objeto obtenido correctamente es: ', response.data);
                     setCurrentNotification('exi-pe0000');
                     console.log('los valores en memoria son: ', dataUsuario);
                 }
@@ -126,7 +126,10 @@ const PerfilGeneral = () => {
                     <div class="h-8"></div>
                     */}
 
-                    <TablaPases currentRol={dataUsuario.rol} soloPases={pasesUsuario.pasesRel} />
+                    {rolCuenta == 'ADMIN' ?
+                        <TablaAllUsuarios datos={pasesUsuario.usuariosAll} />
+                        : <TablaPases currentRol={dataUsuario.rol} soloPases={pasesUsuario.pasesRel} />
+                    }
                 </div>
             </div>
         </div>
