@@ -74,6 +74,20 @@ namespace WebApi.Middleware
                     context.Response.StatusCode = (int)rolee.Codigo;
                     break;
 
+                case RolNoExisteException rnee:
+                    logger.LogError(ex, "EL ROL INGRESADO PARA ACTUALIZAR NO EXISTE EN EL SISTEMA..");
+                    errores = rnee.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)rnee.Codigo;
+                    break;
+
+                case RolIdenticoException rie:
+                    logger.LogError(ex, "EL ROL INGRESADO PARA ACTUALIZAR ES IDENTICO AL ANTERIOR..");
+                    errores = rie.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)rie.Codigo;
+                    break;
+
                 case FormatoIncorrectoException fie:
                     logger.LogError(ex, "LOS DATOS ENTREGADOS POR EL CLIENTE NO SON VALIDOS..");
                     errores = fie.Errores;

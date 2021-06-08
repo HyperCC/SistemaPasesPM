@@ -127,7 +127,7 @@ const PerfilGeneral = () => {
                     */}
 
                     {rolCuenta == 'ADMIN' ?
-                        <TablaAllUsuarios datos={pasesUsuario.usuariosAll} />
+                        <TablaAllUsuarios datos={pasesUsuario.usuariosAll} _setCurrentNotification={setCurrentNotification} />
                         : <TablaPases currentRol={dataUsuario.rol} soloPases={pasesUsuario.pasesRel} />
                     }
                 </div>

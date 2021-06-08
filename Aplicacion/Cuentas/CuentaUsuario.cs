@@ -55,7 +55,6 @@ namespace Aplicacion.Cuentas
 
                 // si en algun caso el Email del usuario ingresado no este almacenado
                 if (usuario == null)
-                {
                     throw new CorreoNoExisteException(HttpStatusCode.Unauthorized,
                        new
                        {
@@ -63,7 +62,6 @@ namespace Aplicacion.Cuentas
                            status = HttpStatusCode.Unauthorized,
                            tipoError = "adv-cnee00"
                        });
-                }
 
                 // obtencion de los pases
                 ICollection<PasePerfil> pasesPerfil = new List<PasePerfil>();

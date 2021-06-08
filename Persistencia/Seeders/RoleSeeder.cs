@@ -23,7 +23,7 @@ namespace Persistencia.Seeders
                 "SOLICITANTE",
                 "CONTACTO",
                 "HSEQ",
-                "JEFEO_PERACIONES",
+                "JEFE_OPERACIONES",
                 "OPIP" };
 
             // agregar los roles siempre que no existan

@@ -38,6 +38,10 @@ const listaMensajesExito = [
     {
         'cod': 'exi-cce000',
         'mess': 'Cambio de clave existoso.'
+    },
+    {
+        'cod': 'exi-cre000',
+        'mess': 'Cambio de rol exitoso'
     }
 ];
 
@@ -61,6 +65,10 @@ const listaMensajesInfo = [
     {
         'cod': 'inf-cgnc00', // cargando guardado de nueva clave
         'mess': 'Guardando nueva contraseña..'
+    },
+    {
+        'cod': 'inf-ccr000', // cargando guardado del cambio de rol
+        'mess': 'Cambiando el rol..'
     }
 ];
 
@@ -101,7 +109,16 @@ const listaMensajesAdvertencia = [
     {
         'cod': 'adv-pse000',
         'mess': 'La nueva contraseña presenta los siguientes errores: '
+    },
+    {
+        'cod': 'adv-rnee00',
+        'mess': 'El rol para actualizar en el usuario no existe.'
+    },
+    {
+        'cod': 'adv-rie000',
+        'mess': 'El rol para actualizar es identico al actual.'
     }
+
 ];
 
 // errores por parte del servidor 

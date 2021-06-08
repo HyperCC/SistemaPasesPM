@@ -21,5 +21,16 @@ namespace WebApi.Controllers
         {
             return await MediadorHerencia.Send(parametros);
         }
+
+        /// <summary>
+        /// Cambiar el rol actual de un usuario
+        /// </summary>
+        /// <param name="parametros"></param>
+        /// <returns></returns>
+        [HttpPost("cambiar")]
+        public async Task<ActionResult<Unit>> Cambiar(ActualizaRolUsuario.Ejecuta parametros)
+        {
+            return await MediadorHerencia.Send(parametros);
+        }
     }
 }

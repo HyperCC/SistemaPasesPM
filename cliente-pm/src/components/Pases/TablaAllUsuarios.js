@@ -1,9 +1,43 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
+import { cambiarRol } from '../../actions/RolAction';
 
 export const TablaAllUsuarios = props => {
     const url = props.url;
     let history = useHistory();
+
+    const cambiarCurrentRol = (datos) => {
+        props._setCurrentNotification('inf-ccr000');
+
+        // enviar los datos a la API
+        cambiarRol(datos).then(response => {
+
+            // si existe alguna respuesta de la API
+            if (typeof response !== 'undefined') {
+                console.log('si existe conexion con la api. ', response);
+
+                // si se reciben errores
+                if (typeof response.data.errores != 'undefined') {
+                    console.log('existen errores en la respuesta: ', response.data.errores.mensaje);
+
+                    console.log('el tipo de error: ', response.data.errores.tipoError);
+                    props._setCurrentNotification(response.data.errores.tipoError);
+
+                    // si toda la operacion salio ok
+                } else {
+                    console.log('toda la operacion fue correcta');
+                    //window.localStorage.setItem('mensaje_success', 'exi-ptre00');
+                    //window.localStorage.setItem('mensaje_success_showed', false);
+                    props._setCurrentNotification('exi-cre000');
+                }
+
+                // si no hay conexion con la API
+            } else {
+                console.log('no hay conexion con la API');
+                props._setCurrentNotification('err-nhc000');
+            }
+        });
+    }
 
     return (
         <div class="bg-white p-4 md:p-8 rounded-lg shadow-md">
@@ -45,30 +79,65 @@ export const TablaAllUsuarios = props => {
                             {/* CICLO FOR CON TODOS LOS DATOS PARA CADA PASE */}
                             {props.datos ?
                                 props.datos.length > 0 ?
-                                    props.datos.map((value, index) => {
+                                    props.datos.map((valor, index) => {
+
+                                        // variables para cambiar el rol actual
+                                        let currentRol = valor.rol;
+
+                                        // datos a enviar para cambiar el rol
+                                        let dataActualizarRol = {
+                                            'RolActualizar': currentRol,
+                                            'RolAnterior': valor.rol,
+                                            'EmailUsuario': valor.email
+                                        };
+
+                                        // asignar nuevo rol
+                                        const asignarNuevoRol = (nuevoValor) => {
+                                            currentRol = nuevoValor.target.value;
+
+                                            dataActualizarRol = {
+                                                'RolActualizar': currentRol,
+                                                'RolAnterior': valor.rol,
+                                                'EmailUsuario': valor.email
+                                            };
+
+                                            console.log('OBJETO COMPLETO ', dataActualizarRol);
+                                            console.log('VALOR ORIGINAL ', valor.rol);
+                                            console.log('VALOR DEL ROL nuevo ', currentRol);
+                                        }
+
                                         return <tr key={index} class={index % 2 == 0 ? "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap"
                                             : "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap bg-gray-100"} >
 
                                             <td class="p-4">
-                                                {value.nombreCompleto}
+                                                {valor.nombreCompleto}
                                             </td>
                                             <td class="p-4">
-                                                {value.rut === "" ? value.pasaporte : value.rut}
+                                                {valor.rut === "" ? valor.pasaporte : valor.rut}
                                             </td>
                                             <td class="p-4">
-                                                {value.email}
+                                                {valor.email}
                                             </td>
                                             <td class="p-4">
-                                                {value.nombreEmpresa}
+                                                {valor.nombreEmpresa}
                                             </td>
                                             <td class="p-4">
-                                                {value.rol}
+                                                <select onChange={asignarNuevoRol} name="RolActualizar" class="bg-gray-200 p-2 rounded-md ">
+                                                    <option selected={currentRol == 'SOLICITANTE' ? 'selected' : ''} value="SOLICITANTE" class="text-center">Solicitante</option>
+                                                    <option selected={currentRol == 'CONTACTO' ? 'selected' : ''} value="CONTACTO">Contacto</option>
+                                                    <option selected={currentRol == 'HSEQ' ? 'selected' : ''} value="HSEQ" >HSEQ</option>
+                                                    <option selected={currentRol == 'JEFE_OPERACIONES' ? 'selected' : ''} value="JEFE_OPERACIONES">Jefe Operaciones</option>
+                                                    <option selected={currentRol == 'OPIP' ? 'selected' : ''} value="OPIP">OPIP</option>
+                                                    <option selected={currentRol == 'sin rol' ? 'selected' : ''} value="sin rol" class="text-center">Sin Rol</option>
+                                                </select>
                                             </td>
+
                                             <td class="p-4 space-x-1">
-                                                <button class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500">
-                                                    Editar
+                                                <button type="button" onClick={() => cambiarCurrentRol(dataActualizarRol)} class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500">
+                                                    Guardar
                                                 </button>
-                                                <button class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500">
+
+                                                <button type="button" class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500">
                                                     Eliminar
                                                  </button>
                                             </td>
