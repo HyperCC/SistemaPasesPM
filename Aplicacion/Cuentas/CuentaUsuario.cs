@@ -69,43 +69,44 @@ namespace Aplicacion.Cuentas
                 foreach (var pase in usuario.PasesRel.Reverse())
                 {
                     ICollection<PersonaExternaPase> personasExternasPase = new List<PersonaExternaPase>();
-                    foreach (var personaExterna in pase.PersonaExternasRel)
-                    {
-                        // asociar las personas externas correspondientes
-                        var personaExternaEncontrada = await this._context.PersonaExterna
-                            .Include(x => x.PersonaRel.TipoNombresRel)
-                            .ThenInclude(z => z.TipoNombreRel)
-                            .FirstOrDefaultAsync(x => x.PersonaExternaId == personaExterna.PersonaExternaId);
-
-                        string nombresPE = string.Empty;
-                        string primerApellidoPE = string.Empty;
-                        string segundoApellidoPE = string.Empty;
-
-                        // obtencion del nombre completo
-                        foreach (var nomb in personaExternaEncontrada.PersonaRel.TipoNombresRel.OrderBy(x => x.TipoNombreRel.Posicion))
+                    if (pase.PersonaExternasRel != null)
+                        foreach (var personaExterna in pase.PersonaExternasRel)
                         {
-                            // concatenacion de nombres y apellidos
-                            if (nomb.TipoNombreRel.Tipo == TipoIdentificador.NOMBRE)
-                                nombresPE += nomb.TipoNombreRel.Nombre + " ";
-                            else
+                            // asociar las personas externas correspondientes
+                            var personaExternaEncontrada = await this._context.PersonaExterna
+                                .Include(x => x.PersonaRel.TipoNombresRel)
+                                .ThenInclude(z => z.TipoNombreRel)
+                                .FirstOrDefaultAsync(x => x.PersonaExternaId == personaExterna.PersonaExternaId);
+
+                            string nombresPE = string.Empty;
+                            string primerApellidoPE = string.Empty;
+                            string segundoApellidoPE = string.Empty;
+
+                            // obtencion del nombre completo
+                            foreach (var nomb in personaExternaEncontrada.PersonaRel.TipoNombresRel.OrderBy(x => x.TipoNombreRel.Posicion))
                             {
-                                if (nomb.TipoNombreRel.Posicion == 1)
-                                    primerApellidoPE = nomb.TipoNombreRel.Nombre;
+                                // concatenacion de nombres y apellidos
+                                if (nomb.TipoNombreRel.Tipo == TipoIdentificador.NOMBRE)
+                                    nombresPE += nomb.TipoNombreRel.Nombre + " ";
                                 else
-                                    segundoApellidoPE = nomb.TipoNombreRel.Nombre;
+                                {
+                                    if (nomb.TipoNombreRel.Posicion == 1)
+                                        primerApellidoPE = nomb.TipoNombreRel.Nombre;
+                                    else
+                                        segundoApellidoPE = nomb.TipoNombreRel.Nombre;
+                                }
                             }
-                        }
 
-                        personasExternasPase.Add(new PersonaExternaPase
-                        {
-                            Nombres = nombresPE,
-                            PrimerApellido = primerApellidoPE,
-                            SegundoApellido = segundoApellidoPE,
-                            Rut = personaExternaEncontrada.PersonaRel.Rut,
-                            Pasaporte = personaExternaEncontrada.Pasaporte,
-                            Nacionalidad = personaExternaEncontrada.Nacionalidad
-                        });
-                    }
+                            personasExternasPase.Add(new PersonaExternaPase
+                            {
+                                Nombres = nombresPE,
+                                PrimerApellido = primerApellidoPE,
+                                SegundoApellido = segundoApellidoPE,
+                                Rut = personaExternaEncontrada.PersonaRel.Rut,
+                                Pasaporte = personaExternaEncontrada.Pasaporte,
+                                Nacionalidad = personaExternaEncontrada.Nacionalidad
+                            });
+                        }
 
                     // agregar los pases mapeados
                     pasesPerfil.Add(new PasePerfil

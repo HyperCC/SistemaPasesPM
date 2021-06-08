@@ -46,54 +46,57 @@ namespace Aplicacion.Cuentas
                 // obtener los pases asignados segun el rol
                 var pasesPorRol = currentRol[0] == "CONTACTO" ? this._context.Pase.Where(p => p.Tipo == TipoPase.VISITA || p.Tipo == TipoPase.PROVEEDOR)
                     : currentRol[0] == "HSEQ" ? this._context.Pase.Where(p => p.Tipo == TipoPase.CONTRATISTA)
-                    : currentRol[0] == "JEFEO_PERACIONES" ? this._context.Pase.Where(p => p.Tipo == TipoPase.USOMUELLE)
+                    : currentRol[0] == "JEFE_OPERACIONES" ? this._context.Pase.Where(p => p.Tipo == TipoPase.USOMUELLE)
                     : currentRol[0] == "OPIP" ? this._context.Pase.Where(p => p.Tipo == TipoPase.TRIPULANTE)
                     : null;
+
+                Console.WriteLine("YA SE PASO POR EL PASESPORROL CON LARGO " + pasesPorRol.Count());
 
                 // dar formato a los pases
                 ICollection<PasePerfil> allPasesPerfil = new List<PasePerfil>();
                 if (pasesPorRol != null)
                 {
-                    foreach (var pase in pasesPorRol.Reverse())
+                    foreach (var pase in pasesPorRol)
                     {
                         ICollection<PersonaExternaPase> personasExternasPase = new List<PersonaExternaPase>();
-                        foreach (var personaExterna in pase.PersonaExternasRel)
-                        {
-                            // asociar las personas externas correspondientes
-                            var personaExternaEncontrada = await this._context.PersonaExterna
-                                .Include(x => x.PersonaRel.TipoNombresRel)
-                                .ThenInclude(z => z.TipoNombreRel)
-                                .FirstOrDefaultAsync(x => x.PersonaExternaId == personaExterna.PersonaExternaId);
-
-                            string nombresPE = string.Empty;
-                            string primerApellidoPE = string.Empty;
-                            string segundoApellidoPE = string.Empty;
-
-                            // obtencion del nombre completo
-                            foreach (var nomb in personaExternaEncontrada.PersonaRel.TipoNombresRel.OrderBy(x => x.TipoNombreRel.Posicion))
+                        if (pase.PersonaExternasRel != null)
+                            foreach (var personaExterna in pase.PersonaExternasRel.Reverse())
                             {
-                                // concatenacion de nombres y apellidos
-                                if (nomb.TipoNombreRel.Tipo == TipoIdentificador.NOMBRE)
-                                    nombresPE += nomb.TipoNombreRel.Nombre + " ";
-                                else
+                                // asociar las personas externas correspondientes
+                                var personaExternaEncontrada = await this._context.PersonaExterna
+                                    .Include(x => x.PersonaRel.TipoNombresRel)
+                                    .ThenInclude(z => z.TipoNombreRel)
+                                    .FirstOrDefaultAsync(x => x.PersonaExternaId == personaExterna.PersonaExternaId);
+
+                                string nombresPE = string.Empty;
+                                string primerApellidoPE = string.Empty;
+                                string segundoApellidoPE = string.Empty;
+
+                                // obtencion del nombre completo
+                                foreach (var nomb in personaExternaEncontrada.PersonaRel.TipoNombresRel.OrderBy(x => x.TipoNombreRel.Posicion))
                                 {
-                                    if (nomb.TipoNombreRel.Posicion == 1)
-                                        primerApellidoPE = nomb.TipoNombreRel.Nombre;
+                                    // concatenacion de nombres y apellidos
+                                    if (nomb.TipoNombreRel.Tipo == TipoIdentificador.NOMBRE)
+                                        nombresPE += nomb.TipoNombreRel.Nombre + " ";
                                     else
-                                        segundoApellidoPE = nomb.TipoNombreRel.Nombre;
+                                    {
+                                        if (nomb.TipoNombreRel.Posicion == 1)
+                                            primerApellidoPE = nomb.TipoNombreRel.Nombre;
+                                        else
+                                            segundoApellidoPE = nomb.TipoNombreRel.Nombre;
+                                    }
                                 }
-                            }
 
-                            personasExternasPase.Add(new PersonaExternaPase
-                            {
-                                Nombres = nombresPE,
-                                PrimerApellido = primerApellidoPE,
-                                SegundoApellido = segundoApellidoPE,
-                                Rut = personaExternaEncontrada.PersonaRel.Rut,
-                                Pasaporte = personaExternaEncontrada.Pasaporte,
-                                Nacionalidad = personaExternaEncontrada.Nacionalidad
-                            });
-                        }
+                                personasExternasPase.Add(new PersonaExternaPase
+                                {
+                                    Nombres = nombresPE,
+                                    PrimerApellido = primerApellidoPE,
+                                    SegundoApellido = segundoApellidoPE,
+                                    Rut = personaExternaEncontrada.PersonaRel.Rut,
+                                    Pasaporte = personaExternaEncontrada.Pasaporte,
+                                    Nacionalidad = personaExternaEncontrada.Nacionalidad
+                                });
+                            }
 
                         // agregar pases formateados al resultado final
                         allPasesPerfil.Add(new PasePerfil
@@ -108,6 +111,8 @@ namespace Aplicacion.Cuentas
                         });
                     }
                 }
+
+                Console.WriteLine("YA SE FORMATEARON TODOS LOS PASES " + allPasesPerfil.Count());
 
                 // devolver el modelo con los pases
                 var pases = new PasesUsuarioData

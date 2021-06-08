@@ -107,7 +107,7 @@ const Home = props => {
                             <div class="flex flex-col pt-4">
                                 <label for="Password" class="text-lg">Contraseña</label>
                                 <div class="relative">
-                                    <input type={hidePassword ? "text" : "password"} name="Password" value={dataUsuario.Password} onChange={ingresarValoresMemoria} placeholder="Contraseña" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" />
+                                    <input type={hidePassword ? "text" : "password"} autoComplete="" name="Password" value={dataUsuario.Password} onChange={ingresarValoresMemoria} placeholder="Contraseña" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" />
 
                                     <div class="absolute inset-y-0 right-0 pr-3 flex items-center leading-5" onClick={cambiarHidePassword}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class={hidePassword ? "bi bi-eye-slash-fill text-gray-700" : "bi bi-eye-slash-fill text-gray-700 hidden"} viewBox="0 0 16 16">
