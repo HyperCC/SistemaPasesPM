@@ -94,7 +94,7 @@ namespace Aplicacion.ConfiguracionLogin
 
                 // verificar la existencia del nuevo rol
                 var resultRol = await this._roleManager.FindByNameAsync(request.RolActualizar);
-                if (resultRol == null)
+                if (resultRol == null || request.RolActualizar == "sin rol")
                     throw new RolNoExisteException(HttpStatusCode.BadRequest,
                        new
                        {
