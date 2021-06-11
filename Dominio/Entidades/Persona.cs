@@ -12,7 +12,9 @@ namespace Dominio.Entidades
         public string Rut { get; set; }
 
         // obtener los modelos relacionados 
-        public ICollection<PersonaTipoNombre> TipoNombresRel { get; set; }
+        public ICollection<NombrePersona> NombresRel { get; set; }
+        public ICollection<ApellidoPersona> ApellidosRel { get; set; }
+
         public Usuario UsuarioRel { get; set; }
         public PersonaExterna PersonaExternaRel { get; set; }
         public AsesorPrevencion AsesorPrevencionRel { get; set; }

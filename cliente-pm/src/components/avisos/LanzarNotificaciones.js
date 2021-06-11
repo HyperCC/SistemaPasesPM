@@ -59,8 +59,12 @@ const listaMensajesInfo = [
         'mess': 'Cargando datos del perfil..'
     },
     {
-        'cod': 'inf-cgp0000', // cargando guardado de pase
+        'cod': 'inf-cgp000', // cargando guardado de pase
         'mess': 'Guardando pase..'
+    },
+    {
+        'cod': 'inf-cru000', // cargando registro de usuario
+        'mess': 'Guardando registro del usuario..'
     },
     {
         'cod': 'inf-cgnc00', // cargando guardado de nueva clave

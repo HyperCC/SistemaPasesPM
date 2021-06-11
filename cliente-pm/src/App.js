@@ -1,12 +1,6 @@
 import './App.css';
 import React, { useState, useEffect } from "react";
-import Registro from './components/login/Registro';
-import Navbar from './components/Navbar';
-import PerfilGeneral from './components/perfiles/PerfilGeneral';
-import Table from './components/Table';
 import Rutas from './enrutador/Rutas';
-import home from './pages/home';
-import menu from './pages/menu';
 import { useStateValue } from "./contexto/store";
 import { perfilUsuario } from './actions/UsuarioAction';
 

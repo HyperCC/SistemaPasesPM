@@ -40,8 +40,10 @@ namespace Aplicacion.Cuentas
                 // obtener los usuarios existentes
                 var usuarios = await this._context.Usuario
                     .Include(x => x.EmpresaRel)
-                    .Include(x => x.PersonaRel.TipoNombresRel)
-                    .ThenInclude(z => z.TipoNombreRel)
+                    .Include(x => x.PersonaRel.NombresRel)
+                    .ThenInclude(z => z.NombreRel)
+                    .Include(x => x.PersonaRel.ApellidosRel)
+                    .ThenInclude(z => z.ApellidoRel)
                     .ToListAsync();
 
                 List<UsuarioData> usuariosModelados = new List<UsuarioData>();
@@ -51,30 +53,28 @@ namespace Aplicacion.Cuentas
                 {
                     // obtener rol del usuario
                     var roles = await this._usuarioManager.GetRolesAsync(usuario);
-                    if (roles.Count > 0)
+                    if (roles.Count() > 0)
                         if (roles[0] == "ADMIN")
                             continue;
 
-                    string nombres = string.Empty, apellidos = string.Empty;
+                    // obtencion de nombre completo
+                    string nombres = string.Join(" ",
+                        usuario.PersonaRel.NombresRel
+                        .Select(x => x.NombreRel.Titulo));
 
-                    // obtencion del nombre completo
-                    foreach (var nomb in usuario.PersonaRel.TipoNombresRel.OrderBy(x => x.TipoNombreRel.Posicion))
-                    {
-                        // concatenacion de nombres y apellidos
-                        if (nomb.TipoNombreRel.Tipo == TipoIdentificador.NOMBRE)
-                            nombres += nomb.TipoNombreRel.Nombre + " ";
-                        else
-                            apellidos += nomb.TipoNombreRel.Nombre + " ";
-                    }
+                    string apellidos = string.Join(" ",
+                        usuario.PersonaRel.ApellidosRel
+                        .Select(x => x.ApellidoRel.Titulo));
 
+                    // usuario modelado
                     UsuarioData usuarioModelado = new UsuarioData
                     {
-                        NombreCompleto = (nombres + ((apellidos.Length > 0) ? apellidos.Remove(apellidos.Length - 1) : apellidos)),
+                        NombreCompleto = nombres + " " + apellidos,
                         Rut = usuario.PersonaRel.Rut,
                         Pasaporte = "",
                         Email = usuario.Email,
                         NombreEmpresa = usuario.EmpresaRel.Nombre,
-                        Rol = roles.Count > 0 ? roles[0] : "sin rol"
+                        Rol = roles.Count() > 0 ? roles[0] : "sin rol"
                     };
 
                     usuariosModelados.Add(usuarioModelado);

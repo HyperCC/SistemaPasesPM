@@ -24,7 +24,7 @@ const DatosUsuario = props => {
             'Solicitante'
             : currentRol == 'HSEQ' ?
                 'HSEQ'
-                : currentRol == 'JEFEO_PERACIONES' ?
+                : currentRol == 'JEFE_OPERACIONES' ?
                     'Jefe de Operaciones'
                     : currentRol == 'CONTACTO' ?
                         'Contacto'
@@ -43,13 +43,13 @@ const DatosUsuario = props => {
                 // perfil del solicitante
                 <div class="grid grid-cols-2 gap-4 md:grid-cols-4 mt-6 mx-8 mb-2 md:mb-0">
                     <div> <p>Nombre Completo:</p> </div>
-                    <div class="col-span-1 md:col-span-3"> <p>{props.datos.nombreCompleto}</p> </div>
+                    <div class="col-span-1 md:col-span-3 capitalize"> <p>{props.datos.nombreCompleto}</p> </div>
 
                     <div> <p>Rut:</p> </div>
                     <div class="col-span-1 md:col-span-3"> <p>{props.datos.rut}</p> </div>
 
                     <div> <p>Nombre Empresa:</p> </div>
-                    <div class="col-span-1 md:col-span-3"> <p>{props.datos.nombreEmpresa}</p> </div>
+                    <div class="col-span-1 md:col-span-3 uppercase"> <p>{props.datos.nombreEmpresa}</p> </div>
                 </div>
 
                 // perfil de los nosolicitantes

@@ -14,21 +14,13 @@ namespace WebApi.Controllers
 {
     [AllowAnonymous]
     public class PasesController : PersonalController
-    {
-        [HttpPost("registrar")]
-        public async Task<ActionResult<Pase>> Registrar(NuevoPaseVisita.Ejecuta parametros)
-        {
-            return await this.MediadorHerencia.Send(parametros);
-        }
-
-        
+    {        
         [HttpPost("Upload")]
         public async Task<ActionResult<Documento>> GuardarDoc([FromForm] AlmacenarDocumentoEmpresa.Ejecuta parametros)
         {
             return await this.MediadorHerencia.Send(parametros);
         }
         
-
         /// <summary>
         /// Obtener todos los pases
         /// </summary>
