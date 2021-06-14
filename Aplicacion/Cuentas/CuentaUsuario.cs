@@ -58,7 +58,7 @@ namespace Aplicacion.Cuentas
                     throw new CorreoNoExisteException(HttpStatusCode.Unauthorized,
                        new
                        {
-                           mensaje = $"Las credenciales de acceso entregadas no coinciden con los registros.",
+                           mensaje = "Las credenciales de acceso entregadas no coinciden con los registros.",
                            status = HttpStatusCode.Unauthorized,
                            tipoError = "adv-cnee00"
                        });
