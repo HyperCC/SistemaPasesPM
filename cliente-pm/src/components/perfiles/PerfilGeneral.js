@@ -72,9 +72,9 @@ const PerfilGeneral = () => {
     // codigo actual de la notificacion a mostrar
     const [currentNotification, setCurrentNotification] = useState('none');
 
-    useEffect(() => {
+    /*useEffect(() => {
         console.log('datos en use effect: ', pasesUsuario);
-    }, [pasesUsuario]);
+    }, [pasesUsuario]);*/
 
     // obtener los datos desde el perfil directamente.
     useEffect(() => {

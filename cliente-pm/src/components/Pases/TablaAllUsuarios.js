@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import { cambiarRol } from '../../actions/RolAction';
+import Pagination from '../Pagination';
 
 export const TablaAllUsuarios = props => {
     const url = props.url;
@@ -38,15 +39,52 @@ export const TablaAllUsuarios = props => {
             }
         });
     }
+    const [usuarios, setUsuarios] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(10);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            setUsuarios(props.datos);
+        };    
+        fetchUsers();
+    }, []);
+
+    // Obtener el indice inicial por pagina
+    const offset = (currentPage - 1) * postsPerPage;
+    //Borrar cuando se deje de probar
+    console.log("Paso por aqui");    
+    console.log(usuarios);
+    //Funcion que cambia la pagina
+    const onPageChanged = pageNumber => setCurrentPage(pageNumber);
 
     return (
+        
         <div class="bg-white p-4 md:p-8 rounded-lg shadow-md">
-
             <div class="mx-8 md:flex flex-row md:justify-between">
                 <p class="text-2xl leading-tight text-center md:text-left md:ml-8 md:w-max">
                     Listado de Usuarios
                 </p>
+                
+                <div>
+                    <div class="md:text-right">Usuarios por página</div>
+                    <div class="relative inline-flex">
+                        <svg class="w-2 h-2 absolute top-0 right-0 m-4 pointer-events-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 412 232">
+                            <path d="M206 171.144L42.678 7.822c-9.763-9.763-25.592-9.763-35.355 0-9.763 9.764-9.763 25.592 0 35.355l181 181c4.88 4.882 11.279 7.323 17.677 7.323s12.796-2.441 17.678-7.322l181-181c9.763-9.764 9.763-25.592 0-35.355-9.763-9.763-25.592-9.763-35.355 0L206 171.144z" fill="#648299" fill-rule="nonzero" /></svg>
+                        <select name="Estado" 
+                                onChange={e => {setPostsPerPage(e.target.value);
+                                                            setCurrentPage(1);}} 
+                                class="border border-gray-300 rounded-full text-gray-600 p-2 bg-gray-100 hover:border-gray-400 focus:outline-none appearance-none">
+                            <option value='10'>10</option>
+                            <option value='25'>25</option>
+                            <option value='50'>50</option>
+                            <option value='100'>100</option>
+                        </select>
+                    </div>
+                </div>
             </div>
+
+            
 
             <div class="mt-6 mx-0 md:mx-8 mb-2 md:mb-1 overflow-x-auto shadow-md rounded-lg">
                 <div class="inline-block min-w-full overflow-hidden">
@@ -79,7 +117,8 @@ export const TablaAllUsuarios = props => {
                             {/* CICLO FOR CON TODOS LOS DATOS PARA CADA PASE */}
                             {props.datos ?
                                 props.datos.length > 0 ?
-                                    props.datos.map((valor, index) => {
+
+                                    props.datos.slice(offset, offset + postsPerPage).map((valor, index) => {
 
                                         // variables para cambiar el rol actual
                                         let currentRol = valor.rol;
@@ -152,34 +191,14 @@ export const TablaAllUsuarios = props => {
                 </div>
             </div>
 
-            {/* TODO:ver como se cambia esto mediante la paginacion */}
-            <div class="px-5 bg-white pt-5 flex flex-col xs:flex-row items-center xs:justify-between">
-                <div class="flex items-center">
-                    <button type="button" class="w-full p-4 border text-base rounded-l-xl text-gray-600 bg-white hover:bg-gray-100">
-                        <svg width="9" fill="currentColor" height="8" class="" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z">
-                            </path>
-                        </svg>
-                    </button>
-                    <button type="button" class="w-full px-4 p-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100 ">
-                        1
-                                </button>
-                    <button type="button" class="w-full px-4 p-2 border text-base text-gray-600 bg-white hover:bg-gray-100">
-                        2
-                                </button>
-                    <button type="button" class="w-full px-4 p-2 border-t border-b text-base text-gray-600 bg-white hover:bg-gray-100">
-                        3
-                                </button>
-                    <button type="button" class="w-full px-4 p-2 border text-base text-gray-600 bg-white hover:bg-gray-100">
-                        4
-                                </button>
-                    <button type="button" class="w-full p-4 border-t border-b border-r text-base  rounded-r-xl text-gray-600 bg-white hover:bg-gray-100">
-                        <svg width="9" fill="currentColor" height="8" class="" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
+            <div className="d-flex flex-row  align-items-center">
+                <Pagination
+                    postsPerPage={postsPerPage}
+                    totalPosts={props.datos? 
+                                    props.datos.length > 0 ? props.datos.length : 0 
+                                    : 0}
+                    paginate={onPageChanged}
+                />
             </div>
         </div>
     )
