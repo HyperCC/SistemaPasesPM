@@ -46,8 +46,13 @@ namespace Aplicacion.Pases
 
             public async Task<Unit> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
+                Console.WriteLine("-------------------------------------------------");
+                Console.WriteLine(request.PaseId);
+                Console.WriteLine("-------------------------------------------------");
+                Guid idRecibida = Guid.Parse(request.PaseId);
+
                 // buscar un pase por ID 
-                Pase currentPase = await this._context.Pase.FindAsync(request.PaseId);
+                Pase currentPase = await this._context.Pase.FindAsync(idRecibida);
                 var estadoNuevo = request.NuevoEstado.ToUpper();
 
                 // verificar que exista el enum de estado entregado
@@ -66,6 +71,10 @@ namespace Aplicacion.Pases
                     : EstadoPase.APROBADO.ToString() == estadoNuevo ? EstadoPase.APROBADO
                     : EstadoPase.FINALIZADO.ToString() == estadoNuevo ? EstadoPase.FINALIZADO
                     : EstadoPase.RECHAZADO;
+
+                Console.WriteLine("-------------------------------------------------");
+                Console.WriteLine(enumEstadoNuevo.ToString());
+                Console.WriteLine("-------------------------------------------------");
 
                 currentPase.Estado = enumEstadoNuevo;
 

@@ -108,6 +108,7 @@ namespace Aplicacion.Cuentas
                     // agregar los pases mapeados
                     pasesPerfil.Add(new PasePerfil
                     {
+                        PaseId = pase.PaseId.ToString(),
                         FechaInicio = pase.FechaInicio.ToString(),
                         FechaTermino = pase.FechaTermino.ToString(),
                         Motivo = pase.Motivo,

@@ -17,7 +17,7 @@ export const registrarPaseGenerico = pase => {
 // generar un nuevo pase generico
 export const cambiarEstadoPaseGenerico = estado => {
     return new Promise((resolve, eject) => {
-        ClienteHttp.post('/Pases/estado', estado)
+        ClienteHttp.post('/Pases/cambiarEstado', estado)
             .then(response => {
                 resolve(response);
             })

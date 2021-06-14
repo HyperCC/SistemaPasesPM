@@ -99,6 +99,7 @@ namespace Aplicacion.Cuentas
                         // agregar pases formateados al resultado final
                         allPasesPerfil.Add(new PasePerfil
                         {
+                            PaseId = pase.PaseId.ToString(),
                             FechaInicio = pase.FechaInicio.ToString(),
                             FechaTermino = pase.FechaTermino.ToString(),
                             Motivo = pase.Motivo,

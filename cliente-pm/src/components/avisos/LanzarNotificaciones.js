@@ -42,6 +42,10 @@ const listaMensajesExito = [
     {
         'cod': 'exi-cre000',
         'mess': 'Cambio de rol exitoso'
+    },
+    {
+        'cod': 'exi-cee000',
+        'mess': 'Cambio de estado exitoso'
     }
 ];
 
@@ -73,6 +77,10 @@ const listaMensajesInfo = [
     {
         'cod': 'inf-ccr000', // cargando guardado del cambio de rol
         'mess': 'Cambiando el rol..'
+    },
+    {
+        'cod': 'inf-cep000', // cargando guardado del cambio de rol
+        'mess': 'Cambiando el estado del pase..'
     }
 ];
 

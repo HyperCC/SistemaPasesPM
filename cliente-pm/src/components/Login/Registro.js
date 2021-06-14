@@ -139,28 +139,28 @@ const Registro = props => {
                                     <label class="font-light  text-gray-800 select-none" for="Rut">Rut</label>
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="text" value={dataUsuario.Rut} onChange={ingresarValoresMemoria} name="Rut" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" autoFocus />
+                                    <input type="text" value={dataUsuario.Rut} onChange={ingresarValoresMemoria} name="Rut" class="w-full border-2 py-1 px-3 border-gray-200 outline-none rounded-md bg-gray-100" autoFocus />
                                 </div>
 
                                 <div class="col-span-1 form-group">
                                     <label class="font-light  text-gray-800 select-none" for="Nombres">Nombres</label>
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="text" name="Nombres" value={dataUsuario.Nombres} onChange={ingresarValoresMemoria} class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
+                                    <input type="text" name="Nombres" value={dataUsuario.Nombres} onChange={ingresarValoresMemoria} class="w-full border-2 py-1 px-3 border-gray-200 outline-none rounded-md bg-gray-100" />
                                 </div>
 
                                 <div class="col-span-1 form-group">
                                     <label class="font-light  text-gray-800 select-none" for="Apellidos">Apellidos</label>
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="text" value={dataUsuario.Apellidos} onChange={ingresarValoresMemoria} name="Apellidos" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
+                                    <input type="text" value={dataUsuario.Apellidos} onChange={ingresarValoresMemoria} name="Apellidos" class="w-full border-2 py-1 px-3 border-gray-200 outline-none rounded-md bg-gray-100" />
                                 </div>
 
                                 <div class="col-span-1 form-group">
                                     <label class="font-light text-gray-800 select-none" for="Correo">Correo Electronico</label>
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="email" value={dataUsuario.Correo} onChange={ingresarValoresMemoria} name="Correo" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-gray-100" />
+                                    <input type="email" value={dataUsuario.Correo} onChange={ingresarValoresMemoria} name="Correo" class="w-full border-2 py-1 px-3 border-gray-200 outline-none rounded-md  bg-gray-100" />
                                 </div>
                             </div>
 
@@ -176,14 +176,14 @@ const Registro = props => {
                                     <label class="font-light  text-gray-800 select-none" for="RutEmpresa">Rut Empresa</label>
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="text" value={dataUsuario.RutEmpresa} onChange={ingresarValoresMemoria} name="RutEmpresa" class="w-full border-2  py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
+                                    <input type="text" value={dataUsuario.RutEmpresa} onChange={ingresarValoresMemoria} name="RutEmpresa" class="w-full border-2  py-1 px-3 border-gray-200 outline-none rounded-md bg-gray-100" />
                                 </div>
 
                                 <div class="col-span-1 form-group">
                                     <label class="font-light  text-gray-800 select-none" for="NombreEmpresa">Nombre Empresa</label>
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="text" value={dataUsuario.NombreEmpresa} onChange={ingresarValoresMemoria} name="NombreEmpresa" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" />
+                                    <input type="text" value={dataUsuario.NombreEmpresa} onChange={ingresarValoresMemoria} name="NombreEmpresa" class="w-full border-2 py-1 px-3 border-gray-200 outline-none rounded-md bg-gray-100" />
                                 </div>
                             </div>
 
@@ -203,9 +203,14 @@ const Registro = props => {
                             {/* ENVIAR DATOS */}
                             <div class="mt-12 flex justify-center">
                                 <button type="submit" onClick={botonRegistrarUsuario}
-                                    class="bg-azul-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+                                    class="bg-azul-pm mr-2 hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                                     Guardar
                                 </button>
+
+                                <a href="/"
+                                    class="bg-azul-pm ml-2 hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+                                    Volver
+                                </a>
                             </div>
                         </form>
 
