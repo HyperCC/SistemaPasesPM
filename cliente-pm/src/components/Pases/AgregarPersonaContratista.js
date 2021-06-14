@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useHistory } from "react-router-dom";
 import Popup from 'reactjs-popup';
+import RutValidator from "w2-rut-validator"
 
 export const AgregarPersonaContratista = () => {
     const [contratoDate, setContratoDate] = useState(new Date());
@@ -35,6 +36,17 @@ export const AgregarPersonaContratista = () => {
     const ingresarValoresMemoria = valorInput => {
         // obtener el valor
         const { name, value } = valorInput.target;
+
+        if(name == "Rut"){
+            if (!RutValidator.validate(value)){
+                alert('Por favor ingrese el rut con el siguiente formato 11.111.111-1')
+                setDatosPersona(anterior => ({
+                    ...anterior, // mantener lo que existe antes
+                    ['Rut']: '' // reseteamos el rut
+                }));
+                return;
+            }
+        }
 
         // actualizar el valor de algun otro valor
         // asignar el valor

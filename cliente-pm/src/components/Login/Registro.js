@@ -4,6 +4,7 @@ import { registrarUsuario } from '../../actions/UsuarioAction';
 import ReCAPTCHA from "react-google-recaptcha";
 import { LanzarNoritificaciones } from '../avisos/LanzarNotificaciones';
 import { withRouter } from 'react-router';
+import RutValidator from "w2-rut-validator"
 
 
 // pagina principal de registro
@@ -43,7 +44,7 @@ const Registro = props => {
             }));
 
             // actualizar el valor de algun otro valor
-        } else {
+        }else {
             // asignar el valor
             setDataUsuario(anterior => ({
                 ...anterior, // mantener lo que existe antes
@@ -77,6 +78,17 @@ const Registro = props => {
             setCurrentNotification('adv-cnc000');
             return;
         }
+
+        // verificar que el rut es valido
+        if (!RutValidator.validate(dataUsuario.Rut)){
+            alert('Por favor ingrese el rut con el siguiente formato 11.111.111-1')
+            setDataUsuario(anterior => ({
+                ...anterior, // mantener lo que existe antes
+                ['Rut']: '' // reseteamos el rut
+            }));
+            return;
+        }
+
         setCurrentNotification('inf-cgp0000'); // notificacion de carga de datos
 
         // uso del action registrar
@@ -117,6 +129,7 @@ const Registro = props => {
         });
     };
 
+
     return (
         <div>
             <div class="bg-gray-100 min-h-screen">
@@ -139,7 +152,8 @@ const Registro = props => {
                                     <label class="font-light  text-gray-800 select-none" for="Rut">Rut</label>
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="text" value={dataUsuario.Rut} onChange={ingresarValoresMemoria} name="Rut" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" autoFocus />
+                                    <input type="text" value={dataUsuario.Rut} onChange={ingresarValoresMemoria} name="Rut" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md bg-gray-100" autoFocus
+                                    />
                                 </div>
 
                                 <div class="col-span-1 form-group">

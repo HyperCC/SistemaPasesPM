@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
+import RutValidator from "w2-rut-validator"
 
 const AgregarPersona = props => {
 
@@ -24,6 +25,17 @@ const AgregarPersona = props => {
     const ingresarValoresMemoria = valorInput => {
         // obtener el valor
         const { name, value } = valorInput.target;
+
+        if(name == "Rut"){
+            if (!RutValidator.validate(value)){
+                alert('Por favor ingrese el rut con el siguiente formato 11.111.111-1')
+                setPersonaExterna(anterior => ({
+                    ...anterior, // mantener lo que existe antes
+                    ['Rut']: '' // reseteamos el rut
+                }));
+                return;
+            }
+        }
 
         // asignar el valor
         setPersonaExterna(anterior => ({
