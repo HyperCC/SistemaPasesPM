@@ -31,7 +31,7 @@ const TablaPases = props => {
                     setCurrentPage(currentPage - 1);                
                 break;
             case 'RIGHT':
-                if (currentPage < Math.ceil((pases? pases.length: 0) / postsPerPage))
+                if (currentPage < Math.ceil((props.soloPases? props.soloPases.length: 0) / postsPerPage))
                     setCurrentPage(currentPage + 1);                    
                 break;
             default:

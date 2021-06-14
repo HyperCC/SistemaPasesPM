@@ -30,7 +30,7 @@ export const TablaTrabajadores = props => {
                     setCurrentPage(currentPage - 1);                
                 break;
             case 'RIGHT':
-                if (currentPage < Math.ceil((usuarios? usuarios.length: 0) / postsPerPage))
+                if (currentPage < Math.ceil((props.datos? props.datos.length: 0) / postsPerPage))
                     setCurrentPage(currentPage + 1);                    
                 break;
             default:
