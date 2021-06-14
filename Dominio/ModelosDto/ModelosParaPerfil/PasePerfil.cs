@@ -10,6 +10,7 @@ namespace Dominio.ModelosDto
     /// </summary>
     public class PasePerfil
     {
+        public string PaseId { get; set; }
         public string FechaInicio { get; set; }
         public string FechaTermino { get; set; }
         public string Motivo { get; set; }

@@ -106,7 +106,7 @@ export const Tripulante = (props) => {
 
         inforFormulario.preventDefault();
         console.log('todos los datos para enviar: ', dataPaseGeneral);
-        setCurrentNotification('inf-cgu000');
+        setCurrentNotification('inf-cgp000');
 
         // enviar los datos a la API
         registrarPaseGenerico(dataPaseGeneral).then(response => {

@@ -25,17 +25,21 @@ namespace Persistencia
             base.OnModelCreating(modelBuilder);
 
             // declaracion de clave primaria compuesta para relaciones N-N
-            modelBuilder.Entity<PersonaTipoNombre>().HasKey(ci => new { ci.PersonaId, ci.TipoNombreId });
+            modelBuilder.Entity<NombrePersona>().HasKey(ci => new { ci.PersonaId, ci.NombreId });
+            modelBuilder.Entity<ApellidoPersona>().HasKey(ci => new { ci.PersonaId, ci.ApellidoId });
             modelBuilder.Entity<PasePersonaExterna>().HasKey(ci => new { ci.PaseId, ci.PersonaExternaId });
             modelBuilder.Entity<Pase>().Property(p => p.Estado).HasConversion<string>();
             modelBuilder.Entity<Pase>().Property(p => p.Tipo).HasConversion<string>();
+            modelBuilder.Entity<Pase>().HasOne(u => u.UsuarioRel).WithMany(p => p.PasesRel);
         }
 
         // conversion de los modelos a entidades en la Solucion
         public DbSet<Persona> Persona { get; set; }
-        public DbSet<PersonaTipoNombre> PersonaTipoNombre { get; set; }
         public DbSet<Rol> Rol { get; set; }
-        public DbSet<TipoNombre> TipoNombre { get; set; }
+        public DbSet<Nombre> Nombre { get; set; }
+        public DbSet<NombrePersona> NombrePersona { get; set; }
+        public DbSet<Apellido> Apellido { get; set; }
+        public DbSet<ApellidoPersona> ApellidoPersona { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Empresa> Empresa { get; set; }
         public DbSet<AnexoContrato> AnexoContrato { get; set; }

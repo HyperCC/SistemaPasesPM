@@ -4,7 +4,15 @@ using System.Text;
 
 namespace Dominio.Entidades
 {
-    class Apellido
+    public class Apellido
     {
+        public Guid ApellidoId { get; set; }
+
+        // atributos de la entidad
+        public string Titulo { get; set; }
+        public int Posicion { get; set; } // primero, segundo, tercero.
+
+        // obtener los modelos relacionados 
+        public ICollection<NombrePersona> PersonasRel { get; set; }
     }
 }

@@ -144,6 +144,13 @@ namespace WebApi.Middleware
                     context.Response.StatusCode = (int)pnmce.Codigo;
                     break;
 
+                case EstadoNoExisteException enee:
+                    logger.LogError(ex, "EL ESTADO RECIBIDO POR EL CLIENTE NO COINCIDE CON ALGUN REGISTRO EXISTENTE..");
+                    errores = enee.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)enee.Codigo;
+                    break;
+
                 // si se lanza ManejadorExcepcion (excepcion personalizada), error de validacion para solicitudes http
                 case ManejadorException me:
                     logger.LogError(ex, "ERROR GENERICO EN LOS MANEJADORES..");

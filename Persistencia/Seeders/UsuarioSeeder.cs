@@ -1,6 +1,7 @@
 ﻿using Dominio.Entidades;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Persistencia.AuxiliaresAlmacenamiento;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,42 +26,6 @@ namespace Persistencia.Seeders
             // USUARIO AMIN 
             if (await usuarioManager.FindByEmailAsync("admin@gmail.com") == null)
             {
-                Console.WriteLine("NO HAY USUARIO ADMIN EN LA BASE DE DATOS..");
-
-                // nombres
-                var nombre1 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "camilo",
-                    Posicion = 1,
-                    Tipo = TipoIdentificador.NOMBRE
-                };
-                var nombre2 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "andres",
-                    Posicion = 2,
-                    Tipo = TipoIdentificador.NOMBRE
-                };
-
-                // apellidos
-                var apellido1 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "moraga",
-                    Posicion = 1,
-                    Tipo = TipoIdentificador.APELLIDO
-                };
-                var apellido2 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "martinez",
-                    Posicion = 2,
-                    Tipo = TipoIdentificador.APELLIDO
-                };
-                // agregar los respectivos nombres
-                await context.TipoNombre.AddRangeAsync(nombre1, nombre2, apellido1, apellido2);
-
                 // datos de la persona inicial
                 var nuevaPersona = new Persona
                 {
@@ -69,21 +34,11 @@ namespace Persistencia.Seeders
                 };
                 await context.Persona.AddAsync(nuevaPersona);
 
-                // agrupar todas las instancias de PersonaTipoNombre correspondientes
-                Guid[] idsNombres = {nombre1.TipoNombreId,
-                    nombre2.TipoNombreId,
-                    apellido1.TipoNombreId,
-                    apellido2.TipoNombreId };
-
-                // generar las instancias 
-                foreach (Guid idnombre in idsNombres)
-                {
-                    await context.PersonaTipoNombre.AddAsync(new PersonaTipoNombre
-                    {
-                        PersonaId = nuevaPersona.PersonaId,
-                        TipoNombreId = idnombre
-                    });
-                }
+                // agregar y relacionar nombres y apellidos
+                await AlmacenarNombres.AgregarNombres("camilo andres"
+                   , "moraga martinez"
+                   , context
+                   , nuevaPersona.PersonaId);
 
                 var nuevaEmpresa = new Empresa
                 {
@@ -122,40 +77,6 @@ namespace Persistencia.Seeders
             //USUARIO SOLICITANTE
             if (await usuarioManager.FindByEmailAsync("usuario@gmail.com") == null)
             {
-                // nombres
-                var nombre1 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "cristian",
-                    Posicion = 1,
-                    Tipo = TipoIdentificador.NOMBRE
-                };
-                var nombre2 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "elias",
-                    Posicion = 2,
-                    Tipo = TipoIdentificador.NOMBRE
-                };
-
-                // apellidos
-                var apellido1 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "vergara",
-                    Posicion = 1,
-                    Tipo = TipoIdentificador.APELLIDO
-                };
-                var apellido2 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "vargas",
-                    Posicion = 2,
-                    Tipo = TipoIdentificador.APELLIDO
-                };
-                // agregar los respectivos nombres
-                await context.TipoNombre.AddRangeAsync(nombre1, nombre2, apellido1, apellido2);
-
                 // datos de la persona inicial
                 var nuevaPersona = new Persona
                 {
@@ -164,21 +85,11 @@ namespace Persistencia.Seeders
                 };
                 await context.Persona.AddAsync(nuevaPersona);
 
-                // agrupar todas las instancias de PersonaTipoNombre correspondientes
-                Guid[] idsNombres1 = {nombre1.TipoNombreId,
-                    nombre2.TipoNombreId,
-                    apellido1.TipoNombreId,
-                    apellido2.TipoNombreId };
-
-                // generar las instancias 
-                foreach (Guid idnombre in idsNombres1)
-                {
-                    await context.PersonaTipoNombre.AddAsync(new PersonaTipoNombre
-                    {
-                        PersonaId = nuevaPersona.PersonaId,
-                        TipoNombreId = idnombre
-                    });
-                }
+                // agregar y relacionar nombres y apellidos
+                await AlmacenarNombres.AgregarNombres("cristian elias"
+                   , "vergara vargas"
+                   , context
+                   , nuevaPersona.PersonaId);
 
                 var result = await context.SaveChangesAsync();
                 Empresa currentEmpresa = await context.Empresa.FirstOrDefaultAsync(x => x.Nombre == "PMEJ");
@@ -207,40 +118,6 @@ namespace Persistencia.Seeders
             //USUARIO CONTACTO
             if (await usuarioManager.FindByEmailAsync("contacto@gmail.com") == null)
             {
-                // nombres
-                var nombre1 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "daniel",
-                    Posicion = 1,
-                    Tipo = TipoIdentificador.NOMBRE
-                };
-                var nombre2 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "tomas",
-                    Posicion = 2,
-                    Tipo = TipoIdentificador.NOMBRE
-                };
-
-                // apellidos
-                var apellido1 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "gutierrez",
-                    Posicion = 1,
-                    Tipo = TipoIdentificador.APELLIDO
-                };
-                var apellido2 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "alanes",
-                    Posicion = 2,
-                    Tipo = TipoIdentificador.APELLIDO
-                };
-                // agregar los respectivos nombres
-                await context.TipoNombre.AddRangeAsync(nombre1, nombre2, apellido1, apellido2);
-
                 // datos de la persona inicial
                 var nuevaPersona = new Persona
                 {
@@ -249,21 +126,11 @@ namespace Persistencia.Seeders
                 };
                 await context.Persona.AddAsync(nuevaPersona);
 
-                // agrupar todas las instancias de PersonaTipoNombre correspondientes
-                Guid[] idsNombres1 = {nombre1.TipoNombreId,
-                    nombre2.TipoNombreId,
-                    apellido1.TipoNombreId,
-                    apellido2.TipoNombreId };
-
-                // generar las instancias 
-                foreach (Guid idnombre in idsNombres1)
-                {
-                    await context.PersonaTipoNombre.AddAsync(new PersonaTipoNombre
-                    {
-                        PersonaId = nuevaPersona.PersonaId,
-                        TipoNombreId = idnombre
-                    });
-                }
+                // agregar y relacionar nombres y apellidos
+                await AlmacenarNombres.AgregarNombres("daniel tomas"
+                   , "gutierrez alanes"
+                   , context
+                   , nuevaPersona.PersonaId);
 
                 var result = await context.SaveChangesAsync();
                 Empresa currentEmpresa = await context.Empresa.FirstOrDefaultAsync(x => x.Nombre == "PMEJ");
@@ -292,40 +159,6 @@ namespace Persistencia.Seeders
             //USUARIO HSEQ
             if (await usuarioManager.FindByEmailAsync("hseq@gmail.com") == null)
             {
-                // nombres
-                var nombre1 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "romina",
-                    Posicion = 1,
-                    Tipo = TipoIdentificador.NOMBRE
-                };
-                var nombre2 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "andrea",
-                    Posicion = 2,
-                    Tipo = TipoIdentificador.NOMBRE
-                };
-
-                // apellidos
-                var apellido1 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "alcallaga",
-                    Posicion = 1,
-                    Tipo = TipoIdentificador.APELLIDO
-                };
-                var apellido2 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "martinez",
-                    Posicion = 2,
-                    Tipo = TipoIdentificador.APELLIDO
-                };
-                // agregar los respectivos nombres
-                await context.TipoNombre.AddRangeAsync(nombre1, nombre2, apellido1, apellido2);
-
                 // datos de la persona inicial
                 var nuevaPersona = new Persona
                 {
@@ -334,21 +167,11 @@ namespace Persistencia.Seeders
                 };
                 await context.Persona.AddAsync(nuevaPersona);
 
-                // agrupar todas las instancias de PersonaTipoNombre correspondientes
-                Guid[] idsNombres1 = {nombre1.TipoNombreId,
-                    nombre2.TipoNombreId,
-                    apellido1.TipoNombreId,
-                    apellido2.TipoNombreId };
-
-                // generar las instancias 
-                foreach (Guid idnombre in idsNombres1)
-                {
-                    await context.PersonaTipoNombre.AddAsync(new PersonaTipoNombre
-                    {
-                        PersonaId = nuevaPersona.PersonaId,
-                        TipoNombreId = idnombre
-                    });
-                }
+                // agregar y relacionar nombres y apellidos
+                await AlmacenarNombres.AgregarNombres("romina andrea"
+                   , "alcallaga martinez"
+                   , context
+                   , nuevaPersona.PersonaId);
 
                 var result = await context.SaveChangesAsync();
                 Empresa currentEmpresa = await context.Empresa.FirstOrDefaultAsync(x => x.Nombre == "PMEJ");
@@ -377,40 +200,6 @@ namespace Persistencia.Seeders
             //USUARIO OPIP
             if (await usuarioManager.FindByEmailAsync("opip@gmail.com") == null)
             {
-                // nombres
-                var nombre1 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "manuel",
-                    Posicion = 1,
-                    Tipo = TipoIdentificador.NOMBRE
-                };
-                var nombre2 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "andres",
-                    Posicion = 2,
-                    Tipo = TipoIdentificador.NOMBRE
-                };
-
-                // apellidos
-                var apellido1 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "tapia",
-                    Posicion = 1,
-                    Tipo = TipoIdentificador.APELLIDO
-                };
-                var apellido2 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "barrios",
-                    Posicion = 2,
-                    Tipo = TipoIdentificador.APELLIDO
-                };
-                // agregar los respectivos nombres
-                await context.TipoNombre.AddRangeAsync(nombre1, nombre2, apellido1, apellido2);
-
                 // datos de la persona inicial
                 var nuevaPersona = new Persona
                 {
@@ -419,21 +208,11 @@ namespace Persistencia.Seeders
                 };
                 await context.Persona.AddAsync(nuevaPersona);
 
-                // agrupar todas las instancias de PersonaTipoNombre correspondientes
-                Guid[] idsNombres1 = {nombre1.TipoNombreId,
-                    nombre2.TipoNombreId,
-                    apellido1.TipoNombreId,
-                    apellido2.TipoNombreId };
-
-                // generar las instancias 
-                foreach (Guid idnombre in idsNombres1)
-                {
-                    await context.PersonaTipoNombre.AddAsync(new PersonaTipoNombre
-                    {
-                        PersonaId = nuevaPersona.PersonaId,
-                        TipoNombreId = idnombre
-                    });
-                }
+                // agregar y relacionar nombres y apellidos
+                await AlmacenarNombres.AgregarNombres("manuel andres"
+                   , "tapia barrios"
+                   , context
+                   , nuevaPersona.PersonaId);
 
                 var result = await context.SaveChangesAsync();
                 Empresa currentEmpresa = await context.Empresa.FirstOrDefaultAsync(x => x.Nombre == "PMEJ");
@@ -462,40 +241,6 @@ namespace Persistencia.Seeders
             //USUARIO JEFE OPERACIONES
             if (await usuarioManager.FindByEmailAsync("jo@gmail.com") == null)
             {
-                // nombres
-                var nombre1 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "elias",
-                    Posicion = 1,
-                    Tipo = TipoIdentificador.NOMBRE
-                };
-                var nombre2 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "danilo",
-                    Posicion = 2,
-                    Tipo = TipoIdentificador.NOMBRE
-                };
-
-                // apellidos
-                var apellido1 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "alcallaga",
-                    Posicion = 1,
-                    Tipo = TipoIdentificador.APELLIDO
-                };
-                var apellido2 = new TipoNombre
-                {
-                    TipoNombreId = new Guid(),
-                    Nombre = "martinez",
-                    Posicion = 2,
-                    Tipo = TipoIdentificador.APELLIDO
-                };
-                // agregar los respectivos nombres
-                await context.TipoNombre.AddRangeAsync(nombre1, nombre2, apellido1, apellido2);
-
                 // datos de la persona inicial
                 var nuevaPersona = new Persona
                 {
@@ -504,21 +249,11 @@ namespace Persistencia.Seeders
                 };
                 await context.Persona.AddAsync(nuevaPersona);
 
-                // agrupar todas las instancias de PersonaTipoNombre correspondientes
-                Guid[] idsNombres1 = {nombre1.TipoNombreId,
-                    nombre2.TipoNombreId,
-                    apellido1.TipoNombreId,
-                    apellido2.TipoNombreId };
-
-                // generar las instancias 
-                foreach (Guid idnombre in idsNombres1)
-                {
-                    await context.PersonaTipoNombre.AddAsync(new PersonaTipoNombre
-                    {
-                        PersonaId = nuevaPersona.PersonaId,
-                        TipoNombreId = idnombre
-                    });
-                }
+                // agregar y relacionar nombres y apellidos
+                await AlmacenarNombres.AgregarNombres("elias danilo"
+                   , "alcallaga martinez"
+                   , context
+                   , nuevaPersona.PersonaId);
 
                 var result = await context.SaveChangesAsync();
                 Empresa currentEmpresa = await context.Empresa.FirstOrDefaultAsync(x => x.Nombre == "PMEJ");

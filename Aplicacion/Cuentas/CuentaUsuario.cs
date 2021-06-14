@@ -43,9 +43,6 @@ namespace Aplicacion.Cuentas
 
             public async Task<PasesUsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
-                // obtener al ususario con sesion actual 
-                //var usuario = await this._userManager.FindByNameAsync(this._usuarioSesion.ObtenerUsuarioSesion());
-
                 // obtencion de las entidades relacionadas
                 var usuario = await this._context.Usuario
                     .Include(x => x.PasesRel)
@@ -53,12 +50,15 @@ namespace Aplicacion.Cuentas
                     .ThenInclude(y => y.PersonaExternaRel)
                     .FirstOrDefaultAsync(x => x.UserName == this._usuarioSesion.ObtenerUsuarioSesion());
 
+                Console.WriteLine("LARGO DE PASES " + usuario.PasesRel.Count());
+                Console.WriteLine("CUETA RECONOCIDA COMO " + this._usuarioSesion.ObtenerUsuarioSesion());
+
                 // si en algun caso el Email del usuario ingresado no este almacenado
                 if (usuario == null)
                     throw new CorreoNoExisteException(HttpStatusCode.Unauthorized,
                        new
                        {
-                           mensaje = $"Las credenciales de acceso entregadas no coinciden con los registros.",
+                           mensaje = "Las credenciales de acceso entregadas no coinciden con los registros.",
                            status = HttpStatusCode.Unauthorized,
                            tipoError = "adv-cnee00"
                        });
@@ -70,32 +70,29 @@ namespace Aplicacion.Cuentas
                 {
                     ICollection<PersonaExternaPase> personasExternasPase = new List<PersonaExternaPase>();
                     if (pase.PersonaExternasRel != null)
-                        foreach (var personaExterna in pase.PersonaExternasRel)
+                        foreach (var personaExterna in pase.PersonaExternasRel.Reverse())
                         {
                             // asociar las personas externas correspondientes
                             var personaExternaEncontrada = await this._context.PersonaExterna
-                                .Include(x => x.PersonaRel.TipoNombresRel)
-                                .ThenInclude(z => z.TipoNombreRel)
+                                .Include(x => x.PersonaRel.NombresRel)
+                                .ThenInclude(z => z.NombreRel)
+                                .Include(x => x.PersonaRel.ApellidosRel)
+                                .ThenInclude(z => z.ApellidoRel)
                                 .FirstOrDefaultAsync(x => x.PersonaExternaId == personaExterna.PersonaExternaId);
 
-                            string nombresPE = string.Empty;
-                            string primerApellidoPE = string.Empty;
-                            string segundoApellidoPE = string.Empty;
+                            // obtencion del nombre 
+                            string nombresPE = string.Join(" "
+                                , personaExternaEncontrada.PersonaRel.NombresRel
+                                .Select(x => x.NombreRel.Titulo));
 
-                            // obtencion del nombre completo
-                            foreach (var nomb in personaExternaEncontrada.PersonaRel.TipoNombresRel.OrderBy(x => x.TipoNombreRel.Posicion))
-                            {
-                                // concatenacion de nombres y apellidos
-                                if (nomb.TipoNombreRel.Tipo == TipoIdentificador.NOMBRE)
-                                    nombresPE += nomb.TipoNombreRel.Nombre + " ";
-                                else
-                                {
-                                    if (nomb.TipoNombreRel.Posicion == 1)
-                                        primerApellidoPE = nomb.TipoNombreRel.Nombre;
-                                    else
-                                        segundoApellidoPE = nomb.TipoNombreRel.Nombre;
-                                }
-                            }
+                            var apellidos = personaExternaEncontrada.PersonaRel.ApellidosRel
+                                    .Select(x => x.ApellidoRel.Titulo).ToList();
+                            string primerApellidoPE = apellidos.FirstOrDefault();
+
+                            apellidos.Remove(apellidos.First());
+                            string segundoApellidoPE = apellidos.Count() > 0 ?
+                                apellidos.FirstOrDefault()
+                                : string.Empty;
 
                             personasExternasPase.Add(new PersonaExternaPase
                             {
@@ -111,6 +108,7 @@ namespace Aplicacion.Cuentas
                     // agregar los pases mapeados
                     pasesPerfil.Add(new PasePerfil
                     {
+                        PaseId = pase.PaseId.ToString(),
                         FechaInicio = pase.FechaInicio.ToString(),
                         FechaTermino = pase.FechaTermino.ToString(),
                         Motivo = pase.Motivo,

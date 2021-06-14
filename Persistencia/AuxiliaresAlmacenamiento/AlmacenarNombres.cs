@@ -35,32 +35,30 @@ namespace Persistencia.AuxiliaresAlmacenamiento
             foreach (var nombre in nombres)
             {
                 // buscar si existe el nombre
-                TipoNombre nombreExiste = await _context.TipoNombre
-                    .Where(x => x.Nombre == nombre
-                    && x.Tipo == TipoIdentificador.NOMBRE
+                Nombre nombreExiste = await _context.Nombre
+                    .Where(x => x.Titulo == nombre
                     && x.Posicion == currentIteration)
                     .FirstOrDefaultAsync();
 
                 // agregar el nuevo nombre si no existe
                 if (nombreExiste == null)
                 {
-                    nombreExiste = new TipoNombre
+                    nombreExiste = new Nombre
                     {
-                        TipoNombreId = new Guid(),
-                        Nombre = nombre,
-                        Tipo = TipoIdentificador.NOMBRE,
+                        NombreId = new Guid(),
+                        Titulo = nombre,
                         Posicion = currentIteration
                     };
-                    _context.TipoNombre.Add(nombreExiste);
+                    _context.Nombre.Add(nombreExiste);
                 };
 
                 // agregar tabla con nombres y personas 
-                PersonaTipoNombre nuevoPersonaTipoNombre = new PersonaTipoNombre
+                NombrePersona nuevoPersonaTipoNombre = new NombrePersona
                 {
                     PersonaId = _personaId,
-                    TipoNombreId = nombreExiste.TipoNombreId
+                    NombreId = nombreExiste.NombreId
                 };
-                _context.PersonaTipoNombre.Add(nuevoPersonaTipoNombre);
+                _context.NombrePersona.Add(nuevoPersonaTipoNombre);
 
                 currentIteration++;
             }
@@ -76,32 +74,30 @@ namespace Persistencia.AuxiliaresAlmacenamiento
             foreach (var apellido in apellidos)
             {
                 // buscar si existe el apellido
-                TipoNombre apellidoExiste = await _context.TipoNombre
-                    .Where(x => x.Nombre == apellido
-                    && x.Tipo == TipoIdentificador.APELLIDO
+                Apellido apellidoExiste = await _context.Apellido
+                    .Where(x => x.Titulo == apellido
                     && x.Posicion == currentIteration)
                     .FirstOrDefaultAsync();
 
                 // agregar el nuevo nombre si no existe
                 if (apellidoExiste == null)
                 {
-                    apellidoExiste = new TipoNombre
+                    apellidoExiste = new Apellido
                     {
-                        TipoNombreId = new Guid(),
-                        Nombre = apellido,
-                        Tipo = TipoIdentificador.APELLIDO,
+                        ApellidoId = new Guid(),
+                        Titulo = apellido,
                         Posicion = currentIteration
                     };
-                    _context.TipoNombre.Add(apellidoExiste);
+                    _context.Apellido.Add(apellidoExiste);
                 }
 
                 // agregar tabla con nombres y personas 
-                PersonaTipoNombre nuevoPersonaTipoNombre = new PersonaTipoNombre
+                ApellidoPersona nuevoPersonaTipoNombre = new ApellidoPersona
                 {
                     PersonaId = _personaId,
-                    TipoNombreId = apellidoExiste.TipoNombreId
+                    ApellidoId = apellidoExiste.ApellidoId
                 };
-                _context.PersonaTipoNombre.Add(nuevoPersonaTipoNombre);
+                _context.ApellidoPersona.Add(nuevoPersonaTipoNombre);
 
                 currentIteration++;
             }

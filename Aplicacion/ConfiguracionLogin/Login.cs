@@ -107,26 +107,24 @@ namespace Aplicacion.ConfiguracionLogin
                         // obtener datos de la cuenta 
                         var usuarioDatosComplementarios = await this._context.Usuario
                             .Include(x => x.EmpresaRel)
-                            .Include(x => x.PersonaRel.TipoNombresRel)
-                            .ThenInclude(z => z.TipoNombreRel)
+                            .Include(x => x.PersonaRel.NombresRel)
+                            .ThenInclude(z => z.NombreRel)
+                            .Include(x => x.PersonaRel.ApellidosRel)
+                            .ThenInclude(z => z.ApellidoRel)
                             .FirstOrDefaultAsync(x => x.Email == request.Email);
 
-                        string nombres = string.Empty, apellidos = string.Empty;
+                        string nombres = string.Join(" "
+                              , usuarioDatosComplementarios.PersonaRel.NombresRel
+                              .Select(x => x.NombreRel.Titulo));
 
-                        // obtencion del nombre completo
-                        foreach (var nomb in usuario.PersonaRel.TipoNombresRel.OrderBy(x => x.TipoNombreRel.Posicion))
-                        {
-                            // concatenacion de nombres y apellidos
-                            if (nomb.TipoNombreRel.Tipo == TipoIdentificador.NOMBRE)
-                                nombres += nomb.TipoNombreRel.Nombre + " ";
-                            else
-                                apellidos += nomb.TipoNombreRel.Nombre + " ";
-                        }
+                        string apellidos = string.Join(" "
+                              , usuarioDatosComplementarios.PersonaRel.ApellidosRel
+                              .Select(x => x.ApellidoRel.Titulo));
 
                         // perfil del usuario solicitante
                         return new UsuarioData
                         {
-                            NombreCompleto = (nombres + ((apellidos.Length > 0) ? apellidos.Remove(apellidos.Length - 1) : apellidos)),
+                            NombreCompleto = nombres + " " + apellidos,
                             Rut = usuarioDatosComplementarios.PersonaRel.Rut,
                             NombreEmpresa = usuarioDatosComplementarios.EmpresaRel.Nombre,
                             Rol = roles[0],

@@ -107,7 +107,7 @@ namespace Aplicacion.Pases
 
 
                 // usuario en sesion actual
-                var usuarioActual = await this._userManager.FindByNameAsync("admin@gmail.com");
+                var usuarioActual = await this._userManager.FindByNameAsync(this._usuarioSesion.ObtenerUsuarioSesion());
 
                 // buscar si la empresa existe 
                 var buscarEmpresa = await this._context.Empresa

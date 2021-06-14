@@ -115,9 +115,6 @@ namespace WebApi
             // dar a concer por el webApp la clase para reconocer al usuario en sesion acltualmente.
             services.AddScoped<IUsuarioSesion, UsuarioSesion>();
 
-            // Inicializar injeccion del mapping de instructores en clasesDTO
-            services.AddAutoMapper(typeof(ListaUsuarios.Ejecuta));
-
             services.AddMvc(opt =>
             {
                 // reuiere ue el ususario este autenticado 

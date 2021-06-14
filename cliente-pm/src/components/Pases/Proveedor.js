@@ -18,7 +18,6 @@ export const Proveedor = (props) => {
     // posibles campos invalidos enviados por el usuario
     const [currentCamposInvalidos, setCurrentCamposInvalidos] = useState([]);
 
-
     // datos para enviar a la API
     const [dataPaseGeneral, setDataPaseGeneral] = useState(() => {
         const variables = JSON.parse(window.localStorage.getItem('datos_pase_general_proveedor'));
@@ -106,7 +105,7 @@ export const Proveedor = (props) => {
 
         inforFormulario.preventDefault();
         console.log('todos los datos para enviar: ', dataPaseGeneral);
-        setCurrentNotification('inf-cgu000');
+        setCurrentNotification('inf-cgp000');
 
         // enviar los datos a la API
         registrarPaseGenerico(dataPaseGeneral).then(response => {
@@ -167,7 +166,7 @@ export const Proveedor = (props) => {
 
                     {/** Parte inferior tabla de personas */}
                     <TablaTrabajadores datos={personaExterna} url={URL}
-                        _guardarPersonaExterna={enviarFormulario}
+                        _enviarFormulario={enviarFormulario}
                         _cancelarGuardado={cancelarGuardado} />
 
                 </form>

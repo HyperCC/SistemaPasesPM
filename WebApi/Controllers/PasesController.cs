@@ -15,19 +15,11 @@ namespace WebApi.Controllers
     [AllowAnonymous]
     public class PasesController : PersonalController
     {
-        [HttpPost("registrar")]
-        public async Task<ActionResult<Pase>> Registrar(NuevoPaseVisita.Ejecuta parametros)
-        {
-            return await this.MediadorHerencia.Send(parametros);
-        }
-
-        
         [HttpPost("Upload")]
         public async Task<ActionResult<Documento>> GuardarDoc([FromForm] AlmacenarDocumentoEmpresa.Ejecuta parametros)
         {
             return await this.MediadorHerencia.Send(parametros);
         }
-        
 
         /// <summary>
         /// Obtener todos los pases
@@ -45,5 +37,15 @@ namespace WebApi.Controllers
         [HttpPost("ingresar")]
         public async Task<ActionResult<Unit>> Ingresar(NuevoPaseGenerico.Ejecuta parametros)
             => await this.MediadorHerencia.Send(parametros);
+
+        /// <summary>
+        /// cambiar el estado de un pase por un estado existente
+        /// </summary>
+        /// <param name="parametros"></param>
+        /// <returns></returns>
+        [HttpPost("cambiarEstado")]
+        public async Task<ActionResult<Unit>> CambiarEstado(CambiarEstadoPaseGenerico.Ejecuta parametros)
+            => await this.MediadorHerencia.Send(parametros);
+
     }
 }
