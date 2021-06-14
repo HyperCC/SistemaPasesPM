@@ -10,23 +10,23 @@ const AreaContacto = () => {
     const dataPasesGeneral = [
         {
             FechaInicio: '05/04/2021',
-            FechaTermino: '23/04/2021',
+            FechaTermino: '13/04/2021',
             Motivo: 'Entrevista para desarrollo',
             Area: 'HSEQ',
             Tipo: 'Visita',
             Estado: 'FINALIZADO'
         },
         {
-            FechaInicio: '28/04/2021',
-            FechaTermino: '28/04/2021',
+            FechaInicio: '12/04/2021',
+            FechaTermino: '18/04/2021',
             Motivo: 'Muestra de avance',
             Area: 'Informatica',
             Tipo: 'Tripulante',
             Estado: 'REVISION'
         },
         {
-            FechaInicio: '28/04/2021',
-            FechaTermino: '28/04/2021',
+            FechaInicio: '20/04/2021',
+            FechaTermino: '25/04/2021',
             Motivo: 'Muestra de avance',
             Area: 'Informatica',
             Tipo: 'Visita',
@@ -34,7 +34,7 @@ const AreaContacto = () => {
         },
         {
             FechaInicio: '28/04/2021',
-            FechaTermino: '28/04/2021',
+            FechaTermino: '30/04/2021',
             Motivo: 'Muestra de avance',
             Area: 'Informatica',
             Tipo: 'Uso muelle',

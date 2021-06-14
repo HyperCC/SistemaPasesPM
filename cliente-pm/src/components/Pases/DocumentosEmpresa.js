@@ -29,52 +29,64 @@ export const DocumentosEmpresa = () => {
     
     const [files, setFiles] = useState([]);
     
-    function onFileUpload(event) {
+    function singleFile(event){
+
         event.preventDefault();
-        // Get the file Id
-        // let id = event.target.id;
-        // Create an instance of FileReader API
-        // let file_reader = new FileReader();
-        // Get the actual file itself
-        // let file = event.target.files[0];
         
         // prueba de codigo
         let idSimple;
         let filesPrueba = event.target.files;
-        let file;
+        idSimple = event.target.id;
+        let file_reader = new FileReader();
+        var file = filesPrueba[0];
 
-        if (filesPrueba.length == 1){
-            idSimple = event.target.id;
-            let file_reader = new FileReader();
-            file = filesPrueba[0];
+        file_reader.onload = () => {
+            // After uploading the file
+            // appending the file to our state array
+            // set the object keys and values accordingly
+            setFiles([...files, { file_id: idSimple, file_name: file.name, uploaded_file: file_reader.result }]);
+        };
+            // reading the actual uploaded file
+        file_reader.readAsDataURL(file);
 
-            file_reader.onload = () => {
-                // After uploading the file
-                // appending the file to our state array
-                // set the object keys and values accordingly
-                setFiles([...files, { file_id: idSimple, uploaded_file: file_reader.result }]);
-                };
-                // reading the actual uploaded file
-            file_reader.readAsDataURL(file);
-        }else{
-            idSimple = event.target.id;
-            for (let i = 0; i < filesPrueba.length; i++){
-                let idFinal = parseInt(idSimple,10) + i;
-                let file_reader = new FileReader();
-                file = filesPrueba[i];
-    
-                file_reader.onloadend = () => {
-                    // After uploading the file
-                    // appending the file to our state array
-                    // set the object keys and values accordingly
-                    setFiles([...files, { file_id: idFinal, uploaded_file: file_reader.result }]);
-                    };
-                    // reading the actual uploaded file
-                file_reader.readAsDataURL(file);
-            }
-        }
+        console.log(files)
+
+    }
+
+    const handleMultiFileChosen = async (file) =>{
+        return new Promise((resolve, reject) =>{
+            let reader = new FileReader();
+            reader.onload = () => {
+                resolve(reader.result)
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+            console.log(file)
+        })
+    }
+
+    let multipleFile = async (event) => {
+        event.preventDefault();
+                
+        // prueba de codigo
+        let id = event.target.id
+        console.log(id)
+        let newFile = [];
+
+        const results = await Promise.all(Array.from(event.target.files).map(async (file) =>{
+            
+            const fileContents = await handleMultiFileChosen(file);
+            newFile.push({file_id: id, file_name: file.name, uploaded_file: fileContents})
+            console.log(newFile);
+        }))
+        setFiles(newFile)
+        //console.log(results, "results")
         
     }
+
+        
+        
+    
     // handle submit button for form
     function handleSubmit(e) {
         e.preventDefault();
@@ -167,7 +179,7 @@ export const DocumentosEmpresa = () => {
                                         <label for={1} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={onFileUpload} id={1} type="file" style={{display: "none"}}/>
+                                        <input onChange={singleFile} id={1} type="file" style={{display: "none"}}/>
                                     </div>
 
                                     <div class="col-span-1 form-group">
@@ -177,7 +189,7 @@ export const DocumentosEmpresa = () => {
                                         <label for={2} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={onFileUpload} id={2} type="file" style={{display: "none"}}/>
+                                        <input onChange={singleFile} id={2} type="file" style={{display: "none"}}/>
                                     </div>
 
                                     <div class="col-span-1 form-group">
@@ -187,7 +199,7 @@ export const DocumentosEmpresa = () => {
                                         <label for={3} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={onFileUpload} id={3} type="file" style={{display: "none"}}/>
+                                        <input onChange={singleFile} id={3} type="file" style={{display: "none"}}/>
                                     </div>
 
                                     <div class="col-span-1 form-group">
@@ -197,7 +209,7 @@ export const DocumentosEmpresa = () => {
                                         <label for={4} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={onFileUpload} id={4} type="file" style={{display: "none"}}/>
+                                        <input onChange={singleFile} id={4} type="file" style={{display: "none"}}/>
                                     </div>
                                 
                                 </div>
@@ -246,7 +258,7 @@ export const DocumentosEmpresa = () => {
                                         <label for={5} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={onFileUpload} id={5} type="file" style={{display: "none"}}/>
+                                        <input onChange={singleFile} id={5} type="file" style={{display: "none"}}/>
                                     </div>
 
                                     <div class="col-span-1 form-group">
@@ -256,7 +268,7 @@ export const DocumentosEmpresa = () => {
                                         <label for={7} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={onFileUpload} id={7} multiple type="file" style={{display: "none"}}/>
+                                        <input onChange={multipleFile} id={7} multiple type="file" style={{display: "none"}}/>
                                     </div>
 
                                     <div class="col-span-1 form-group">
@@ -266,7 +278,7 @@ export const DocumentosEmpresa = () => {
                                         <label for={6} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={onFileUpload} id={6} type="file" style={{display: "none"}}/>
+                                        <input onChange={singleFile} id={6} type="file" style={{display: "none"}}/>
                                     </div>
 
                                     <div class="col-span-1 form-group">
@@ -276,7 +288,7 @@ export const DocumentosEmpresa = () => {
                                         <label for={14} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={onFileUpload} id={14} type="file" multiple style={{display: "none"}}/>
+                                        <input onChange={multipleFile} id={14} type="file" multiple style={{display: "none"}}/>
                                     </div>
                             
                                 </div>

@@ -1,18 +1,67 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Popup from 'reactjs-popup';
 
 const TablaPases = props => {
-
-    console.log(props.soloPases);
-
     
-    const myList = [].concat(props.soloPases)
-    .sort(function(b,a){
-        console.log(a.Estado)
-        console.log(b.Estado)
+
+    const [filtro, setFiltro] = useState(null);
+    const [tipo, setTipo] = useState('')
+
+    console.log(filtro)
+
+    // Filtro de estado
+    const filtroEstado = [].concat(props.soloPases).sort(function(b,a){
         if(a.Estado === "FINALIZADO") return -1;
         return 0;
     })
+    if(filtro == null){
+        setFiltro(filtroEstado);
+    }
+    
+
+    // Filtro por fecha de inicio
+
+    var filtroIni =[].concat(props.soloPases).sort(function(a,b){
+            if(a.FechaInicio > b.FechaInicio){
+                return -1;
+            }if(a.FechaInicio < b.FechaInicio){
+                return 1;
+            }
+            return 0;
+        });
+     
+    // Filtro por fecha de termino
+
+    var filtroFin = [].concat(props.soloPases).sort(function(a,b){
+                    if(a.FechaTermino > b.FechaTermino){
+                        return -1;
+                    }if(a.FechaTermino < b.FechaTermino){
+                        return 1;
+                    }
+                    return 0;
+                });                        
+   
+    // Funciones para cambiar filtro
+
+    function showIni(){
+        setFiltro(filtroIni);
+    }
+
+    function showFin(){
+        setFiltro(filtroFin);
+    }
+
+    function showTipo(event){
+        console.log(event.target.value);
+        var filtroTipo = [].concat(props.soloPases).sort(function(a,b){
+            if(a.Tipo == event.target.value){
+                return -1;
+            }
+            return 0;
+        });   
+
+        setFiltro(filtroTipo);
+    }
 
 
     return (
@@ -22,7 +71,32 @@ const TablaPases = props => {
                 <p class="text-2xl leading-tight text-center md:text-left md:ml-8 md:w-max">
                     Listado de Pases Solicitados
                 </p>
+            </div>
 
+            <div class="mx-8 md:flex flex-row py-2">
+               
+                <button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500"
+                    onClick={() => showIni()}>
+                    Fecha Inicio
+                </button>
+
+                <button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500"
+                    onClick={() => showFin()}>
+                    Fecha Termino
+                </button>
+
+                <div class="relative inline-flex">
+                    <svg class="w-2 h-2 absolute top-0 right-0 m-4 pointer-events-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 412 232"><path d="M206 171.144L42.678 7.822c-9.763-9.763-25.592-9.763-35.355 0-9.763 9.764-9.763 25.592 0 35.355l181 181c4.88 4.882 11.279 7.323 17.677 7.323s12.796-2.441 17.678-7.322l181-181c9.763-9.764 9.763-25.592 0-35.355-9.763-9.763-25.592-9.763-35.355 0L206 171.144z" fill="#648299" fill-rule="nonzero"/></svg>
+                    <select name="filtro" value={this.tipo} onChange={showTipo()} class="border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none">
+                        <option value="">Choose a color</option>
+                        <option value="visita">Visita</option>
+                        <option value="contratista">Contratista</option>
+                        <option value="proveedor">Proveedor</option>
+                        <option value="uso muelle">Uso muelle</option>
+                        <option value="tripulante">Tripulante</option>
+                    </select>
+                </div>
+                
             </div>
 
             <div class="mt-6 mx-0 md:mx-8 mb-2 md:mb-1 overflow-x-auto shadow-md rounded-lg">
@@ -57,7 +131,7 @@ const TablaPases = props => {
 
                         <tbody>
                             {/* CICLO FOR CON TODOS LOS DATOS PARA CADA PASE */}
-                            {myList && myList.map((value, index) => {
+                            {filtro && filtro.map((value, index) => {
                                 return <tr key={index} class={index % 2 == 0 ? "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap"
                                     : "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap bg-gray-100"} >
 
