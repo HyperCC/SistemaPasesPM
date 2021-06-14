@@ -1,10 +1,44 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link } from "react-router-dom";
+import Pagination from '../../Pagination';
 
 const TablaPases = props => {
 
     console.log(props.soloPases);
     const currentRol = props.currentRol;
+
+    //PAGINACION
+    const [pases, setPases] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(5);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            setPases(props.soloPases);
+        };    
+        fetchUsers();
+    }, []);
+
+    // Obtener el indice inicial por pagina
+    const offset = (currentPage - 1) * postsPerPage;
+    //Borrar cuando se deje de probar 
+    console.log(pases);
+    //Funcion que cambia la pagina
+    const onPageChanged = pageNumber => {
+        switch (pageNumber){
+            case 'LEFT':
+                if (currentPage > 1)
+                    setCurrentPage(currentPage - 1);                
+                break;
+            case 'RIGHT':
+                if (currentPage < Math.ceil((pases? pases.length: 0) / postsPerPage))
+                    setCurrentPage(currentPage + 1);                    
+                break;
+            default:
+                setCurrentPage(pageNumber);
+                break;
+        }       
+    };
 
     return (
         <div class="bg-white p-4 md:p-8 rounded-lg shadow-md">
@@ -25,6 +59,25 @@ const TablaPases = props => {
                         </form>
                     </div>
                 }
+            </div>
+            <div class="mx-8 md:flex flex-row mt-4 justify-content-end md:justify-end">
+                <div class="relative inline-flex">
+                    <div class="md:text-right align-middle">Pases por página</div>
+                        <svg class="w-2 h-2 absolute top-0 right-0 m-4 pointer-events-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 412 232">
+                            <path d="M206 171.144L42.678 7.822c-9.763-9.763-25.592-9.763-35.355 0-9.763 9.764-9.763 25.592 0 35.355l181 181c4.88 4.882 11.279 7.323 17.677 7.323s12.796-2.441 17.678-7.322l181-181c9.763-9.764 9.763-25.592 0-35.355-9.763-9.763-25.592-9.763-35.355 0L206 171.144z" fill="#648299" fill-rule="nonzero" /></svg>
+                        <select name="Estado" 
+                                onChange={e => {
+                                                setPostsPerPage(e.target.value);
+                                                setCurrentPage(1);
+                                            }
+                                        } 
+                                class="border border-gray-300 rounded-full text-gray-600 p-2 bg-gray-100 hover:border-gray-400 focus:outline-none appearance-none">
+                            <option value='5'>5</option>
+                            <option value='10'>10</option>
+                            <option value='25'>25</option>
+                            <option value='50'>50</option>
+                        </select>
+                </div>
             </div>
 
             <div class="mt-6 mx-0 md:mx-8 mb-2 md:mb-1 overflow-x-auto shadow-md rounded-lg">
@@ -61,7 +114,7 @@ const TablaPases = props => {
                             {/* CICLO FOR CON TODOS LOS DATOS PARA CADA PASE */}
                             {props.soloPases ?
                                 props.soloPases.length > 0 ?
-                                    props.soloPases.map((value, index) => {
+                                    props.soloPases.slice(offset, offset + postsPerPage).map((value, index) => {
                                         return <tr key={index} class={index % 2 == 0 ? "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap"
                                             : "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap bg-gray-100"} >
 
@@ -124,36 +177,17 @@ const TablaPases = props => {
                     </table>
                 </div>
             </div>
-
-            {/* TODO:ver como se cambia esto mediante la paginacion */}
-            <div class="px-5 bg-white pt-5 flex flex-col xs:flex-row items-center xs:justify-between">
-                <div class="flex items-center">
-                    <button type="button" class="w-full p-4 border text-base rounded-l-xl text-gray-600 bg-white hover:bg-gray-100">
-                        <svg width="9" fill="currentColor" height="8" class="" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z">
-                            </path>
-                        </svg>
-                    </button>
-                    <button type="button" class="w-full px-4 p-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100 ">
-                        1
-                    </button>
-                    <button type="button" class="w-full px-4 p-2 border text-base text-gray-600 bg-white hover:bg-gray-100">
-                        2
-                    </button>
-                    <button type="button" class="w-full px-4 p-2 border-t border-b text-base text-gray-600 bg-white hover:bg-gray-100">
-                        3
-                    </button>
-                    <button type="button" class="w-full px-4 p-2 border text-base text-gray-600 bg-white hover:bg-gray-100">
-                        4
-                    </button>
-                    <button type="button" class="w-full p-4 border-t border-b border-r text-base  rounded-r-xl text-gray-600 bg-white hover:bg-gray-100">
-                        <svg width="9" fill="currentColor" height="8" class="" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
+            <div className="d-flex flex-row  align-items-center">
+                <Pagination
+                    postsPerPage={postsPerPage}
+                    totalPosts={props.soloPases? 
+                                    props.soloPases.length > 0 ? props.soloPases.length : 1 
+                                    : 1}
+                    paginate={onPageChanged}
+                />
             </div>
+
+            
         </div>
     );
 }
