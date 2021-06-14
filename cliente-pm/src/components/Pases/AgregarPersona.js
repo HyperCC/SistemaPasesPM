@@ -26,17 +26,6 @@ const AgregarPersona = props => {
         // obtener el valor
         const { name, value } = valorInput.target;
 
-        if(name == "Rut"){
-            if (!RutValidator.validate(value)){
-                alert('Por favor ingrese el rut con el siguiente formato 11.111.111-1')
-                setPersonaExterna(anterior => ({
-                    ...anterior, // mantener lo que existe antes
-                    ['Rut']: '' // reseteamos el rut
-                }));
-                return;
-            }
-        }
-
         // asignar el valor
         setPersonaExterna(anterior => ({
             ...anterior, // mantener lo que existe antes
@@ -46,6 +35,18 @@ const AgregarPersona = props => {
 
     // enviar persona completa para almacenarlo
     const GuardarUnaPersona = infoFormulario => {
+        
+        
+        if (!RutValidator.validate(personaExterna.Rut)){
+            alert('Por favor ingrese el rut con el siguiente formato 11.111.111-1')
+            setPersonaExterna(anterior => ({
+                ...anterior, // mantener lo que existe antes
+                ['Rut']: '' // reseteamos el rut
+            }));
+            return;
+        }
+        
+        
         infoFormulario.preventDefault();
         //window.alert("The URL of this page is: " + window.location.hostname + ":" + window.location.port);
 
