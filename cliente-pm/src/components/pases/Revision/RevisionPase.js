@@ -77,7 +77,7 @@ export const RevisionPase = props => {
                     <div class="h-8"></div>
 
                     {/** Parte inferior tabla de personas */}
-                    <ListaPersonas datos={data.state.personas} url={URL}
+                    <ListaPersonas datos={data.state.personas} url={URL} tipoPase={pase.tipo}
                         opcionCambiarEstado={CambiarEstadoPase} identificador={pase.paseId} />
 
                 </div>
