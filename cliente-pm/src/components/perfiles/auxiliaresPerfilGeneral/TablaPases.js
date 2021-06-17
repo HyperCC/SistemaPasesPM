@@ -138,13 +138,14 @@ const TablaPases = props => {
                                             <td class="p-4">
                                                 <span class={(() => {
                                                     switch (value.estado) {
-                                                        case "FINALIZADO": return "px-3 py-1 bg-purple-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
-                                                        case "PENDIENTE": return "px-3 py-1 bg-yellow-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
-                                                        case "APROBADO": return "px-3 py-1 bg-green-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
-                                                        default: return "px-3 py-1 bg-red-100 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
+                                                        case "FINALIZADO": return "px-3 py-1 bg-purple-200 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
+                                                        case "PENDIENTE": return "px-3 py-1 bg-yellow-200 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
+                                                        case "APROBADO": return "px-3 py-1 bg-green-200 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
+                                                        case "PREAPROBADO": return "px-3 py-1 bg-blue-200 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
+                                                        default: return "px-3 py-1 bg-red-200 rounded-full font-semibold text-green-900 leading-tight mx-auto lowercase";
                                                     }
                                                 })()}>
-                                                    {value.estado}
+                                                    {value.estado == 'PREAPROBADO' ? 'pre-aprobado' : value.estado}
                                                 </span>
                                             </td>
 

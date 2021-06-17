@@ -89,7 +89,7 @@ const Registro = props => {
             return;
         }
 
-        setCurrentNotification('inf-cgp0000'); // notificacion de carga de datos
+        setCurrentNotification('inf-cgp000'); // notificacion de carga de datos
 
         // uso del action registrar
         registrarUsuario(dataUsuario).then(response => {

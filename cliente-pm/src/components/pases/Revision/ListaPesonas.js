@@ -10,7 +10,9 @@ export const ListaPersonas = props => {
     const AprobarPaseActual = () => {
         props.opcionCambiarEstado({
             PaseId: props.identificador,
-            NuevoEstado: "APROBADO"
+            NuevoEstado: rolCuenta == 'HSEQ' ? 'PREAPROBADO'
+                : rolCuenta == 'JEFE_OPERACIONES' ? 'PREAPROBADO'
+                    : 'APROBADO'
         });
     };
 
@@ -36,7 +38,7 @@ export const ListaPersonas = props => {
                         {rolCuenta != 'SOLICITANTE' &&
                             <button type="button" onClick={AprobarPaseActual}
                                 class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
-                                Aprobar
+                                {rolCuenta == 'HSEQ' || rolCuenta == 'JEFE_OPERACIONES' ? 'Pre-aprobar' : 'Aprobar'}
                             </button>
                         }
 

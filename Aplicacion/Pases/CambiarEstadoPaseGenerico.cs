@@ -46,9 +46,6 @@ namespace Aplicacion.Pases
 
             public async Task<Unit> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
-                Console.WriteLine("-------------------------------------------------");
-                Console.WriteLine(request.PaseId);
-                Console.WriteLine("-------------------------------------------------");
                 Guid idRecibida = Guid.Parse(request.PaseId);
 
                 // buscar un pase por ID 
@@ -61,20 +58,21 @@ namespace Aplicacion.Pases
                     throw new EstadoNoExisteException(HttpStatusCode.BadRequest,
                            new
                            {
-                               mensaje = "El estado entregado no existe en el sistema.",
+                               mensaje = $"El estado entregado {request.NuevoEstado} no existe en el sistema.",
                                status = HttpStatusCode.BadRequest,
                                tipoError = "adv-enee00"
                            });
 
+                Console.WriteLine("------------------------------------------");
+                Console.WriteLine(estadoNuevo);
+                Console.WriteLine("------------------------------------------");
+
                 // mapear el estado para el pase
                 EstadoPase enumEstadoNuevo = EstadoPase.PENDIENTE.ToString() == estadoNuevo ? EstadoPase.PENDIENTE
                     : EstadoPase.APROBADO.ToString() == estadoNuevo ? EstadoPase.APROBADO
+                    : EstadoPase.PREAPROBADO.ToString() == estadoNuevo ? EstadoPase.PREAPROBADO
                     : EstadoPase.FINALIZADO.ToString() == estadoNuevo ? EstadoPase.FINALIZADO
                     : EstadoPase.RECHAZADO;
-
-                Console.WriteLine("-------------------------------------------------");
-                Console.WriteLine(enumEstadoNuevo.ToString());
-                Console.WriteLine("-------------------------------------------------");
 
                 currentPase.Estado = enumEstadoNuevo;
 

@@ -191,10 +191,6 @@ export const TablaAllUsuarios = props => {
                                                 <button type="button" onClick={() => cambiarCurrentRol(dataActualizarRol)} class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500">
                                                     Guardar
                                                 </button>
-
-                                                <button type="button" class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500">
-                                                    Eliminar
-                                                </button>
                                             </td>
                                         </tr>
                                     })

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { initialState } from './contexto/InitialState';
+import { initialState } from './contexto/initialState';
 import { StateProvider } from './contexto/store';
 import { mainReducer } from './contexto/reducers';
 
