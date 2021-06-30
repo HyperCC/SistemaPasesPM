@@ -44,7 +44,19 @@ export const DatosPase = props => {
                                 <select name="Area" value={props._dataPaseGeneral.Area} onChange={data => cambiarValoresInput(data)}
                                     class="bg-gray-100 p-2 rounded-full outline-none w-full border border-gray-300">
                                     <option>Seleccionar Área</option>
-                                    <option value='Informatica'>Informatica</option>
+                                    <option value="Contabilidad">CONTABILIDAD</option>
+                                    <option value="Ing. y Mantencion">ING. Y MANTENCIÓN</option>
+                                    <option value="Operaciones">OPERACIONES</option>
+                                    <option value="Finanzas">FINANZAS</option>
+                                    <option value="Informatica">INFORMÁTICA</option>
+                                    <option value="Comercial">COMERCIAL</option>
+                                    <option value="Administracion">ADMINISTRACIÓN</option>
+                                    <option value="Hseq">HSEQ</option>
+                                    <option value="Personas">PERSONAS</option>
+                                    <option value="Proyectos">PROYECTOS</option>
+                                    <option value="Medio ambiente">MEDIO AMBIENTE</option>
+                                    <option value="Mecanica pm">MECANICA PM</option>
+                                    <option value="Electro-control pm">ELECTRO-CONTROL PM</option>
                                 </select>
                             </div>
                         }
