@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import RutValidator from "w2-rut-validator"
+import RutValidator from "w2-rut-validator";
+
 
 const AgregarPersona = props => {
 
@@ -20,6 +21,16 @@ const AgregarPersona = props => {
     const [isRut, setIsRut] = useState(true);
     const changeIsRut = () => setIsRut(true);
     const changeNotIsRut = () => setIsRut(false);
+    const [paises, setPaises] = useState([]);
+
+    // consumir la api de los paises
+    useEffect(() => {
+        fetch('https://sccnlp-piloto.dirtrab.cl/api/Mantenedor/getNacionalidad')
+            .then((response) => response.json())
+            .then((data) =>
+                setPaises(data));
+    }, []);
+
 
     // asignar nuevos valores al state del registro
     const ingresarValoresMemoria = valorInput => {
@@ -35,9 +46,9 @@ const AgregarPersona = props => {
 
     // enviar persona completa para almacenarlo
     const GuardarUnaPersona = infoFormulario => {
-        
-        
-        if (!RutValidator.validate(personaExterna.Rut)){
+
+
+        if (!RutValidator.validate(personaExterna.Rut)) {
             alert('Por favor ingrese el rut con el siguiente formato 11.111.111-1')
             setPersonaExterna(anterior => ({
                 ...anterior, // mantener lo que existe antes
@@ -45,8 +56,8 @@ const AgregarPersona = props => {
             }));
             return;
         }
-        
-        
+
+
         infoFormulario.preventDefault();
         //window.alert("The URL of this page is: " + window.location.hostname + ":" + window.location.port);
 
@@ -68,7 +79,7 @@ const AgregarPersona = props => {
             window.localStorage.setItem('nueva_persona_externa_uso_muelle', JSON.stringify(personaExterna));
             history.push("/SolicitudUsoDeMuelle");
 
-        } else if(currentLocation.includes('SolicitudTripulante')){
+        } else if (currentLocation.includes('SolicitudTripulante')) {
             window.localStorage.setItem('nueva_persona_externa_tripulante', JSON.stringify(personaExterna));
             history.push("/SolicitudTripulante");
 
@@ -148,8 +159,17 @@ const AgregarPersona = props => {
                                     <label class="font-light text-gray-800 select-none" for="Nacionalidad">Nacionalidad</label>
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="text" value={personaExterna.Nacionalidad} onChange={ingresarValoresMemoria}
-                                        name="Nacionalidad" class="w-full border-2 py-1 px-3 border-gray-200 rounded-md  bg-gray-100" />
+                                    <div>
+                                        <select name="Nacionalidad" class="w-full border-2 py-1 px-3 border-gray-200 lowercase rounded-md  bg-gray-100" value={personaExterna.Nacionalidad} onChange={ingresarValoresMemoria}>
+                                            {paises ?
+                                                paises.length > 0 ?
+                                                    paises.map((value, index) => {
+                                                        return <option value={value.gentilicio} key={index}>{value.gentilicio}</option>
+                                                    })
+                                                    : null
+                                                : null}
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
 
@@ -159,7 +179,7 @@ const AgregarPersona = props => {
                                 <button type="submit" onClick={GuardarUnaPersona} href=""
                                     class="bg-azul-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                                     Guardar
-                            </button>
+                                </button>
                             </div>
                         </div>
 
