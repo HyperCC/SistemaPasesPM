@@ -40,17 +40,16 @@ namespace Persistencia.AuxiliaresAlmacenamiento
                 {
                     PersonaExternaId = new Guid(),
                     Nacionalidad = nacionalidad,
-                    Pasaporte = pasaporte,
                     PersonaId = _personaId
                 };
                 await _context.PersonaExterna.AddAsync(buscarPersonaExt);
             }
 
             // una vez encontrada/creada la persona externa se crea la relacion
-            PasePersonaExterna nuevaRelacion = new PasePersonaExterna
+            PasePersona nuevaRelacion = new PasePersona
             {
                 PaseId = _paseId,
-                PersonaExternaId = buscarPersonaExt.PersonaExternaId,
+                PersonaId = buscarPersonaExt.PersonaExternaId,
             };
             await _context.PasePersonaExterna.AddAsync(nuevaRelacion);
 

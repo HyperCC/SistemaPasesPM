@@ -46,8 +46,8 @@ namespace Aplicacion.Cuentas
                 // obtencion de las entidades relacionadas
                 var usuario = await this._context.Usuario
                     .Include(x => x.PasesRel)
-                    .ThenInclude(z => z.PersonaExternasRel)
-                    .ThenInclude(y => y.PersonaExternaRel)
+                    .ThenInclude(z => z.PersonasRel)
+                    .ThenInclude(y => y.PersonaRel)
                     .FirstOrDefaultAsync(x => x.UserName == this._usuarioSesion.ObtenerUsuarioSesion());
 
                 Console.WriteLine("LARGO DE PASES " + usuario.PasesRel.Count());
@@ -69,23 +69,25 @@ namespace Aplicacion.Cuentas
                 foreach (var pase in usuario.PasesRel.Reverse())
                 {
                     ICollection<PersonaExternaPase> personasExternasPase = new List<PersonaExternaPase>();
-                    if (pase.PersonaExternasRel != null)
-                        foreach (var personaExterna in pase.PersonaExternasRel.Reverse())
+                    if (pase.PersonasRel != null)
+                        foreach (var personaExterna in pase.PersonasRel.Reverse())
                         {
                             // asociar las personas externas correspondientes
-                            var personaExternaEncontrada = await this._context.PersonaExterna
-                                .Include(x => x.PersonaRel.NombresRel)
+                            var personaExternaEncontrada = await this._context.Persona
+                                .Include(x => x.NombresRel)
                                 .ThenInclude(z => z.NombreRel)
-                                .Include(x => x.PersonaRel.ApellidosRel)
+                                .Include(x => x.ApellidosRel)
                                 .ThenInclude(z => z.ApellidoRel)
-                                .FirstOrDefaultAsync(x => x.PersonaExternaId == personaExterna.PersonaExternaId);
+                                .Include(x => x.PersonaExternaRel)
+                                .ThenInclude(z => z.Nacionalidad)
+                                .FirstOrDefaultAsync(x => x.PersonaId == personaExterna.PersonaId);
 
                             // obtencion del nombre 
                             string nombresPE = string.Join(" "
-                                , personaExternaEncontrada.PersonaRel.NombresRel
+                                , personaExternaEncontrada.NombresRel
                                 .Select(x => x.NombreRel.Titulo));
 
-                            var apellidos = personaExternaEncontrada.PersonaRel.ApellidosRel
+                            var apellidos = personaExternaEncontrada.ApellidosRel
                                     .Select(x => x.ApellidoRel.Titulo).ToList();
                             string primerApellidoPE = apellidos.FirstOrDefault();
 
@@ -99,9 +101,9 @@ namespace Aplicacion.Cuentas
                                 Nombres = nombresPE,
                                 PrimerApellido = primerApellidoPE,
                                 SegundoApellido = segundoApellidoPE,
-                                Rut = personaExternaEncontrada.PersonaRel.Rut,
+                                Rut = personaExternaEncontrada.Rut,
                                 Pasaporte = personaExternaEncontrada.Pasaporte,
-                                Nacionalidad = personaExternaEncontrada.Nacionalidad
+                                Nacionalidad = personaExternaEncontrada.PersonaExternaRel.Nacionalidad
                             });
                         }
 

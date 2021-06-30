@@ -46,7 +46,7 @@ namespace Persistencia.AuxiliaresAlmacenamiento
                 {
                     DocumentoId = new Guid(),
                     RutaDocumento = doc.RutaGuardado,
-                    FechaCaducidad = Convert.ToDateTime(doc.FechaVencimiento),
+                    FechaVencimiento = Convert.ToDateTime(doc.FechaVencimiento),
 
                     TipoDocumentoId = currentTipoDocumento.TipoDocumentoId,
                     PaseId = currentPaseId,
