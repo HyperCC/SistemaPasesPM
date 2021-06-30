@@ -14,6 +14,8 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Aplicacion.Pases
 {
@@ -66,14 +68,17 @@ namespace Aplicacion.Pases
             private readonly SistemaPasesContext _context;
             private readonly UserManager<Usuario> _userManager;
             private readonly IUsuarioSesion _usuarioSesion;
+            private readonly IHostingEnvironment _env;
 
             public Manejador(SistemaPasesContext context,
                 UserManager<Usuario> userManager,
-                IUsuarioSesion sesion)
+                IUsuarioSesion sesion,
+                IHostingEnvironment env)
             {
                 this._context = context;
                 this._userManager = userManager;
                 this._usuarioSesion = sesion;
+                this._env = env;
             }
 
             public async Task<Unit> Handle(Ejecuta request, CancellationToken cancellationToken)
@@ -179,6 +184,84 @@ namespace Aplicacion.Pases
                             personaIndividual.Pasaporte,
                             personaIndividual.Nacionalidad);
                     }
+
+                if (request.PersonasContratista != null)
+                {
+                    var wwwRoute = _env.WebRootPath;
+
+                    foreach (var personaIndividual in request.PersonasContratista)
+                    {
+                        // buscar o almacenar la persona por rut
+                        Persona buscarPersona = await BuscarOAlmacenarPersona.BuscarOAgregarPersona(this._context,
+                            personaIndividual.Rut,
+                            personaIndividual.Nombres,
+                            (personaIndividual.PrimerApellido + " " + personaIndividual.SegundoApellido));
+
+                        // buscar por la persona externa segun la Persona ya encontrada
+                        var buscarPersonaExterna = await BuscarOAlmacenarPersonaExterna.BuscarOAgregarPersonaExterna(this._context,
+                            buscarPersona.PersonaId,
+                            paseGenerado.PaseId,
+                            personaIndividual.Pasaporte,
+                            personaIndividual.Nacionalidad);
+
+                        //Agregar Documentos
+                        foreach (var file in personaIndividual.files)
+                        {
+                            switch (file.File_id)
+                            {
+                                case "0":
+                                    //Contrato de Trabajo
+                                    break;
+                            //====DOCUMENTOS====
+                                case "1":
+                                    //Registro RIOHS
+                                    file.FechaVencimiento = personaIndividual.RIOHSDate;
+                                    file.Titulo = "RIOHS";
+                                    file.RutaGuardado = Path.Combine(wwwRoute, "Uploads", paseGenerado.PaseId.ToString(), DateTime.Today.ToString() + file.File_name);
+                                    break;
+                                case "2":
+                                    //Registro ODI
+                                    break;
+                                case "3":
+                                    //Registro EPPs
+                                    break;
+                            //====Exámenes Pre-ocupacionales / Ocupacionales====
+                                case "4":
+                                    //Basico
+                                    break;
+                                case "5":
+                                    //Altura Física
+                                    break;
+                                case "6":
+                                    //Espacios Confinados
+                                    break;
+                                case "7":
+                                    //Psicosensométrico
+                                    break;
+                            //====Parte Competencias Certificaciones====
+                                case "8":
+                                    //Soldador Calificado
+                                    break;
+                                case "9":
+                                    //Trabajo en Altura
+                                    break;
+                                case "10":
+                                    //Operador de Equipo Móvil
+                                    break;
+                                case "11":
+                                    //Rigger / Portalonero
+                                    break;
+                                case "12":
+                                    //Otros
+                                    break;
+                            }
+
+                        }
+                    }
+
+
+
+                }
 
                 // guarar los cambios hechos en el context
                 var result = await this._context.SaveChangesAsync();
