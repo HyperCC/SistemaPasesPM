@@ -16,12 +16,29 @@ export const Contratista = () => {
         Nacionalidad: 'x'
     }]
 
-    const [datosEmpresa,setDatosEmpresa] = useState({
+    const [datosPaseGeneral, setDatosPaseGeneral] = useState({
+        Area: '',
+        Motivo: '',
         RutEmpresa: '',
         NombreEmpresa: '',
+        Tipo: 'CONTRATISTA',
         ServicioAdjudicado: '',
-        MotivoVisita: '',
-        Area: ''
+        Completitud: '',
+        Observaciones: '',
+        FechaInicio: '',
+        FechaTermino: '',
+
+        // listas de usuarios y documentos
+        PeronasContratista: [],
+        SeccionDocumentosEmpresa: [],
+
+        // personas especiales
+        AsesorDePrevencion: {
+            Nombres: '',
+            Apellidos: '',
+            Rut: '',
+            RegistroSns: '',
+        },
     });
 
     const ingresarValoresMemoria = valorInput => {
@@ -30,12 +47,14 @@ export const Contratista = () => {
 
         // actualizar el valor de algun otro valor
         // asignar el valor
-        setDatosEmpresa(anterior => ({
+        setDatosPaseGeneral(anterior => ({
             ...anterior, // mantener lo que existe antes
             [name]: value // solo cambiar el input mapeado
         }));
         
     };
+
+    
 
     return (
         <div class="bg-gray-100 min-h-screen">
@@ -54,7 +73,7 @@ export const Contratista = () => {
                                 <p>
                                     <div class="relative inline-flex">
                                         <svg class="w-2 h-2 absolute top-0 right-0 m-4 pointer-events-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 412 232"><path d="M206 171.144L42.678 7.822c-9.763-9.763-25.592-9.763-35.355 0-9.763 9.764-9.763 25.592 0 35.355l181 181c4.88 4.882 11.279 7.323 17.677 7.323s12.796-2.441 17.678-7.322l181-181c9.763-9.764 9.763-25.592 0-35.355-9.763-9.763-25.592-9.763-35.355 0L206 171.144z" fill="#648299" fill-rule="nonzero"/></svg>
-                                        <select value={datosEmpresa.Area} onChange={ingresarValoresMemoria} class="border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none">
+                                        <select value={datosPaseGeneral.Area} onChange={ingresarValoresMemoria} class="border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none">
                                             <option>Selecciones el Área</option>
                                             <option>Informatica</option>
                                         </select>
@@ -64,20 +83,20 @@ export const Contratista = () => {
 
                             <div class="col-span-1 row-start-2"> <p>Rut Empresa</p> </div>
                             <div class="col-span-1 md:col-span-1 row-start-2">
-                                <input type="text" value={datosEmpresa.RutEmpresa} onChange={ingresarValoresMemoria} name="RutEmpresa" class="border-2  py-1 px-3 border-gray-300 rounded-md" />
+                                <input type="text" value={datosPaseGeneral.RutEmpresa} onChange={ingresarValoresMemoria} name="RutEmpresa" class="border-2  py-1 px-3 border-gray-300 rounded-md" />
                             </div>
 
                             <div class="col-span-1 row-start-3"> <p>Nombre Empresa</p> </div>
                             <div class="col-span-1 row-start-3 md:col-span-1">
-                                <input type="text" value={datosEmpresa.NombreEmpresa} onChange={ingresarValoresMemoria} name="NombreEmpresa" class="border-2 py-1 px-3 border-gray-300 rounded-md" />
+                                <input type="text" value={datosPaseGeneral.NombreEmpresa} onChange={ingresarValoresMemoria} name="NombreEmpresa" class="border-2 py-1 px-3 border-gray-300 rounded-md" />
                             </div>
                             <div class="col-span-1 row-start-4"> <p>Servicio Adjudicado</p> </div>
                             <div class="col-span-1 row-start-4 md:col-span-1">
-                                <input type="text" value={datosEmpresa.ServicioAdjudicado} onChange={ingresarValoresMemoria} name="ServicioAdjudicado" class="border-2 py-1 px-3 border-gray-300 rounded-md" />
+                                <input type="text" value={datosPaseGeneral.ServicioAdjudicado} onChange={ingresarValoresMemoria} name="ServicioAdjudicado" class="border-2 py-1 px-3 border-gray-300 rounded-md" />
                             </div>
 
                             <div class="col-span-1 row-span-2 col-start-3 row-start-1 pl-14"><p>Motivo visita</p></div>
-                            <div class="col-span-3 row-span-2 col-start-4 row-start-1"><textarea type="range" value={datosEmpresa.MotivoVisita} onChange={ingresarValoresMemoria} name="MotivoVisita" placeholder="range...." class="border w-full app border-gray-300 p-2 my-2 rounded-md focus:outline-none focus:ring-2 ring-azul-pm"> </textarea></div>
+                            <div class="col-span-3 row-span-2 col-start-4 row-start-1"><textarea type="range" value={datosPaseGeneral.Motivo} onChange={ingresarValoresMemoria} name="MotivoVisita" placeholder="range...." class="border w-full app border-gray-300 p-2 my-2 rounded-md focus:outline-none focus:ring-2 ring-azul-pm"> </textarea></div>
 
                             <div class="col-span-1 col-start-3 row-start-3 pl-14"> <p>Fecha Inicio</p> </div>
                             <div class="col-span-1 row-start-3 md:col-span-1">
