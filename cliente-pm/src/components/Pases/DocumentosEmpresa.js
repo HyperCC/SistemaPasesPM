@@ -77,16 +77,15 @@ export const DocumentosEmpresa = () => {
             
             const fileContents = await handleMultiFileChosen(file);
             newFile.push({file_id: id, file_name: file.name, uploaded_file: fileContents})
-            console.log(newFile);
+            //console.log(newFile);
         }))
-        setFiles(newFile)
+        
+        setFiles([...files, newFile])
         //console.log(results, "results")
+        console.log(files)
         
     }
 
-        
-        
-    
     // handle submit button for form
     function handleSubmit(e) {
         e.preventDefault();

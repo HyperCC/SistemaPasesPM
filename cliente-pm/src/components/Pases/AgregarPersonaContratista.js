@@ -5,7 +5,8 @@ import { useHistory } from "react-router-dom";
 import Popup from 'reactjs-popup';
 import RutValidator from "w2-rut-validator"
 
-export const AgregarPersonaContratista = () => {
+export const AgregarPersonaContratista = props => {
+
     const [contratoDate, setContratoDate] = useState(new Date());
     const [RIOHSDate, setRIOHSDate] = useState(new Date());
     const [ODIDate, setODIDate] = useState(new Date());
@@ -21,16 +22,16 @@ export const AgregarPersonaContratista = () => {
     const [otrosDate, setOtrosDate] = useState(new Date());
     const [anexosDate, setAnexoDate] = useState(new Date());
     
-
     {/** Parte de manejo de los documentos */}
     const [files, setFiles] = useState([]);
 
-    const [datosPersona,setDatosPersona] = useState({
+    const [personaExterna, setPersonaExterna] = useState({
         Rut: '',
         Nombres: '',
         ApellidoPat: '',
         ApellidoMat: '',
-        Nacionalidad: ''
+        Nacionalidad: '',
+        DocumentosEmpresa: [],
     });
 
     const ingresarValoresMemoria = valorInput => {
@@ -40,7 +41,7 @@ export const AgregarPersonaContratista = () => {
         if(name == "Rut"){
             if (!RutValidator.validate(value)){
                 alert('Por favor ingrese el rut con el siguiente formato 11.111.111-1')
-                setDatosPersona(anterior => ({
+                setpersonaExterna(anterior => ({
                     ...anterior, // mantener lo que existe antes
                     ['Rut']: '' // reseteamos el rut
                 }));
@@ -50,7 +51,7 @@ export const AgregarPersonaContratista = () => {
 
         // actualizar el valor de algun otro valor
         // asignar el valor
-        setDatosPersona(anterior => ({
+        setpersonaExterna(anterior => ({
             ...anterior, // mantener lo que existe antes
             [name]: value // solo cambiar el input mapeado
         }));
@@ -87,6 +88,50 @@ export const AgregarPersonaContratista = () => {
 
     let history = useHistory();
 
+    const GuardarUnaPersona = infoFormulario => {
+        
+        
+        if (!RutValidator.validate(personaExterna.Rut)){
+            alert('Por favor ingrese el rut con el siguiente formato 11.111.111-1')
+            setPersonaExterna(anterior => ({
+                ...anterior, // mantener lo que existe antes
+                ['Rut']: '' // reseteamos el rut
+            }));
+            return;
+        }
+        
+        
+        infoFormulario.preventDefault();
+        //window.alert("The URL of this page is: " + window.location.hostname + ":" + window.location.port);
+
+        const currentLocation = window.location.href;
+
+        if (currentLocation.includes('SolicitudVisita')) {
+            window.localStorage.setItem('nueva_persona_externa_visita', JSON.stringify(personaExterna));
+            history.push("/SolicitudVisita");
+
+        } else if (currentLocation.includes('SolicitudContratista')) {
+            window.localStorage.setItem('nueva_persona_externa_contratista', JSON.stringify(personaExterna));
+            history.push("/SolicitudContratista");
+
+        } else if (currentLocation.includes('SolicitudProveedor')) {
+            window.localStorage.setItem('nueva_persona_externa_proveedor', JSON.stringify(personaExterna));
+            history.push("/SolicitudProveedor");
+
+        } else if (currentLocation.includes('SolicitudUsoDeMuelle')) {
+            window.localStorage.setItem('nueva_persona_externa_uso_muelle', JSON.stringify(personaExterna));
+            history.push("/SolicitudUsoDeMuelle");
+
+        } else if(currentLocation.includes('SolicitudTripulante')){
+            window.localStorage.setItem('nueva_persona_externa_tripulante', JSON.stringify(personaExterna));
+            history.push("/SolicitudTripulante");
+
+        }
+
+        //props._guardarPersonaExterna(personaExterna);
+        //window.localStorage.setItem('nueva_persona_externa', JSON.stringify(personaExterna));
+    };
+
     return (
         <div class="bg-gray-100 min-h-screen">
             <div class="md:max-w-6xl w-full mx-auto py-8">
@@ -100,17 +145,17 @@ export const AgregarPersonaContratista = () => {
                             <div class="grid grid-cols-4 gap-4 md:grid-cols-4 mt-6 mx-8 mb-2 md:mb-0">
                                 <div class="col-span-1 col-start-1 row-start-1"> <p>Rut</p> </div>
                                 <div class="col-span-1 col-start-2 row-start-1 md:col-span-1">
-                                    <input type="text" value={datosPersona.Rut} onChange={ingresarValoresMemoria} name="Rut" class="border-2  py-1 px-3 border-gray-300 rounded-md" />
+                                    <input type="text" value={personaExterna.Rut} onChange={ingresarValoresMemoria} name="Rut" class="border-2  py-1 px-3 border-gray-300 rounded-md" />
                                 </div>
 
                                 <div class="col-span-1 row-start-2"> <p>Nombres</p> </div>
                                 <div class="col-span-1 md:col-span-1 row-start-2">
-                                    <input type="text" value={datosPersona.Nombres} onChange={ingresarValoresMemoria} name="Nombres" class="border-2  py-1 px-3 border-gray-300 rounded-md" />
+                                    <input type="text" value={personaExterna.Nombres} onChange={ingresarValoresMemoria} name="Nombres" class="border-2  py-1 px-3 border-gray-300 rounded-md" />
                                 </div>
 
                                 <div class="col-span-1 row-start-3"> <p>Apellido Paterno</p> </div>
                                 <div class="col-span-1 row-start-3 md:col-span-1">
-                                    <input type="text" value={datosPersona.ApellidoPat} onChange={ingresarValoresMemoria} name="ApellidoPaterno" class="border-2 py-1 px-3 border-gray-300 rounded-md" />
+                                    <input type="text" value={personaExterna.ApellidoPat} onChange={ingresarValoresMemoria} name="ApellidoPaterno" class="border-2 py-1 px-3 border-gray-300 rounded-md" />
                                 </div>
                                 <div class="col-span-1 row-start-4"> <p>Contrato de Trabajo</p> </div>
                                 <div class="col-span-1 row-start-4 md:col-span-1">
@@ -123,7 +168,7 @@ export const AgregarPersonaContratista = () => {
 
                                 <div class="col-span-1 col-start-3 row-start-1 pl-14"> <p>Nacionalidad</p> </div>
                                 <div class="col-span-1 col-start-4 row-start-1 md:col-span-1">
-                                    <input type="text" value={datosPersona.Nacionalidad} onChange={ingresarValoresMemoria} name="Nacionalidad" class="border-2  py-1 px-3 border-gray-300 rounded-md" />
+                                    <input type="text" value={personaExterna.Nacionalidad} onChange={ingresarValoresMemoria} name="Nacionalidad" class="border-2  py-1 px-3 border-gray-300 rounded-md" />
                                 </div>
 
                                 <div><p></p></div>
@@ -131,7 +176,7 @@ export const AgregarPersonaContratista = () => {
 
                                 <div class="col-span-1 col-start-3 row-start-3 pl-14"> <p>Apellido Materno</p> </div>
                                 <div class="col-span-1 col-start-4 row-start-3 md:col-span-1 row-start-2">
-                                    <input type="text" value={datosPersona.ApellidoMat} onChange={ingresarValoresMemoria} name="Apellido Materno" class="border-2  py-1 px-3 border-gray-300 rounded-md" />
+                                    <input type="text" value={personaExterna.ApellidoMat} onChange={ingresarValoresMemoria} name="Apellido Materno" class="border-2  py-1 px-3 border-gray-300 rounded-md" />
                                 </div>
 
                                 <div class="col-span-1 col-start-3 row-start-4 pl-14"> <p>Fecha Vencimiento</p> </div>
@@ -396,7 +441,9 @@ export const AgregarPersonaContratista = () => {
                                 Cancelar
                             </button>
 
-                            <label for="submit-form" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">Guardar</label>
+                            <label for="submit-form" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+                                Guardar
+                            </label>
     
                         </div>
                     </div> 
