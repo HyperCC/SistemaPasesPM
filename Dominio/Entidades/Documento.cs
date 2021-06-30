@@ -10,19 +10,20 @@ namespace Dominio.Entidades
         public Guid DocumentoId { get; set; }
         public string RutaDocumento { get; set; }
 
-        public DateTime FechaCaducidad { get; set; }
+        public DateTime FechaVencimiento { get; set; }
 
         // relacionamiento segun modelo R
         public Guid TipoDocumentoId { get; set; }
-        public Guid PaseId { get; set; }
-        public Guid? PersonaExternaId { get; set; } // TODO: agregar relacion en modelo R
+        public Guid? PaseId { get; set; }
+        public Guid? Persona { get; set; }
         public Guid? EmpresaId { get; set; } // TODO: agregar relacion en modelo R
 
         // obtener los modelos relacionados 
         public TipoDocumento TipoDocumentoRel { get; set; }
         public Pase PaseRel { get; set; }
-        public ExamenesCompetencia ExamenesCompetenciaRel { get; set; }
         public AnexoContrato AnexoContratoRel { get; set; }
         public RegistroPersona RegistroPersonaRel { get; set; }
+        public Persona PersonasRel { get; set; }
+        public Empresa EmpresaRel { get; set; }
     }
 }

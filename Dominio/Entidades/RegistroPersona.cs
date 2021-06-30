@@ -13,10 +13,8 @@ namespace Dominio.Entidades
 
         // relacionamiento segun modelo R
         public Guid DocumentoId { get; set; }
-        public Guid PersonaExternaId { get; set; }
 
         // obtener los modelos relacionados 
-        public PersonaExterna PersonaExternaRel { get; set; }
         public Documento DocumentoRel { get; set; }
     }
 }

@@ -140,7 +140,8 @@ namespace Aplicacion.ConfiguracionLogin
                 var personaGenerada = new Persona
                 {
                     PersonaId = new Guid(),
-                    Rut = request.Rut
+                    Rut = request.Rut,
+                    Pasaporte = ""
                 };
 
                 // almacenamiento y relacion

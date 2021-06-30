@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { loginUsuario } from '../../actions/UsuarioAction';
 import '../../App.css';
 import Image from '../../images/Blanco.png';
@@ -18,6 +18,7 @@ const Home = props => {
         Email: '',
         Password: ''
     });
+
 
     // codigo actual de la notificacion a mostrar
     const [currentNotification, setCurrentNotification] = useState('none');
@@ -88,10 +89,34 @@ const Home = props => {
         });
     };
 
+
+    const [paises, setPaises] = useState([]);
+
+    useEffect(() => {
+        fetch('https://sccnlp-piloto.dirtrab.cl/api/Mantenedor/getNacionalidad')
+            .then((response) => response.json())
+            .then((data) =>
+                setPaises(data));
+    }, []);
+
     return (
         <div>
             <div class="w-full grid grid-cols-1 md:grid-cols-2">
                 <div class="w-full col-span-1">
+
+                    <div>
+                        <label>paises</label>
+                        <select>
+                            {paises ?
+                                paises.length > 0 ?
+                                    paises.map((value, index) => {
+                                        return <option class="capita" key={index}>{value.gentilicio}</option>
+                                    })
+                                    : null
+                                : null}
+                        </select>
+                    </div>
+
 
                     <LanzarNoritificaciones codigo={currentNotification} camposInvalidos={currentCamposInvalidos} openNotificacion={currentOpenNotificacion} />
 

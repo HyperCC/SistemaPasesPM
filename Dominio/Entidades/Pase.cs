@@ -28,13 +28,14 @@ namespace Dominio.Entidades
         public Guid PaseId { get; set; }
 
         // atributos de la entidad
-        public DateTime FechaInicio { get; set; }
-        public DateTime FechaTermino { get; set; }
         public TipoPase Tipo { get; set; }
         public EstadoPase Estado { get; set; }
         public string Motivo { get; set; }
         public string Area { get; set; }
-        public string ServicioAdjudicado { get; set; }
+        public string Observacion { get; set; }
+        public DateTime FechaInicio { get; set; }
+        public DateTime FechaTermino { get; set; }
+        public string ServicioAdjudicado { get; set; } //TODO: cambiar a tipo documento 
 
         // relacionamiento segun modelo R
         public Guid EmpresaId { get; set; }
@@ -44,7 +45,7 @@ namespace Dominio.Entidades
         public AsesorPrevencion AsesorPrevencionRel { get; set; }
         public Empresa EmpresaRel { get; set; }
         public Usuario UsuarioRel { get; set; }
-        public ICollection<PasePersonaExterna> PersonaExternasRel { get; set; }
+        public ICollection<PasePersona> PersonasRel { get; set; }
         public ICollection<Documento> DocumentosRel { get; set; }
     }
 }

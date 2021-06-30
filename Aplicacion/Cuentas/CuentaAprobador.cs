@@ -59,34 +59,37 @@ namespace Aplicacion.Cuentas
                 if (pasesPorRol != null)
                 {
                     // obtener las personas externas relacionadas
-                    pasesPorRol = pasesPorRol.Include(x => x.PersonaExternasRel).ThenInclude(z => z.PersonaExternaRel);
+                    pasesPorRol = pasesPorRol.Include(x => x.PersonasRel)
+                        .ThenInclude(z => z.PersonaRel);
 
                     foreach (var pase in pasesPorRol)
                     {
                         ICollection<PersonaExternaPase> personasExternasPase = new List<PersonaExternaPase>();
-                        if (pase.PersonaExternasRel != null)
-                            foreach (var personaExterna in pase.PersonaExternasRel)
+                        if (pase.PersonasRel != null)
+                            foreach (var personaExterna in pase.PersonasRel)
                             {
                                 // asociar las personas externas correspondientes
-                                var personaExternaEncontrada = await this._context.PersonaExterna
-                                    .Include(x => x.PersonaRel.NombresRel)
+                                var personaExternaEncontrada = await this._context.Persona
+                                    .Include(x => x.NombresRel)
                                     .ThenInclude(z => z.NombreRel)
-                                    .Include(x => x.PersonaRel.ApellidosRel)
+                                    .Include(x => x.ApellidosRel)
                                     .ThenInclude(z => z.ApellidoRel)
-                                    .FirstOrDefaultAsync(x => x.PersonaExternaId == personaExterna.PersonaExternaId);
+                                    .Include(x => x.PersonaExternaRel)
+                                    .FirstOrDefaultAsync(x => x.PersonaId == personaExterna.PersonaId);
 
                                 // obtencion de nombres
                                 string nombresPE = string.Join(" "
-                                    , personaExternaEncontrada.PersonaRel.NombresRel
+                                    , personaExternaEncontrada.NombresRel
                                     .Select(x => x.NombreRel.Titulo));
 
-                                var apellidos = personaExternaEncontrada.PersonaRel.ApellidosRel
+                                // obtencion de apellidos
+                                var apellidos = personaExternaEncontrada.ApellidosRel
                                     .Select(x => x.ApellidoRel.Titulo).ToList();
-                                string primerApellidoPE = apellidos.FirstOrDefault();
+                                string primerApellidoPE = apellidos[0];
 
-                                apellidos.Remove(apellidos.First());
-                                string segundoApellidoPE = apellidos.Count() > 0 ?
-                                    apellidos.FirstOrDefault()
+                                //apellidos.Remove(apellidos.First());
+                                string segundoApellidoPE = apellidos.Count() > 1 ?
+                                    apellidos[1]
                                     : string.Empty;
 
                                 personasExternasPase.Add(new PersonaExternaPase
@@ -94,9 +97,9 @@ namespace Aplicacion.Cuentas
                                     Nombres = nombresPE,
                                     PrimerApellido = primerApellidoPE,
                                     SegundoApellido = segundoApellidoPE,
-                                    Rut = personaExternaEncontrada.PersonaRel.Rut,
+                                    Rut = personaExternaEncontrada.Rut,
                                     Pasaporte = personaExternaEncontrada.Pasaporte,
-                                    Nacionalidad = personaExternaEncontrada.Nacionalidad
+                                    Nacionalidad = personaExternaEncontrada.PersonaExternaRel.Nacionalidad
                                 });
                             }
 

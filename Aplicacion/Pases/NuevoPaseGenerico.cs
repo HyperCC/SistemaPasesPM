@@ -34,6 +34,7 @@ namespace Aplicacion.Pases
             public string RutEmpresa { get; set; }
             public string NombreEmpresa { get; set; }
             public string Tipo { get; set; }
+            public string Observacion { get; set; }
             public string ServicioAdjudicado { get; set; } // nullable
             public bool Completitud { get; set; }
             public string FechaInicio { get; set; }
@@ -150,6 +151,7 @@ namespace Aplicacion.Pases
                     Estado = EstadoPase.PENDIENTE,
                     Area = request.Area,
                     Motivo = request.Motivo,
+                    Observacion = request.Observacion,
                     EmpresaId = buscarEmpresa.EmpresaId,
                     UsuarioId = usuarioActual.Id
                 };

@@ -27,7 +27,7 @@ namespace Persistencia
             // declaracion de clave primaria compuesta para relaciones N-N
             modelBuilder.Entity<NombrePersona>().HasKey(ci => new { ci.PersonaId, ci.NombreId });
             modelBuilder.Entity<ApellidoPersona>().HasKey(ci => new { ci.PersonaId, ci.ApellidoId });
-            modelBuilder.Entity<PasePersonaExterna>().HasKey(ci => new { ci.PaseId, ci.PersonaExternaId });
+            modelBuilder.Entity<PasePersona>().HasKey(ci => new { ci.PaseId, ci.PersonaId });
             modelBuilder.Entity<Pase>().Property(p => p.Estado).HasConversion<string>();
             modelBuilder.Entity<Pase>().Property(p => p.Tipo).HasConversion<string>();
             modelBuilder.Entity<Pase>().HasOne(u => u.UsuarioRel).WithMany(p => p.PasesRel);
@@ -45,9 +45,8 @@ namespace Persistencia
         public DbSet<AnexoContrato> AnexoContrato { get; set; }
         public DbSet<AsesorPrevencion> AsesorPrevencion { get; set; }
         public DbSet<Documento> Documento { get; set; }
-        public DbSet<ExamenesCompetencia> ExamenesCompetencia { get; set; }
         public DbSet<Pase> Pase { get; set; }
-        public DbSet<PasePersonaExterna> PasePersonaExterna { get; set; }
+        public DbSet<PasePersona> PasePersonaExterna { get; set; }
         public DbSet<PersonaExterna> PersonaExterna { get; set; }
         public DbSet<RegistroPersona> RegistroPersona { get; set; }
         public DbSet<TipoDocumento> TipoDocumento { get; set; }
