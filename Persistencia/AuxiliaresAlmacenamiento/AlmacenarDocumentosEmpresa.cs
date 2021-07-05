@@ -1,4 +1,5 @@
 ﻿using Dominio.Auxiliares.Pases;
+using Dominio.Auxiliares.ModelosPaseContratista;
 using Dominio.Entidades;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Persistencia.AuxiliaresAlmacenamiento
 {
@@ -14,47 +16,49 @@ namespace Persistencia.AuxiliaresAlmacenamiento
     /// </summary>
     public static class AlmacenarDocumentosEmpresa
     {
-        public static async Task AgregarDocumentosEmpresa(DocumentosEmpresaContratistaRequest request,
+        public static async Task AgregarDocumentosEmpresa(DocumentoEmpresaContratista request,
+            AsesorDePrevencionContratista asesorDePrevencion,
             SistemaPasesContext context,
+            IHostingEnvironment env,
             Guid currentPaseId,
             Guid currentEmpresaId)
         {
             // agregar asesor de prevencion
             // buscar o agregar una persona por su rut
             Persona buscarPersona = await BuscarOAlmacenarPersona.BuscarOAgregarPersona(context,
-                request.Rut,
-                request.Nombres,
-                request.Apellidos);
+                asesorDePrevencion.Rut,
+                asesorDePrevencion.Nombres,
+                asesorDePrevencion.Apellidos);
 
             // nuevo asesor de prevencion
             var nuevoContratista = new AsesorPrevencion
             {
-                RegistroSns = request.ReistroSNS,
+                RegistroSns = asesorDePrevencion.ReistroSNS,
                 PersonaId = buscarPersona.PersonaId,
                 PaseId = currentPaseId
             };
 
-
             // agregar los documentos al context
-            foreach (var doc in request.Documentos)
+            
+            // buscar tipo de documento 
+            var currentTipoDocumento = await context.TipoDocumento.FirstOrDefaultAsync(t => t.Titulo == request.TipoDocumento);
+
+            // ingresar el nuevo requestumento 
+            Documento nuevoDocumentoContratista = new Documento
             {
-                // buscar tipo de documento 
-                var currentTipoDocumento = await context.TipoDocumento.FirstOrDefaultAsync(t => t.Titulo == doc.Titulo);
+                DocumentoId = new Guid(),
+                PaseId = currentPaseId,
+                EmpresaId= currentEmpresaId,
+                TipoDocumentoId = currentTipoDocumento.TipoDocumentoId
+            };
+            //Agregamos la fecha de venc si es que existe
+            if (request.FechaVencimiento != null && request.FechaVencimiento.Length > 0)
+                nuevoDocumentoContratista.FechaVencimiento = Convert.ToDateTime(request.FechaVencimiento);
 
-                // ingresar el nuevo documento 
-                Documento documentoContratista = new Documento
-                {
-                    DocumentoId = new Guid(),
-                    RutaDocumento = doc.RutaGuardado,
-                    FechaVencimiento = Convert.ToDateTime(doc.FechaVencimiento),
+            await ArchivoEnServer.guardarArchivo(request.Documento, nuevoDocumentoContratista, env, context);
 
-                    TipoDocumentoId = currentTipoDocumento.TipoDocumentoId,
-                    PaseId = currentPaseId,
-                    EmpresaId = currentEmpresaId
-                };
-
-                await context.Documento.AddAsync(documentoContratista);
-            }
+            await context.Documento.AddAsync(nuevoDocumentoContratista);
+            
         }
     }
 }
