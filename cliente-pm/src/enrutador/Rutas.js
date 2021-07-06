@@ -18,6 +18,7 @@ import { Proveedor } from '../components/pases/Proveedor';
 import AreaContacto from '../components/aprobacionPases/AreaContacto';
 import RutaSegura from './RutaSegura';
 import { RevisionPase } from '../components/pases/Revision/RevisionPase';
+import { AgregarPersonaContratista } from '../components/pases/AgregarPersonaContratista';
 
 
 const Rutas = () => {
@@ -32,7 +33,7 @@ const Rutas = () => {
 
                 <RutaSegura exact
                     path="/SolicitudContratista/AgregarPersona"
-                    component={AgregarPersona} />
+                    component={AgregarPersonaContratista} />
 
                 <RutaSegura exact
                     path="/SolicitudTripulante/AgregarPersona"
@@ -69,7 +70,6 @@ const Rutas = () => {
 
 
                 <Route path="/DocumentosEmpresa">
-                    <Navbar />
                     <DocumentosEmpresa />
                 </Route>
 

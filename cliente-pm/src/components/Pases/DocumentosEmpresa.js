@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
-export const DocumentosEmpresa = () => {
+export const DocumentosEmpresa = (props) => {
     
     const [openTab, setOpenTab] = React.useState(1);
     let history = useHistory();
 
     const [datosPrev,setDatosPrev] = useState({
-        Rut: '',
         Nombres: '',
         Apellidos: '',
-        RegistroSNS: ''
+        Rut: '',
+        RegistroSNS: '',
     });
 
     // asignar nuevos valores al state del registro
@@ -86,10 +86,8 @@ export const DocumentosEmpresa = () => {
         
     }
 
-    // handle submit button for form
-    function handleSubmit(e) {
-        e.preventDefault();
-        console.log(files);
+    const sendData = () => {
+        props._guardarDocumentosEmpresa(datosPrev, files)
     }
 
     return (
@@ -300,9 +298,10 @@ export const DocumentosEmpresa = () => {
                             Cancelar
                         </button>
 
-                        <button type="submit" onClick={handleSubmit} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+                        <button onClick={sendData} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                             Guardar
                         </button>
+                        
                     </div>
                     </div>
                 </div>

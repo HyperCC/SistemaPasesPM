@@ -1,12 +1,13 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useHistory } from "react-router-dom";
 import Popup from 'reactjs-popup';
-import RutValidator from "w2-rut-validator"
+import RutValidator from "w2-rut-validator";
 
 export const AgregarPersonaContratista = props => {
 
+    let history = useHistory();
     const [contratoDate, setContratoDate] = useState(new Date());
     const [RIOHSDate, setRIOHSDate] = useState(new Date());
     const [ODIDate, setODIDate] = useState(new Date());
@@ -23,7 +24,7 @@ export const AgregarPersonaContratista = props => {
     const [anexosDate, setAnexoDate] = useState(new Date());
     
     {/** Parte de manejo de los documentos */}
-    const [files, setFiles] = useState([]);
+    const [documentoPersona, setDocumentoPersona] = useState([]);
 
     const [personaExterna, setPersonaExterna] = useState({
         Rut: '',
@@ -31,105 +32,45 @@ export const AgregarPersonaContratista = props => {
         ApellidoPat: '',
         ApellidoMat: '',
         Nacionalidad: '',
-        DocumentosEmpresa: [],
     });
 
     const ingresarValoresMemoria = valorInput => {
         // obtener el valor
         const { name, value } = valorInput.target;
 
-        if(name == "Rut"){
-            if (!RutValidator.validate(value)){
-                alert('Por favor ingrese el rut con el siguiente formato 11.111.111-1')
-                setpersonaExterna(anterior => ({
-                    ...anterior, // mantener lo que existe antes
-                    ['Rut']: '' // reseteamos el rut
-                }));
-                return;
-            }
-        }
-
         // actualizar el valor de algun otro valor
         // asignar el valor
-        setpersonaExterna(anterior => ({
+        setPersonaExterna(anterior => ({
             ...anterior, // mantener lo que existe antes
             [name]: value // solo cambiar el input mapeado
         }));
         
     };
 
-    function onFileUpload(event) {
+    function singleFile(event){
+
         event.preventDefault();
-        // Get the file Id
-        let id = event.target.id;
-        // Create an instance of FileReader API
-        let file_reader = new FileReader();
-        // Get the actual file itself
-        let file = event.target.files[0];
         
+        // prueba de codigo
+        let idSimple;
+        let filesPrueba = event.target.files;
+        idSimple = event.target.id;
+        let file_reader = new FileReader();
+        var file = filesPrueba[0];
+
         file_reader.onload = () => {
             // After uploading the file
             // appending the file to our state array
             // set the object keys and values accordingly
-            setFiles([...files, { file_id: id, uploaded_file: file_reader.result }]);
+            setDocumentoPersona([...documentoPersona, { file_id: idSimple, file_name: file.name, uploaded_file: file_reader.result }]);
         };
-        // reading the actual uploaded file
+            // reading the actual uploaded file
         file_reader.readAsDataURL(file);
 
-        alert(
-            `Selected file - ${file.name}`
-          );
-        }
-    // handle submit button for form
-    function handleSubmit(e) {
-    e.preventDefault();
-    console.log(files);
     }
 
-    let history = useHistory();
-
-    const GuardarUnaPersona = infoFormulario => {
-        
-        
-        if (!RutValidator.validate(personaExterna.Rut)){
-            alert('Por favor ingrese el rut con el siguiente formato 11.111.111-1')
-            setPersonaExterna(anterior => ({
-                ...anterior, // mantener lo que existe antes
-                ['Rut']: '' // reseteamos el rut
-            }));
-            return;
-        }
-        
-        
-        infoFormulario.preventDefault();
-        //window.alert("The URL of this page is: " + window.location.hostname + ":" + window.location.port);
-
-        const currentLocation = window.location.href;
-
-        if (currentLocation.includes('SolicitudVisita')) {
-            window.localStorage.setItem('nueva_persona_externa_visita', JSON.stringify(personaExterna));
-            history.push("/SolicitudVisita");
-
-        } else if (currentLocation.includes('SolicitudContratista')) {
-            window.localStorage.setItem('nueva_persona_externa_contratista', JSON.stringify(personaExterna));
-            history.push("/SolicitudContratista");
-
-        } else if (currentLocation.includes('SolicitudProveedor')) {
-            window.localStorage.setItem('nueva_persona_externa_proveedor', JSON.stringify(personaExterna));
-            history.push("/SolicitudProveedor");
-
-        } else if (currentLocation.includes('SolicitudUsoDeMuelle')) {
-            window.localStorage.setItem('nueva_persona_externa_uso_muelle', JSON.stringify(personaExterna));
-            history.push("/SolicitudUsoDeMuelle");
-
-        } else if(currentLocation.includes('SolicitudTripulante')){
-            window.localStorage.setItem('nueva_persona_externa_tripulante', JSON.stringify(personaExterna));
-            history.push("/SolicitudTripulante");
-
-        }
-
-        //props._guardarPersonaExterna(personaExterna);
-        //window.localStorage.setItem('nueva_persona_externa', JSON.stringify(personaExterna));
+    const sendData = () => { 
+        props._guardarPersonaC(personaExterna, documentoPersona);
     };
 
     return (
@@ -140,7 +81,7 @@ export const AgregarPersonaContratista = props => {
                         <p class="text-3xl leading-tight mx-8 text-center md:text-center md:ml-16">
                             Información Persona
                         </p>
-                        <form onSubmit={handleSubmit} id="form" className="uploader" encType="multipart/form-data">
+                        
 
                             <div class="grid grid-cols-4 gap-4 md:grid-cols-4 mt-6 mx-8 mb-2 md:mb-0">
                                 <div class="col-span-1 col-start-1 row-start-1"> <p>Rut</p> </div>
@@ -155,14 +96,14 @@ export const AgregarPersonaContratista = props => {
 
                                 <div class="col-span-1 row-start-3"> <p>Apellido Paterno</p> </div>
                                 <div class="col-span-1 row-start-3 md:col-span-1">
-                                    <input type="text" value={personaExterna.ApellidoPat} onChange={ingresarValoresMemoria} name="ApellidoPaterno" class="border-2 py-1 px-3 border-gray-300 rounded-md" />
+                                    <input type="text" value={personaExterna.ApellidoPat} onChange={ingresarValoresMemoria} name="ApellidoPat" class="border-2 py-1 px-3 border-gray-300 rounded-md" />
                                 </div>
                                 <div class="col-span-1 row-start-4"> <p>Contrato de Trabajo</p> </div>
                                 <div class="col-span-1 row-start-4 md:col-span-1">
                                     <label for={0} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={onFileUpload} id={0} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id={0} type="file" style={{display: "none"}}/>
                                     
                                 </div>
 
@@ -176,7 +117,7 @@ export const AgregarPersonaContratista = props => {
 
                                 <div class="col-span-1 col-start-3 row-start-3 pl-14"> <p>Apellido Materno</p> </div>
                                 <div class="col-span-1 col-start-4 row-start-3 md:col-span-1 row-start-2">
-                                    <input type="text" value={personaExterna.ApellidoMat} onChange={ingresarValoresMemoria} name="Apellido Materno" class="border-2  py-1 px-3 border-gray-300 rounded-md" />
+                                    <input type="text" value={personaExterna.ApellidoMat} onChange={ingresarValoresMemoria} name="ApellidoMat" class="border-2  py-1 px-3 border-gray-300 rounded-md" />
                                 </div>
 
                                 <div class="col-span-1 col-start-3 row-start-4 pl-14"> <p>Fecha Vencimiento</p> </div>
@@ -192,14 +133,10 @@ export const AgregarPersonaContratista = props => {
                             <div class="grid grid-cols-4 gap-4 md:grid-cols-4 mt-6 mx-8 mb-2 md:mb-0">
                                 <div class="col-span-1 col-start-1 row-start-1"> <p></p> </div>
                                 <div class="col-span-1 col-start-2 row-start-1 md:col-span-1">
-                                    <Popup trigger={<button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500"> Agregar Anexo</button>} modal nested>
+                                    <Popup trigger={<button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">Agregar Anexo</button>} modal nested>
                                         { close => (
                                         <div className="modal">
-                                            {/** 
-                                            <button className="close" onClick={close}>
-                                            &times;
-                                            </button>
-                                            */}
+                                           
                                             <div className="header"> Agregar Nuevo Anexo de Contrato </div>
                                             <div className="content">
 
@@ -215,7 +152,7 @@ export const AgregarPersonaContratista = props => {
                                                         <label for="Anexo" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                                             Seleccionar archivo
                                                         </label>
-                                                        <input onChange={onFileUpload} id="Anexo" type="file" style={{display: "none"}}/>
+                                                        <input onChange={singleFile} id="Anexo" type="file" style={{display: "none"}}/>
                                                     </div> 
 
                                                     <div class="col-span-1 row-span-2 col-start-1 pl-14"><p>Descripción</p></div>
@@ -261,7 +198,7 @@ export const AgregarPersonaContratista = props => {
                                     <label for={1} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={onFileUpload} id={1} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id={1} type="file" style={{display: "none"}}/>
                                 </div>
 
                                 <div class="col-span-1 row-start-2"> <p>Registro ODI</p> </div>
@@ -269,7 +206,7 @@ export const AgregarPersonaContratista = props => {
                                     <label for={2} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={onFileUpload} id={2} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id={2} type="file" style={{display: "none"}}/>
                                 </div>
 
                                 <div class="col-span-1 row-start-3"> <p>Registro EPPs</p> </div>
@@ -277,7 +214,7 @@ export const AgregarPersonaContratista = props => {
                                     <label for={3} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={onFileUpload} id={3} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id={3} type="file" style={{display: "none"}}/>
                                 </div>
                                 
                                 <div class="col-span-1 col-start-3 row-start-1 pl-14"> <p>Fecha Vencimiento</p> </div>
@@ -312,7 +249,7 @@ export const AgregarPersonaContratista = props => {
                                     <label for={4} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={onFileUpload} id={4} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id={4} type="file" style={{display: "none"}}/>
                                 </div>
 
                                 <div class="col-span-1 row-start-2"> <p>Altura Física</p> </div>
@@ -320,7 +257,7 @@ export const AgregarPersonaContratista = props => {
                                     <label for={5} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={onFileUpload} id={5} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id={5} type="file" style={{display: "none"}}/>
                                 </div>
 
                                 <div class="col-span-1 row-start-3"> <p>Espacios Confinados</p> </div>
@@ -328,7 +265,7 @@ export const AgregarPersonaContratista = props => {
                                     <label for={6} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={onFileUpload} id={6} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id={6} type="file" style={{display: "none"}}/>
                                 </div>
 
                                 <div class="col-span-1 row-start-4"> <p>Psicosensométrico</p> </div>
@@ -336,7 +273,7 @@ export const AgregarPersonaContratista = props => {
                                     <label for={7} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={onFileUpload} id={7} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id={7} type="file" style={{display: "none"}}/>
                                 </div>
                                 
                                 <div class="col-span-1 col-start-3 row-start-1 pl-14"> <p>Fecha Vencimiento</p> </div>
@@ -374,7 +311,7 @@ export const AgregarPersonaContratista = props => {
                                     <label for={8} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={onFileUpload} id={8} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id={8} type="file" style={{display: "none"}}/>
                                 </div>
 
                                 <div class="col-span-1 row-start-2"> <p>Trabajo en Altura</p> </div>
@@ -382,7 +319,7 @@ export const AgregarPersonaContratista = props => {
                                     <label for={9} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={onFileUpload} id={9} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id={9} type="file" style={{display: "none"}}/>
                                 </div>
 
                                 <div class="col-span-1 row-start-3"> <p>Operador de Equipo Móvil</p> </div>
@@ -390,7 +327,7 @@ export const AgregarPersonaContratista = props => {
                                     <label for={10} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={onFileUpload} id={10} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id={10} type="file" style={{display: "none"}}/>
                                 </div>
 
                                 <div class="col-span-1 row-start-4"> <p>Rigger / Portalonero</p> </div>
@@ -398,7 +335,7 @@ export const AgregarPersonaContratista = props => {
                                     <label for={11} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={onFileUpload} id={11} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id={11} type="file" style={{display: "none"}}/>
                                 </div>
 
                                 <div class="col-span-1 row-start-5"> <p>Otros</p> </div>
@@ -406,7 +343,7 @@ export const AgregarPersonaContratista = props => {
                                     <label for={12} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={onFileUpload} id={12} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id={12} type="file" style={{display: "none"}}/>
                                 </div>
                                 
                                 <div class="col-span-1 col-start-3 row-start-1 pl-14"> <p>Fecha Vencimiento</p> </div>
@@ -435,15 +372,14 @@ export const AgregarPersonaContratista = props => {
                                 </div>
                                 <input type="submit" id="submit-form" class="hidden"/>
                             </div>  
-                        </form>
                         <div class="flex justify-between items-center py-8 p-4">
                             <button onClick={() => history.goBack()} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                                 Cancelar
                             </button>
 
-                            <label for="submit-form" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+                            <button onClick={sendData} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                                 Guardar
-                            </label>
+                            </button>
     
                         </div>
                     </div> 
