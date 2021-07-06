@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useLocation } from 'react-router-dom';
@@ -16,6 +16,9 @@ export const Contratista = (props) => {
     const url = "/SolicitudContratista";
     const location = useLocation();
     const history = useHistory();
+
+    const [listaPersona, setListaPersona ] = useState([]);
+    const [countAux, setCountAux] = useState(0)
 
     const [datosPaseGeneral, setDatosPaseGeneral] = useState({
         Area: '',
@@ -80,13 +83,28 @@ export const Contratista = (props) => {
 
     const guardarPersona = (persona) =>{
         
-        // Datos persona
-         setDatosPaseGeneral(anterior => ({
+        if(countAux===0){
+            setCountAux(countAux + 1);
+        }else if(countAux===1){
+            setListaPersona([persona]);
+            setCountAux(countAux + 1);
+        }
+        else{
+            setListaPersona([...listaPersona, persona]);
+        }
+        // Se añade la persona a la lista
+        
+    }
+
+    useEffect(() => {
+        
+        // Se actualiza la lista en los datos generales
+        setDatosPaseGeneral(anterior => ({
             ...anterior, // mantener lo que existe antes
-            ["PeronasContratista"]: persona // solo cambiar el input mapeado
+            ["PeronasContratista"]: listaPersona, // solo cambiar el input mapeado
         }));
 
-    }
+    }, [listaPersona]);
 
     const enviarFormulario = inforFormulario => {
 

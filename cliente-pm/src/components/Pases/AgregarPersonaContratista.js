@@ -29,8 +29,8 @@ export const AgregarPersonaContratista = props => {
     const [personaExterna, setPersonaExterna] = useState({
         Rut: '',
         Nombres: '',
-        ApellidoPat: '',
-        ApellidoMat: '',
+        PrimerApellido: '',
+        SegundoApellido: '',
         Nacionalidad: '',
     });
 
@@ -96,7 +96,7 @@ export const AgregarPersonaContratista = props => {
 
                                 <div class="col-span-1 row-start-3"> <p>Apellido Paterno</p> </div>
                                 <div class="col-span-1 row-start-3 md:col-span-1">
-                                    <input type="text" value={personaExterna.ApellidoPat} onChange={ingresarValoresMemoria} name="ApellidoPat" class="border-2 py-1 px-3 border-gray-300 rounded-md" />
+                                    <input type="text" value={personaExterna.PrimerApellido} onChange={ingresarValoresMemoria} name="PrimerApellido" class="border-2 py-1 px-3 border-gray-300 rounded-md" />
                                 </div>
                                 <div class="col-span-1 row-start-4"> <p>Contrato de Trabajo</p> </div>
                                 <div class="col-span-1 row-start-4 md:col-span-1">
@@ -117,7 +117,7 @@ export const AgregarPersonaContratista = props => {
 
                                 <div class="col-span-1 col-start-3 row-start-3 pl-14"> <p>Apellido Materno</p> </div>
                                 <div class="col-span-1 col-start-4 row-start-3 md:col-span-1 row-start-2">
-                                    <input type="text" value={personaExterna.ApellidoMat} onChange={ingresarValoresMemoria} name="ApellidoMat" class="border-2  py-1 px-3 border-gray-300 rounded-md" />
+                                    <input type="text" value={personaExterna.SegundoApellido} onChange={ingresarValoresMemoria} name="SegundoApellido" class="border-2  py-1 px-3 border-gray-300 rounded-md" />
                                 </div>
 
                                 <div class="col-span-1 col-start-3 row-start-4 pl-14"> <p>Fecha Vencimiento</p> </div>
