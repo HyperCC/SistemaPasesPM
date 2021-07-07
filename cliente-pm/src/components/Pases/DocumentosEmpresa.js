@@ -44,7 +44,7 @@ export const DocumentosEmpresa = (props) => {
             // After uploading the file
             // appending the file to our state array
             // set the object keys and values accordingly
-            setFiles([...files, { file_id: idSimple, file_name: file.name, uploaded_file: file_reader.result }]);
+            setFiles([...files, { Documento: file_reader.result, TipoDocumento: idSimple, Obligariedad: true, FechaVencimiento: "" }]);
         };
             // reading the actual uploaded file
         file_reader.readAsDataURL(file);
@@ -173,40 +173,40 @@ export const DocumentosEmpresa = (props) => {
                                         <label class="text-gray-800 select-none" for="CronogramaTrabajo">Cronograma de Trabajo</label>
                                     </div>
                                     <div class="col-span-2">
-                                        <label for={1} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                        <label for="Cronograma Trabajo" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={singleFile} id={1} type="file" style={{display: "none"}}/>
+                                        <input onChange={singleFile} id="Cronograma Trabajo" type="file" style={{display: "none"}}/>
                                     </div>
 
                                     <div class="col-span-1 form-group">
                                         <label class="text-gray-800 select-none" for="CertificadoMutualidad">Certificado de Mutualidad</label>
                                     </div>
                                     <div class="col-span-2">
-                                        <label for={2} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                        <label for="Certificado de Mutualidad" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={singleFile} id={2} type="file" style={{display: "none"}}/>
+                                        <input onChange={singleFile} id="Certificado de Mutualidad" type="file" style={{display: "none"}}/>
                                     </div>
 
                                     <div class="col-span-1 form-group">
                                         <label class="text-gray-800 select-none" for="CertificadoAccidentabilidad">Certificado de Accidentabilidad</label>
                                     </div>
                                     <div class="col-span-2">
-                                        <label for={3} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                        <label for="Certificado de Accidentabilidad" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={singleFile} id={3} type="file" style={{display: "none"}}/>
+                                        <input onChange={singleFile} id="Certificado de Accidentabilidad" type="file" style={{display: "none"}}/>
                                     </div>
 
                                     <div class="col-span-1 form-group">
                                         <label class="text-gray-800 select-none" for="ReglamentoInterno">Reglamento Interno</label>
                                     </div>
                                     <div class="col-span-2">
-                                        <label for={4} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                        <label for="Reglamento Interno" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={singleFile} id={4} type="file" style={{display: "none"}}/>
+                                        <input onChange={singleFile} id="Reglamento Interno" type="file" style={{display: "none"}}/>
                                     </div>
                                 
                                 </div>
@@ -252,40 +252,40 @@ export const DocumentosEmpresa = (props) => {
                                         <label class="text-gray-800 select-none" for="MatrizRiesgo">Matriz de Riesgos</label>
                                     </div>
                                     <div class="col-span-2">
-                                        <label for={5} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                        <label for="Matriz de Riesgos" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={singleFile} id={5} type="file" style={{display: "none"}}/>
+                                        <input onChange={singleFile} id="Matriz de Riesgos" type="file" style={{display: "none"}}/>
                                     </div>
 
                                     <div class="col-span-1 form-group">
                                         <label class="text-gray-800 select-none" for="ProcedimientoTrabajo">Procedimiento Trabajo Seguro</label>
                                     </div>
                                     <div class="col-span-2">
-                                        <label for={7} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                        <label for="Procedimiento Trabajo Seguro" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={multipleFile} id={7} multiple type="file" style={{display: "none"}}/>
+                                        <input onChange={multipleFile} id="Procedimiento Trabajo Seguro" multiple type="file" style={{display: "none"}}/>
                                     </div>
 
                                     <div class="col-span-1 form-group">
                                         <label class="text-gray-800 select-none" for="ProgramaPrevencion">Programa Prevención de Riesgos</label>
                                     </div>
                                     <div class="col-span-2">
-                                        <label for={6} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                        <label for="Programa Prevención de Riesgos" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={singleFile} id={6} type="file" style={{display: "none"}}/>
+                                        <input onChange={singleFile} id="Programa Prevención de Riesgos" type="file" style={{display: "none"}}/>
                                     </div>
 
                                     <div class="col-span-1 form-group">
                                         <label class="text-gray-800 select-none" for="HDS">HDS Sustancias Peligrosas</label>
                                     </div>
                                     <div class="col-span-2">
-                                        <label for={14} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                        <label for="HDS Sustancias Peligrosas" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={multipleFile} id={14} type="file" multiple style={{display: "none"}}/>
+                                        <input onChange={multipleFile} id="HDS Sustancias Peligrosas" type="file" multiple style={{display: "none"}}/>
                                     </div>
                             
                                 </div>
