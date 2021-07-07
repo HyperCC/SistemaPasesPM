@@ -116,21 +116,9 @@ namespace Aplicacion.Pases
                 var usuarioActual = await this._userManager.FindByNameAsync(this._usuarioSesion.ObtenerUsuarioSesion());
 
                 // buscar si la empresa existe 
-                var buscarEmpresa = await this._context.Empresa
-                    .FirstOrDefaultAsync(x => x.Rut == request.RutEmpresa);
-
-                // en caso se no existir la empresa
-                if (buscarEmpresa == null)
-                {
-                    buscarEmpresa = new Empresa
-                    {
-                        EmpresaId = new Guid(),
-                        Rut = request.RutEmpresa,
-                        Nombre = request.NombreEmpresa
-                    };
-                    // si no existe la empresa se guarda
-                    await this._context.Empresa.AddAsync(buscarEmpresa);
-                }
+                var buscarEmpresa = await BuscarOAlmacenarEmpresa.BuscarOAgregarEmpresa(this._context
+                    , request.RutEmpresa
+                    , request.NombreEmpresa);
 
                 // generar el tipo del pase ingresado
                 string tipoPaseRecibido = request.Tipo.ToString().ToUpper();

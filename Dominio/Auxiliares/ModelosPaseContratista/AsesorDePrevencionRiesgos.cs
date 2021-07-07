@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Dominio.Auxiliares.ModelosPaseContratista
 {
-    public class AsesorDePrevencionContratista
+    public class AsesorDePrevencionRiesgos
     {
         public string Nombres { get; set; }
         public string Apellidos { get; set; }

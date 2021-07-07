@@ -31,10 +31,10 @@ namespace Aplicacion.Pases
             public string Tipo { get; set; }
             public string Observacion { get; set; }
             public string ServicioAdjudicado { get; set; } // nullable
-            public bool Completitud { get; set; }
+            public bool Completitud { get; set; } = false;
             public string FechaInicio { get; set; }
             public string FechaTermino { get; set; }
-            public AsesorDePrevencionContratista AsesorDePrevencion { get; set; }
+            public AsesorDePrevencionRiesgos AsesorDePrevencion { get; set; }
 
             // Personas para pase contratista
             public ICollection<PersonaExternaContratista> PersonasContratista { get; set; }
@@ -78,24 +78,13 @@ namespace Aplicacion.Pases
             {
 
                 // usuario en sesion actual
-                var usuarioActual = await this._userManager.FindByNameAsync(this._usuarioSesion.ObtenerUsuarioSesion());
+                var usuarioActual = await this._userManager
+                    .FindByNameAsync(this._usuarioSesion.ObtenerUsuarioSesion());
 
                 // buscar si la empresa existe 
-                var buscarEmpresa = await this._context.Empresa
-                    .FirstOrDefaultAsync(x => x.Rut == request.RutEmpresa);
-
-                // en caso se no existir la empresa
-                if (buscarEmpresa == null)
-                {
-                    buscarEmpresa = new Empresa
-                    {
-                        EmpresaId = new Guid(),
-                        Rut = request.RutEmpresa,
-                        Nombre = request.NombreEmpresa
-                    };
-                    // si no existe la empresa se guarda
-                    await this._context.Empresa.AddAsync(buscarEmpresa);
-                }
+                var buscarEmpresa = await BuscarOAlmacenarEmpresa.BuscarOAgregarEmpresa(this._context
+                    , request.RutEmpresa
+                    , request.NombreEmpresa);
 
                 // generar el tipo del pase ingresado
                 string tipoPaseRecibido = request.Tipo.ToString().ToUpper();
@@ -120,20 +109,31 @@ namespace Aplicacion.Pases
                     EmpresaId = buscarEmpresa.EmpresaId,
                     UsuarioId = usuarioActual.Id
                 };
+
                 // agregar el nuevo pase 
                 await this._context.Pase.AddAsync(paseGenerado);
 
+                // agregar el prevencionista
+                await BuscarOAlmacenarPrevencionista
+                    .BuscarOAgregarPrevencionista(request.AsesorDePrevencion
+                    , this._context
+                    , paseGenerado.PaseId);
+
                 // Agregar Documentos de la Empresa
-                if(request.SeccionDocumentosEmpresa != null)
+                if (request.SeccionDocumentosEmpresa != null)
                 {
-                    foreach(var docEmpresa in request.SeccionDocumentosEmpresa)
+                    foreach (var docEmpresa in request.SeccionDocumentosEmpresa)
                     {
-                        await AlmacenarDocumentosEmpresa.AgregarDocumentosEmpresa(docEmpresa, request.AsesorDePrevencion, _context, _env, paseGenerado.PaseId, buscarEmpresa.EmpresaId);
+                        await AlmacenarDocumentosEmpresa.AgregarDocumentosEmpresa(docEmpresa
+                            , _context
+                            , _env
+                            , paseGenerado.PaseId
+                            , buscarEmpresa.EmpresaId);
                     }
                 }
 
                 // Agregar Personas
-                if ( request.PersonasContratista != null)
+                if (request.PersonasContratista != null)
                 {
                     foreach (var persona in request.PersonasContratista)
                     {
@@ -152,18 +152,18 @@ namespace Aplicacion.Pases
                             persona.Nacionalidad);
 
                         //Agregar Documentos:
-                        foreach ( var doc in persona.DocumentosPersona)
+                        foreach (var doc in persona.DocumentosPersona)
                         {
                             await AlmacenarDocumentoPersonaContratista.AgregarDocumento(doc, _context, _env, paseGenerado.PaseId, buscarPersonaExterna.PersonaId);
                         }
                     }
                 }
 
-                //Lista de Personas
+                // Resultado de la operacion 
                 var result = await this._context.SaveChangesAsync();
                 if (result > 0)
                     return Unit.Value;
-                return Unit.Value;
+                throw new Exception("No se ha podido almacenar el pase");
             }
         }
     }

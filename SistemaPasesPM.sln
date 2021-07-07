@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aplicacion", "Aplicacion\Aplicacion.csproj", "{A6EC41AE-73E6-493B-9B79-21AE1D7DDB43}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AplicacionTests", "AplicacionTests\AplicacionTests.csproj", "{3C419708-5C03-4C76-B910-90637C822BF5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersistenciaTests", "PersistenciaTests\PersistenciaTests.csproj", "{1C95498E-440A-4246-9E77-AE1F5B056E24}"
 EndProject
 Global
@@ -37,10 +35,6 @@ Global
 		{A6EC41AE-73E6-493B-9B79-21AE1D7DDB43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6EC41AE-73E6-493B-9B79-21AE1D7DDB43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6EC41AE-73E6-493B-9B79-21AE1D7DDB43}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3C419708-5C03-4C76-B910-90637C822BF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3C419708-5C03-4C76-B910-90637C822BF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3C419708-5C03-4C76-B910-90637C822BF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C419708-5C03-4C76-B910-90637C822BF5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1C95498E-440A-4246-9E77-AE1F5B056E24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1C95498E-440A-4246-9E77-AE1F5B056E24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C95498E-440A-4246-9E77-AE1F5B056E24}.Release|Any CPU.ActiveCfg = Release|Any CPU

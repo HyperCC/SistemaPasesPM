@@ -14,7 +14,24 @@ export const registrarPaseGenerico = pase => {
     });
 };
 
-// generar un nuevo pase generico
+// generar un nuevo pase contratista
+export const registrarPaseContratista = pase => {
+
+    console.log('EL PASE ENTERO RECIBIDO EN ACTION ', pase)
+
+    return new Promise((resolve, eject) => {
+        ClienteHttp.post('/Pases/ingresarContratista', pase)
+            .then(response => {
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('ERROR DEL RESPONSE EN REGISTRO DE PASE CONTRATISTA: ', eject.error);
+                resolve(error.response);
+            });
+    });
+};
+
+// cambiar estado pase generico
 export const cambiarEstadoPaseGenerico = estado => {
     return new Promise((resolve, eject) => {
         ClienteHttp.post('/Pases/cambiarEstado', estado)

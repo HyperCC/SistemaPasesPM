@@ -16,41 +16,26 @@ namespace Persistencia.AuxiliaresAlmacenamiento
     /// </summary>
     public static class AlmacenarDocumentosEmpresa
     {
-        public static async Task AgregarDocumentosEmpresa(DocumentoEmpresaContratista request,
-            AsesorDePrevencionContratista asesorDePrevencion,
-            SistemaPasesContext context,
-            IHostingEnvironment env,
-            Guid currentPaseId,
-            Guid currentEmpresaId)
+        public static async Task AgregarDocumentosEmpresa(DocumentoEmpresaContratista request
+            , SistemaPasesContext context
+            , IHostingEnvironment env
+            , Guid currentPaseId
+            , Guid currentEmpresaId)
         {
-            // agregar asesor de prevencion
-            // buscar o agregar una persona por su rut
-            Persona buscarPersona = await BuscarOAlmacenarPersona.BuscarOAgregarPersona(context,
-                asesorDePrevencion.Rut,
-                asesorDePrevencion.Nombres,
-                asesorDePrevencion.Apellidos);
 
-            // nuevo asesor de prevencion
-            var nuevoContratista = new AsesorPrevencion
-            {
-                RegistroSns = asesorDePrevencion.ReistroSNS,
-                PersonaId = buscarPersona.PersonaId,
-                PaseId = currentPaseId
-            };
-
-            // agregar los documentos al context
-            
             // buscar tipo de documento 
-            var currentTipoDocumento = await context.TipoDocumento.FirstOrDefaultAsync(t => t.Titulo == request.TipoDocumento);
+            var currentTipoDocumento = await context.TipoDocumento
+                .FirstOrDefaultAsync(t => t.Titulo == request.TipoDocumento);
 
             // ingresar el nuevo requestumento 
             Documento nuevoDocumentoContratista = new Documento
             {
                 DocumentoId = new Guid(),
                 PaseId = currentPaseId,
-                EmpresaId= currentEmpresaId,
+                EmpresaId = currentEmpresaId,
                 TipoDocumentoId = currentTipoDocumento.TipoDocumentoId
             };
+
             //Agregamos la fecha de venc si es que existe
             if (request.FechaVencimiento != null && request.FechaVencimiento.Length > 0)
                 nuevoDocumentoContratista.FechaVencimiento = Convert.ToDateTime(request.FechaVencimiento);
@@ -58,7 +43,7 @@ namespace Persistencia.AuxiliaresAlmacenamiento
             await ArchivoEnServer.guardarArchivo(request.Documento, nuevoDocumentoContratista, env, context);
 
             await context.Documento.AddAsync(nuevoDocumentoContratista);
-            
+
         }
     }
 }

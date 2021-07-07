@@ -104,20 +104,6 @@ const Home = props => {
             <div class="w-full grid grid-cols-1 md:grid-cols-2">
                 <div class="w-full col-span-1">
 
-                    <div>
-                        <label>paises</label>
-                        <select>
-                            {paises ?
-                                paises.length > 0 ?
-                                    paises.map((value, index) => {
-                                        return <option class="capita" key={index}>{value.gentilicio}</option>
-                                    })
-                                    : null
-                                : null}
-                        </select>
-                    </div>
-
-
                     <LanzarNoritificaciones codigo={currentNotification} camposInvalidos={currentCamposInvalidos} openNotificacion={currentOpenNotificacion} />
 
                     <div class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
