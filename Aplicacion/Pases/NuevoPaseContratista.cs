@@ -34,13 +34,14 @@ namespace Aplicacion.Pases
             public bool Completitud { get; set; } = false;
             public string FechaInicio { get; set; }
             public string FechaTermino { get; set; }
-            public AsesorDePrevencionRiesgos AsesorDePrevencion { get; set; }
 
             // Personas para pase contratista
             public ICollection<PersonaExternaContratista> PersonasContratista { get; set; }
             // documentos de empresa para pase contratista
             public ICollection<DocumentoEmpresaContratista> SeccionDocumentosEmpresa { get; set; }
 
+            // prevencionista
+            public AsesorDePrevencionRiesgos AsesorDePrevencion { get; set; }
         }
 
         public class EjecutaValidacion : AbstractValidator<Ejecuta>
@@ -76,7 +77,6 @@ namespace Aplicacion.Pases
 
             public async Task<Unit> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
-
                 // usuario en sesion actual
                 var usuarioActual = await this._userManager
                     .FindByNameAsync(this._usuarioSesion.ObtenerUsuarioSesion());

@@ -35,6 +35,7 @@ namespace Persistencia.AuxiliaresAlmacenamiento
                     PersonaId = persona.PersonaId,
                     PaseId = paseId
                 };
+                context.AsesorPrevencion.AddAsync(asesorPrevencion);
             }
 
             return asesorPrevencion;

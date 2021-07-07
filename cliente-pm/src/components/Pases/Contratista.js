@@ -29,8 +29,8 @@ export const Contratista = (props) => {
         ServicioAdjudicado: '',
         Completitud: false,
         Observaciones: '',
-        FechaInicio: '',
-        FechaTermino: '',
+        FechaInicio: '01/01/2022',
+        FechaTermino: '01/01/2022',
 
         // listas de usuarios y documentos
         PeronasContratista: [],
@@ -121,7 +121,7 @@ export const Contratista = (props) => {
 
                 // si se reciben errores
                 if (typeof response.data.errores != 'undefined') {
-                    console.log('existen errores en la respuesta: ', response.data.errores.mensaje);
+                    console.log('existen errores en la respuesta: ', response.data.errores);
 
                     console.log('el tipo de error: ', response.data.errores.tipoError);
                     setCurrentNotification(response.data.errores.tipoError);
@@ -171,7 +171,7 @@ export const Contratista = (props) => {
 
                         <div class="grid grid-cols-7 gap-6 md:grid-cols-6 mt-6 mx-8 mb-2 md:mb-0">
                             <div class="col-span-1 col-start-1 row-start-1"> <p>Área</p> </div>
-                            <div class="col-span-2 flex col-start-2 row-start-1 md:col-span-2 flex">
+                            <div class="col-span-2 flex col-start-2 row-start-1 md:col-span-2">
                                 <select name="Area" value={datosPaseGeneral.Area} onChange={ingresarValoresMemoria}
                                     class="bg-gray-100 p-2 rounded-full outline-none w-full border border-gray-300">
                                     <option>Seleccionar Área</option>

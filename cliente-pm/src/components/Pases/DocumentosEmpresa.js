@@ -44,7 +44,7 @@ export const DocumentosEmpresa = (props) => {
             // After uploading the file
             // appending the file to our state array
             // set the object keys and values accordingly
-            setFiles([...files, { documento: file_reader.result, TipoDocumento: idSimple, Obligariedad: true, FechaVencimiento: "" }]);
+            setFiles([...files, { Documento: file_reader.result, TipoDocumento: idSimple, Obligariedad: true, FechaVencimiento: "" }]);
         };
             // reading the actual uploaded file
         file_reader.readAsDataURL(file);

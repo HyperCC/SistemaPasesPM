@@ -30,6 +30,15 @@ namespace WebApi.Controllers
             => await this.MediadorHerencia.Send(new ListaPases.Ejecuta());
 
         /// <summary>
+        /// registrar un pase de tipo contratista
+        /// </summary>
+        /// <param name="parametros"></param>
+        /// <returns></returns>
+        [HttpPost("ingresarContratista/{id}")]
+        public async Task<ActionResult<Unit>> IngresarContratista([FromBody] NuevoPaseContratista.Ejecuta parametros)
+           => await this.MediadorHerencia.Send(parametros);
+
+        /// <summary>
         /// registrar un pase generico
         /// </summary>
         /// <param name="parametros"></param>
@@ -37,15 +46,6 @@ namespace WebApi.Controllers
         [HttpPost("ingresar")]
         public async Task<ActionResult<Unit>> Ingresar(NuevoPaseGenerico.Ejecuta parametros)
             => await this.MediadorHerencia.Send(parametros);
-
-        /// <summary>
-        /// registrar un pase de tipo contratista
-        /// </summary>
-        /// <param name="parametros"></param>
-        /// <returns></returns>
-        [HttpPost("ingresarContratista")]
-        public async Task<ActionResult<Unit>> Ingresar(NuevoPaseContratista.Ejecuta parametros)
-           => await this.MediadorHerencia.Send(parametros);
 
         /// <summary>
         /// cambiar el estado de un pase por un estado existente
