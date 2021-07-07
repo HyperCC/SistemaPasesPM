@@ -62,7 +62,7 @@ export const AgregarPersonaContratista = props => {
             // After uploading the file
             // appending the file to our state array
             // set the object keys and values accordingly
-            setDocumentoPersona([...documentoPersona, { file_id: idSimple, file_name: file.name, uploaded_file: file_reader.result }]);
+            setDocumentoPersona([...documentoPersona, { documento: file_reader.result, TipoDocumento: idSimple, Obligariedad: true, FechaVencimiento: "", Descripcion: "" }]);
         };
             // reading the actual uploaded file
         file_reader.readAsDataURL(file);
