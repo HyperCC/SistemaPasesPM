@@ -100,10 +100,10 @@ export const AgregarPersonaContratista = props => {
                                 </div>
                                 <div class="col-span-1 row-start-4"> <p>Contrato de Trabajo</p> </div>
                                 <div class="col-span-1 row-start-4 md:col-span-1">
-                                    <label for={0} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                    <label for="Contrato de Trabajo" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={singleFile} id={0} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id="Contrato de Trabajo" type="file" style={{display: "none"}}/>
                                     
                                 </div>
 
@@ -195,26 +195,26 @@ export const AgregarPersonaContratista = props => {
 
                                 <div class="col-span-1 col-start-1 row-start-1"> <p>Registro RIOHS</p> </div>
                                 <div class="col-span-1 col-start-2 row-start-1 md:col-span-1">
-                                    <label for={1} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                    <label for="Registro RIOHS" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={singleFile} id={1} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id="Registro RIOHS" type="file" style={{display: "none"}}/>
                                 </div>
 
                                 <div class="col-span-1 row-start-2"> <p>Registro ODI</p> </div>
                                 <div class="col-span-1 md:col-span-1 row-start-2">
-                                    <label for={2} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                    <label for="Registro ODI" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={singleFile} id={2} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id="Registro ODI" type="file" style={{display: "none"}}/>
                                 </div>
 
                                 <div class="col-span-1 row-start-3"> <p>Registro EPPs</p> </div>
                                 <div class="col-span-1 row-start-3 md:col-span-1">
-                                    <label for={3} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                    <label for="Registro EPPs" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={singleFile} id={3} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id="Registro EPPs" type="file" style={{display: "none"}}/>
                                 </div>
                                 
                                 <div class="col-span-1 col-start-3 row-start-1 pl-14"> <p>Fecha Vencimiento</p> </div>
@@ -246,34 +246,34 @@ export const AgregarPersonaContratista = props => {
 
                                 <div class="col-span-1 col-start-1 row-start-1"> <p>Basico</p> </div>
                                 <div class="col-span-1 col-start-2 row-start-1 md:col-span-1">
-                                    <label for={4} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                    <label for="Basico" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={singleFile} id={4} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id="Basico" type="file" style={{display: "none"}}/>
                                 </div>
 
                                 <div class="col-span-1 row-start-2"> <p>Altura Física</p> </div>
                                 <div class="col-span-1 md:col-span-1 row-start-2">
-                                    <label for={5} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                    <label for="Altura Física" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={singleFile} id={5} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id="Altura Física" type="file" style={{display: "none"}}/>
                                 </div>
 
                                 <div class="col-span-1 row-start-3"> <p>Espacios Confinados</p> </div>
                                 <div class="col-span-1 row-start-3 md:col-span-1">
-                                    <label for={6} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                    <label for="Espacios Confinados" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={singleFile} id={6} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id="Espacios Confinados" type="file" style={{display: "none"}}/>
                                 </div>
 
                                 <div class="col-span-1 row-start-4"> <p>Psicosensométrico</p> </div>
                                 <div class="col-span-1 row-start-4 md:col-span-1">
-                                    <label for={7} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                    <label for="Psicosensométrico" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={singleFile} id={7} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id="Psicosensométrico" type="file" style={{display: "none"}}/>
                                 </div>
                                 
                                 <div class="col-span-1 col-start-3 row-start-1 pl-14"> <p>Fecha Vencimiento</p> </div>
@@ -308,42 +308,42 @@ export const AgregarPersonaContratista = props => {
 
                                 <div class="col-span-1 col-start-1 row-start-1"> <p>Soldador Calificado</p> </div>
                                 <div class="col-span-1 col-start-2 row-start-1 md:col-span-1">
-                                    <label for={8} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                    <label for="Soldador Calificado" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={singleFile} id={8} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id="Soldador Calificado" type="file" style={{display: "none"}}/>
                                 </div>
 
                                 <div class="col-span-1 row-start-2"> <p>Trabajo en Altura</p> </div>
                                 <div class="col-span-1 md:col-span-1 row-start-2">
-                                    <label for={9} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                    <label for="Trabajo en Altura" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={singleFile} id={9} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id="Trabajo en Altura" type="file" style={{display: "none"}}/>
                                 </div>
 
                                 <div class="col-span-1 row-start-3"> <p>Operador de Equipo Móvil</p> </div>
                                 <div class="col-span-1 row-start-3 md:col-span-1">
-                                    <label for={10} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                    <label for="Operador de Equipo Móvil" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={singleFile} id={10} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id="Operador de Equipo Móvil" type="file" style={{display: "none"}}/>
                                 </div>
 
                                 <div class="col-span-1 row-start-4"> <p>Rigger / Portalonero</p> </div>
                                 <div class="col-span-1 row-start-4 md:col-span-1">
-                                    <label for={11} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                    <label for="Rigger / Portalonero" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={singleFile} id={11} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id="Rigger / Portalonero" type="file" style={{display: "none"}}/>
                                 </div>
 
                                 <div class="col-span-1 row-start-5"> <p>Otros</p> </div>
                                 <div class="col-span-1 row-start-5 md:col-span-1">
-                                    <label for={12} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                    <label for="Otros" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                         Seleccionar archivo
                                     </label>
-                                    <input onChange={singleFile} id={12} type="file" style={{display: "none"}}/>
+                                    <input onChange={singleFile} id="Otros" type="file" style={{display: "none"}}/>
                                 </div>
                                 
                                 <div class="col-span-1 col-start-3 row-start-1 pl-14"> <p>Fecha Vencimiento</p> </div>
