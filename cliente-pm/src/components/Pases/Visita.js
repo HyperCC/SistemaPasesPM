@@ -6,6 +6,7 @@ import { registrarPaseGenerico } from '../../actions/PaseAction';
 import { LanzarNoritificaciones } from '../avisos/LanzarNotificaciones';
 
 
+
 export const Visita = (props) => {
 
     //Datos generales del pase

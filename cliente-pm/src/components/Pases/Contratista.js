@@ -1,20 +1,24 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useLocation } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import { TablaTrabajadores } from './TablaTrabajadores';
+import { registrarPaseGenerico } from '../../actions/PaseAction';
+import { LanzarNoritificaciones } from '../avisos/LanzarNotificaciones';
+import Popup from 'reactjs-popup';
+import { DocumentosEmpresa } from './DocumentosEmpresa';
 
-
-export const Contratista = () => {
+export const Contratista = (props) => {
     
     const [startDate, setStartDate] = useState(new Date());
     const [finishtDate, setFinishDate] = useState(new Date());
     const url = "/SolicitudContratista";
+    const location = useLocation();
+    const history = useHistory();
 
-    const dataTablaGeneral = [{
-        Nombre: 'x',
-        RutPasaporte: 'x',
-        Nacionalidad: 'x'
-    }]
+    const [listaPersona, setListaPersona ] = useState([]);
+    const [countAux, setCountAux] = useState(0)
 
     const [datosPaseGeneral, setDatosPaseGeneral] = useState({
         Area: '',
@@ -41,6 +45,11 @@ export const Contratista = () => {
         },
     });
 
+    // codigo actual de la notificacion a mostrar
+    const [currentNotification, setCurrentNotification] = useState('none');
+    // posibles campos invalidos enviados por el usuario
+    const [currentCamposInvalidos, setCurrentCamposInvalidos] = useState([]);
+
     const ingresarValoresMemoria = valorInput => {
         // obtener el valor
         const { name, value } = valorInput.target;
@@ -54,43 +63,95 @@ export const Contratista = () => {
         
     };
 
+    const guardarDocumentosEmpresa = (datosPrev, filesEmpresa) =>{
+        
+        // Datos empresa
+        setDatosPaseGeneral(anterior => ({
+            ...anterior, // mantener lo que existe antes
+            ["SeccionDocumentosEmpresa"]: filesEmpresa // solo cambiar el input mapeado
+        }));
+
+        // Datos Prev
+        setDatosPaseGeneral(anterior => ({
+            ...anterior, // mantener lo que existe antes
+            ["AsesorDePrevencion"]: datosPrev // solo cambiar el input mapeado
+        }));
+
+        console.log("aqui")
+
+    }
+
+    const guardarPersona = (persona) =>{
+        
+        if(countAux===0){
+            setCountAux(countAux + 1);
+        }else if(countAux===1){
+            setListaPersona([persona]);
+            setCountAux(countAux + 1);
+        }
+        else{
+            setListaPersona([...listaPersona, persona]);
+        }
+        // Se añade la persona a la lista
+        
+    }
+
+    useEffect(() => {
+        
+        // Se actualiza la lista en los datos generales
+        setDatosPaseGeneral(anterior => ({
+            ...anterior, // mantener lo que existe antes
+            ["PeronasContratista"]: listaPersona, // solo cambiar el input mapeado
+        }));
+
+    }, [listaPersona]);
+
+    const enviarFormulario = inforFormulario => {
+
+    };
+
+    const cancelarGuardado = () => {
+        //window.localStorage.removeItem('lista_personas_externas_visita');
+        //window.localStorage.removeItem('datos_pase_general_visita');
+        //window.localStorage.removeItem('nueva_persona_externa_visita');
+        history.push("/Perfil");
+    };
     
+    console.log(location.documentosPersonaContratisa);
 
     return (
         <div class="bg-gray-100 min-h-screen">
             <div class="md:max-w-6xl w-full mx-auto py-8">
                 <div class="sm:px-8 px-4">
+
+                    <LanzarNoritificaciones codigo={currentNotification} camposInvalidos={currentCamposInvalidos} />
                     
                     {/** Parte superior */}
                     <div class="bg-white p-4 md:p-8 rounded-lg shadow-md">
                         <p class="text-2xl leading-tight mx-8 text-center md:text-left md:ml-16">
                             Información general - Pase Contratista
                         </p>
-
+                    
                         <div class="grid grid-cols-7 gap-6 md:grid-cols-6 mt-6 mx-8 mb-2 md:mb-0">
                             <div class="col-span-1 col-start-1 row-start-1"> <p>Área</p> </div>
-                            <div class="col-span-1 col-start-2 row-start-1 md:col-span-1">
-                                <p>
-                                    <div class="relative inline-flex">
-                                        <svg class="w-2 h-2 absolute top-0 right-0 m-4 pointer-events-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 412 232"><path d="M206 171.144L42.678 7.822c-9.763-9.763-25.592-9.763-35.355 0-9.763 9.764-9.763 25.592 0 35.355l181 181c4.88 4.882 11.279 7.323 17.677 7.323s12.796-2.441 17.678-7.322l181-181c9.763-9.764 9.763-25.592 0-35.355-9.763-9.763-25.592-9.763-35.355 0L206 171.144z" fill="#648299" fill-rule="nonzero"/></svg>
-                                        <select value={datosPaseGeneral.Area} onChange={ingresarValoresMemoria} class="border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none">
-                                            <option>Selecciones el Área</option>
-                                            <option value="Contabilidad">CONTABILIDAD</option>
-                                            <option value="Ing. y Mantencion">ING. Y MANTENCIÓN</option>
-                                            <option value="Operaciones">OPERACIONES</option>
-                                            <option value="Finanzas">FINANZAS</option>
-                                            <option value="Informatica">INFORMÁTICA</option>
-                                            <option value="Comercial">COMERCIAL</option>
-                                            <option value="Administracion">ADMINISTRACIÓN</option>
-                                            <option value="Hseq">HSEQ</option>
-                                            <option value="Personas">PERSONAS</option>
-                                            <option value="Proyectos">PROYECTOS</option>
-                                            <option value="Medio ambiente">MEDIO AMBIENTE</option>
-                                            <option value="Mecanica pm">MECANICA PM</option>
-                                            <option value="Electro-control pm">ELECTRO-CONTROL PM</option>
-                                        </select>
-                                    </div>
-                                </p>
+                            <div class="col-span-2 flex col-start-2 row-start-1 md:col-span-2 flex">
+                                <select name="Area" value={datosPaseGeneral.Area} onChange={ingresarValoresMemoria}
+                                    class="bg-gray-100 p-2 rounded-full outline-none w-full border border-gray-300">
+                                    <option>Seleccionar Área</option>
+                                    <option value="Contabilidad">CONTABILIDAD</option>
+                                    <option value="Ing. y Mantencion">ING. Y MANTENCIÓN</option>
+                                    <option value="Operaciones">OPERACIONES</option>
+                                    <option value="Finanzas">FINANZAS</option>
+                                    <option value="Informatica">INFORMÁTICA</option>
+                                    <option value="Comercial">COMERCIAL</option>
+                                    <option value="Administracion">ADMINISTRACIÓN</option>
+                                    <option value="Hseq">HSEQ</option>
+                                    <option value="Personas">PERSONAS</option>
+                                    <option value="Proyectos">PROYECTOS</option>
+                                    <option value="Medio ambiente">MEDIO AMBIENTE</option>
+                                    <option value="Mecanica pm">MECANICA PM</option>
+                                    <option value="Electro-control pm">ELECTRO-CONTROL PM</option>
+                                </select>
                             </div>
 
                             <div class="col-span-1 row-start-2"> <p>Rut Empresa</p> </div>
@@ -107,11 +168,11 @@ export const Contratista = () => {
                                 <input type="text" value={datosPaseGeneral.ServicioAdjudicado} onChange={ingresarValoresMemoria} name="ServicioAdjudicado" class="border-2 py-1 px-3 border-gray-300 rounded-md" />
                             </div>
 
-                            <div class="col-span-1 row-span-2 col-start-3 row-start-1 pl-14"><p>Motivo visita</p></div>
-                            <div class="col-span-3 row-span-2 col-start-4 row-start-1"><textarea type="range" value={datosPaseGeneral.Motivo} onChange={ingresarValoresMemoria} name="MotivoVisita" placeholder="range...." class="border w-full app border-gray-300 p-2 my-2 rounded-md focus:outline-none focus:ring-2 ring-azul-pm"> </textarea></div>
+                            <div class="col-span-1 row-span-2 col-start-4 row-start-1"><p>Motivo</p></div>
+                            <div class="col-span-3 row-span-2 col-start-5 row-start-1"><textarea type="range" value={datosPaseGeneral.Motivo} onChange={ingresarValoresMemoria} name="Motivo" placeholder="range...." class="border w-full app border-gray-300 p-2 my-2 rounded-md focus:outline-none focus:ring-2 ring-azul-pm"> </textarea></div>
 
-                            <div class="col-span-1 col-start-3 row-start-3 pl-14"> <p>Fecha Inicio</p> </div>
-                            <div class="col-span-1 row-start-3 md:col-span-1">
+                            <div class="col-span-1 flex col-start-3 row-start-3 pl-24"> <p>Fecha Inicio</p> </div>
+                            <div class="col-span-1 row-start-3 pl-4 md:col-span-1">
                                 <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
                             </div>
 
@@ -121,12 +182,19 @@ export const Contratista = () => {
                             </div>
                             
                             <div class="col-span-2 col-start-5 row-start-4">
-                                <a href="/DocumentosEmpresa"
-                                className="w-90 text-center flex-shrink-0 block px-4 py-2 md:mt-0 mt-4 md:mx-0 mx-auto text-base font-semibold text-white bg-verde-pm rounded-md shadow-md hover:bg-amarillo-pm focus:outline-none transition duration-500">
-                                Adjuntar Documentación de Empresa
-                                </a>
+                                <Popup trigger={<button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">Agregar Documentos empresa</button>} modal nested>
+                                    { close => (
+                                    <div className="modal">
+                                        <button className="close" onClick={close}>
+                                            &times;
+                                        </button>
+                                        <DocumentosEmpresa datos = {datosPaseGeneral}
+                                            _guardarDocumentosEmpresa ={guardarDocumentosEmpresa} />
+                                        
+                                    </div>
+                                    )}
+                                </Popup>
                             </div>
-                            
                         </div>
 
                     </div>
@@ -135,7 +203,10 @@ export const Contratista = () => {
 
                     {/** Parte inferior */}
 
-                    <TablaTrabajadores datos = {dataTablaGeneral} url = {url}/>               
+                    <TablaTrabajadores datos = {datosPaseGeneral} url = {url}
+                        _enviarFormulario={enviarFormulario}
+                        _cancelarGuardado={cancelarGuardado}
+                        _guardarPersona={guardarPersona}/>               
                 </div>
             </div>
         </div>

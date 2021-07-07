@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from "react-router-dom";
 import Pagination from '../Pagination';
+import { AgregarPersonaContratista } from './AgregarPersonaContratista';
+import Popup from 'reactjs-popup';
+import { DocumentosEmpresa } from './DocumentosEmpresa';
 
 export const TablaTrabajadores = props => {
     const url = props.url;
@@ -17,6 +20,19 @@ export const TablaTrabajadores = props => {
         };    
         fetchUsers();
     }, []);
+
+    // Persona para pase contratista
+
+    const [personasContratista, setPersonaContratista] = useState({
+        Persona: {
+        Rut : "",
+		Nombres : "",
+		PrimerApellido : "",
+		SegundoApellido : "",
+		Nacionalidad : ""},
+		DocumentosPersona : []
+    })
+
 
     // Obtener el indice inicial por pagina
     const offset = (currentPage - 1) * postsPerPage;
@@ -39,6 +55,28 @@ export const TablaTrabajadores = props => {
         }       
     };
 
+    const sendDataContratista= (personaExterna, documentoPersona) =>{
+
+        // Datos Persona
+        setPersonaContratista(anterior => ({
+            ...anterior, // mantener lo que existe antes
+            ["Persona"]: personaExterna,// solo cambiar el input mapeado
+        }));
+
+        // Documentos Persona
+        setPersonaContratista(anterior => ({
+            ...anterior, // mantener lo que existe antes
+            ["DocumentosPersona"]: documentoPersona // solo cambiar el input mapeado
+        }));
+    }
+    
+    useEffect(() => {
+        
+        props._guardarPersona(personasContratista)
+
+    }, [personasContratista]);
+
+
     return (
         <div class="bg-white p-4 md:p-8 rounded-lg shadow-md">
 
@@ -50,11 +88,29 @@ export const TablaTrabajadores = props => {
                 {/* Botones para crear nuevo pase y pases buscados */}
                 <div class="text-end flex-none">
                     <div class="flex-none md:flex w-full space-x-3">
-                        <a href={props.url + "/AgregarPersona"} faker={'faker'}
+                        {props.url=="/SolicitudContratista" &&
+                            <Popup trigger={<button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">Agregar Persona Contratista</button>} modal nested>
+                            { close => (
+                            <div className="modal">
+                                <button className="close" onClick={close}>
+                                    &times;
+                                </button>
+                                <AgregarPersonaContratista datos = {props.datosPaseGeneral}
+                                    _guardarPersonaC ={sendDataContratista} />
+                                
+                            </div>
+                            )}
+                            </Popup>
+                        }
+                        {props.url!="/SolicitudContratista" &&
+
+                            <a href={props.url + "/AgregarPersona"} faker={'faker'}
                             className="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                             Agregar Persona
-                        </a>
+                            </a>
 
+                        }
+                        
                         <button type="submit" onClick={props._enviarFormulario} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                             Guardar
                         </button>
