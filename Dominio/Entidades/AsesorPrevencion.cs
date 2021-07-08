@@ -13,7 +13,6 @@ namespace Dominio.Entidades
 
         // relacionamiento segun modelo R
         public Guid PersonaId { get; set; }
-        public Guid PaseId { get; set; }
 
         // obtener los modelos relacionados 
         public Persona PersonaRel { get; set; }

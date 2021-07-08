@@ -48,12 +48,14 @@ namespace Aplicacion.Pases
         {
             public EjecutaValidacion()
             {
+                /*
                 this.RuleFor(x => x.Motivo).NotEmpty();
                 this.RuleFor(x => x.RutEmpresa).NotEmpty();
                 this.RuleFor(x => x.NombreEmpresa).NotEmpty();
                 this.RuleFor(x => x.Tipo).NotEmpty();
                 this.RuleFor(x => x.FechaInicio).NotEmpty();
                 this.RuleFor(x => x.FechaTermino).NotEmpty();
+                */
             }
         }
 
@@ -118,7 +120,7 @@ namespace Aplicacion.Pases
                     await BuscarOAlmacenarPrevencionista
                      .BuscarOAgregarPrevencionista(request.AsesorDePrevencion
                      , this._context
-                     , paseGenerado.PaseId);
+                     , paseGenerado);
 
                 // Agregar Documentos de la Empresa
                 if (request.SeccionDocumentosEmpresa != null)
