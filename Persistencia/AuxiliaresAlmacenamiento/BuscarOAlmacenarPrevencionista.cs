@@ -13,30 +13,34 @@ namespace Persistencia.AuxiliaresAlmacenamiento
     {
         public static async Task<AsesorPrevencion> BuscarOAgregarPrevencionista(AsesorDePrevencionRiesgos prevencionista
             , SistemaPasesContext context
-            , Guid paseId)
+            , Pase pase)
         {
-
-            // encontrar a la persona correspondiente
-            var persona = await BuscarOAlmacenarPersona.BuscarOAgregarPersona(context
-                , prevencionista.Rut
-                , prevencionista.Nombres
-                , prevencionista.Apellidos);
-
             // buscar si existe el asesor con el registro SNS indicado
             var asesorPrevencion = await context.AsesorPrevencion
-                .FirstOrDefaultAsync(p => p.RegistroSns == prevencionista.RegistroSNS);
+                .FirstOrDefaultAsync(
+                    p => p.RegistroSns == prevencionista.RegistroSNS
+                );
 
             if (asesorPrevencion == null)
             {
+                // encontrar a la persona correspondiente
+                var persona = await BuscarOAlmacenarPersona.BuscarOAgregarPersona(context
+                    , prevencionista.Rut
+                    , prevencionista.Nombres
+                    , prevencionista.Apellidos);
+
                 // agregar y registrar el prevencionista si no xiste
                 asesorPrevencion = new AsesorPrevencion
                 {
                     RegistroSns = prevencionista.RegistroSNS,
                     PersonaId = persona.PersonaId,
-                    PaseId = paseId
                 };
-                context.AsesorPrevencion.AddAsync(asesorPrevencion);
+                await context.AsesorPrevencion.AddAsync(asesorPrevencion);
             }
+
+            // guardar cambios
+            pase.AsesorPrevencionId = asesorPrevencion.AsesorPrevencionId;
+            await context.SaveChangesAsync();
 
             return asesorPrevencion;
         }

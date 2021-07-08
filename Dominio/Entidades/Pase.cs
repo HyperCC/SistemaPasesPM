@@ -39,6 +39,7 @@ namespace Dominio.Entidades
 
         // relacionamiento segun modelo R
         public Guid EmpresaId { get; set; }
+        public Guid? AsesorPrevencionId { get; set; }
         public string UsuarioId { get; set; }
 
         // obtener los modelos relacionados 
