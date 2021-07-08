@@ -44,7 +44,7 @@ export const DocumentosEmpresa = (props) => {
             // After uploading the file
             // appending the file to our state array
             // set the object keys and values accordingly
-            setFiles([...files, { Documento: file_reader.result, TipoDocumento: idSimple, Obligatoriedad: true, FechaVencimiento: "01/01/2022" }]);
+            setFiles([...files, { Documento: file_reader.result, TipoDocumento: idSimple, Obligariedad: true, FechaVencimiento: "" }]);
         };
             // reading the actual uploaded file
         file_reader.readAsDataURL(file);
@@ -55,15 +55,8 @@ export const DocumentosEmpresa = (props) => {
 
     function newFile(e){
         let selectedFile = e.target.files[0];
-        const formData = new FormData();
-
-        formData.append(
-            "file",
-            selectedFile,
-            selectedFile.name
-        )
-        
-        setFiles([...files, { Documento: formData, TipoDocumento: e.target.id, Obligariedad: true, FechaVencimiento: "" }]);
+    
+        setFiles([...files, { Documento: selectedFile, TipoDocumento: e.target.id, Obligariedad: true, FechaVencimiento: "" }]);
 
         console.log(selectedFile);
     }
