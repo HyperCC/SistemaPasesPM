@@ -29,7 +29,7 @@ export const DocumentosEmpresa = (props) => {
     
     const [files, setFiles] = useState([]);
     
-    function singleFile(event){
+    function newFile(event){
 
         event.preventDefault();
         
@@ -51,6 +51,14 @@ export const DocumentosEmpresa = (props) => {
 
         console.log(files)
 
+    }
+
+    function newFile(e){
+        let selectedFile = e.target.files[0];
+        
+        setFiles([...files, { Documento: selectedFile, TipoDocumento: e.target.id, Obligariedad: true, FechaVencimiento: "" }]);
+
+        console.log(selectedFile);
     }
 
     const handleMultiFileChosen = async (file) =>{
@@ -176,7 +184,7 @@ export const DocumentosEmpresa = (props) => {
                                         <label for="Cronograma Trabajo" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={singleFile} id="Cronograma Trabajo" type="file" style={{display: "none"}}/>
+                                        <input onChange={newFile} id="Cronograma Trabajo" type="file" style={{display: "none"}}/>
                                     </div>
 
                                     <div class="col-span-1 form-group">
@@ -186,7 +194,7 @@ export const DocumentosEmpresa = (props) => {
                                         <label for="Certificado de Mutualidad" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={singleFile} id="Certificado de Mutualidad" type="file" style={{display: "none"}}/>
+                                        <input onChange={newFile} id="Certificado de Mutualidad" type="file" style={{display: "none"}}/>
                                     </div>
 
                                     <div class="col-span-1 form-group">
@@ -196,7 +204,7 @@ export const DocumentosEmpresa = (props) => {
                                         <label for="Certificado de Accidentabilidad" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={singleFile} id="Certificado de Accidentabilidad" type="file" style={{display: "none"}}/>
+                                        <input onChange={newFile} id="Certificado de Accidentabilidad" type="file" style={{display: "none"}}/>
                                     </div>
 
                                     <div class="col-span-1 form-group">
@@ -206,7 +214,7 @@ export const DocumentosEmpresa = (props) => {
                                         <label for="Reglamento Interno" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={singleFile} id="Reglamento Interno" type="file" style={{display: "none"}}/>
+                                        <input onChange={newFile} id="Reglamento Interno" type="file" style={{display: "none"}}/>
                                     </div>
                                 
                                 </div>
@@ -255,7 +263,7 @@ export const DocumentosEmpresa = (props) => {
                                         <label for="Matriz de Riesgos" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={singleFile} id="Matriz de Riesgos" type="file" style={{display: "none"}}/>
+                                        <input onChange={newFile} id="Matriz de Riesgos" type="file" style={{display: "none"}}/>
                                     </div>
 
                                     <div class="col-span-1 form-group">
@@ -275,7 +283,7 @@ export const DocumentosEmpresa = (props) => {
                                         <label for="Programa Prevención de Riesgos" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
                                             Seleccionar archivo
                                         </label>
-                                        <input onChange={singleFile} id="Programa Prevención de Riesgos" type="file" style={{display: "none"}}/>
+                                        <input onChange={newFile} id="Programa Prevención de Riesgos" type="file" style={{display: "none"}}/>
                                     </div>
 
                                     <div class="col-span-1 form-group">
