@@ -55,8 +55,15 @@ export const DocumentosEmpresa = (props) => {
 
     function newFile(e){
         let selectedFile = e.target.files[0];
+        const formData = new FormData();
+
+        formData.append(
+            "file",
+            selectedFile,
+            selectedFile.name
+        )
         
-        setFiles([...files, { Documento: selectedFile, TipoDocumento: e.target.id, Obligariedad: true, FechaVencimiento: "" }]);
+        setFiles([...files, { Documento: formData, TipoDocumento: e.target.id, Obligariedad: true, FechaVencimiento: "" }]);
 
         console.log(selectedFile);
     }
