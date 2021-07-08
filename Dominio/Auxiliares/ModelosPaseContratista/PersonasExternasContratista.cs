@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Dominio.Auxiliares.ModelosPaseContratista
 {
-    public class PersonaExternaContratista
+    public class PersonasExternasContratista
     {
         public string Nombres { get; set; }
         public string PrimerApellido { get; set; }

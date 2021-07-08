@@ -9,6 +9,6 @@ namespace Dominio.Auxiliares.ModelosPaseContratista
         public string Nombres { get; set; }
         public string Apellidos { get; set; }
         public string Rut { get; set; }
-        public string ReistroSNS { get; set; }
+        public string RegistroSNS { get; set; }
     }
 }

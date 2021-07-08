@@ -18,8 +18,13 @@ namespace Persistencia.AuxiliaresAlmacenamiento
                                                            Documento doc,
                                                            IHostingEnvironment env,
                                                            SistemaPasesContext context)
-        {            
+        {
             string[] permittedExtensions = { ".txt", ".pdf", ".docx", ".png", ".jpeg" };
+
+            Console.WriteLine("--------------------------------");
+            Console.WriteLine("SE HA ENTRADO A LA SECCION DE ALMCENAR DOCS");
+            Console.WriteLine("--------------------------------");
+
 
             var extensionArchivo = Path.GetExtension(archivo.FileName).ToLowerInvariant();
             var documentosFolder = Path.Combine(env.WebRootPath, "Uploads", "Documentos");
@@ -29,13 +34,13 @@ namespace Persistencia.AuxiliaresAlmacenamiento
                 throw new Exception("Extension Archivo no permitida");
             }
             else
-            {                                
+            {
                 if (!Directory.Exists(documentosFolder))
                 {
                     Directory.CreateDirectory(documentosFolder);
                 }
                 //Archivo no vacio(?)
-                if(archivo.Length > 0)
+                if (archivo.Length > 0)
                 {
                     var docname = $"{Guid.NewGuid()}.{archivo.FileName}";
 
@@ -47,7 +52,7 @@ namespace Persistencia.AuxiliaresAlmacenamiento
                 }
 
                 await context.Documento.AddAsync(doc);
-                
+
                 return doc;
             }
 

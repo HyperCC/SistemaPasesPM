@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Dominio.Auxiliares.ModelosPaseContratista
 {
-    public class DocumentoEmpresaContratista
+    public class DocumentosEmpresaContratista
     {
         public IFormFile Documento { get; set; }
         public string TipoDocumento { get; set; }
-        public string Obligariedad { get; set; }
+        public bool Obligatoriedad { get; set; }
         public string FechaVencimiento { get; set; }//Opcional?
     }
 }

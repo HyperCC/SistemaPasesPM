@@ -16,7 +16,7 @@ namespace Persistencia.AuxiliaresAlmacenamiento
     /// </summary>
     public static class AlmacenarDocumentosEmpresa
     {
-        public static async Task AgregarDocumentosEmpresa(DocumentoEmpresaContratista request
+        public static async Task AgregarDocumentosEmpresa(DocumentosEmpresaContratista request
             , SistemaPasesContext context
             , IHostingEnvironment env
             , Guid currentPaseId

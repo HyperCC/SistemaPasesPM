@@ -34,8 +34,8 @@ namespace WebApi.Controllers
         /// </summary>
         /// <param name="parametros"></param>
         /// <returns></returns>
-        [HttpPost("ingresarContratista/{id}")]
-        public async Task<ActionResult<Unit>> IngresarContratista([FromBody] NuevoPaseContratista.Ejecuta parametros)
+        [HttpPost("ingresarContratista"), DisableRequestSizeLimit]
+        public async Task<ActionResult<Unit>> IngresarContratista(NuevoPaseContratista.Ejecuta parametros)
            => await this.MediadorHerencia.Send(parametros);
 
         /// <summary>
