@@ -36,9 +36,9 @@ namespace Aplicacion.Pases
             public string FechaTermino { get; set; }
 
             // Personas para pase contratista
-            public ICollection<PersonaExternaContratista> PersonasContratista { get; set; }
+            public ICollection<PersonasExternasContratista> PersonasContratista { get; set; }
             // documentos de empresa para pase contratista
-            public ICollection<DocumentoEmpresaContratista> SeccionDocumentosEmpresa { get; set; }
+            public ICollection<DocumentosEmpresaContratista> SeccionDocumentosEmpresa { get; set; }
 
             // prevencionista
             public AsesorDePrevencionRiesgos AsesorDePrevencion { get; set; }
@@ -114,14 +114,19 @@ namespace Aplicacion.Pases
                 await this._context.Pase.AddAsync(paseGenerado);
 
                 // agregar el prevencionista
-                await BuscarOAlmacenarPrevencionista
-                    .BuscarOAgregarPrevencionista(request.AsesorDePrevencion
-                    , this._context
-                    , paseGenerado.PaseId);
+                if (request.AsesorDePrevencion != null)
+                    await BuscarOAlmacenarPrevencionista
+                     .BuscarOAgregarPrevencionista(request.AsesorDePrevencion
+                     , this._context
+                     , paseGenerado.PaseId);
 
                 // Agregar Documentos de la Empresa
                 if (request.SeccionDocumentosEmpresa != null)
                 {
+                    Console.WriteLine("--------------------------------");
+                    Console.WriteLine("SE ENCONTRARON DOCUMENTOS DE EMPRESA");
+                    Console.WriteLine("--------------------------------");
+
                     foreach (var docEmpresa in request.SeccionDocumentosEmpresa)
                     {
                         await AlmacenarDocumentosEmpresa.AgregarDocumentosEmpresa(docEmpresa
@@ -130,6 +135,13 @@ namespace Aplicacion.Pases
                             , paseGenerado.PaseId
                             , buscarEmpresa.EmpresaId);
                     }
+                }
+                else
+                {
+                    Console.WriteLine("--------------------------------");
+                    Console.WriteLine("NO SE ENCONTRARON DOCUMENTOS DE EMPRESA");
+                    Console.WriteLine("--------------------------------");
+
                 }
 
                 // Agregar Personas

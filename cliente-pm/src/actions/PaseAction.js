@@ -17,11 +17,10 @@ export const registrarPaseGenerico = pase => {
 // generar un nuevo pase contratista
 export const registrarPaseContratista = pase => {
 
-    const randomKey = Math.random().toString(36).substring(7);
     console.log('EL PASE ENTERO RECIBIDO EN ACTION ', pase);
 
     return new Promise((resolve, eject) => {
-        ClienteHttp.post('/Pases/ingresarContratista/' + randomKey, pase)
+        ClienteHttp.post('/Pases/ingresarContratista', pase)
             .then(response => {
                 resolve(response);
             })

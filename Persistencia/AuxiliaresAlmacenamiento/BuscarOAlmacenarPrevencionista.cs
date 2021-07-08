@@ -24,14 +24,14 @@ namespace Persistencia.AuxiliaresAlmacenamiento
 
             // buscar si existe el asesor con el registro SNS indicado
             var asesorPrevencion = await context.AsesorPrevencion
-                .FirstOrDefaultAsync(p => p.RegistroSns == prevencionista.ReistroSNS);
+                .FirstOrDefaultAsync(p => p.RegistroSns == prevencionista.RegistroSNS);
 
             if (asesorPrevencion == null)
             {
                 // agregar y registrar el prevencionista si no xiste
                 asesorPrevencion = new AsesorPrevencion
                 {
-                    RegistroSns = prevencionista.ReistroSNS,
+                    RegistroSns = prevencionista.RegistroSNS,
                     PersonaId = persona.PersonaId,
                     PaseId = paseId
                 };

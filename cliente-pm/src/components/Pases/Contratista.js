@@ -33,7 +33,7 @@ export const Contratista = (props) => {
         FechaTermino: '01/01/2022',
 
         // listas de usuarios y documentos
-        PeronasContratista: [],
+        PersonasContratista: [],
         SeccionDocumentosEmpresa: [],
 
         // personas especiales
@@ -101,7 +101,7 @@ export const Contratista = (props) => {
         // Se actualiza la lista en los datos generales
         setDatosPaseGeneral(anterior => ({
             ...anterior, // mantener lo que existe antes
-            ["PeronasContratista"]: listaPersona, // solo cambiar el input mapeado
+            ["PersonasContratista"]: listaPersona, // solo cambiar el input mapeado
         }));
 
     }, [listaPersona]);
