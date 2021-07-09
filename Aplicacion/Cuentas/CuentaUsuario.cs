@@ -79,7 +79,6 @@ namespace Aplicacion.Cuentas
                                 .Include(x => x.ApellidosRel)
                                 .ThenInclude(z => z.ApellidoRel)
                                 .Include(x => x.PersonaExternaRel)
-                                .ThenInclude(z => z.Nacionalidad)
                                 .FirstOrDefaultAsync(x => x.PersonaId == personaExterna.PersonaId);
 
                             // obtencion del nombre 
@@ -89,9 +88,13 @@ namespace Aplicacion.Cuentas
 
                             var apellidos = personaExternaEncontrada.ApellidosRel
                                     .Select(x => x.ApellidoRel.Titulo).ToList();
-                            string primerApellidoPE = apellidos.FirstOrDefault();
+                            string primerApellidoPE = apellidos.Count() > 0 ?
+                                apellidos.FirstOrDefault()
+                                : string.Empty;
 
-                            apellidos.Remove(apellidos.First());
+                            if (primerApellidoPE.Length > 0)
+                                apellidos.Remove(apellidos.First());
+
                             string segundoApellidoPE = apellidos.Count() > 0 ?
                                 apellidos.FirstOrDefault()
                                 : string.Empty;
@@ -101,9 +104,15 @@ namespace Aplicacion.Cuentas
                                 Nombres = nombresPE,
                                 PrimerApellido = primerApellidoPE,
                                 SegundoApellido = segundoApellidoPE,
-                                Rut = personaExternaEncontrada.Rut,
-                                Pasaporte = personaExternaEncontrada.Pasaporte,
-                                Nacionalidad = personaExternaEncontrada.PersonaExternaRel.Nacionalidad
+                                Rut = personaExternaEncontrada.Rut != null ?
+                                    personaExternaEncontrada.Rut
+                                    : "",
+                                Pasaporte = personaExternaEncontrada.Pasaporte != null ?
+                                    personaExternaEncontrada.Pasaporte
+                                    : "",
+                                Nacionalidad = personaExternaEncontrada.PersonaExternaRel.Nacionalidad != null ?
+                                    personaExternaEncontrada.PersonaExternaRel.Nacionalidad
+                                    : ""
                             });
                         }
 

@@ -13,7 +13,7 @@ namespace Dominio.Entidades
         public string Pasaporte { get; set; }
 
         // relacionamiento segun modelo R
-        public Guid PersonaExterna { get; set; }
+        public Guid? PersonaExternaId { get; set; }
 
         // obtener los modelos relacionados 
         public ICollection<NombrePersona> NombresRel { get; set; }

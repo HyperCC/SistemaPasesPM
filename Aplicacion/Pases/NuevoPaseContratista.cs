@@ -116,7 +116,7 @@ namespace Aplicacion.Pases
                 await this._context.Pase.AddAsync(paseGenerado);
 
                 // agregar el prevencionista
-                if (request.AsesorDePrevencion != null)
+                if (request.AsesorDePrevencion.Rut.Length > 0)
                     await BuscarOAlmacenarPrevencionista
                      .BuscarOAgregarPrevencionista(request.AsesorDePrevencion
                      , this._context
@@ -160,16 +160,20 @@ namespace Aplicacion.Pases
 
                         // Buscar por la persona externa segun la Persona ya encontrada
                         var buscarPersonaExterna = await BuscarOAlmacenarPersonaExterna.BuscarOAgregarPersonaExterna(this._context,
-                            buscarPersona.PersonaId,
-                            paseGenerado.PaseId,
-                            persona.Pasaporte,
+                            buscarPersona,
+                            paseGenerado,
                             persona.Nacionalidad);
 
                         //Agregar Documentos:
+                        /*
                         foreach (var doc in persona.DocumentosPersona)
                         {
-                            await AlmacenarDocumentoPersonaContratista.AgregarDocumento(doc, _context, _env, paseGenerado.PaseId, buscarPersonaExterna.PersonaId);
+                            await AlmacenarDocumentoPersonaContratista.AgregarDocumento(doc
+                                , _context
+                                , _env, paseGenerado.PaseId
+                                , buscarPersonaExterna.PersonaId);
                         }
+                        */
                     }
                 }
 

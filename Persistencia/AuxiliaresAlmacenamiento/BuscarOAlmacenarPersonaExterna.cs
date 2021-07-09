@@ -17,21 +17,20 @@ namespace Persistencia.AuxiliaresAlmacenamiento
         /// agregar las personas externas recibidas a la base de datos
         /// </summary>
         /// <param name="_context"></param>
-        /// <param name="_personaId"></param>
-        /// <param name="_paseId"></param>
+        /// <param name="_personaAdjunta"></param>
+        /// <param name="_pase"></param>
         /// <param name="pasaporte"></param>
         /// <param name="nacionalidad"></param>
         /// <returns></returns>
         public static async Task<PersonaExterna> BuscarOAgregarPersonaExterna(SistemaPasesContext _context,
-            Guid _personaId,
-            Guid _paseId,
-            string pasaporte,
+            Persona _personaAdjunta,
+            Pase _pase,
             string nacionalidad)
         {
 
-            // buscar por la persona externa
+            // buscar por la persona externa (la nacionalidad)
             PersonaExterna buscarPersonaExt = await _context.PersonaExterna
-                .FirstOrDefaultAsync(p => p.PersonaId == _personaId);
+                .FirstOrDefaultAsync(p => p.Nacionalidad == nacionalidad);
 
             if (buscarPersonaExt == null)
             {
@@ -40,18 +39,21 @@ namespace Persistencia.AuxiliaresAlmacenamiento
                 {
                     PersonaExternaId = new Guid(),
                     Nacionalidad = nacionalidad,
-                    PersonaId = _personaId
                 };
                 await _context.PersonaExterna.AddAsync(buscarPersonaExt);
             }
 
+            // ya registrada o encontrada la nacionalidad se adiere a Persona correspondiente
+            _personaAdjunta.PersonaExternaId = buscarPersonaExt.PersonaExternaId;
+
             // una vez encontrada/creada la persona externa se crea la relacion
             PasePersona nuevaRelacion = new PasePersona
             {
-                PaseId = _paseId,
-                PersonaId = buscarPersonaExt.PersonaExternaId,
+                PaseId = _pase.PaseId,
+                PersonaId = _personaAdjunta.PersonaId,
             };
             await _context.PasePersonaExterna.AddAsync(nuevaRelacion);
+            //_context.SaveChanges();
 
             // siempre se retorna la persona externa encontrada o una nueva
             return buscarPersonaExt;

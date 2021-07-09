@@ -47,16 +47,15 @@ const AgregarPersona = props => {
     // enviar persona completa para almacenarlo
     const GuardarUnaPersona = infoFormulario => {
 
-
-        if (!RutValidator.validate(personaExterna.Rut)) {
-            alert('Por favor ingrese el rut con el siguiente formato 11.111.111-1')
-            setPersonaExterna(anterior => ({
-                ...anterior, // mantener lo que existe antes
-                ['Rut']: '' // reseteamos el rut
-            }));
-            return;
-        }
-
+        if (personaExterna.Pasaporte.length === 0)
+            if (!RutValidator.validate(personaExterna.Rut)) {
+                alert('Por favor ingrese el rut con el siguiente formato 11.111.111-1')
+                setPersonaExterna(anterior => ({
+                    ...anterior, // mantener lo que existe antes
+                    ['Rut']: '' // reseteamos el rut
+                }));
+                return;
+            }
 
         infoFormulario.preventDefault();
         //window.alert("The URL of this page is: " + window.location.hostname + ":" + window.location.port);
@@ -176,7 +175,7 @@ const AgregarPersona = props => {
 
                             {/* ENVIAR DATOS */}
                             <div class="mt-12 flex justify-center">
-                                <button type="submit" onClick={GuardarUnaPersona} href=""
+                                <button type="submit" onClick={GuardarUnaPersona}
                                     class="bg-azul-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                                     Guardar
                                 </button>

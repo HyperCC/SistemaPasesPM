@@ -161,17 +161,23 @@ namespace Aplicacion.Pases
                     // agregar las personas externas aderidas al pase 
                     foreach (var personaIndividual in request.PersonasExternas)
                     {
-                        // buscar o almacenar la persona por rut
-                        Persona buscarPersona = await BuscarOAlmacenarPersona.BuscarOAgregarPersona(this._context,
+                        // buscar o almacenar la persona por rut o pasaporte
+                        Persona buscarPersona = personaIndividual.Rut.Length > 0 ?
+
+                            await BuscarOAlmacenarPersona.BuscarOAgregarPersona(this._context,
                             personaIndividual.Rut,
+                            personaIndividual.Nombres,
+                            (personaIndividual.PrimerApellido + " " + personaIndividual.SegundoApellido))
+
+                            : await BuscarOAlmacenarPersonaPorPasaporte.BuscarOAgregarPersonaPorPasaporteAsync(this._context,
+                            personaIndividual.Pasaporte,
                             personaIndividual.Nombres,
                             (personaIndividual.PrimerApellido + " " + personaIndividual.SegundoApellido));
 
                         // buscar por la persona externa segun la Persona ya encontrada
-                        var buscarPersonaExterna = await BuscarOAlmacenarPersonaExterna.BuscarOAgregarPersonaExterna(this._context,
-                            buscarPersona.PersonaId,
-                            paseGenerado.PaseId,
-                            personaIndividual.Pasaporte,
+                        await BuscarOAlmacenarPersonaExterna.BuscarOAgregarPersonaExterna(this._context,
+                            buscarPersona,
+                            paseGenerado,
                             personaIndividual.Nacionalidad);
                     }
 

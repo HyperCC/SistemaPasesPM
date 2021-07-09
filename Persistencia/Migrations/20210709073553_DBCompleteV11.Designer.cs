@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistencia;
 
 namespace Persistencia.Migrations
 {
     [DbContext(typeof(SistemaPasesContext))]
-    partial class SistemaPasesContextModelSnapshot : ModelSnapshot
+    [Migration("20210709073553_DBCompleteV11")]
+    partial class DBCompleteV11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -223,13 +225,15 @@ namespace Persistencia.Migrations
 
                     b.Property<string>("Pasaporte");
 
-                    b.Property<Guid?>("PersonaExternaId");
+                    b.Property<Guid?>("PersonaExterna");
+
+                    b.Property<Guid?>("PersonaExternaRelPersonaExternaId");
 
                     b.Property<string>("Rut");
 
                     b.HasKey("PersonaId");
 
-                    b.HasIndex("PersonaExternaId");
+                    b.HasIndex("PersonaExternaRelPersonaExternaId");
 
                     b.ToTable("Persona");
                 });
@@ -572,7 +576,7 @@ namespace Persistencia.Migrations
                 {
                     b.HasOne("Dominio.Entidades.PersonaExterna", "PersonaExternaRel")
                         .WithMany("PersonasRel")
-                        .HasForeignKey("PersonaExternaId");
+                        .HasForeignKey("PersonaExternaRelPersonaExternaId");
                 });
 
             modelBuilder.Entity("Dominio.Entidades.RegistroPersona", b =>

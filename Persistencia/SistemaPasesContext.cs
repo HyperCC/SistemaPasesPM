@@ -51,27 +51,4 @@ namespace Persistencia
         public DbSet<RegistroPersona> RegistroPersona { get; set; }
         public DbSet<TipoDocumento> TipoDocumento { get; set; }
     }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface ISistemaPasesContext
-    {
-        DbSet<Persona> Persona { get; set; }
-        DbSet<Rol> Rol { get; set; }
-        DbSet<Nombre> Nombre { get; set; }
-        DbSet<NombrePersona> NombrePersona { get; set; }
-        DbSet<Apellido> Apellido { get; set; }
-        DbSet<ApellidoPersona> ApellidoPersona { get; set; }
-        DbSet<Usuario> Usuario { get; set; }
-        DbSet<Empresa> Empresa { get; set; }
-        DbSet<AnexoContrato> AnexoContrato { get; set; }
-        DbSet<AsesorPrevencion> AsesorPrevencion { get; set; }
-        DbSet<Documento> Documento { get; set; }
-        DbSet<Pase> Pase { get; set; }
-        DbSet<PasePersona> PasePersonaExterna { get; set; }
-        DbSet<PersonaExterna> PersonaExterna { get; set; }
-        DbSet<RegistroPersona> RegistroPersona { get; set; }
-        DbSet<TipoDocumento> TipoDocumento { get; set; }
-    }
 }

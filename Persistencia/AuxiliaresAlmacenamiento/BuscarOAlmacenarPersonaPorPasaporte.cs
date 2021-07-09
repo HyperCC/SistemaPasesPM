@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 namespace Persistencia.AuxiliaresAlmacenamiento
 {
     /// <summary>
-    /// Buscar una persona por su rut y agregarla si no existe
+    /// Buscar una persona por su pasaporte y agregarla si no existe
     /// </summary>
-    public static class BuscarOAlmacenarPersona
+    public static class BuscarOAlmacenarPersonaPorPasaporte
     {
-        public static async Task<Persona> BuscarOAgregarPersona(SistemaPasesContext context,
-            string rut,
+        public static async Task<Persona> BuscarOAgregarPersonaPorPasaporteAsync(SistemaPasesContext context,
+            string pasaporte,
             string nombres,
             string apellidos)
         {
             // buscar si la persona existe
             var buscarPersona = await context.Persona
-                .FirstOrDefaultAsync(p => p.Rut == rut);
+                .FirstOrDefaultAsync(p => p.Pasaporte == pasaporte);
 
             if (buscarPersona == null)
             {
@@ -27,7 +27,7 @@ namespace Persistencia.AuxiliaresAlmacenamiento
                 buscarPersona = new Persona
                 {
                     PersonaId = new Guid(),
-                    Rut = rut
+                    Pasaporte = pasaporte
                 };
                 await context.Persona.AddAsync(buscarPersona);
 

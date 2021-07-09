@@ -17,7 +17,7 @@ export const TablaTrabajadores = props => {
     useEffect(() => {
         const fetchUsers = async () => {
             setUsuarios(props.datos);
-        };    
+        };
         fetchUsers();
     }, []);
 
@@ -25,12 +25,13 @@ export const TablaTrabajadores = props => {
 
     const [personasContratista, setPersonaContratista] = useState({
         Persona: {
-        Rut : "",
-		Nombres : "",
-		PrimerApellido : "",
-		SegundoApellido : "",
-		Nacionalidad : ""},
-		DocumentosPersona : []
+            Rut: "",
+            Nombres: "",
+            PrimerApellido: "",
+            SegundoApellido: "",
+            Nacionalidad: ""
+        },
+        DocumentosPersona: []
     })
 
 
@@ -40,22 +41,22 @@ export const TablaTrabajadores = props => {
     console.log(usuarios);
     //Funcion que cambia la pagina
     const onPageChanged = pageNumber => {
-        switch (pageNumber){
+        switch (pageNumber) {
             case 'LEFT':
                 if (currentPage > 1)
-                    setCurrentPage(currentPage - 1);                
+                    setCurrentPage(currentPage - 1);
                 break;
             case 'RIGHT':
-                if (currentPage < Math.ceil((props.datos? props.datos.length: 0) / postsPerPage))
-                    setCurrentPage(currentPage + 1);                    
+                if (currentPage < Math.ceil((props.datos ? props.datos.length : 0) / postsPerPage))
+                    setCurrentPage(currentPage + 1);
                 break;
             default:
                 setCurrentPage(pageNumber);
                 break;
-        }       
+        }
     };
 
-    const sendDataContratista= (personaExterna, documentoPersona) =>{
+    const sendDataContratista = (personaExterna, documentoPersona) => {
 
         // Datos Persona
         setPersonaContratista(anterior => ({
@@ -69,10 +70,11 @@ export const TablaTrabajadores = props => {
             ["DocumentosPersona"]: documentoPersona // solo cambiar el input mapeado
         }));
     }
-    
+
     useEffect(() => {
-        
-        props._guardarPersona(personasContratista)
+
+        if (props._guardarPersona)
+            props._guardarPersona(personasContratista)
 
     }, [personasContratista]);
 
@@ -88,29 +90,29 @@ export const TablaTrabajadores = props => {
                 {/* Botones para crear nuevo pase y pases buscados */}
                 <div class="text-end flex-none">
                     <div class="flex-none md:flex w-full space-x-3">
-                        {props.url=="/SolicitudContratista" &&
+                        {props.url == "/SolicitudContratista" &&
                             <Popup trigger={<button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">Agregar Persona Contratista</button>} modal nested>
-                            { close => (
-                            <div className="modal">
-                                <button className="close" onClick={close}>
-                                    &times;
-                                </button>
-                                <AgregarPersonaContratista datos = {props.datosPaseGeneral}
-                                    _guardarPersonaC ={sendDataContratista} />
-                                
-                            </div>
-                            )}
+                                {close => (
+                                    <div className="modal">
+                                        <button className="close" onClick={close}>
+                                            &times;
+                                        </button>
+                                        <AgregarPersonaContratista datos={props.datosPaseGeneral}
+                                            _guardarPersonaC={sendDataContratista} />
+
+                                    </div>
+                                )}
                             </Popup>
                         }
-                        {props.url!="/SolicitudContratista" &&
+                        {props.url != "/SolicitudContratista" &&
 
                             <a href={props.url + "/AgregarPersona"} faker={'faker'}
-                            className="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
-                            Agregar Persona
+                                className="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+                                Agregar Persona
                             </a>
 
                         }
-                        
+
                         <button type="submit" onClick={props._enviarFormulario} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                             Guardar
                         </button>
@@ -118,28 +120,28 @@ export const TablaTrabajadores = props => {
                         <button type="button" onClick={props._cancelarGuardado} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
                             Cancelar
                         </button>
-                    </div>               
-                    
+                    </div>
+
                 </div>
-                
+
             </div>
             <div class="mx-8 md:flex flex-row mt-4 justify-content-end md:justify-end">
                 <div class="relative inline-flex">
                     <div class="md:text-right align-middle">Personas por página</div>
-                        <svg class="w-2 h-2 absolute top-0 right-0 m-4 pointer-events-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 412 232">
-                            <path d="M206 171.144L42.678 7.822c-9.763-9.763-25.592-9.763-35.355 0-9.763 9.764-9.763 25.592 0 35.355l181 181c4.88 4.882 11.279 7.323 17.677 7.323s12.796-2.441 17.678-7.322l181-181c9.763-9.764 9.763-25.592 0-35.355-9.763-9.763-25.592-9.763-35.355 0L206 171.144z" fill="#648299" fill-rule="nonzero" /></svg>
-                        <select name="Estado" 
-                                onChange={e => {
-                                                setPostsPerPage(e.target.value);
-                                                setCurrentPage(1);
-                                            }
-                                        } 
-                                class="border border-gray-300 rounded-full text-gray-600 p-2 bg-gray-100 hover:border-gray-400 focus:outline-none appearance-none">
-                            <option value='3'>3</option>
-                            <option value='4'>4</option>
-                            <option value='5'>5</option>
-                            <option value='100'>100</option>
-                        </select>
+                    <svg class="w-2 h-2 absolute top-0 right-0 m-4 pointer-events-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 412 232">
+                        <path d="M206 171.144L42.678 7.822c-9.763-9.763-25.592-9.763-35.355 0-9.763 9.764-9.763 25.592 0 35.355l181 181c4.88 4.882 11.279 7.323 17.677 7.323s12.796-2.441 17.678-7.322l181-181c9.763-9.764 9.763-25.592 0-35.355-9.763-9.763-25.592-9.763-35.355 0L206 171.144z" fill="#648299" fill-rule="nonzero" /></svg>
+                    <select name="Estado"
+                        onChange={e => {
+                            setPostsPerPage(e.target.value);
+                            setCurrentPage(1);
+                        }
+                        }
+                        class="border border-gray-300 rounded-full text-gray-600 p-2 bg-gray-100 hover:border-gray-400 focus:outline-none appearance-none">
+                        <option value='3'>3</option>
+                        <option value='4'>4</option>
+                        <option value='5'>5</option>
+                        <option value='100'>100</option>
+                    </select>
                 </div>
             </div>
 
@@ -151,16 +153,16 @@ export const TablaTrabajadores = props => {
                             <tr class="bg-azul-pm select-none text-sm uppercase text-gray-100 text-center border-b border-gray-200">
                                 <th scope="col" class="px-5 py-3 font-normal">
                                     Nombre Completo
-                                    </th>
+                                </th>
                                 <th scope="col" class="px-5 py-3 font-normal">
                                     Rut o Pasaporte
-                                    </th>
+                                </th>
                                 <th scope="col" class="px-5 py-3 font-normal">
                                     Nacionalidad
-                                    </th>
+                                </th>
                                 <th scope="col" class="px-5 py-3 font-normal">
                                     Acciones
-                                    </th>
+                                </th>
                             </tr>
                         </thead>
 
@@ -187,7 +189,7 @@ export const TablaTrabajadores = props => {
                                                 </button>
                                                 <button class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500">
                                                     Eliminar
-                                                 </button>
+                                                </button>
                                             </td>
                                         </tr>
                                     })
@@ -203,15 +205,15 @@ export const TablaTrabajadores = props => {
             <div className="d-flex flex-row  align-items-center">
                 <Pagination
                     postsPerPage={postsPerPage}
-                    totalPosts={props.datos? 
-                                    props.datos.length > 0 ? props.datos.length : 0 
-                                    : 0}
+                    totalPosts={props.datos ?
+                        props.datos.length > 0 ? props.datos.length : 0
+                        : 0}
                     paginate={onPageChanged}
                 />
             </div>
 
             {/* TODO:ver como se cambia esto mediante la paginacion */}
-            
+
         </div>
     )
 }
