@@ -72,7 +72,9 @@ export const TablaTrabajadores = props => {
     
     useEffect(() => {
         
-        props._guardarPersona(personasContratista)
+        if(props.url==="/SolicitudContratista"){
+            props._guardarPersona(personasContratista);
+        }
 
     }, [personasContratista]);
 
