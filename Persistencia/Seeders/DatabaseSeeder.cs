@@ -17,6 +17,7 @@ namespace Persistencia.Seeders
             // eleccion de los seeder a emplear
             RoleSeeder.InsertarData(roleManager).Wait();
             UsuarioSeeder.InsertarData(context, usuarioManager).Wait();
+            TipoDocumentoSeeder.InsertarData(context).Wait();
         }
     }
 }

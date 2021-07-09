@@ -449,3 +449,6 @@ $RECYCLE.BIN/
 
 # servidor personalizado
 appsettings.json
+
+# archivos subidos manualmente 
+/wwwroot/Uploads

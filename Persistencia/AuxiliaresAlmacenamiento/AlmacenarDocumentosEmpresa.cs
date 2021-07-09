@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace Persistencia.AuxiliaresAlmacenamiento
 {
@@ -16,7 +17,8 @@ namespace Persistencia.AuxiliaresAlmacenamiento
     /// </summary>
     public static class AlmacenarDocumentosEmpresa
     {
-        public static async Task AgregarDocumentosEmpresa(DocumentosEmpresaContratista request
+        public static async Task<bool> AgregarDocumentosEmpresa(
+            DocumentosEmpresaContratista documentoEmpresaContratista
             , SistemaPasesContext context
             , IHostingEnvironment env
             , Guid currentPaseId
@@ -25,7 +27,19 @@ namespace Persistencia.AuxiliaresAlmacenamiento
 
             // buscar tipo de documento 
             var currentTipoDocumento = await context.TipoDocumento
-                .FirstOrDefaultAsync(t => t.Titulo == request.TipoDocumento);
+                .FirstOrDefaultAsync(t => t.Titulo == documentoEmpresaContratista.TipoDocumento);
+
+            // si no existe se agrega el tipo 
+            if (currentTipoDocumento == null)
+            {
+                currentTipoDocumento = new TipoDocumento
+                {
+                    TipoDocumentoId = new Guid(),
+                    Titulo = documentoEmpresaContratista.TipoDocumento,
+                    Obligatoriedad = documentoEmpresaContratista.Obligatoriedad
+                };
+                await context.TipoDocumento.AddAsync(currentTipoDocumento);
+            }
 
             // ingresar el nuevo requestumento 
             Documento nuevoDocumentoContratista = new Documento
@@ -37,13 +51,21 @@ namespace Persistencia.AuxiliaresAlmacenamiento
             };
 
             //Agregamos la fecha de venc si es que existe
-            if (request.FechaVencimiento != null && request.FechaVencimiento.Length > 0)
-                nuevoDocumentoContratista.FechaVencimiento = Convert.ToDateTime(request.FechaVencimiento);
+            if (documentoEmpresaContratista.FechaVencimiento != null
+                && documentoEmpresaContratista.FechaVencimiento.Length > 0)
 
-            await ArchivoEnServer.guardarArchivo(request.Documento, nuevoDocumentoContratista, env, context);
-
+                nuevoDocumentoContratista.FechaVencimiento = Convert
+                    .ToDateTime(documentoEmpresaContratista.FechaVencimiento);
             await context.Documento.AddAsync(nuevoDocumentoContratista);
 
+            // almacenar el archivo recibido como base 64
+            ArchivoEnServer.GuardarArchivo(documentoEmpresaContratista.Documento
+                , documentoEmpresaContratista.Extension
+                , nuevoDocumentoContratista
+                , context
+                , env);
+
+            return true;
         }
     }
 }

@@ -7,9 +7,10 @@ namespace Dominio.Auxiliares.ModelosPaseContratista
 {
     public class DocumentosEmpresaContratista
     {
-        public IFormFile Documento { get; set; }
+        public string Documento { get; set; }
         public string TipoDocumento { get; set; }
         public bool Obligatoriedad { get; set; }
-        public string FechaVencimiento { get; set; }//Opcional?
+        public string FechaVencimiento { get; set; }
+        public string Extension { get; set; }
     }
 }

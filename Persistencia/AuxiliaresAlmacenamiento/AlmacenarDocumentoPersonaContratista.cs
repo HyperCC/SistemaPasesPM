@@ -33,8 +33,9 @@ namespace Persistencia.AuxiliaresAlmacenamiento
             //Agregamos la fecha de venc si es que existe
             if (documentoPersonasRequest.FechaVencimiento != null && documentoPersonasRequest.FechaVencimiento.Length > 0)
                 nuevoDocumentoContratista.FechaVencimiento = Convert.ToDateTime(documentoPersonasRequest.FechaVencimiento);
-
+            /*
             await ArchivoEnServer.guardarArchivo(documentoPersonasRequest.Documento, nuevoDocumentoContratista, env, context);
+            */
 
             //ANEXO DE CONTRATO
             if (documentoPersonasRequest.Descripcion != null)

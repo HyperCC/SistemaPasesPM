@@ -13,50 +13,43 @@ namespace Persistencia.AuxiliaresAlmacenamiento
 {
     public class ArchivoEnServer
     {
-        public static async Task<Documento> guardarArchivo(
-                                                           IFormFile archivo,
-                                                           Documento doc,
-                                                           IHostingEnvironment env,
-                                                           SistemaPasesContext context)
+        public static bool GuardarArchivo(string archivoBase64
+            , string currentExtension
+            , Documento currentDocumento
+            , SistemaPasesContext context
+            , IHostingEnvironment env)
         {
-            string[] permittedExtensions = { ".txt", ".pdf", ".docx", ".png", ".jpeg" };
+            string[] permittedExtensions = { ".txt", ".pdf", ".docx", ".doc", ".png", ".jpeg", ".jpg" };
 
             Console.WriteLine("--------------------------------");
-            Console.WriteLine("SE HA ENTRADO A LA SECCION DE ALMCENAR DOCS");
+            Console.WriteLine($"SE HA ENTRADO A LA SECCION DE ALMCENAR DOCS CON EXTENSION {currentExtension}.");
             Console.WriteLine("--------------------------------");
 
-
-            var extensionArchivo = Path.GetExtension(archivo.FileName).ToLowerInvariant();
-            var documentosFolder = Path.Combine(env.WebRootPath, "Uploads", "Documentos");
-
-            if (string.IsNullOrEmpty(extensionArchivo) || !permittedExtensions.Contains(extensionArchivo))
-            {
+            // verificar si la extension es aceptada
+            if (!permittedExtensions.Contains(currentExtension))
                 throw new Exception("Extension Archivo no permitida");
-            }
+
             else
             {
+                // ruta del archivo y extension
+                var docname = $"{Guid.NewGuid()}{currentExtension}";
+                var documentosFolder = Path.Combine(env.WebRootPath, "Uploads", "Documentos");
+
                 if (!Directory.Exists(documentosFolder))
-                {
                     Directory.CreateDirectory(documentosFolder);
-                }
-                //Archivo no vacio(?)
-                if (archivo.Length > 0)
-                {
-                    var docname = $"{Guid.NewGuid()}.{archivo.FileName}";
 
-                    using (var stream = new FileStream(Path.Combine(documentosFolder, docname), FileMode.Create))
-                    {
-                        await archivo.CopyToAsync(stream);
-                        doc.RutaDocumento = Path.Combine(documentosFolder, docname);
-                    }
-                }
+                // obtener el archivo base64
+                byte[] fileCrudo = Convert.FromBase64String(archivoBase64);
 
-                await context.Documento.AddAsync(doc);
+                // path completo 
+                var completePath = Path.Combine(documentosFolder, docname);
+                currentDocumento.RutaDocumento = completePath.ToString();
 
-                return doc;
+                // almacenar el archivo 
+                File.WriteAllBytes(completePath, fileCrudo);
             }
 
-            //return false;
+            return true;
         }
     }
 }

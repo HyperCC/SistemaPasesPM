@@ -125,18 +125,12 @@ namespace Aplicacion.Pases
                 // Agregar Documentos de la Empresa
                 if (request.SeccionDocumentosEmpresa != null)
                 {
-                    Console.WriteLine("--------------------------------");
-                    Console.WriteLine("SE ENCONTRARON DOCUMENTOS DE EMPRESA");
-                    Console.WriteLine("--------------------------------");
-
                     foreach (var docEmpresa in request.SeccionDocumentosEmpresa)
-                    {
                         await AlmacenarDocumentosEmpresa.AgregarDocumentosEmpresa(docEmpresa
                             , _context
                             , _env
                             , paseGenerado.PaseId
                             , buscarEmpresa.EmpresaId);
-                    }
                 }
                 else
                 {
