@@ -13,7 +13,6 @@ export const RevisionPase = props => {
     const [currentCamposInvalidos, setCurrentCamposInvalidos] = useState([]);
 
     let data = useLocation();
-    console.log("aqui estan los datos")
     console.log(data.state)
     let history = useHistory();
     let TITULO = data.state.tipo;
@@ -28,6 +27,8 @@ export const RevisionPase = props => {
         estado: data.state.estado,
         paseId: data.state.paseId
     }
+
+    console.log("datos del pase ", pase);
 
     const CambiarEstadoPase = data => {
         setCurrentNotification('inf-cep000');

@@ -27,7 +27,7 @@ namespace Persistencia.AuxiliaresAlmacenamiento
             {
                 DocumentoId = new Guid(),
                 PaseId = currentPaseId,
-                Persona = currentPersonaExternaId,
+                PersonaId = currentPersonaExternaId,
                 TipoDocumentoId = currentTipoDocumento.TipoDocumentoId
             };
             //Agregamos la fecha de venc si es que existe

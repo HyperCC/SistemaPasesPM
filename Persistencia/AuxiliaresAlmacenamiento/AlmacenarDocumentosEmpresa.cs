@@ -45,25 +45,28 @@ namespace Persistencia.AuxiliaresAlmacenamiento
             Documento nuevoDocumentoContratista = new Documento
             {
                 DocumentoId = new Guid(),
+                Extension = documentoEmpresaContratista.Extension,
                 PaseId = currentPaseId,
                 EmpresaId = currentEmpresaId,
                 TipoDocumentoId = currentTipoDocumento.TipoDocumentoId
             };
 
-            //Agregamos la fecha de venc si es que existe
+            // agregar la fecha de venc si es que existe
             if (documentoEmpresaContratista.FechaVencimiento != null
                 && documentoEmpresaContratista.FechaVencimiento.Length > 0)
 
                 nuevoDocumentoContratista.FechaVencimiento = Convert
                     .ToDateTime(documentoEmpresaContratista.FechaVencimiento);
-            await context.Documento.AddAsync(nuevoDocumentoContratista);
 
-            // almacenar el archivo recibido como base 64
-            ArchivoEnServer.GuardarArchivo(documentoEmpresaContratista.Documento
+            // almacenar el archivo recibido desde base 64
+            string rutaCompleta = ArchivoEnServer.GuardarArchivo(documentoEmpresaContratista.Documento
                 , documentoEmpresaContratista.Extension
-                , nuevoDocumentoContratista
                 , context
                 , env);
+
+            // agregar el documento a la DB
+            nuevoDocumentoContratista.RutaDocumento = rutaCompleta;
+            await context.Documento.AddAsync(nuevoDocumentoContratista);
 
             return true;
         }

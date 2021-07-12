@@ -12,8 +12,7 @@ namespace Persistencia.AuxiliaresAlmacenamiento
     public static class BuscarOAlmacenarPrevencionista
     {
         public static async Task<AsesorPrevencion> BuscarOAgregarPrevencionista(AsesorDePrevencionRiesgos prevencionista
-            , SistemaPasesContext context
-            , Pase pase)
+            , SistemaPasesContext context)
         {
             // buscar si existe el asesor con el registro SNS indicado
             var asesorPrevencion = await context.AsesorPrevencion
@@ -32,15 +31,12 @@ namespace Persistencia.AuxiliaresAlmacenamiento
                 // agregar y registrar el prevencionista si no xiste
                 asesorPrevencion = new AsesorPrevencion
                 {
+                    AsesorPrevencionId = new Guid(),
                     RegistroSns = prevencionista.RegistroSNS,
                     PersonaId = persona.PersonaId,
                 };
                 await context.AsesorPrevencion.AddAsync(asesorPrevencion);
             }
-
-            // guardar cambios
-            pase.AsesorPrevencionId = asesorPrevencion.AsesorPrevencionId;
-            await context.SaveChangesAsync();
 
             return asesorPrevencion;
         }

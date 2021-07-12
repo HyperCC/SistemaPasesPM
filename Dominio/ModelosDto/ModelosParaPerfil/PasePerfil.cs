@@ -1,4 +1,5 @@
-﻿using Dominio.ModelosDto.ModelosParaPerfil;
+﻿using Dominio.Auxiliares.ModelosPaseContratista;
+using Dominio.ModelosDto.ModelosParaPerfil;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,5 +19,7 @@ namespace Dominio.ModelosDto
         public string Tipo { get; set; }
         public string Estado { get; set; }
         public ICollection<PersonaExternaPase> PersonaExternasRel { get; set; }
+        public ICollection<DocumentoCompleto> DocumentoEmpresasRel { get; set; }
+        public AsesorDePrevencionRiesgos PrevencionistaRiesgos { get; set; }
     }
 }

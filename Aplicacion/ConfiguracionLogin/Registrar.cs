@@ -152,32 +152,12 @@ namespace Aplicacion.ConfiguracionLogin
                 await AlmacenarNombres.AgregarNombres(request.Nombres, request.Apellidos, this._context, personaGenerada.PersonaId);
 
                 // buscar empresa perteneciente.
-                var empresaExiste = await this._context.Empresa
-                    .Where(x => x.Rut == request.RutEmpresa)
-                    .FirstOrDefaultAsync();
+                var empresaExiste = await BuscarOAlmacenarEmpresa.BuscarOAgregarEmpresa(this._context
+                    , request.RutEmpresa
+                    , request.NombreEmpresa);
 
-                // si no existe la empresa se crea una nueva
-                if (empresaExiste == null)
-                {
-                    var empresaGenerada = new Empresa
-                    {
-                        EmpresaId = new Guid(),
-                        Rut = request.RutEmpresa,
-                        Nombre = request.NombreEmpresa
-                    };
-
-                    // agregar la nueva empresa
-                    await this._context.Empresa.AddAsync(empresaGenerada);
-                    // relacionar empresa con usuario
-                    usuarioGenerado.EmpresaId = empresaGenerada.EmpresaId;
-                }
-                else
-                {
-                    usuarioGenerado.EmpresaId = empresaExiste.EmpresaId;
-                }
-
-                // guardar el usuario creado
-                //await this._context.Usuario.AddAsync(usuarioGenerado);
+                // relacionar empresa con usuario
+                usuarioGenerado.EmpresaId = empresaExiste.EmpresaId;
 
                 // verificar si se pudo crear el UsuarioData y retornarlo
                 var resultado = await this._context.SaveChangesAsync();

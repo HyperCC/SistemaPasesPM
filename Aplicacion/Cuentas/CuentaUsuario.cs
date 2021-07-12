@@ -16,6 +16,8 @@ using Aplicacion.ExcepcionesPersonalizadas;
 using System.Net;
 using Dominio.ModelosDto.ModelosParaPerfil;
 using Aplicacion.ConfiguracionLogin;
+using Dominio.Auxiliares.ModelosPaseContratista;
+using System.IO;
 
 namespace Aplicacion.Cuentas
 {
@@ -32,7 +34,6 @@ namespace Aplicacion.Cuentas
             private readonly SistemaPasesContext _context;
 
             public Manejador(UserManager<Usuario> userManager,
-                IJwtGenerador jwtGenerador,
                 IUsuarioSesion sesion,
                 SistemaPasesContext context)
             {
@@ -48,9 +49,12 @@ namespace Aplicacion.Cuentas
                     .Include(x => x.PasesRel)
                     .ThenInclude(z => z.PersonasRel)
                     .ThenInclude(y => y.PersonaRel)
+                    .Include(x => x.PasesRel)
+                    .ThenInclude(z => z.DocumentosRel)
+                    .Include(x => x.PasesRel)
+                    .ThenInclude(z => z.AsesorPrevencionRel)
                     .FirstOrDefaultAsync(x => x.UserName == this._usuarioSesion.ObtenerUsuarioSesion());
 
-                Console.WriteLine("LARGO DE PASES " + usuario.PasesRel.Count());
                 Console.WriteLine("CUETA RECONOCIDA COMO " + this._usuarioSesion.ObtenerUsuarioSesion());
 
                 // si en algun caso el Email del usuario ingresado no este almacenado
@@ -63,12 +67,14 @@ namespace Aplicacion.Cuentas
                            tipoError = "adv-cnee00"
                        });
 
-                // obtencion de los pases
+                // obtencion de los datos por pase
                 ICollection<PasePerfil> pasesPerfil = new List<PasePerfil>();
 
                 foreach (var pase in usuario.PasesRel.Reverse())
                 {
                     ICollection<PersonaExternaPase> personasExternasPase = new List<PersonaExternaPase>();
+
+                    // en caso de haber personas relacionadas al pase
                     if (pase.PersonasRel != null)
                         foreach (var personaExterna in pase.PersonasRel.Reverse())
                         {
@@ -116,6 +122,70 @@ namespace Aplicacion.Cuentas
                             });
                         }
 
+                    // documentos para la empresa
+                    ICollection<DocumentoCompleto> documentosEmpresaPase = new List<DocumentoCompleto>();
+
+                    // en caso de haber personas relacionadas al pase
+                    if (pase.DocumentosRel != null)
+                        foreach (var documentoIndividual in pase.DocumentosRel)
+                        {
+                            Console.WriteLine("-------------------------");
+                            Console.WriteLine("EL PASE TIENE DOCUMENTOS");
+                            Console.WriteLine("-------------------------");
+
+                            // asociar las personas externas correspondientes
+                            var documentoIndividualEncontrado = await this._context.Documento
+                                .Include(x => x.TipoDocumentoRel)
+                                .FirstOrDefaultAsync(x => x.DocumentoId == documentoIndividual.DocumentoId);
+
+                            // conversion del archivo hacia base64
+                            byte[] documentoEnBytes = File.ReadAllBytes(documentoIndividualEncontrado.RutaDocumento);
+                            string archivoEnBase64 = Convert.ToBase64String(documentoEnBytes);
+
+                            // agregar el modelo mapeado
+                            documentosEmpresaPase.Add(new DocumentoCompleto
+                            {
+                                DocumentoBase64 = archivoEnBase64,
+                                FechaVencimiento = documentoIndividualEncontrado.FechaVencimiento.ToString(),
+                                Extension = documentoIndividualEncontrado.Extension,
+                                TituloDocumento = documentoIndividualEncontrado.TipoDocumentoRel.Titulo
+                            });
+                        }
+
+                    // asesor de prevencion para mapear
+                    AsesorDePrevencionRiesgos asesorPrevencion = new AsesorDePrevencionRiesgos();
+
+                    if (pase.AsesorPrevencionRel != null)
+                    {
+                        Console.WriteLine("-------------------------");
+                        Console.WriteLine("EL PASE TIENE ASESOR DE PREVENCION ");
+                        Console.WriteLine("-------------------------");
+
+                        // asociar las personas externas correspondientes
+                        var asesorPrevencionEncontrado = await this._context.AsesorPrevencion
+                            .Include(x => x.PersonaRel)
+                            .ThenInclude(y => y.NombresRel)
+                            .ThenInclude(z => z.NombreRel)
+                            .Include(x => x.PersonaRel)
+                            .ThenInclude(y => y.ApellidosRel)
+                            .ThenInclude(z => z.ApellidoRel)
+                            .FirstOrDefaultAsync(x => x.AsesorPrevencionId == pase.AsesorPrevencionRel.AsesorPrevencionId);
+
+                        // obtencion de nombres y apellidos 
+                        string nombres = string.Join(" "
+                                , asesorPrevencionEncontrado.PersonaRel.NombresRel
+                                .Select(x => x.NombreRel.Titulo));
+
+                        string apellidos = string.Join(" "
+                                , asesorPrevencionEncontrado.PersonaRel.ApellidosRel
+                                .Select(x => x.ApellidoRel.Titulo));
+
+                        asesorPrevencion.Nombres = nombres;
+                        asesorPrevencion.Apellidos = apellidos;
+                        asesorPrevencion.Rut = asesorPrevencionEncontrado.PersonaRel.Rut;
+                        asesorPrevencion.RegistroSNS = asesorPrevencionEncontrado.RegistroSns;
+                    }
+
                     // agregar los pases mapeados
                     pasesPerfil.Add(new PasePerfil
                     {
@@ -126,7 +196,9 @@ namespace Aplicacion.Cuentas
                         Area = pase.Area,
                         Tipo = pase.Tipo.ToString(),
                         Estado = pase.Estado.ToString(),
-                        PersonaExternasRel = personasExternasPase
+                        PersonaExternasRel = personasExternasPase,
+                        DocumentoEmpresasRel = documentosEmpresaPase,
+                        PrevencionistaRiesgos = asesorPrevencion
                     });
                 }
 

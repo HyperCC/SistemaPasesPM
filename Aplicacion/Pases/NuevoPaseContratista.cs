@@ -88,22 +88,13 @@ namespace Aplicacion.Pases
                     , request.RutEmpresa
                     , request.NombreEmpresa);
 
-                // generar el tipo del pase ingresado
-                string tipoPaseRecibido = request.Tipo.ToString().ToUpper();
-
-                TipoPase tipoPaseValidado = tipoPaseRecibido == TipoPase.VISITA.ToString() ? TipoPase.VISITA
-                    : tipoPaseRecibido == TipoPase.CONTRATISTA.ToString() ? TipoPase.CONTRATISTA
-                    : tipoPaseRecibido == TipoPase.PROVEEDOR.ToString() ? TipoPase.PROVEEDOR
-                    : tipoPaseRecibido == TipoPase.USOMUELLE.ToString() ? TipoPase.USOMUELLE
-                    : TipoPase.TRIPULANTE;
-
                 // generar el nuevo pase visita.
                 var paseGenerado = new Pase
                 {
                     PaseId = new Guid(),
                     FechaInicio = Convert.ToDateTime(request.FechaInicio),
                     FechaTermino = Convert.ToDateTime(request.FechaTermino),
-                    Tipo = tipoPaseValidado,
+                    Tipo = TipoPase.CONTRATISTA,
                     Estado = EstadoPase.PENDIENTE,
                     Area = request.Area,
                     Motivo = request.Motivo,
@@ -112,33 +103,27 @@ namespace Aplicacion.Pases
                     UsuarioId = usuarioActual.Id
                 };
 
-                // agregar el nuevo pase 
-                await this._context.Pase.AddAsync(paseGenerado);
-
                 // agregar el prevencionista
                 if (request.AsesorDePrevencion.Rut.Length > 0)
-                    await BuscarOAlmacenarPrevencionista
+                {
+                    var asesor = await BuscarOAlmacenarPrevencionista
                      .BuscarOAgregarPrevencionista(request.AsesorDePrevencion
-                     , this._context
-                     , paseGenerado);
+                     , this._context);
+
+                    paseGenerado.AsesorPrevencionId = asesor.AsesorPrevencionId;
+                }
+
+                // agregar el pase con el prevencionista relaconado
+                await this._context.Pase.AddAsync(paseGenerado);
 
                 // Agregar Documentos de la Empresa
                 if (request.SeccionDocumentosEmpresa != null)
-                {
                     foreach (var docEmpresa in request.SeccionDocumentosEmpresa)
                         await AlmacenarDocumentosEmpresa.AgregarDocumentosEmpresa(docEmpresa
                             , _context
                             , _env
                             , paseGenerado.PaseId
                             , buscarEmpresa.EmpresaId);
-                }
-                else
-                {
-                    Console.WriteLine("--------------------------------");
-                    Console.WriteLine("NO SE ENCONTRARON DOCUMENTOS DE EMPRESA");
-                    Console.WriteLine("--------------------------------");
-
-                }
 
                 // Agregar Personas
                 if (request.PersonasContratista != null)

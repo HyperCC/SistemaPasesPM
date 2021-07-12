@@ -15,12 +15,6 @@ namespace WebApi.Controllers
     [AllowAnonymous]
     public class PasesController : PersonalController
     {
-        [HttpPost("Upload")]
-        public async Task<ActionResult<Documento>> GuardarDoc([FromForm] AlmacenarDocumentoEmpresa.Ejecuta parametros)
-        {
-            return await this.MediadorHerencia.Send(parametros);
-        }
-
         /// <summary>
         /// Obtener todos los pases
         /// </summary>

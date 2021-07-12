@@ -98,7 +98,7 @@ const PerfilGeneral = () => {
                 } else {
                     setPasesUsuario(response.data);
                     //ingresarValoresMemoria(response.data);
-                    console.log('el objeto obtenido correctamente es: ', response.data);
+                    console.log('EL OBJETO OBTENIDO CORRECTAMENTE: ', response.data);
                     setCurrentNotification('exi-pe0000');
                     console.log('los valores en memoria son: ', dataUsuario);
                 }
