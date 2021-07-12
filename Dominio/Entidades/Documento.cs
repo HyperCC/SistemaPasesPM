@@ -9,6 +9,7 @@ namespace Dominio.Entidades
         // atributos de la entidad
         public Guid DocumentoId { get; set; }
         public string RutaDocumento { get; set; }
+        public string Extension { get; set; }
 
         public DateTime FechaVencimiento { get; set; }
 
