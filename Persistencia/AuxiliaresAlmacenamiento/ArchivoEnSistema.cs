@@ -11,11 +11,10 @@ using Persistencia;
 
 namespace Persistencia.AuxiliaresAlmacenamiento
 {
-    public class ArchivoEnServer
+    public class ArchivoEnSistema
     {
         public static string GuardarArchivo(string archivoBase64
             , string currentExtension
-            , SistemaPasesContext context
             , IHostingEnvironment env)
         {
             string[] permittedExtensions = { ".txt", ".pdf", ".docx", ".doc", ".png", ".jpeg", ".jpg" };

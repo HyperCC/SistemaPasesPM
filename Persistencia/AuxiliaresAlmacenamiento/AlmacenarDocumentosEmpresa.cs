@@ -17,7 +17,7 @@ namespace Persistencia.AuxiliaresAlmacenamiento
     /// </summary>
     public static class AlmacenarDocumentosEmpresa
     {
-        public static async Task<bool> AgregarDocumentosEmpresa(
+        public static async Task<Documento> AgregarDocumentosEmpresa(
             DocumentoEmpresa documentoEmpresaContratista
             , SistemaPasesContext context
             , IHostingEnvironment env
@@ -59,16 +59,15 @@ namespace Persistencia.AuxiliaresAlmacenamiento
                     .ToDateTime(documentoEmpresaContratista.FechaVencimiento);
 
             // almacenar el archivo recibido desde base 64
-            string rutaCompleta = ArchivoEnServer.GuardarArchivo(documentoEmpresaContratista.Documento
+            string rutaCompleta = ArchivoEnSistema.GuardarArchivo(documentoEmpresaContratista.Documento
                 , documentoEmpresaContratista.Extension
-                , context
                 , env);
 
             // agregar el documento a la DB
             nuevoDocumentoContratista.RutaDocumento = rutaCompleta;
             await context.Documento.AddAsync(nuevoDocumentoContratista);
 
-            return true;
+            return nuevoDocumentoContratista;
         }
     }
 }

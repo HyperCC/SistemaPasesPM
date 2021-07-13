@@ -56,9 +56,8 @@ namespace Persistencia.AuxiliaresAlmacenamiento
                     .ToDateTime(documentoPersonasRequest.FechaVencimiento);
 
             // almacenar el archivo recibido desde base 64
-            string rutaCompleta = ArchivoEnServer.GuardarArchivo(documentoPersonasRequest.Documento
+            string rutaCompleta = ArchivoEnSistema.GuardarArchivo(documentoPersonasRequest.Documento
                 , documentoPersonasRequest.Extension
-                , context
                 , env);
 
             // verificar si se recibio un anexo de contrato
