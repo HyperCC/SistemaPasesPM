@@ -1,4 +1,5 @@
 ﻿using Aplicacion.ConfiguracionLogin.Contratos;
+using Dominio.Auxiliares.ModelosPaseContratista;
 using Dominio.Entidades;
 using Dominio.ModelosDto;
 using Dominio.ModelosDto.ModelosParaPerfil;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Persistencia;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -28,7 +30,6 @@ namespace Aplicacion.Cuentas
             private readonly SistemaPasesContext _context;
 
             public Manejador(UserManager<Usuario> userManager,
-                IJwtGenerador jwtGenerador,
                 IUsuarioSesion sesion,
                 SistemaPasesContext context)
             {
@@ -59,10 +60,13 @@ namespace Aplicacion.Cuentas
                 if (pasesPorRol != null)
                 {
                     // obtener las personas externas relacionadas
-                    pasesPorRol = pasesPorRol.Include(x => x.PersonasRel)
-                        .ThenInclude(z => z.PersonaRel);
+                    pasesPorRol = pasesPorRol
+                        .Include(x => x.PersonasRel)
+                        .ThenInclude(z => z.PersonaRel)
+                        .Include(x => x.DocumentosRel)
+                        .Include(x => x.AsesorPrevencionRel);
 
-                    foreach (var pase in pasesPorRol)
+                    foreach (var pase in pasesPorRol.Reverse())
                     {
                         ICollection<PersonaExternaPase> personasExternasPase = new List<PersonaExternaPase>();
                         if (pase.PersonasRel != null)
@@ -97,11 +101,82 @@ namespace Aplicacion.Cuentas
                                     Nombres = nombresPE,
                                     PrimerApellido = primerApellidoPE,
                                     SegundoApellido = segundoApellidoPE,
-                                    Rut = personaExternaEncontrada.Rut,
-                                    Pasaporte = personaExternaEncontrada.Pasaporte,
-                                    Nacionalidad = personaExternaEncontrada.PersonaExternaRel.Nacionalidad
+                                    Rut = personaExternaEncontrada.Rut != null
+                                        ? personaExternaEncontrada.Rut
+                                        : "",
+                                    Pasaporte = personaExternaEncontrada.Pasaporte != null
+                                        ? personaExternaEncontrada.Pasaporte
+                                        : "",
+                                    Nacionalidad = personaExternaEncontrada.PersonaExternaRel.Nacionalidad != null
+                                        ? personaExternaEncontrada.PersonaExternaRel.Nacionalidad
+                                        : ""
                                 });
                             }
+
+                        // documentos para la empresa
+                        ICollection<DocumentoCompleto> documentosEmpresaPase = new List<DocumentoCompleto>();
+
+                        // en caso de haber personas relacionadas al pase
+                        if (pase.DocumentosRel != null)
+                            foreach (var documentoIndividual in pase.DocumentosRel)
+                            {
+                                // asociar las personas externas correspondientes
+                                var documentoIndividualEncontrado = await this._context.Documento
+                                    .Include(x => x.TipoDocumentoRel)
+                                    .Include(y => y.AnexoContratoRel)
+                                    .Include(z => z.RegistroPersonaRel)
+                                    .FirstOrDefaultAsync(x => x.DocumentoId == documentoIndividual.DocumentoId);
+
+                                // conversion del archivo hacia base64
+                                byte[] documentoEnBytes = File.ReadAllBytes(documentoIndividualEncontrado.RutaDocumento);
+                                string archivoEnBase64 = Convert.ToBase64String(documentoEnBytes);
+
+                                // dato relacionado a documentos anexo de contrato
+                                string descripcionExiste = documentoIndividualEncontrado.AnexoContratoRel.Descripcion;
+                                // dato relacionado a documentos registros de persona
+                                string fechaRegistroExiste = documentoIndividualEncontrado.RegistroPersonaRel.FechaRegistro.ToString();
+
+                                // agregar el modelo mapeado
+                                documentosEmpresaPase.Add(new DocumentoCompleto
+                                {
+                                    DocumentoBase64 = archivoEnBase64,
+                                    Descripcion = descripcionExiste,
+                                    FechaRegistro = fechaRegistroExiste,
+                                    FechaVencimiento = documentoIndividualEncontrado.FechaVencimiento.ToString(),
+                                    Extension = documentoIndividualEncontrado.Extension,
+                                    TituloDocumento = documentoIndividualEncontrado.TipoDocumentoRel.Titulo
+                                });
+                            }
+
+                        // asesor de prevencion para mapear
+                        AsesorDePrevencionRiesgos asesorPrevencion = new AsesorDePrevencionRiesgos();
+
+                        if (pase.AsesorPrevencionRel != null)
+                        {
+                            // asociar las personas externas correspondientes
+                            var asesorPrevencionEncontrado = await this._context.AsesorPrevencion
+                                .Include(x => x.PersonaRel)
+                                .ThenInclude(y => y.NombresRel)
+                                .ThenInclude(z => z.NombreRel)
+                                .Include(x => x.PersonaRel)
+                                .ThenInclude(y => y.ApellidosRel)
+                                .ThenInclude(z => z.ApellidoRel)
+                                .FirstOrDefaultAsync(x => x.AsesorPrevencionId == pase.AsesorPrevencionRel.AsesorPrevencionId);
+
+                            // obtencion de nombres y apellidos 
+                            string nombres = string.Join(" "
+                                    , asesorPrevencionEncontrado.PersonaRel.NombresRel
+                                    .Select(x => x.NombreRel.Titulo));
+
+                            string apellidos = string.Join(" "
+                                    , asesorPrevencionEncontrado.PersonaRel.ApellidosRel
+                                    .Select(x => x.ApellidoRel.Titulo));
+
+                            asesorPrevencion.Nombres = nombres;
+                            asesorPrevencion.Apellidos = apellidos;
+                            asesorPrevencion.Rut = asesorPrevencionEncontrado.PersonaRel.Rut;
+                            asesorPrevencion.RegistroSNS = asesorPrevencionEncontrado.RegistroSns;
+                        }
 
                         // agregar pases formateados al resultado final
                         allPasesPerfil.Add(new PasePerfil
@@ -113,7 +188,9 @@ namespace Aplicacion.Cuentas
                             Area = pase.Area,
                             Tipo = pase.Tipo.ToString(),
                             Estado = pase.Estado.ToString(),
-                            PersonaExternasRel = personasExternasPase
+                            PersonaExternasRel = personasExternasPase,
+                            DocumentoEmpresasRel = documentosEmpresaPase,
+                            PrevencionistaRiesgos = asesorPrevencion
                         });
                     }
                 }

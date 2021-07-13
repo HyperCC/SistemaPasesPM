@@ -7,67 +7,88 @@ using Microsoft.EntityFrameworkCore;
 using Dominio.Entidades;
 using Microsoft.AspNetCore.Hosting;
 
-
 namespace Persistencia.AuxiliaresAlmacenamiento
 {
+    /// <summary>
+    /// Almacenar documentos relacionados a las personas adjuntas en pase contratista
+    /// </summary>
     public class AlmacenarDocumentoPersonaContratista
     {
-        public static async Task AgregarDocumento(DocumentoPersonaContratista documentoPersonasRequest,
-            SistemaPasesContext context, 
-            IHostingEnvironment env,
-            Guid currentPaseId,
-            Guid currentPersonaExternaId)
+        public static async Task<bool> AgregarDocumento(
+            DocumentoPersonaContratista documentoPersonasRequest
+            , SistemaPasesContext context
+            , IHostingEnvironment env
+            , Guid currentPaseId
+            , Guid currentPersonaContratistaId)
         {
 
-            var currentTipoDocumento = await context.TipoDocumento.FirstOrDefaultAsync(t => t.Titulo == documentoPersonasRequest.TipoDocumento);
-            //TO-DO: Ver que hacer cuando el tipo de documento no se encuentra en la base de datos. Caso que no deberia ocurrir
+            // buscar tipo de documento
+            var currentTipoDocumento = await context.TipoDocumento
+                .FirstOrDefaultAsync(t => t.Titulo == documentoPersonasRequest.TipoDocumento);
 
+            // si no existe se agrega el tipo 
+            if (currentTipoDocumento == null)
+            {
+                currentTipoDocumento = new TipoDocumento
+                {
+                    TipoDocumentoId = new Guid(),
+                    Titulo = documentoPersonasRequest.TipoDocumento,
+                    Obligatoriedad = documentoPersonasRequest.Obligatoriedad
+                };
+                await context.TipoDocumento.AddAsync(currentTipoDocumento);
+            }
 
-            Documento nuevoDocumentoContratista = new Documento
+            // crear el nuevo documento 
+            Documento nuevoDocumentoPersonaContratista = new Documento
             {
                 DocumentoId = new Guid(),
+                Extension = documentoPersonasRequest.Extension,
                 PaseId = currentPaseId,
-                PersonaId = currentPersonaExternaId,
+                PersonaId = currentPersonaContratistaId,
                 TipoDocumentoId = currentTipoDocumento.TipoDocumentoId
             };
-            //Agregamos la fecha de venc si es que existe
-            if (documentoPersonasRequest.FechaVencimiento != null && documentoPersonasRequest.FechaVencimiento.Length > 0)
-                nuevoDocumentoContratista.FechaVencimiento = Convert.ToDateTime(documentoPersonasRequest.FechaVencimiento);
-            /*
-            await ArchivoEnServer.guardarArchivo(documentoPersonasRequest.Documento, nuevoDocumentoContratista, env, context);
-            */
 
-            //ANEXO DE CONTRATO
+            // agregar la fecha de venc si es que existe
+            if (documentoPersonasRequest.FechaVencimiento != null
+                && documentoPersonasRequest.FechaVencimiento.Length > 0)
+
+                nuevoDocumentoPersonaContratista.FechaVencimiento = Convert
+                    .ToDateTime(documentoPersonasRequest.FechaVencimiento);
+
+            // almacenar el archivo recibido desde base 64
+            string rutaCompleta = ArchivoEnServer.GuardarArchivo(documentoPersonasRequest.Documento
+                , documentoPersonasRequest.Extension
+                , context
+                , env);
+
+            // verificar si se recibio un anexo de contrato
             if (documentoPersonasRequest.Descripcion != null)
-            {
-                AnexoContrato documentoAnexo = new AnexoContrato
+                if (documentoPersonasRequest.Descripcion.Length > 0)
                 {
-                    AnexoContratoId = new Guid(),
-                    DocumentoId = nuevoDocumentoContratista.DocumentoId,
-                    Descripcion = documentoPersonasRequest.Descripcion
-                };
-
-                await context.AnexoContrato.AddAsync(documentoAnexo);
-            }
-            else
-            {
-                //REGISTRO PERSONA
-                if (documentoPersonasRequest.FechaRegistro != null)
-                {
-                    RegistroPersona registroPersona = new RegistroPersona
+                    await context.AnexoContrato.AddAsync(new AnexoContrato
                     {
-                        RegistroPersonaId = new Guid(),
-                        FechaRegistro = Convert.ToDateTime(documentoPersonasRequest.FechaRegistro),
-                        DocumentoId = nuevoDocumentoContratista.DocumentoId
-                    };
-
-                    await context.RegistroPersona.AddAsync(registroPersona);
+                        Descripcion = documentoPersonasRequest.Descripcion,
+                        DocumentoId = nuevoDocumentoPersonaContratista.DocumentoId
+                    });
                 }
-                
-            }
-            var result = await context.SaveChangesAsync();
 
+            // verificar si se recibio un registro de persona (RIOHS - ODI - EPPs)
+            if (documentoPersonasRequest.FechaRegistro != null)
+                if (documentoPersonasRequest.FechaRegistro.Length > 0)
+                {
+                    await context.RegistroPersona.AddAsync(new RegistroPersona
+                    {
+                        // TODO: verificar el registro de fechas 
+                        FechaRegistro = Convert.ToDateTime(documentoPersonasRequest.FechaRegistro),
+                        DocumentoId = nuevoDocumentoPersonaContratista.DocumentoId
+                    });
+                }
 
+            // agregar el documento a la DB
+            nuevoDocumentoPersonaContratista.RutaDocumento = rutaCompleta;
+            await context.Documento.AddAsync(nuevoDocumentoPersonaContratista);
+
+            return true;
         }
     }
 }

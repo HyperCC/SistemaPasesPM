@@ -38,7 +38,7 @@ namespace Aplicacion.Pases
             // Personas para pase contratista
             public ICollection<PersonasExternasContratista> PersonasContratista { get; set; }
             // documentos de empresa para pase contratista
-            public ICollection<DocumentosEmpresaContratista> SeccionDocumentosEmpresa { get; set; }
+            public ICollection<DocumentoEmpresa> SeccionDocumentosEmpresa { get; set; }
 
             // prevencionista
             public AsesorDePrevencionRiesgos AsesorDePrevencion { get; set; }
@@ -128,31 +128,37 @@ namespace Aplicacion.Pases
                 // Agregar Personas
                 if (request.PersonasContratista != null)
                 {
-                    foreach (var persona in request.PersonasContratista)
+                    foreach (var personaIndividual in request.PersonasContratista)
                     {
+                        // buscar o almacenar la persona por rut o pasaporte
+                        Persona buscarPersona = personaIndividual.Rut.Length > 0 ?
 
-                        // Buscar o almacenar la persona por rut
-                        Persona buscarPersona = await BuscarOAlmacenarPersona.BuscarOAgregarPersona(this._context,
-                            persona.Rut,
-                            persona.Nombres,
-                            (persona.PrimerApellido + " " + persona.SegundoApellido));
+                            await BuscarOAlmacenarPersona.BuscarOAgregarPersona(this._context,
+                            personaIndividual.Rut,
+                            personaIndividual.Nombres,
+                            (personaIndividual.PrimerApellido + " " + personaIndividual.SegundoApellido))
+
+                            : await BuscarOAlmacenarPersonaPorPasaporte.BuscarOAgregarPersonaPorPasaporte(this._context,
+                            personaIndividual.Pasaporte,
+                            personaIndividual.Nombres,
+                            (personaIndividual.PrimerApellido + " " + personaIndividual.SegundoApellido));
 
                         // Buscar por la persona externa segun la Persona ya encontrada
-                        var buscarPersonaExterna = await BuscarOAlmacenarPersonaExterna.BuscarOAgregarPersonaExterna(this._context,
+                        await BuscarOAlmacenarPersonaExterna.BuscarOAgregarPersonaExterna(this._context,
                             buscarPersona,
                             paseGenerado,
-                            persona.Nacionalidad);
+                            personaIndividual.Nacionalidad);
 
                         //Agregar Documentos:
-                        /*
-                        foreach (var doc in persona.DocumentosPersona)
-                        {
-                            await AlmacenarDocumentoPersonaContratista.AgregarDocumento(doc
-                                , _context
-                                , _env, paseGenerado.PaseId
-                                , buscarPersonaExterna.PersonaId);
-                        }
-                        */
+
+                        foreach (var docPersona in personaIndividual.DocumentosPersona)
+
+                            await AlmacenarDocumentoPersonaContratista.AgregarDocumento(
+                                docPersona
+                                , this._context
+                                , _env
+                                , paseGenerado.PaseId
+                                , buscarPersona.PersonaId);
                     }
                 }
 
@@ -160,7 +166,15 @@ namespace Aplicacion.Pases
                 var result = await this._context.SaveChangesAsync();
                 if (result > 0)
                     return Unit.Value;
-                throw new Exception("No se ha podido almacenar el pase");
+
+                // si por algun motivo la base de datos no almacena los cambios
+                throw new DbContextNoGuardadoException(HttpStatusCode.BadRequest,
+                    new
+                    {
+                        mensaje = $"El sistema no pudo registrar el nuevo pase enviado por el usuario {usuarioActual.Email}",
+                        status = HttpStatusCode.BadRequest,
+                        tipoError = "err-dbcng0"
+                    });
             }
         }
     }

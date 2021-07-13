@@ -13,12 +13,12 @@ using System.IO;
 namespace Persistencia.AuxiliaresAlmacenamiento
 {
     /// <summary>
-    /// clase auxiliar para almacenar los nombres y apellidos por persona
+    /// Almacenar los documentos relacionados a una empresa
     /// </summary>
     public static class AlmacenarDocumentosEmpresa
     {
         public static async Task<bool> AgregarDocumentosEmpresa(
-            DocumentosEmpresaContratista documentoEmpresaContratista
+            DocumentoEmpresa documentoEmpresaContratista
             , SistemaPasesContext context
             , IHostingEnvironment env
             , Guid currentPaseId
@@ -41,7 +41,7 @@ namespace Persistencia.AuxiliaresAlmacenamiento
                 await context.TipoDocumento.AddAsync(currentTipoDocumento);
             }
 
-            // ingresar el nuevo requestumento 
+            // crear el nuevo documento 
             Documento nuevoDocumentoContratista = new Documento
             {
                 DocumentoId = new Guid(),

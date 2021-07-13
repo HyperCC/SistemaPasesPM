@@ -5,7 +5,10 @@ using System.Text;
 
 namespace Dominio.Auxiliares.ModelosPaseContratista
 {
-    public class DocumentosEmpresaContratista
+    /// <summary>
+    /// Documento completo relacionado a la empresa solicitante
+    /// </summary>
+    public class DocumentoEmpresa
     {
         public string Documento { get; set; }
         public string TipoDocumento { get; set; }

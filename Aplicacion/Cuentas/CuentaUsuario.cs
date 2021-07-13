@@ -85,6 +85,12 @@ namespace Aplicacion.Cuentas
                                 .Include(x => x.ApellidosRel)
                                 .ThenInclude(z => z.ApellidoRel)
                                 .Include(x => x.PersonaExternaRel)
+
+                                .Include(x => x.DocumentosRel)
+                                .ThenInclude(z => z.AnexoContratoRel)
+                                .Include(x => x.DocumentosRel)
+                                .ThenInclude(z => z.RegistroPersonaRel)
+
                                 .FirstOrDefaultAsync(x => x.PersonaId == personaExterna.PersonaId);
 
                             // obtencion del nombre 
@@ -105,47 +111,87 @@ namespace Aplicacion.Cuentas
                                 apellidos.FirstOrDefault()
                                 : string.Empty;
 
+                            // listar documentos relacionados a usuario 
+                            ICollection<DocumentoCompleto> documentosCompletosPersona = new List<DocumentoCompleto>();
+
+                            if (personaExternaEncontrada.DocumentosRel != null)
+                                foreach (var documentoIndividual in personaExternaEncontrada.DocumentosRel)
+                                {
+                                    // asociar las personas externas correspondientes
+                                    var documentoIndividualEncontrado = await this._context.Documento
+                                        .Include(x => x.TipoDocumentoRel)
+                                        .Include(y => y.AnexoContratoRel)
+                                        .Include(z => z.RegistroPersonaRel)
+                                        .FirstOrDefaultAsync(x => x.DocumentoId == documentoIndividual.DocumentoId);
+
+                                    // conversion del archivo hacia base64
+                                    byte[] documentoEnBytes = File.ReadAllBytes(documentoIndividualEncontrado.RutaDocumento);
+                                    string archivoEnBase64 = Convert.ToBase64String(documentoEnBytes);
+
+                                    // dato relacionado a documentos anexo de contrato
+                                    string descripcionExiste = documentoIndividualEncontrado.AnexoContratoRel.Descripcion;
+                                    // dato relacionado a documentos registros de persona
+                                    string fechaRegistroExiste = documentoIndividualEncontrado.RegistroPersonaRel.FechaRegistro.ToString();
+
+                                    // agregar el modelo mapeado
+                                    documentosCompletosPersona.Add(new DocumentoCompleto
+                                    {
+                                        DocumentoBase64 = archivoEnBase64,
+                                        Descripcion = descripcionExiste,
+                                        FechaRegistro = fechaRegistroExiste,
+                                        FechaVencimiento = documentoIndividualEncontrado.FechaVencimiento.ToString(),
+                                        Extension = documentoIndividualEncontrado.Extension,
+                                        TituloDocumento = documentoIndividualEncontrado.TipoDocumentoRel.Titulo
+                                    });
+                                }
+
                             personasExternasPase.Add(new PersonaExternaPase
                             {
                                 Nombres = nombresPE,
                                 PrimerApellido = primerApellidoPE,
                                 SegundoApellido = segundoApellidoPE,
-                                Rut = personaExternaEncontrada.Rut != null ?
-                                    personaExternaEncontrada.Rut
+                                Rut = personaExternaEncontrada.Rut != null
+                                    ? personaExternaEncontrada.Rut
                                     : "",
-                                Pasaporte = personaExternaEncontrada.Pasaporte != null ?
-                                    personaExternaEncontrada.Pasaporte
+                                Pasaporte = personaExternaEncontrada.Pasaporte != null
+                                    ? personaExternaEncontrada.Pasaporte
                                     : "",
                                 Nacionalidad = personaExternaEncontrada.PersonaExternaRel.Nacionalidad != null ?
                                     personaExternaEncontrada.PersonaExternaRel.Nacionalidad
-                                    : ""
+                                    : "",
+                                DocumentoCompletosRel = documentosCompletosPersona
                             });
                         }
 
                     // documentos para la empresa
                     ICollection<DocumentoCompleto> documentosEmpresaPase = new List<DocumentoCompleto>();
 
-                    // en caso de haber personas relacionadas al pase
+                    // en caso de haber documentos relacionados a la empresa
                     if (pase.DocumentosRel != null)
                         foreach (var documentoIndividual in pase.DocumentosRel)
                         {
-                            Console.WriteLine("-------------------------");
-                            Console.WriteLine("EL PASE TIENE DOCUMENTOS");
-                            Console.WriteLine("-------------------------");
-
                             // asociar las personas externas correspondientes
                             var documentoIndividualEncontrado = await this._context.Documento
                                 .Include(x => x.TipoDocumentoRel)
+                                //.Include(y => y.AnexoContratoRel)
+                                //.Include(z => z.RegistroPersonaRel)
                                 .FirstOrDefaultAsync(x => x.DocumentoId == documentoIndividual.DocumentoId);
 
                             // conversion del archivo hacia base64
                             byte[] documentoEnBytes = File.ReadAllBytes(documentoIndividualEncontrado.RutaDocumento);
                             string archivoEnBase64 = Convert.ToBase64String(documentoEnBytes);
 
+                            // dato relacionado a documentos anexo de contrato
+                            //string descripcionExiste = documentoIndividualEncontrado.AnexoContratoRel.Descripcion;
+                            // dato relacionado a documentos registros de persona
+                            //string fechaRegistroExiste = documentoIndividualEncontrado.RegistroPersonaRel.FechaRegistro.ToString();
+
                             // agregar el modelo mapeado
                             documentosEmpresaPase.Add(new DocumentoCompleto
                             {
                                 DocumentoBase64 = archivoEnBase64,
+                                //Descripcion = descripcionExiste,
+                                //FechaRegistro = fechaRegistroExiste,
                                 FechaVencimiento = documentoIndividualEncontrado.FechaVencimiento.ToString(),
                                 Extension = documentoIndividualEncontrado.Extension,
                                 TituloDocumento = documentoIndividualEncontrado.TipoDocumentoRel.Titulo

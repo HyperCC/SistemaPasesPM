@@ -12,7 +12,7 @@ namespace Persistencia.AuxiliaresAlmacenamiento
     /// </summary>
     public static class BuscarOAlmacenarPersonaPorPasaporte
     {
-        public static async Task<Persona> BuscarOAgregarPersonaPorPasaporteAsync(SistemaPasesContext context,
+        public static async Task<Persona> BuscarOAgregarPersonaPorPasaporte(SistemaPasesContext context,
             string pasaporte,
             string nombres,
             string apellidos)

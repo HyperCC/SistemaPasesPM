@@ -33,7 +33,6 @@ export const Proveedor = (props) => {
                 FechaInicio: '',
                 FechaTermino: '',
                 PersonasExternas: [],
-                PersonasContratista: [],
                 SeccionDocumentosEmpresa: []
             }
 
@@ -49,7 +48,6 @@ export const Proveedor = (props) => {
                 FechaInicio: variables.FechaInicio,
                 FechaTermino: variables.FechaTermino,
                 PersonasExternas: [],
-                PersonasContratista: [],
                 SeccionDocumentosEmpresa: []
             }
         }

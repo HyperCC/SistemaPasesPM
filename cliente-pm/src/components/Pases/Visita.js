@@ -34,7 +34,6 @@ export const Visita = (props) => {
                 FechaInicio: '',
                 FechaTermino: '',
                 PersonasExternas: [],
-                PersonasContratista: [],
                 SeccionDocumentosEmpresa: []
             }
         } else {
@@ -49,7 +48,6 @@ export const Visita = (props) => {
                 FechaInicio: variables.FechaInicio,
                 FechaTermino: variables.FechaTermino,
                 PersonasExternas: [],
-                PersonasContratista: [],
                 SeccionDocumentosEmpresa: []
             }
         }

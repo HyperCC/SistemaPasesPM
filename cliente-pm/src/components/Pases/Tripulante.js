@@ -33,7 +33,6 @@ export const Tripulante = (props) => {
                 FechaInicio: '',
                 FechaTermino: '',
                 PersonasExternas: [],
-                PersonasContratista: [],
                 SeccionDocumentosEmpresa: []
             }
 
@@ -49,7 +48,6 @@ export const Tripulante = (props) => {
                 FechaInicio: variables.FechaInicio,
                 FechaTermino: variables.FechaTermino,
                 PersonasExternas: [],
-                PersonasContratista: [],
                 SeccionDocumentosEmpresa: []
             }
         }

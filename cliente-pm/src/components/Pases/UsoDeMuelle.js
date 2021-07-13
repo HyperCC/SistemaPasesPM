@@ -33,7 +33,6 @@ export const UsoDeMuelle = (props) => {
                 FechaInicio: '',
                 FechaTermino: '',
                 PersonasExternas: [],
-                PersonasContratista: [],
                 SeccionDocumentosEmpresa: []
             }
         } else {
@@ -48,7 +47,6 @@ export const UsoDeMuelle = (props) => {
                 FechaInicio: variables.FechaInicio,
                 FechaTermino: variables.FechaTermino,
                 PersonasExternas: [],
-                PersonasContratista: [],
                 SeccionDocumentosEmpresa: []
             }
         }

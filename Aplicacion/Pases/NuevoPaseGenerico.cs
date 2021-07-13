@@ -16,6 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Dominio.Auxiliares.ModelosPaseContratista;
 
 namespace Aplicacion.Pases
 {
@@ -42,10 +43,8 @@ namespace Aplicacion.Pases
 
             // Personas para pase generico
             public ICollection<PersonaExternaGenericaRequest> PersonasExternas { get; set; } // nullable
-            // Personas para pase contratista
-            public ICollection<PersonaExternaContratistaRequest> PersonasContratista { get; set; } //nullable
-            // documentos de empresa para pase contratista
-            public ICollection<DocumentosEmpresaContratistaRequest> SeccionDocumentosEmpresa { get; set; } // nulable
+            // documentos de empresa
+            public ICollection<DocumentoEmpresa> SeccionDocumentosEmpresa { get; set; } // nulable
         }
 
         /// <summary>
@@ -111,7 +110,6 @@ namespace Aplicacion.Pases
                      });
                 }
 
-
                 // usuario en sesion actual
                 var usuarioActual = await this._userManager.FindByNameAsync(this._usuarioSesion.ObtenerUsuarioSesion());
 
@@ -146,19 +144,8 @@ namespace Aplicacion.Pases
                 // agregar el nuevo pase 
                 await this._context.Pase.AddAsync(paseGenerado);
 
-
-                // agregar los documentos relacionados a una empresa en pase contratista
-                /*
-                if (request.SeccionDocumentosEmpresa != null && tipoPaseRecibido.CompareTo(TipoPase.CONTRATISTA) == 0)
-                    await AlmacenarDocumentosEmpresa.AgregarDocumentosEmpresa(request.SeccionDocumentosEmpresa,
-                        this._context,
-                        paseGenerado.PaseId,
-                        buscarEmpresa.EmpresaId);
-                */
-
-
                 if (request.PersonasExternas != null)
-                    // agregar las personas externas aderidas al pase 
+                    // agregar las personas externas adheridas al pase 
                     foreach (var personaIndividual in request.PersonasExternas)
                     {
                         // buscar o almacenar la persona por rut o pasaporte
@@ -169,7 +156,7 @@ namespace Aplicacion.Pases
                             personaIndividual.Nombres,
                             (personaIndividual.PrimerApellido + " " + personaIndividual.SegundoApellido))
 
-                            : await BuscarOAlmacenarPersonaPorPasaporte.BuscarOAgregarPersonaPorPasaporteAsync(this._context,
+                            : await BuscarOAlmacenarPersonaPorPasaporte.BuscarOAgregarPersonaPorPasaporte(this._context,
                             personaIndividual.Pasaporte,
                             personaIndividual.Nombres,
                             (personaIndividual.PrimerApellido + " " + personaIndividual.SegundoApellido));
@@ -180,11 +167,6 @@ namespace Aplicacion.Pases
                             paseGenerado,
                             personaIndividual.Nacionalidad);
                     }
-
-                if (request.PersonasContratista != null)
-                {
-                    //Implementar en NuevoPaseContratista.cs
-                }
 
                 // guarar los cambios hechos en el context
                 var result = await this._context.SaveChangesAsync();
