@@ -58,15 +58,32 @@ export const AgregarPersonaContratista = props => {
         let file_reader = new FileReader();
         var file = filesPrueba[0];
 
+        // reading the actual uploaded file
+        file_reader.readAsDataURL(file);
+
         file_reader.onload = () => {
             // After uploading the file
             // appending the file to our state array
             // set the object keys and values accordingly
-            setDocumentoPersona([...documentoPersona, { documento: file_reader.result, TipoDocumento: idSimple, Obligariedad: true, FechaVencimiento: "", Descripcion: "" }]);
-        };
-            // reading the actual uploaded file
-        file_reader.readAsDataURL(file);
 
+             // Array para dejar solo la base 64 del archivo
+             var arrayAux = [];
+             arrayAux = file_reader.result.split(',');
+ 
+             // variable para sacar la extension del archivo
+             var extension = file.name.split('.').pop();
+ 
+             // set the object keys and values accordingly
+             setDocumentoPersona([...documentoPersona, {
+                 Documento: arrayAux[1],
+                 TipoDocumento: idSimple.toUpperCase(),
+                 Obligariedad: true,
+                 FechaVencimiento: "",
+                 Extension: '.' + extension,
+                 Descripcion: ""
+             }]);
+            
+        };
     }
 
     const sendData = () => { 
