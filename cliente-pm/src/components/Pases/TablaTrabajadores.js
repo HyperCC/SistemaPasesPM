@@ -4,6 +4,7 @@ import Pagination from '../Pagination';
 import { AgregarPersonaContratista } from './AgregarPersonaContratista';
 import Popup from 'reactjs-popup';
 import { DocumentosEmpresa } from './DocumentosEmpresa';
+import AgregarPersona from './AgregarPersona';
 
 export const TablaTrabajadores = props => {
     const url = props.url;
@@ -106,11 +107,17 @@ export const TablaTrabajadores = props => {
                         }
                         {props.url != "/SolicitudContratista" &&
 
-                            <a href={props.url + "/AgregarPersona"} faker={'faker'}
-                                className="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
-                                Agregar Persona
-                            </a>
+                            <Popup trigger={<button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">Agregar Persona</button>} modal nested>
+                            {close => (
+                                <div className="modal">
+                                    <button className="close" onClick={close}>
+                                        &times;
+                                    </button>
+                                    <AgregarPersona />
 
+                                </div>
+                            )}
+                            </Popup>
                         }
 
                         <button type="submit" onClick={props._enviarFormulario} class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">

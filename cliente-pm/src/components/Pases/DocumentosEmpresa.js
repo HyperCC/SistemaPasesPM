@@ -84,7 +84,7 @@ export const DocumentosEmpresa = (props) => {
                 resolve(reader.result)
             };
             reader.onerror = reject;
-            reader.readAsString(file);
+            reader.readAsDataURL(file);
             console.log(file)
         })
     }
@@ -100,7 +100,20 @@ export const DocumentosEmpresa = (props) => {
         const results = await Promise.all(Array.from(event.target.files).map(async (file) => {
 
             const fileContents = await handleMultiFileChosen(file);
-            newFile.push({ file_id: id, file_name: file.name, uploaded_file: fileContents })
+            // Array para dejar solo la base 64 del archivo
+            var arrayAux = [];
+            arrayAux = fileContents.split(',');
+
+            // variable para sacar la extension del archivo
+            var extension = fileContents.split('.').pop();
+
+            newFile.push({ 
+                Documento: arrayAux[1],
+                TipoDocumento: id.toUpperCase(),
+                Obligariedad: true,
+                FechaVencimiento: "",
+                Extension: '.' + extension
+            })
             //console.log(newFile);
         }))
 
