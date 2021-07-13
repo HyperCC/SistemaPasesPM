@@ -66,7 +66,7 @@ namespace Aplicacion.Cuentas
                         .Include(x => x.DocumentosRel)
                         .Include(x => x.AsesorPrevencionRel);
 
-                    foreach (var pase in pasesPorRol.Reverse())
+                    foreach (var pase in pasesPorRol)
                     {
                         ICollection<PersonaExternaPase> personasExternasPase = new List<PersonaExternaPase>();
                         if (pase.PersonasRel != null)
@@ -131,17 +131,16 @@ namespace Aplicacion.Cuentas
                                 byte[] documentoEnBytes = File.ReadAllBytes(documentoIndividualEncontrado.RutaDocumento);
                                 string archivoEnBase64 = Convert.ToBase64String(documentoEnBytes);
 
-                                // dato relacionado a documentos anexo de contrato
-                                string descripcionExiste = documentoIndividualEncontrado.AnexoContratoRel.Descripcion;
-                                // dato relacionado a documentos registros de persona
-                                string fechaRegistroExiste = documentoIndividualEncontrado.RegistroPersonaRel.FechaRegistro.ToString();
-
                                 // agregar el modelo mapeado
                                 documentosEmpresaPase.Add(new DocumentoCompleto
                                 {
                                     DocumentoBase64 = archivoEnBase64,
-                                    Descripcion = descripcionExiste,
-                                    FechaRegistro = fechaRegistroExiste,
+                                    Descripcion = documentoIndividualEncontrado.AnexoContratoRel != null
+                                        ? documentoIndividualEncontrado.AnexoContratoRel.Descripcion
+                                        : "",
+                                    FechaRegistro = documentoIndividualEncontrado.RegistroPersonaRel != null
+                                        ? documentoIndividualEncontrado.RegistroPersonaRel.FechaRegistro.ToString()
+                                        : "",
                                     FechaVencimiento = documentoIndividualEncontrado.FechaVencimiento.ToString(),
                                     Extension = documentoIndividualEncontrado.Extension,
                                     TituloDocumento = documentoIndividualEncontrado.TipoDocumentoRel.Titulo
