@@ -129,9 +129,13 @@ namespace Aplicacion.Cuentas
                                     string archivoEnBase64 = Convert.ToBase64String(documentoEnBytes);
 
                                     // dato relacionado a documentos anexo de contrato
-                                    string descripcionExiste = documentoIndividualEncontrado.AnexoContratoRel.Descripcion;
+                                    string descripcionExiste = documentoIndividualEncontrado.AnexoContratoRel != null
+                                        ? documentoIndividualEncontrado.AnexoContratoRel.Descripcion
+                                        : "";
                                     // dato relacionado a documentos registros de persona
-                                    string fechaRegistroExiste = documentoIndividualEncontrado.RegistroPersonaRel.FechaRegistro.ToString();
+                                    string fechaRegistroExiste = documentoIndividualEncontrado.RegistroPersonaRel != null
+                                        ? documentoIndividualEncontrado.RegistroPersonaRel.FechaRegistro.ToString()
+                                        : "";
 
                                     // agregar el modelo mapeado
                                     documentosCompletosPersona.Add(new DocumentoCompleto
