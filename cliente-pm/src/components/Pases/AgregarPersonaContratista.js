@@ -104,11 +104,11 @@ export const AgregarPersonaContratista = props => {
 
     const sendData = () => { 
 
-        guardarFecha();
+        //guardarFecha();
 
-        console.log(documentoPersona)
+        //console.log(documentoPersona)
 
-        //props._guardarPersonaC(personaExterna, documentoPersona);
+        props._guardarPersonaC(personaExterna, documentoPersona);
     };
 
     return (
