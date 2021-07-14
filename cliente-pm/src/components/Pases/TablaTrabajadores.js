@@ -84,6 +84,7 @@ export const TablaTrabajadores = props => {
     }
 
     const cerrarModalPases = () =>{
+        props._actualizarPagina();
         closePases();
     }
 

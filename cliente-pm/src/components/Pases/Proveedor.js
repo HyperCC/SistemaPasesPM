@@ -13,6 +13,8 @@ export const Proveedor = (props) => {
     const TITULO = 'Proveedor';
     const history = useHistory();
 
+    const [actualizar, setActualizar] = useState(0);
+
     // codigo actual de la notificacion a mostrar
     const [currentNotification, setCurrentNotification] = useState('none');
     // posibles campos invalidos enviados por el usuario
@@ -148,6 +150,9 @@ export const Proveedor = (props) => {
         history.push("/Perfil");
     };
 
+    const actualizarPagina = () =>{
+        setActualizar(actualizar + 1);
+    }
 
     return (
         <div class="bg-gray-100 min-h-screen">
@@ -165,7 +170,8 @@ export const Proveedor = (props) => {
                     {/** Parte inferior tabla de personas */}
                     <TablaTrabajadores datos={personaExterna} url={URL}
                         _enviarFormulario={enviarFormulario}
-                        _cancelarGuardado={cancelarGuardado} />
+                        _cancelarGuardado={cancelarGuardado}
+                        _actualizarPagina={actualizarPagina} />
 
                 </form>
             </div>

@@ -13,6 +13,8 @@ export const UsoDeMuelle = (props) => {
     const TITULO = 'Uso de Muelle';
     const history = useHistory();
 
+    const [actualizar, setActualizar] = useState(0);
+
     // codigo actual de la notificacion a mostrar
     const [currentNotification, setCurrentNotification] = useState('none');
     // posibles campos invalidos enviados por el usuario
@@ -59,6 +61,10 @@ export const UsoDeMuelle = (props) => {
             [name]: date // solo cambiar el input mapeado
         }));
     };
+
+    const actualizarPagina = () =>{
+        setActualizar(actualizar + 1);
+    }
 
     // tomar una lista de personas en memoria o iniciar una nueva lista
     const [personaExterna, setPersonaExterna] = useState(
@@ -163,7 +169,8 @@ export const UsoDeMuelle = (props) => {
                     {/** Parte inferior tabla de personas */}
                     <TablaTrabajadores datos={personaExterna} url={URL}
                         _enviarFormulario={enviarFormulario}
-                        _cancelarGuardado={cancelarGuardado} />
+                        _cancelarGuardado={cancelarGuardado}
+                        _actualizarPagina={actualizarPagina} />
 
                 </form>
             </div>
