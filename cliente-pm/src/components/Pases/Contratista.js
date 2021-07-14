@@ -240,7 +240,7 @@ export const Contratista = (props) => {
 
                     {/** Parte inferior */}
 
-                    <TablaTrabajadores datos={datosPaseGeneral} url={url}
+                    <TablaTrabajadores datos={datosPaseGeneral.PersonasContratista} url={url}
                         _enviarFormulario={enviarFormulario}
                         _cancelarGuardado={cancelarGuardado}
                         _guardarPersona={guardarPersona} />

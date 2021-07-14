@@ -4,8 +4,9 @@
 
 .modal {
     font-size: 12px;
-    max-height: 100vh;
+    max-height: 90vh;
     overflow-y: auto;
+    overflow-x: auto;
   }
   .modal > .header {
     width: 100%;

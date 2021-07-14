@@ -4,6 +4,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useHistory } from "react-router-dom";
 import Popup from 'reactjs-popup';
 import RutValidator from "w2-rut-validator";
+import { DocumentosEmpresa } from './DocumentosEmpresa';
+import moment from 'moment';
 
 export const AgregarPersonaContratista = props => {
 
@@ -86,8 +88,27 @@ export const AgregarPersonaContratista = props => {
         };
     }
 
+    const guardarFecha = () => {
+
+        setDocumentoPersona(
+            documentoPersona.map( (documento) =>
+            
+                documento.TipoDocumento === "Contrato de Trabajo"
+                    ? { ...documento, FechaVencimiento: moment(contratoDate.toString()).format("DD/MM/YYYY")}
+                    : { ...documento}
+                
+            )
+        );
+    }
+
+
     const sendData = () => { 
-        props._guardarPersonaC(personaExterna, documentoPersona);
+
+        guardarFecha();
+
+        console.log(documentoPersona)
+
+        //props._guardarPersonaC(personaExterna, documentoPersona);
     };
 
     return (

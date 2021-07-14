@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from "react-router-dom";
 import Pagination from '../../Pagination';
+import SelectSearch from 'react-select-search';
 
 const TablaPases = props => {
 
@@ -12,6 +13,98 @@ const TablaPases = props => {
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(5);
 
+    const [filtro, setFiltro] = useState("");
+    const [tipo, setTipo] = useState('')
+    const [estado, setEstado] = useState('');
+
+    
+    
+    // Filtro de estado
+    const filtroEstado = [].concat(props.soloPases).sort(function(b,a){
+        if(a.estado === "FINALIZADO") return -1;
+        return 0;
+    });
+
+    //console.log(filtroEstado, "aqui esta la lista filtrada")
+    if(filtro === ""){
+        //console.log("Se aplica el filtro")
+        setFiltro(filtroEstado);
+    }
+    
+
+    // Filtro por fecha de inicio
+
+    var filtroIni =[].concat(props.soloPases).sort(function(a,b){
+            if(a.fechaInicio > b.fechaInicio){
+                return -1;
+            }if(a.fechaInicio < b.fechaInicio){
+                return 1;
+            }
+            return 0;
+        });
+     
+    // Filtro por fecha de termino
+
+    var filtroFin = [].concat(props.soloPases).sort(function(a,b){
+                    if(a.fechaTermino > b.fechaTermino){
+                        return -1;
+                    }if(a.fechaTermino < b.fechaTermino){
+                        return 1;
+                    }
+                    return 0;
+                });  
+                
+    // Filtro por tipo de pase
+
+    var filtroTipo = [].concat(props.soloPases).sort(function(a,b){
+        if(a.tipo == tipo){
+            return -1;
+        }
+        return 0;
+    }); 
+
+    // Filtro por estado del pase
+
+    var filtroEstadoB = [].concat(props.soloPases).sort(function(a,b){
+        if(a.estado == estado){
+            return -1;
+        }
+        return 0;
+    }); 
+
+    console.log("este es el filtro", filtro)
+
+    // Funciones para cambiar filtro
+
+    function showIni(){
+        setFiltro(filtroIni);
+    }
+
+    function showFin(){
+        setFiltro(filtroFin);
+    }
+
+    function showTipo(){
+        setFiltro(filtroTipo)
+    }
+
+    function showEstado(){
+        setFiltro(filtroEstadoB)
+    }
+
+    if(tipo!=''){
+        showTipo()
+        setTipo('') 
+    }
+
+    if(estado!=''){
+        setFiltro('')
+        showEstado()
+        setEstado('')
+    }
+
+
+
     useEffect(() => {
         const fetchUsers = async () => {
             setPases(props.soloPases);
@@ -22,7 +115,7 @@ const TablaPases = props => {
     // Obtener el indice inicial por pagina
     const offset = (currentPage - 1) * postsPerPage;
     //Borrar cuando se deje de probar 
-    console.log(pases);
+    //console.log(pases);
     //Funcion que cambia la pagina
     const onPageChanged = pageNumber => {
         switch (pageNumber){
