@@ -86,6 +86,7 @@ const AgregarPersona = props => {
 
         //props._guardarPersonaExterna(personaExterna);
         //window.localStorage.setItem('nueva_persona_externa', JSON.stringify(personaExterna));
+        props.cerrarModal()
     };
 
     return (

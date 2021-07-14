@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useHistory } from "react-router-dom";
 import Pagination from '../Pagination';
 import { AgregarPersonaContratista } from './AgregarPersonaContratista';
-import Popup from 'reactjs-popup';
+
+import {Popup, Warper} from 'reactjs-popup';
 import { DocumentosEmpresa } from './DocumentosEmpresa';
 import AgregarPersona from './AgregarPersona';
 
@@ -14,25 +15,28 @@ export const TablaTrabajadores = props => {
     const [usuarios, setUsuarios] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(10);
+    
+    // Controlar pop-up
+    const refContratista = useRef();
+    const openContratista = () => refContratista.current.open();
+    const closeContratista = () => refContratista.current.close();
 
-    useEffect(() => {
-        const fetchUsers = async () => {
-            setUsuarios(props.datos);
-        };
-        fetchUsers();
-    }, []);
+    const refPases = useRef();
+    const openPases = () => refPases.current.open()
+    const closePases = () => refPases.current.close()
+
 
     // Persona para pase contratista
 
     const [personasContratista, setPersonaContratista] = useState({
-        Persona: {
-            Rut: "",
-            Nombres: "",
-            PrimerApellido: "",
-            SegundoApellido: "",
-            Nacionalidad: ""
-        },
-        DocumentosPersona: []
+        
+        Rut: "",
+        Nombres: "",
+        PrimerApellido: "",
+        SegundoApellido: "",
+        Nacionalidad: "",
+        DocumentosPersona: [],
+
     })
 
 
@@ -62,7 +66,11 @@ export const TablaTrabajadores = props => {
         // Datos Persona
         setPersonaContratista(anterior => ({
             ...anterior, // mantener lo que existe antes
-            ["Persona"]: personaExterna,// solo cambiar el input mapeado
+            ["Rut"]: personaExterna.Rut,// solo cambiar el input mapeado
+            ["Nombres"]: personaExterna.Nombres,// solo cambiar el input mapeado
+            ["PrimerApellido"]: personaExterna.PrimerApellido,// solo cambiar el input mapeado
+            ["SegundoApellido"]: personaExterna.SegundoApellido,// solo cambiar el input mapeado
+            ["Nacionalidad"]: personaExterna.Nacionalidad,// solo cambiar el input mapeado
         }));
 
         // Documentos Persona
@@ -70,6 +78,13 @@ export const TablaTrabajadores = props => {
             ...anterior, // mantener lo que existe antes
             ["DocumentosPersona"]: documentoPersona // solo cambiar el input mapeado
         }));
+        
+        // Cerramos el modal
+        closeContratista()
+    }
+
+    const cerrarModalPases = () =>{
+        closePases();
     }
 
     useEffect(() => {
@@ -78,6 +93,14 @@ export const TablaTrabajadores = props => {
             props._guardarPersona(personasContratista)
 
     }, [personasContratista]);
+
+    
+    useEffect(() => {
+        const fetchUsers = async () => {
+            setUsuarios(props.datos);
+        };
+        fetchUsers();
+    }, []);
 
 
     return (
@@ -92,31 +115,24 @@ export const TablaTrabajadores = props => {
                 <div class="text-end flex-none">
                     <div class="flex-none md:flex w-full space-x-3">
                         {props.url == "/SolicitudContratista" &&
-                            <Popup trigger={<button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">Agregar Persona Contratista</button>} modal nested>
-                                {close => (
-                                    <div className="modal">
-                                        <button className="close" onClick={close}>
-                                            &times;
-                                        </button>
-                                        <AgregarPersonaContratista datos={props.datosPaseGeneral}
-                                            _guardarPersonaC={sendDataContratista} />
+                            <Popup ref={refContratista} trigger={<button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">Agregar Persona Contratista</button>} modal nested>
+                               
+                                <div className="modal">
+                                    <AgregarPersonaContratista datos={props.datosPaseGeneral}
+                                        _guardarPersonaC={sendDataContratista} />
 
-                                    </div>
-                                )}
+                                </div>
+                                
                             </Popup>
                         }
                         {props.url != "/SolicitudContratista" &&
 
-                            <Popup trigger={<button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">Agregar Persona</button>} modal nested>
-                            {close => (
+                            <Popup ref={refPases} trigger={<button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">Agregar Persona</button>} modal nested>
+                            
                                 <div className="modal">
-                                    <button className="close" onClick={close}>
-                                        &times;
-                                    </button>
-                                    <AgregarPersona />
-
+                                    <AgregarPersona cerrarModal={cerrarModalPases}/>
                                 </div>
-                            )}
+                            
                             </Popup>
                         }
 
