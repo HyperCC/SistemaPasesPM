@@ -43,7 +43,6 @@ namespace Persistencia.AuxiliaresAlmacenamiento
             {
                 DocumentoId = new Guid(),
                 Extension = documentoPersonasRequest.Extension,
-                PaseId = currentPaseId,
                 PersonaId = currentPersonaContratistaId,
                 TipoDocumentoId = currentTipoDocumento.TipoDocumentoId
             };

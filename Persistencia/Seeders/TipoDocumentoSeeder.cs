@@ -7,13 +7,22 @@ using System.Threading.Tasks;
 
 namespace Persistencia.Seeders
 {
+    /// <summary>
+    /// Tipos de documento iniciales a crear para la base de datos
+    /// </summary>
     public class TipoDocumentoSeeder
     {
+        /// <summary>
+        /// generar los registros de tipos de documento
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static async Task InsertarData(SistemaPasesContext context)
         {
             var existenTipoDoc = await context.TipoDocumento.AnyAsync();
             if (!existenTipoDoc)
             {
+                // todos los tipos de documento solicitados
                 string[] tipoDocumetos = {
                     "CRONOGRAMA DE TRABAJO",
                     "CERTIFICADO DE MUTUALIDAD",

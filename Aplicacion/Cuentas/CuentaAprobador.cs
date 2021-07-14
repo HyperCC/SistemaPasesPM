@@ -48,6 +48,7 @@ namespace Aplicacion.Cuentas
                 var pasesPorRol = currentRol[0] == "CONTACTO" ? this._context.Pase.Where(p => p.Tipo == TipoPase.VISITA
                     || p.Tipo == TipoPase.PROVEEDOR || (p.Tipo == TipoPase.CONTRATISTA && (p.Estado != EstadoPase.FINALIZADO && p.Estado == EstadoPase.PENDIENTE)))
 
+                    : currentRol[0] == "GUARDIA" ?  this._context.Pase
                     : currentRol[0] == "HSEQ" ? this._context.Pase.Where(p => p.Tipo == TipoPase.CONTRATISTA)
                     : currentRol[0] == "JEFE_OPERACIONES" ? this._context.Pase.Where(p => p.Tipo == TipoPase.USOMUELLE)
 

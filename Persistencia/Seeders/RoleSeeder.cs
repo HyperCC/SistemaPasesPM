@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,24 +20,35 @@ namespace Persistencia.Seeders
         /// <returns></returns>
         public static async Task InsertarData(RoleManager<IdentityRole> roleManager)
         {
-            string[] roles = { "ADMIN",
-                "SOLICITANTE",
-                "CONTACTO",
-                "HSEQ",
-                "JEFE_OPERACIONES",
-                "OPIP" };
-
-            // agregar los roles siempre que no existan
-            foreach (var rol in roles)
+            var existenRoles = roleManager.Roles.Any();
+            if (!existenRoles)
             {
-                var searchRol = await roleManager.FindByNameAsync(rol);
+                // todos los roles solicitados hasta el momento 
+                string[] roles = {
+                    "ADMIN",
+                    "GUARDIA",
+                    "SOLICITANTE",
+                    "CONTACTO",
+                    "HSEQ",
+                    "JEFE_OPERACIONES",
+                    "OPIP"
+                };
 
-                if (searchRol == null)
-                    await roleManager.CreateAsync(new IdentityRole(rol));
+                // agregar los roles siempre que no existan
+                foreach (var rol in roles)
+                {
+                    var searchRol = await roleManager.FindByNameAsync(rol);
 
-                else
-                    Console.WriteLine($"YA EXISTE EL ROL {rol}");
+                    if (searchRol == null)
+                        await roleManager.CreateAsync(new IdentityRole(rol));
+
+                    else
+                        Console.WriteLine($"YA EXISTE EL ROL {rol}");
+                }
             }
+            else
+                // TODO: estos mensajes deben ser por Logger
+                Console.WriteLine("YA EXISTEN LOS ROLES INICIALES");
         }
     }
 }

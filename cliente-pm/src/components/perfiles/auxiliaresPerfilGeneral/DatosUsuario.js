@@ -30,7 +30,9 @@ const DatosUsuario = props => {
                         'Contacto'
                         : currentRol == 'OPIP' ?
                             'OPIP'
-                            : 'Rol no Reconocido';
+                            : currentRol == 'GUARDIA' ?
+                                'Guardia'
+                                : 'Rol no Reconocido';
 
     return (
         <div class="bg-white p-4 md:p-8 rounded-lg shadow-md">

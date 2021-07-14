@@ -2,7 +2,7 @@ import React from 'react'
 
 const Table = () => {
     return (            
-        <div class="container mx-auto px-4 sm:px-8 bg-white rounded px-4 flex flex-col justify-between leading-normal shadow">
+        <div class="container mx-auto sm:px-8 bg-white rounded px-4 flex flex-col justify-between leading-normal shadow">
             <div class="py-8">
                 <div class="flex flex-row mb-1 sm:mb-0 justify-between w-full">
                     <h2 class="text-2xl leading-tight">
@@ -28,25 +28,25 @@ const Table = () => {
                         <table class="min-w-full leading-normal">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="text-center px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                                    <th scope="col" class="text-center px-5 py-3 bg-white  border-b border-gray-200 text-gray-800 text-sm uppercase font-normal">
                                         Fecha Inicio
                                     </th>
-                                    <th scope="col" class="text-center px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                                    <th scope="col" class="text-center px-5 py-3 bg-white  border-b border-gray-200 text-gray-800 text-sm uppercase font-normal">
                                         Fecha Termino
                                     </th>
-                                    <th scope="col" class="text-center px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                                    <th scope="col" class="text-center px-5 py-3 bg-white  border-b border-gray-200 text-gray-800 text-sm uppercase font-normal">
                                         Motivo
                                     </th>
-                                    <th scope="col" class="text-center px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                                    <th scope="col" class="text-center px-5 py-3 bg-white  border-b border-gray-200 text-gray-800 text-sm uppercase font-normal">
                                         Area
                                     </th>
-                                    <th scope="col" class="text-center px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                                    <th scope="col" class="text-center px-5 py-3 bg-white  border-b border-gray-200 text-gray-800 text-sm uppercase font-normal">
                                         Tipo
                                     </th>
-                                    <th scope="col" class="text-center px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                                    <th scope="col" class="text-center px-5 py-3 bg-white  border-b border-gray-200 text-gray-800 text-sm uppercase font-normal">
                                         Estado
                                     </th>
-                                    <th scope="col" class="text-center px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                                    <th scope="col" class="text-center px-5 py-3 bg-white  border-b border-gray-200 text-gray-800 text-sm uppercase font-normal">
                                         Acciones
                                     </th>
                                 </tr>
