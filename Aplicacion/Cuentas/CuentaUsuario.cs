@@ -21,6 +21,9 @@ using System.IO;
 
 namespace Aplicacion.Cuentas
 {
+    /// <summary>
+    /// Datos del perfil de las personas con rol solicitante
+    /// </summary>
     public class CuentaUsuario
     {
         public class Ejecuta : IRequest<PasesUsuarioData>
@@ -76,7 +79,7 @@ namespace Aplicacion.Cuentas
 
                     // en caso de haber personas relacionadas al pase
                     if (pase.PersonasRel != null)
-                        foreach (var personaExterna in pase.PersonasRel.Reverse())
+                        foreach (var personaExterna in pase.PersonasRel)
                         {
                             // asociar las personas externas correspondientes
                             var personaExternaEncontrada = await this._context.Persona

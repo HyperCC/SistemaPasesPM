@@ -17,6 +17,9 @@ using System.Threading.Tasks;
 
 namespace Aplicacion.Cuentas
 {
+    /// <summary>
+    /// Datos del perfil de las personas con roles aprobador
+    /// </summary>
     public class CuentaAprobador
     {
         public class Ejecuta : IRequest<PasesUsuarioData>
@@ -48,7 +51,7 @@ namespace Aplicacion.Cuentas
                 var pasesPorRol = currentRol[0] == "CONTACTO" ? this._context.Pase.Where(p => p.Tipo == TipoPase.VISITA
                     || p.Tipo == TipoPase.PROVEEDOR || (p.Tipo == TipoPase.CONTRATISTA && (p.Estado != EstadoPase.FINALIZADO && p.Estado == EstadoPase.PENDIENTE)))
 
-                    : currentRol[0] == "GUARDIA" ?  this._context.Pase
+                    : currentRol[0] == "GUARDIA" ? this._context.Pase
                     : currentRol[0] == "HSEQ" ? this._context.Pase.Where(p => p.Tipo == TipoPase.CONTRATISTA)
                     : currentRol[0] == "JEFE_OPERACIONES" ? this._context.Pase.Where(p => p.Tipo == TipoPase.USOMUELLE)
 
@@ -80,6 +83,12 @@ namespace Aplicacion.Cuentas
                                     .Include(x => x.ApellidosRel)
                                     .ThenInclude(z => z.ApellidoRel)
                                     .Include(x => x.PersonaExternaRel)
+
+                                    .Include(x => x.DocumentosRel)
+                                    .ThenInclude(z => z.AnexoContratoRel)
+                                    .Include(x => x.DocumentosRel)
+                                    .ThenInclude(z => z.RegistroPersonaRel)
+
                                     .FirstOrDefaultAsync(x => x.PersonaId == personaExterna.PersonaId);
 
                                 // obtencion de nombres
@@ -97,6 +106,44 @@ namespace Aplicacion.Cuentas
                                     apellidos[1]
                                     : string.Empty;
 
+                                // listar documentos relacionados a usuario 
+                                ICollection<DocumentoCompleto> documentosCompletosPersona = new List<DocumentoCompleto>();
+
+                                if (personaExternaEncontrada.DocumentosRel != null)
+                                    foreach (var documentoIndividual in personaExternaEncontrada.DocumentosRel)
+                                    {
+                                        // asociar las personas externas correspondientes
+                                        var documentoIndividualEncontrado = await this._context.Documento
+                                            .Include(x => x.TipoDocumentoRel)
+                                            .Include(y => y.AnexoContratoRel)
+                                            .Include(z => z.RegistroPersonaRel)
+                                            .FirstOrDefaultAsync(x => x.DocumentoId == documentoIndividual.DocumentoId);
+
+                                        // conversion del archivo hacia base64
+                                        byte[] documentoEnBytes = File.ReadAllBytes(documentoIndividualEncontrado.RutaDocumento);
+                                        string archivoEnBase64 = Convert.ToBase64String(documentoEnBytes);
+
+                                        // dato relacionado a documentos anexo de contrato
+                                        string descripcionExiste = documentoIndividualEncontrado.AnexoContratoRel != null
+                                            ? documentoIndividualEncontrado.AnexoContratoRel.Descripcion
+                                            : "";
+                                        // dato relacionado a documentos registros de persona
+                                        string fechaRegistroExiste = documentoIndividualEncontrado.RegistroPersonaRel != null
+                                            ? documentoIndividualEncontrado.RegistroPersonaRel.FechaRegistro.ToString()
+                                            : "";
+
+                                        // agregar el modelo mapeado
+                                        documentosCompletosPersona.Add(new DocumentoCompleto
+                                        {
+                                            DocumentoBase64 = archivoEnBase64,
+                                            Descripcion = descripcionExiste,
+                                            FechaRegistro = fechaRegistroExiste,
+                                            FechaVencimiento = documentoIndividualEncontrado.FechaVencimiento.ToString(),
+                                            Extension = documentoIndividualEncontrado.Extension,
+                                            TituloDocumento = documentoIndividualEncontrado.TipoDocumentoRel.Titulo
+                                        });
+                                    }
+
                                 personasExternasPase.Add(new PersonaExternaPase
                                 {
                                     Nombres = nombresPE,
@@ -110,7 +157,8 @@ namespace Aplicacion.Cuentas
                                         : "",
                                     Nacionalidad = personaExternaEncontrada.PersonaExternaRel.Nacionalidad != null
                                         ? personaExternaEncontrada.PersonaExternaRel.Nacionalidad
-                                        : ""
+                                        : "",
+                                    DocumentoCompletosRel = documentosCompletosPersona
                                 });
                             }
 

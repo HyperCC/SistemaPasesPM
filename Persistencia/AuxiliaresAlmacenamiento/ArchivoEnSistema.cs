@@ -17,6 +17,7 @@ namespace Persistencia.AuxiliaresAlmacenamiento
             , string currentExtension
             , IHostingEnvironment env)
         {
+            currentExtension = currentExtension.ToLower();
             string[] permittedExtensions = { ".txt", ".pdf", ".docx", ".doc", ".png", ".jpeg", ".jpg" };
 
             Console.WriteLine("--------------------------------");
