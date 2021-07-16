@@ -151,6 +151,13 @@ namespace WebApi.Middleware
                     context.Response.StatusCode = (int)enee.Codigo;
                     break;
 
+                case ExtensionNoAceptadaException enae:
+                    logger.LogError(ex, "LA EXTENSION DEL ARCHIVO RECIBIDA POR EL CLIENTE NO ES RECONOCIDA O NO ESTA PERMITIDA..");
+                    errores = enae.Errores;
+                    // lanzar codigo de error especifico
+                    context.Response.StatusCode = (int)enae.Codigo;
+                    break;
+
                 // si se lanza ManejadorExcepcion (excepcion personalizada), error de validacion para solicitudes http
                 case ManejadorException me:
                     logger.LogError(ex, "ERROR GENERICO EN LOS MANEJADORES..");
