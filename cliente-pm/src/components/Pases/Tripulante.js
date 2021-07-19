@@ -151,15 +151,15 @@ export const Tripulante = (props) => {
         history.push("/Perfil");
     };
 
-    const actualizarPagina = () =>{
+    const actualizarPagina = () => {
         setActualizar(actualizar + 1);
     }
 
 
     return (
         <div class="bg-gray-100 min-h-screen">
-            <div class="md:max-w-6xl w-full mx-auto py-8">
-                <form class="sm:px-8 px-4">
+            <div class="max-w-6xl mx-auto">
+                <form class="py-8 sm:px-8 px-2">
 
                     <LanzarNoritificaciones codigo={currentNotification} camposInvalidos={currentCamposInvalidos} />
 

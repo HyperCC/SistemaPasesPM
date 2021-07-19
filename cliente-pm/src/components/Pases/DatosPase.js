@@ -27,12 +27,12 @@ export const DatosPase = props => {
 
 
     return (
-        <div class="bg-white p-4 md:p-8 rounded-lg shadow-md">
-            <p class="text-2xl leading-tight mx-8 text-center md:text-left md:ml-16">
+        <div class="bg-white p-4 sm:p-8 rounded-lg shadow-md">
+            <p class="text-2xl pb-4 leading-tight mx-6 text-center md:text-left md:ml-16">
                 Información general - Pase {props.tituloPase}
             </p>
 
-            <div class="grid md:grid-cols-7 grid-cols-3 gap-6 mt-6 mx-8 mb-2 md:mb-0">
+            <div class="grid md:grid-cols-7 grid-cols-3 gap-6 mt-6 mx-0 sm:mx-8 mb-2 md:mb-0">
                 <div class="col-span-3">
                     <div class="grid grid-cols-3 gap-6">
 
@@ -64,13 +64,15 @@ export const DatosPase = props => {
                         <div>Rut Empresa</div>
                         <div class="col-span-2">
                             <input type="text" name="RutEmpresa" value={props._dataPaseGeneral.RutEmpresa}
-                                onChange={data => cambiarValoresInput(data)} class="border py-1 px-3 border-gray-300 bg-gray-100  outline-none rounded-md w-full" />
+                                onChange={data => cambiarValoresInput(data)} 
+                                class="border py-1 px-3 border-gray-300 bg-gray-100 outline-none rounded-md w-full" />
                         </div>
 
                         <div>Nombre Empresa</div>
                         <div class="col-span-2">
                             <input type="text" name="NombreEmpresa" value={props._dataPaseGeneral.NombreEmpresa}
-                                onChange={data => cambiarValoresInput(data)} class="border py-1 px-3 border-gray-300 bg-gray-100 outline-none rounded-md w-full" />
+                                onChange={data => cambiarValoresInput(data)} 
+                                class="border py-1 px-3 border-gray-300 bg-gray-100 outline-none rounded-md w-full" />
                         </div>
                     </div>
                 </div>
