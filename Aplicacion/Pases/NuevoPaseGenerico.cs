@@ -21,12 +21,12 @@ using Dominio.Auxiliares.ModelosPaseContratista;
 namespace Aplicacion.Pases
 {
     /// <summary>
-    /// Creacion de un pase de cualuier tipo
+    /// Creacion de un pase de cualquier tipo
     /// </summary>
     public class NuevoPaseGenerico
     {
         /// <summary>
-        /// atributos recibidos por el request
+        /// Atributos recibidos por el request
         /// </summary>
         public class Ejecuta : IRequest
         {
@@ -44,7 +44,7 @@ namespace Aplicacion.Pases
             // Personas para pase generico
             public ICollection<PersonaExternaGenericaRequest> PersonasExternas { get; set; } // nullable
             // documentos de empresa
-            public ICollection<DocumentoEmpresa> SeccionDocumentosEmpresa { get; set; } // nulable
+            public ICollection<DocumentoEmpresa> DocumentosInduccion { get; set; } // nulable
         }
 
         /// <summary>
@@ -143,6 +143,15 @@ namespace Aplicacion.Pases
                 };
                 // agregar el nuevo pase 
                 await this._context.Pase.AddAsync(paseGenerado);
+
+                // agregar Documentos de induccion 
+                if (request.DocumentosInduccion != null)
+                    foreach (var docEmpresa in request.DocumentosInduccion)
+                        await AlmacenarDocumentosEmpresa.AgregarDocumentosEmpresa(docEmpresa
+                            , _context
+                            , _env
+                            , paseGenerado.PaseId
+                            , buscarEmpresa.EmpresaId);
 
                 if (request.PersonasExternas != null)
                     // agregar las personas externas adheridas al pase 

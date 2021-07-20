@@ -20,8 +20,14 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace Aplicacion.Pases
 {
+    /// <summary>
+    /// Creacion de un pase de tipo Contratista
+    /// </summary>
     public class NuevoPaseContratista
     {
+        /// <summary>
+        /// Atributos recibidos por el request
+        /// </summary>
         public class Ejecuta : IRequest
         {
             public string Area { get; set; } //nullable
@@ -116,7 +122,7 @@ namespace Aplicacion.Pases
                 // agregar el pase con el prevencionista relaconado
                 await this._context.Pase.AddAsync(paseGenerado);
 
-                // Agregar Documentos de la Empresa
+                // agregar Documentos de la Empresa
                 if (request.SeccionDocumentosEmpresa != null)
                     foreach (var docEmpresa in request.SeccionDocumentosEmpresa)
                         await AlmacenarDocumentosEmpresa.AgregarDocumentosEmpresa(docEmpresa

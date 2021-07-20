@@ -15,5 +15,6 @@ namespace Dominio.Entidades
         // obtener los modelos relacionados 
         public ICollection<Usuario> UsuariosRel { get; set; }
         public ICollection<Pase> PasesRel { get; set; }
+        public ICollection<Documento> DocumentosRel { get; set; }
     }
 }
