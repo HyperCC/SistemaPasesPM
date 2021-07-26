@@ -14,14 +14,16 @@ export const ListaPersonas = props => {
             PaseId: props.identificador,
             NuevoEstado: rolCuenta == 'HSEQ' ? 'PREAPROBADO'
                 : rolCuenta == 'JEFE_OPERACIONES' ? 'PREAPROBADO'
-                    : 'APROBADO'
+                    : 'APROBADO',
+            Observacion: descripcion
         });
     };
 
     const RechazarPaseActual = () => {
         props.opcionCambiarEstado({
             PaseId: props.identificador,
-            NuevoEstado: "RECHAZADO"
+            NuevoEstado: "RECHAZADO",
+            Observacion: descripcion
         });
     };
 
@@ -47,26 +49,30 @@ export const ListaPersonas = props => {
                         {rolCuenta != 'SOLICITANTE' &&
                             <div>
                                 <Popup trigger={<button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">Rechazar</button>} modal nested>
-                                {close => (
-                                    <div className="modal">
-                                    
-                                        <button className="close" onClick={close}>
-                                            &times;
-                                        </button>
+                                    {close => (
+                                        <div className="modal">
 
-                                        <div class="grid grid-cols-4 gap-4 md:grid-cols-4 mt-6 mx-8 mb-2 md:mb-0">
-                                            <div class="col-span-1 row-span-2 col-start-1 row-start-1"><p>Descripcion del rechazo</p></div>
-                                            <div class="col-span-3 row-span-2 col-start-2 row-start-1"><textarea type="range" value={descripcion} name="Descripcion" placeholder="range...." class="border w-full app border-gray-300 p-2 my-2 rounded-md focus:outline-none focus:ring-2 ring-azul-pm"> </textarea></div>
+                                            <button className="close" onClick={close}>
+                                                &times;
+                                            </button>
+
+                                            <div class="grid grid-cols-4 gap-4 md:grid-cols-4 mt-6 mx-8 mb-2 md:mb-0">
+                                                <div class="col-span-1 row-span-2 col-start-1 row-start-1"><p>Descripcion del rechazo</p></div>
+                                                <div class="col-span-3 row-span-2 col-start-2 row-start-1">
+                                                    <textarea type="range" value={descripcion} name="Descripcion" placeholder="range...."
+                                                        class="border w-full app border-gray-300 p-2 my-2 rounded-md focus:outline-none focus:ring-2 ring-azul-pm">
+                                                    </textarea>
+                                                </div>
+                                            </div>
+
+                                            <button type="button" onClick={RechazarPaseActual}
+                                                class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+                                                Rechazar
+                                            </button>
+
                                         </div>
 
-                                        <button type="button" onClick={RechazarPaseActual}
-                                            class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
-                                            Rechazar
-                                        </button>
-                                        
-                                    </div>
-                                    
-                                )}
+                                    )}
                                 </Popup>
 
                             </div>
@@ -131,7 +137,7 @@ export const ListaPersonas = props => {
                                                         state: {
 
                                                             documentosEmpresa: value.documentoCompletosRel,
-                                                        
+
                                                         }
                                                     }}>
                                                     Documentos Persona
