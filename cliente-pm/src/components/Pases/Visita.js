@@ -158,7 +158,7 @@ export const Visita = (props) => {
     return (
         <div class="bg-gray-100 min-h-screen">
             <div class="max-w-6xl mx-auto">
-                <form class="py-8 sm:px-8 px-2">
+                <div class="py-8 sm:px-8 px-2">
 
                     <LanzarNoritificaciones codigo={currentNotification} camposInvalidos={currentCamposInvalidos} />
 
@@ -175,7 +175,7 @@ export const Visita = (props) => {
                         _actualizarPagina={actualizarPagina} />
 
 
-                </form>
+                </div>
             </div>
         </div>
     );

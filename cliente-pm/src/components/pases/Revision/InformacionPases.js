@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 export const InformacionPase = props => {
     const history = useHistory();
@@ -62,7 +62,28 @@ export const InformacionPase = props => {
                         <div class="bg-gray-100 rounded-md px-2">
                             {props._dataPaseGeneral.fechaTermino}
                         </div>
+
                     </div>
+
+                    {props._dataPaseGeneral.tipo ==="CONTRATISTA" &&
+                            <div>
+                            <div class="h-2"></div>
+                            <div  class="h-8">
+                                <Link class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500"
+                                    to={{
+                                        pathname: "/RevisarDocumentoEmpresa",
+                                        state: {
+
+                                            documentosEmpresa: props._documentosEmpresa,
+                                        
+                                        }
+                                    }}>
+                                    Documentos Empresa
+                                </Link>
+                            </div>
+                            </div>
+                        }
+
                 </div>
             </div>
 

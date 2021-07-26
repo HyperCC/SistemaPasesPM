@@ -19,6 +19,7 @@ import AreaContacto from '../components/aprobacionPases/AreaContacto';
 import RutaSegura from './RutaSegura';
 import { RevisionPase } from '../components/pases/Revision/RevisionPase';
 import { AgregarPersonaContratista } from '../components/pases/AgregarPersonaContratista';
+import { ArchivosEmpresa } from '../components/pases/Revision/ArchivosEmpresa';
 
 
 const Rutas = () => {
@@ -110,6 +111,11 @@ const Rutas = () => {
                 <Route path="/RevisarPase">
                     <RevisionPase />
                 </Route>
+
+                <Route path="/RevisarDocumentoEmpresa">
+                    <ArchivosEmpresa />
+                </Route>
+                
 
             </Switch>
         </Router>

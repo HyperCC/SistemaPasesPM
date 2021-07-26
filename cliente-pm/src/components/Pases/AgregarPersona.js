@@ -22,6 +22,7 @@ const AgregarPersona = props => {
     const changeIsRut = () => setIsRut(true);
     const changeNotIsRut = () => setIsRut(false);
     const [paises, setPaises] = useState([]);
+    const [documentosInduccion, setDocumentosInduccion] = useState([]);
 
     // consumir la api de los paises
     useEffect(() => {
@@ -43,6 +44,54 @@ const AgregarPersona = props => {
             [name]: value // solo cambiar el input mapeado
         }));
     };
+
+    // agregar documento induccion
+
+    const handleMultiFileChosen = async (file) => {
+        return new Promise((resolve, reject) => {
+            let reader = new FileReader();
+            reader.onload = () => {
+                resolve(reader.result)
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+            console.log(file)
+        })
+    }
+
+    let multipleFile = async (event) => {
+        event.preventDefault();
+
+        // prueba de codigo
+        let id = event.target.id
+        console.log(id)
+        let newFile = [];
+
+        const results = await Promise.all(Array.from(event.target.files).map(async (file) => {
+
+            const fileContents = await handleMultiFileChosen(file);
+            // Array para dejar solo la base 64 del archivo
+            var arrayAux = [];
+            arrayAux = fileContents.split(',');
+
+            // variable para sacar la extension del archivo
+            var extension = fileContents.split('.').pop();
+
+            newFile.push({ 
+                Documento: arrayAux[1],
+                TipoDocumento: id.toUpperCase(),
+                Obligariedad: true,
+                FechaVencimiento: "",
+                Extension: '.' + extension
+            })
+            //console.log(newFile);
+        }))
+
+        setDocumentosInduccion([...documentosInduccion, newFile])
+        //console.log(results, "results")
+        console.log(documentosInduccion)
+
+    }
 
     // enviar persona completa para almacenarlo
     const GuardarUnaPersona = infoFormulario => {
@@ -171,6 +220,19 @@ const AgregarPersona = props => {
                                         </select>
                                     </div>
                                 </div>
+
+                                <div class="col-span-1 form-group">
+                                    <label class="font-light text-gray-800 select-none">Archivo de induccion</label>
+                                </div>
+
+                                <div class="col-span-2">
+                                    <label for="Documento Induccion" class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">
+                                        Subir archivo
+                                    </label>
+                                    <input onChange={multipleFile} id="Documento Induccion" multiple type="file" style={{ display: "none" }} />
+                                </div>
+
+                                
                             </div>
 
 

@@ -88,18 +88,23 @@ export const AgregarPersonaContratista = props => {
         };
     }
 
-    const guardarFecha = () => {
-
+    useEffect(() => {
+       
         setDocumentoPersona(
             documentoPersona.map( (documento) =>
             
-                documento.TipoDocumento === "Contrato de Trabajo"
+                documento.TipoDocumento === "CONTRATO DE TRABAJO"
                     ? { ...documento, FechaVencimiento: moment(contratoDate.toString()).format("DD/MM/YYYY")}
                     : { ...documento}
                 
             )
         );
-    }
+
+        console.log("äqui")
+
+    }, [contratoDate]);
+
+    
 
 
     const sendData = () => { 

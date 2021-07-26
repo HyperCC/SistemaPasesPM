@@ -1,8 +1,10 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
+import Popup from 'reactjs-popup';
 
 export const ListaPersonas = props => {
     const history = useHistory();
+    let descripcion = "";
     const rolCuenta = window.localStorage.getItem('data_current_usuario') ?
         JSON.parse(window.localStorage.getItem('data_current_usuario')).rol
         : null;
@@ -43,10 +45,31 @@ export const ListaPersonas = props => {
                         }
 
                         {rolCuenta != 'SOLICITANTE' &&
-                            <button type="button" onClick={RechazarPaseActual}
-                                class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
-                                Rechazar
-                            </button>
+                            <div>
+                                <Popup trigger={<button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">Rechazar</button>} modal nested>
+                                {close => (
+                                    <div className="modal">
+                                    
+                                        <button className="close" onClick={close}>
+                                            &times;
+                                        </button>
+
+                                        <div class="grid grid-cols-4 gap-4 md:grid-cols-4 mt-6 mx-8 mb-2 md:mb-0">
+                                            <div class="col-span-1 row-span-2 col-start-1 row-start-1"><p>Descripcion del rechazo</p></div>
+                                            <div class="col-span-3 row-span-2 col-start-2 row-start-1"><textarea type="range" value={descripcion} name="Descripcion" placeholder="range...." class="border w-full app border-gray-300 p-2 my-2 rounded-md focus:outline-none focus:ring-2 ring-azul-pm"> </textarea></div>
+                                        </div>
+
+                                        <button type="button" onClick={RechazarPaseActual}
+                                            class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+                                            Rechazar
+                                        </button>
+                                        
+                                    </div>
+                                    
+                                )}
+                                </Popup>
+
+                            </div>
                         }
 
                         <button type="button" onClick={() => history.goBack()}
@@ -75,6 +98,9 @@ export const ListaPersonas = props => {
                                 <th scope="col" class="px-5 py-3 font-normal">
                                     Nacionalidad
                                 </th>
+                                <th>
+                                    Documentos
+                                </th>
                             </tr>
                         </thead>
 
@@ -97,6 +123,19 @@ export const ListaPersonas = props => {
                                             </td>
                                             <td class="p-4">
                                                 {value.nacionalidad}
+                                            </td>
+                                            <td>
+                                                <Link class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500"
+                                                    to={{
+                                                        pathname: "/RevisarDocumentoEmpresa",
+                                                        state: {
+
+                                                            documentosEmpresa: value.documentoCompletosRel,
+                                                        
+                                                        }
+                                                    }}>
+                                                    Documentos Persona
+                                                </Link>
                                             </td>
                                         </tr>
                                     })

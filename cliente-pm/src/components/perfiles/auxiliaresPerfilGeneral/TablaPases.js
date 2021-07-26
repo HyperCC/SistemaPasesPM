@@ -243,6 +243,8 @@ const TablaPases = props => {
                                             </td>
 
                                             <td class="p-4 space-x-1">
+                                                {value.tipo!="CONTRATISTA" &&
+                                                
                                                 <Link class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500"
                                                     to={{
                                                         pathname: "/RevisarPase",
@@ -254,11 +256,35 @@ const TablaPases = props => {
                                                             tipo: value.tipo,
                                                             estado: value.estado,
                                                             personas: value.personaExternasRel,
-                                                            paseId: value.paseId
+                                                            paseId: value.paseId,
+
                                                         }
                                                     }}>
                                                     Revisar
                                                 </Link>
+                                                }
+                                                
+                                                {value.tipo ==="CONTRATISTA" &&
+                                                    <Link class="rounded-md bg-verde-pm hover:bg-amarillo-pm text-white p-2 transition duration-500"
+                                                        to={{
+                                                            pathname: "/RevisarPase",
+                                                            state: {
+                                                                fechaInicio: value.fechaInicio,
+                                                                fechaTermino: value.fechaTermino,
+                                                                motivo: value.motivo,
+                                                                area: value.area,
+                                                                tipo: value.tipo,
+                                                                estado: value.estado,
+                                                                personas: value.personaExternasRel,
+                                                                documentosEmpresa: value.documentoEmpresasRel,
+                                                                prevensionista: value.prevencionistaRiesgos,
+                                                                paseId: value.paseId,
+
+                                                            }
+                                                        }}>
+                                                        Revisar
+                                                    </Link>
+                                                }
 
                                             </td>
                                         </tr>

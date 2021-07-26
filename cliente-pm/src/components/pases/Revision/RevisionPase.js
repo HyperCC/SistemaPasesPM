@@ -30,6 +30,7 @@ export const RevisionPase = props => {
 
     console.log("datos del pase ", pase);
 
+
     const CambiarEstadoPase = data => {
         setCurrentNotification('inf-cep000');
 
@@ -68,20 +69,39 @@ export const RevisionPase = props => {
     return (
         <div class="bg-gray-100 min-h-screen">
             <div class="md:max-w-6xl w-full mx-auto py-8">
-                <div class="sm:px-8 px-4">
+                
 
                     <LanzarNoritificaciones codigo={currentNotification} camposInvalidos={currentCamposInvalidos} />
 
-                    {/** Parte superior de la vista */}
-                    <InformacionPase _dataPaseGeneral={pase} tituloPase={TITULO} />
+                    {pase.tipo != "CONTRATISTA" &&
+                        <div class="sm:px-8 px-4">
+                            {/** Parte superior de la vista */}
+                            <InformacionPase _dataPaseGeneral={pase} tituloPase={TITULO}/>
 
-                    <div class="h-8"></div>
+                            <div class="h-8"></div>
+        
+                            {/** Parte inferior tabla de personas */}
+                            <ListaPersonas datos={data.state.personas} url={URL} tipoPase={pase.tipo}
+                                opcionCambiarEstado={CambiarEstadoPase} identificador={pase.paseId} />
+                        </div>
+                    }
 
-                    {/** Parte inferior tabla de personas */}
-                    <ListaPersonas datos={data.state.personas} url={URL} tipoPase={pase.tipo}
-                        opcionCambiarEstado={CambiarEstadoPase} identificador={pase.paseId} />
+                    {pase.tipo ==="CONTRATISTA" &&
+                        <div class="sm:px-8 px-4">
+                            {/** Parte superior de la vista */}
+                            <InformacionPase _dataPaseGeneral={pase} _documentosEmpresa={data.state.documentosEmpresa} tituloPase={TITULO}/>
 
-                </div>
+                            <div class="h-8"></div>
+        
+                            {/** Parte inferior tabla de personas */}
+                            <ListaPersonas datos={data.state.personas} url={URL} tipoPase={pase.tipo}
+                                opcionCambiarEstado={CambiarEstadoPase} identificador={pase.paseId} />
+
+                        </div>
+                    }
+                   
+
+                
             </div>
         </div>
     )

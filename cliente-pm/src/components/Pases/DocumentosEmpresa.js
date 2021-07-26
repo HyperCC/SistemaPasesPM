@@ -42,7 +42,6 @@ export const DocumentosEmpresa = (props) => {
         // reading the actual uploaded file
         file_reader.readAsDataURL(file);
 
-
         file_reader.onload = () => {
             // After uploading the file
             // appending the file to our state array
@@ -50,6 +49,7 @@ export const DocumentosEmpresa = (props) => {
             // Array para dejar solo la base 64 del archivo
             var arrayAux = [];
             arrayAux = file_reader.result.split(',');
+            console.log(file_reader.result)
 
             // variable para sacar la extension del archivo
             var extension = file.name.split('.').pop();

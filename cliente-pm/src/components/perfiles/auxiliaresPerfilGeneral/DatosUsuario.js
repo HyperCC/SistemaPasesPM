@@ -38,7 +38,7 @@ const DatosUsuario = props => {
         <div class="bg-white p-4 md:p-8 rounded-lg shadow-md">
 
             <div class="text-2xl leading-tight mx-8 text-center md:text-left md:ml-16">
-                Perfil {rolFormateado} - {currentRol == 'SOLICITANTE' ? 'Informaicon General' : 'Filtros'}
+                Perfil {rolFormateado} - {currentRol == 'SOLICITANTE' ? 'Información General' : 'Filtros'}
             </div>
 
             {currentRol == 'SOLICITANTE' ?

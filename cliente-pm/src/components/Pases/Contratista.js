@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useLocation } from 'react-router-dom';
@@ -19,6 +19,11 @@ export const Contratista = (props) => {
 
     const [listaPersona, setListaPersona] = useState([]);
     const [countAux, setCountAux] = useState(0)
+
+    // Controlar pop-up
+    const refDocumentoEmpresa = useRef();
+    const openDocumentoEmpresa = () => refDocumentoEmpresa.current.open();
+    const closeDocumentosEmpresa = () => refDocumentoEmpresa.current.close();
 
     const [datosPaseGeneral, setDatosPaseGeneral] = useState({
         Area: '',
