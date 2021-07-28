@@ -13,6 +13,27 @@ const PerfilGeneral = () => {
     const [{ sesionUsuario }, dispatch] = useStateValue();
     const rolCuenta = JSON.parse(window.localStorage.getItem('data_current_usuario')).rol;
 
+    const [filtroFechaIni, setFiltroFechaIni] = useState(null);
+    const [filtroFechaFin, setFiltroFechaFin] = useState(null);
+    const [filtroTipo, setFiltroTipo] = useState(undefined);
+    const [filtroEstado, setFiltroEstado] = useState(undefined);
+
+    const filtroFechaInicio = (fechaIni) => {
+        setFiltroFechaIni(fechaIni)    
+    }
+
+    const filtroFechaFinal = (fechaFin) => {
+        setFiltroFechaFin(fechaFin)
+    }
+
+    const filtrarEstado = (estado) => {
+        setFiltroEstado(estado)
+    }
+
+    const filtrarTipo = (tipo) => {
+        setFiltroTipo(tipo)
+    }
+
     //TODO: agregar datos de prueba y formatearlos
     const dataDocumentosEmpresaPerfil = [
         {
@@ -118,7 +139,8 @@ const PerfilGeneral = () => {
 
                     <LanzarNoritificaciones codigo={currentNotification} />
 
-                    <DatosUsuario datos={dataUsuario} />
+                    <DatosUsuario datos={dataUsuario} _filtroFechaInicio={filtroFechaInicio} _filtroFechaFinal={filtroFechaFinal} 
+                    _filtrarEstado={filtrarEstado} _filtrarTipo={filtrarTipo}/>
                     <div class="h-8"></div>
 
                     {/*
@@ -128,7 +150,8 @@ const PerfilGeneral = () => {
 
                     {rolCuenta == 'ADMIN' ?
                         <TablaAllUsuarios datos={pasesUsuario.usuariosAll} _setCurrentNotification={setCurrentNotification} />
-                        : <TablaPases currentRol={dataUsuario.rol} soloPases={pasesUsuario.pasesRel} />
+                        : <TablaPases currentRol={dataUsuario.rol} soloPases={pasesUsuario.pasesRel} filtroIni={filtroFechaIni} filtroFin={filtroFechaFin} 
+                        filtroTipo={filtroTipo} filtroEstado={filtroEstado} />
                     }
                 </div>
             </div>

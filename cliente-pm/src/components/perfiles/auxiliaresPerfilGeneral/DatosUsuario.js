@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from "react-datepicker";
 
 // tabla con los datos del perfil del usuario, datos del solicitante o filtros de los admins
@@ -7,14 +7,51 @@ const DatosUsuario = props => {
     // variables para las fechas
     const [startDate, setStartDate] = useState(null);
     const [finishtDate, setFinishDate] = useState(null);
+    const [estado, setEstado] = useState();
+    const [tipo, setTipo] = useState()
 
     // modificar las fechas con useState del pase
     const cambiarFechaInicio = (date) => {
         setStartDate(date);
+        setFinishDate(null)
+        setEstado()
+        setTipo()
     };
     const cambiarFechaTermino = (date) => {
+        setStartDate(null)
         setFinishDate(date);
+        setEstado()
+        setTipo()
     };
+    const cambiarEstado = (estado) => {
+        setStartDate(null)
+        setFinishDate(null)
+        setEstado(estado.target.value);
+        setTipo()
+    };
+    const cambiarTipo = (tipo) => {
+        setStartDate(null)
+        setFinishDate(null)
+        setEstado()
+        setTipo(tipo.target.value);
+    };
+
+    // filtros
+    useEffect(() => {
+        props._filtroFechaInicio(startDate)
+    }, [startDate]);
+
+    useEffect(() => {
+        props._filtroFechaFinal(finishtDate)
+    }, [finishtDate]);
+
+    useEffect(() => {
+        props._filtrarEstado(estado)
+    }, [estado]);
+
+    useEffect(() => {
+        props._filtrarTipo(tipo)
+    }, [tipo]);
 
     // ajuste del titulo
     const currentRol = props.datos.rol;
@@ -77,7 +114,7 @@ const DatosUsuario = props => {
                     <div class="col-span-2 grid grid-cols-3 gap-6">
                         <div>Tipo</div>
                         <div class="flex col-span-2">
-                            <select name="Tipo" class="bg-gray-100 p-2 rounded-full outline-none w-full border border-gray-300">
+                            <select name="Tipo" value={tipo} class="bg-gray-100 p-2 rounded-full outline-none w-full border border-gray-300" onChange={tipo => cambiarTipo(tipo)}>
                                 <option>Ninguno</option>
                                 <option value='Visita'>Visita</option>
                                 <option value='Contratista'>Contratista</option>
@@ -91,7 +128,7 @@ const DatosUsuario = props => {
                     <div class="col-span-2 grid grid-cols-3 gap-6">
                         <div>Estado</div>
                         <div class="flex col-span-2">
-                            <select name="Estado" class="bg-gray-100 p-2 rounded-full outline-none w-full border border-gray-300">
+                            <select name="Estado" value={estado} class="bg-gray-100 p-2 rounded-full outline-none w-full border border-gray-300" onChange={estado => cambiarEstado(estado)}>
                                 <option>Ninguno</option>
                                 <option value='Aprobado'>Aprobado</option>
                                 <option value='Rechazado'>Rechazado</option>
