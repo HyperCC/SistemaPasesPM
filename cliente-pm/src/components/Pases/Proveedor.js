@@ -131,8 +131,12 @@ export const Proveedor = (props) => {
                     //window.localStorage.setItem('mensaje_success', 'exi-ptre00');
                     //window.localStorage.setItem('mensaje_success_showed', false);
                     setCurrentNotification('exi-ppre00');
-                    // limpiar las memorias locales
-                    cancelarGuardado();
+
+                    const sleep = (milliseconds) =>
+                        new Promise(resolve => setTimeout(resolve, milliseconds));
+                    sleep(1000).then(() => {
+                        cancelarGuardado();
+                    });
                 }
 
                 // si no hay conexion con la API

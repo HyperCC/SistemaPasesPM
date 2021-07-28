@@ -49,7 +49,8 @@ namespace Aplicacion.Cuentas
 
                 // obtener los pases asignados segun el rol
                 var pasesPorRol = currentRol[0] == "CONTACTO" ? this._context.Pase.Where(p => p.Tipo == TipoPase.VISITA
-                    || p.Tipo == TipoPase.PROVEEDOR || (p.Tipo == TipoPase.CONTRATISTA && (p.Estado != EstadoPase.FINALIZADO && p.Estado == EstadoPase.PENDIENTE)))
+                    || p.Tipo == TipoPase.PROVEEDOR
+                    || (p.Tipo == TipoPase.CONTRATISTA && (p.Estado == EstadoPase.PREAPROBADO || p.Estado == EstadoPase.APROBADO || p.Estado == EstadoPase.RECHAZADO)))
 
                     : currentRol[0] == "GUARDIA" ? this._context.Pase
                     : currentRol[0] == "HSEQ" ? this._context.Pase.Where(p => p.Tipo == TipoPase.CONTRATISTA)

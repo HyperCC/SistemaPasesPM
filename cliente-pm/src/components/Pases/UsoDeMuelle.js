@@ -133,8 +133,12 @@ export const UsoDeMuelle = (props) => {
                     //window.localStorage.setItem('mensaje_success', 'exi-ptre00');
                     //window.localStorage.setItem('mensaje_success_showed', false);
                     setCurrentNotification('exi-pumre0');
-                    // limpiar las memorias locales
-                    cancelarGuardado();
+
+                    const sleep = (milliseconds) =>
+                        new Promise(resolve => setTimeout(resolve, milliseconds));
+                    sleep(1000).then(() => {
+                        cancelarGuardado();
+                    });
                 }
 
                 // si no hay conexion con la API
@@ -157,7 +161,7 @@ export const UsoDeMuelle = (props) => {
         <div class="bg-gray-100 min-h-screen">
             <div class="max-w-6xl mx-auto">
                 <div class="py-8 sm:px-8 px-2">
-                    
+
                     <LanzarNoritificaciones codigo={currentNotification} camposInvalidos={currentCamposInvalidos} />
 
                     {/** Parte superior de la vista */}
