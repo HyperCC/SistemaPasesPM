@@ -73,7 +73,7 @@ namespace Aplicacion.Cuentas
                 // obtencion de los datos por pase
                 ICollection<PasePerfil> pasesPerfil = new List<PasePerfil>();
 
-                foreach (var pase in usuario.PasesRel.Reverse())
+                foreach (var pase in usuario.PasesRel)
                 {
                     ICollection<PersonaExternaPase> personasExternasPase = new List<PersonaExternaPase>();
 
