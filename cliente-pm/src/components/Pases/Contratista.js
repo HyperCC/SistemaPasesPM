@@ -82,7 +82,7 @@ export const Contratista = (props) => {
             ["AsesorDePrevencion"]: datosPrev // solo cambiar el input mapeado
         }));
 
-        console.log("aqui")
+        closeDocumentosEmpresa();
 
     }
 
@@ -110,6 +110,23 @@ export const Contratista = (props) => {
         }));
 
     }, [listaPersona]);
+
+    useEffect(() => {
+        setDatosPaseGeneral(anterior => ({
+            ...anterior, // mantener lo que existe antes
+            ["FechaInicio"]: startDate, // solo cambiar el input mapeado
+        }));
+
+    }, [startDate]);
+
+    useEffect(() => {
+
+        setDatosPaseGeneral(anterior => ({
+            ...anterior, // mantener lo que existe antes
+            ["FechaTermino"]: finishtDate, // solo cambiar el input mapeado
+        }));
+    }, [finishtDate]);
+
 
     // envio de los datos del formulario a la API 
     const enviarFormulario = inforFormulario => {
@@ -224,7 +241,7 @@ export const Contratista = (props) => {
                             </div>
 
                             <div class="col-span-2 col-start-5 row-start-4">
-                                <Popup trigger={<button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">Agregar Documentos empresa</button>} modal nested>
+                                <Popup ref={refDocumentoEmpresa} trigger={<button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">Agregar Documentos empresa</button>} modal nested>
                                     {close => (
                                         <div className="modal">
                                             <button className="close" onClick={close}>
