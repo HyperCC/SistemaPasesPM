@@ -1,4 +1,5 @@
-﻿using Dominio.Entidades;
+﻿using Dominio.Auxiliares.ModelosPaseContratista;
+using Dominio.Entidades;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -22,10 +23,11 @@ namespace Persistencia.AuxiliaresAlmacenamiento
         /// <param name="pasaporte"></param>
         /// <param name="nacionalidad"></param>
         /// <returns></returns>
-        public static async Task<PersonaExterna> BuscarOAgregarPersonaExterna(SistemaPasesContext _context,
-            Persona _personaAdjunta,
-            Pase _pase,
-            string nacionalidad)
+        public static async Task<PersonaExterna> BuscarOAgregarPersonaExterna(
+            SistemaPasesContext _context
+            , Persona _personaAdjunta
+            , Pase _pase
+            , string nacionalidad)
         {
 
             // buscar por la persona externa (la nacionalidad)
@@ -53,7 +55,6 @@ namespace Persistencia.AuxiliaresAlmacenamiento
                 PersonaId = _personaAdjunta.PersonaId,
             };
             await _context.PasePersonaExterna.AddAsync(nuevaRelacion);
-            //_context.SaveChanges();
 
             // siempre se retorna la persona externa encontrada o una nueva
             return buscarPersonaExt;

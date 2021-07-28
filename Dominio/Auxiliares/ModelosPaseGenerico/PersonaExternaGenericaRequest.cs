@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dominio.Auxiliares.ModelosPaseContratista;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -20,5 +21,8 @@ namespace Dominio.Auxiliares.Pases
         public string Pasaporte { get; set; }
         public string Rut { get; set; }
         public string Nacionalidad { get; set; }
+
+        // Documentos de induccion
+        public ICollection<DocumentoEmpresa> DocumentosInduccion { get; set; } // nulable
     }
 }

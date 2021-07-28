@@ -43,8 +43,6 @@ namespace Aplicacion.Pases
 
             // Personas para pase generico
             public ICollection<PersonaExternaGenericaRequest> PersonasExternas { get; set; } // nullable
-            // documentos de empresa
-            public ICollection<DocumentoEmpresa> DocumentosInduccion { get; set; } // nulable
         }
 
         /// <summary>
@@ -83,10 +81,6 @@ namespace Aplicacion.Pases
 
             public async Task<Unit> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
-                Console.WriteLine("---------------------------------------");
-                Console.WriteLine($"VALOR DE LA COMPLETITUD {request.Completitud}");
-                Console.WriteLine("---------------------------------------");
-
                 // validacion del formato del request
                 EjecutaValidacion validator = new EjecutaValidacion();
                 var validacionesRes = validator.Validate(request);
@@ -144,17 +138,8 @@ namespace Aplicacion.Pases
                 // agregar el nuevo pase 
                 await this._context.Pase.AddAsync(paseGenerado);
 
-                // agregar Documentos de induccion 
-                if (request.DocumentosInduccion != null)
-                    foreach (var docEmpresa in request.DocumentosInduccion)
-                        await AlmacenarDocumentosEmpresa.AgregarDocumentosEmpresa(docEmpresa
-                            , _context
-                            , _env
-                            , paseGenerado.PaseId
-                            , buscarEmpresa.EmpresaId);
-
+                // agregar las personas externas
                 if (request.PersonasExternas != null)
-                    // agregar las personas externas adheridas al pase 
                     foreach (var personaIndividual in request.PersonasExternas)
                     {
                         // buscar o almacenar la persona por rut o pasaporte
@@ -175,6 +160,24 @@ namespace Aplicacion.Pases
                             buscarPersona,
                             paseGenerado,
                             personaIndividual.Nacionalidad);
+
+                        Console.WriteLine("--------------------------------------------------");
+                        Console.WriteLine("--------------------------------------------------");
+                        Console.WriteLine("--------------------------------------------------");
+                        Console.WriteLine($"nuero docs por persona: {personaIndividual.DocumentosInduccion.Count}");
+                        Console.WriteLine("--------------------------------------------------");
+                        Console.WriteLine("--------------------------------------------------");
+
+                        // guardar documentos de induccion si los posee
+                        if (personaIndividual.DocumentosInduccion.Count > 0)
+                            // agregar documentos
+                            foreach (var docPersona in personaIndividual.DocumentosInduccion)
+                                await AlmacenarDocumentoPersonaGenerico.AgregarDocumento(
+                                    docPersona
+                                    , this._context
+                                    , _env
+                                    , buscarPersona.PersonaId);
+
                     }
 
                 // guarar los cambios hechos en el context

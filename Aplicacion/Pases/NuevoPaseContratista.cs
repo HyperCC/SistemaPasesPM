@@ -155,15 +155,12 @@ namespace Aplicacion.Pases
                             paseGenerado,
                             personaIndividual.Nacionalidad);
 
-                        //Agregar Documentos:
-
+                        //Agregar Documentos
                         foreach (var docPersona in personaIndividual.DocumentosPersona)
-
                             await AlmacenarDocumentoPersonaContratista.AgregarDocumento(
                                 docPersona
                                 , this._context
                                 , _env
-                                , paseGenerado.PaseId
                                 , buscarPersona.PersonaId);
                     }
                 }

@@ -35,8 +35,7 @@ export const Visita = (props) => {
                 Completitud: true, //bool
                 FechaInicio: '',
                 FechaTermino: '',
-                PersonasExternas: [],
-                SeccionDocumentosEmpresa: []
+                PersonasExternas: []
             }
         } else {
             return {
@@ -49,8 +48,7 @@ export const Visita = (props) => {
                 Completitud: false, //bool
                 FechaInicio: variables.FechaInicio,
                 FechaTermino: variables.FechaTermino,
-                PersonasExternas: [],
-                SeccionDocumentosEmpresa: []
+                PersonasExternas: []
             }
         }
     });

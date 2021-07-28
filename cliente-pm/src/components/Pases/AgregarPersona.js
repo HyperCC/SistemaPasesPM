@@ -14,7 +14,8 @@ const AgregarPersona = props => {
         SegundoApellido: '',
         Rut: '',
         Pasaporte: '',
-        Nacionalidad: ''
+        Nacionalidad: '',
+        DocumentosInduccion: []
     });
 
     // cambio por radiobutton para el rut o pasaporte
@@ -46,7 +47,6 @@ const AgregarPersona = props => {
     };
 
     // agregar documento induccion
-
     const handleMultiFileChosen = async (file) => {
         return new Promise((resolve, reject) => {
             let reader = new FileReader();
@@ -75,30 +75,37 @@ const AgregarPersona = props => {
             arrayAux = fileContents.split(',');
 
             // variable para sacar la extension del archivo
-            var extension = fileContents.split('.').pop();
+            var extension = file.name.split('.').pop();
 
-            newFile.push({ 
+            newFile.push({
                 Documento: arrayAux[1],
                 TipoDocumento: id.toUpperCase(),
-                Obligariedad: true,
+                Obligatoriedad: false,
                 FechaVencimiento: "",
                 Extension: '.' + extension
             })
             //console.log(newFile);
         }))
 
-        setDocumentosInduccion([...documentosInduccion, newFile])
+        setDocumentosInduccion(...documentosInduccion, newFile);
         //console.log(results, "results")
         console.log(documentosInduccion)
-
     }
+
+    // actualizar DocumentosInduccion del usaurio
+    useEffect(() => {
+        setPersonaExterna(anterior => ({
+            ...anterior, // mantener lo que existe antes
+            ['DocumentosInduccion']: documentosInduccion // solo cambiar el input mapeado
+        }));
+    }, [documentosInduccion]);
 
     // enviar persona completa para almacenarlo
     const GuardarUnaPersona = infoFormulario => {
 
         if (personaExterna.Pasaporte.length === 0)
             if (!RutValidator.validate(personaExterna.Rut)) {
-                alert('Por favor ingrese el rut con el siguiente formato 11.111.111-1')
+                alert('Por favor ingrese el rut con el siguiente formato: 11222333-1')
                 setPersonaExterna(anterior => ({
                     ...anterior, // mantener lo que existe antes
                     ['Rut']: '' // reseteamos el rut
@@ -232,7 +239,6 @@ const AgregarPersona = props => {
                                     <input onChange={multipleFile} id="Documento Induccion" multiple type="file" style={{ display: "none" }} />
                                 </div>
 
-                                
                             </div>
 
 

@@ -18,7 +18,6 @@ namespace Persistencia.AuxiliaresAlmacenamiento
             DocumentoPersonaContratista documentoPersonasRequest
             , SistemaPasesContext context
             , IHostingEnvironment env
-            , Guid currentPaseId
             , Guid currentPersonaContratistaId)
         {
 

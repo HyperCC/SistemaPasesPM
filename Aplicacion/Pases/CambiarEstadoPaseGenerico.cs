@@ -21,6 +21,7 @@ namespace Aplicacion.Pases
         {
             public string PaseId { get; set; }
             public string NuevoEstado { get; set; }
+            public string Observacion { get; set; }
         }
 
         /// <summary>
@@ -75,6 +76,7 @@ namespace Aplicacion.Pases
                     : EstadoPase.RECHAZADO;
 
                 currentPase.Estado = enumEstadoNuevo;
+                currentPase.Observacion = request.Observacion;
 
                 var result = await this._context.SaveChangesAsync();
                 if (result > 0)
