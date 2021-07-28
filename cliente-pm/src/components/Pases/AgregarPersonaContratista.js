@@ -24,6 +24,8 @@ export const AgregarPersonaContratista = props => {
     const [riggerDate, setRiggerDate] = useState(new Date());
     const [otrosDate, setOtrosDate] = useState(new Date());
     const [anexosDate, setAnexoDate] = useState(new Date());
+
+    const [paises, setPaises] = useState([]);
     
     {/** Parte de manejo de los documentos */}
     const [documentoPersona, setDocumentoPersona] = useState([]);
@@ -35,6 +37,14 @@ export const AgregarPersonaContratista = props => {
         SegundoApellido: '',
         Nacionalidad: '',
     });
+
+    // consumir la api de los paises
+    useEffect(() => {
+        fetch('https://sccnlp-piloto.dirtrab.cl/api/Mantenedor/getNacionalidad')
+            .then((response) => response.json())
+            .then((data) =>
+                setPaises(data));
+    }, []);
 
     const ingresarValoresMemoria = valorInput => {
         // obtener el valor
@@ -330,7 +340,15 @@ export const AgregarPersonaContratista = props => {
 
                                 <div class="col-span-1 col-start-3 row-start-1 pl-14"> <p>Nacionalidad</p> </div>
                                 <div class="col-span-1 col-start-4 row-start-1 md:col-span-1">
-                                    <input type="text" value={personaExterna.Nacionalidad} onChange={ingresarValoresMemoria} name="Nacionalidad" class="border-2  py-1 px-3 border-gray-300 rounded-md" />
+                                    <select name="Nacionalidad" class="w-full border-2 py-1 px-3 border-gray-200 lowercase rounded-md  bg-gray-100" value={personaExterna.Nacionalidad} onChange={ingresarValoresMemoria}>
+                                            {paises ?
+                                                paises.length > 0 ?
+                                                    paises.map((value, index) => {
+                                                        return <option value={value.gentilicio} key={index}>{value.gentilicio}</option>
+                                                    })
+                                                    : null
+                                                : null}
+                                        </select>
                                 </div>
 
                                 <div><p></p></div>
