@@ -62,10 +62,10 @@ export const DocumentosEmpresa = (props) => {
                 FechaVencimiento: "",
                 Extension: '.' + extension
             }]);
-            console.log(extension);
+            //console.log(extension);
         };
 
-        console.log(files)
+        //console.log(files)
 
     }
 
@@ -85,7 +85,7 @@ export const DocumentosEmpresa = (props) => {
             };
             reader.onerror = reject;
             reader.readAsDataURL(file);
-            console.log(file)
+            //console.log(file)
         })
     }
 
@@ -105,21 +105,21 @@ export const DocumentosEmpresa = (props) => {
             arrayAux = fileContents.split(',');
 
             // variable para sacar la extension del archivo
-            var extension = fileContents.split('.').pop();
+            var extension = file.name.split('.').pop();
 
-            newFile.push({ 
+            files.push({ 
                 Documento: arrayAux[1],
                 TipoDocumento: id.toUpperCase(),
                 Obligariedad: true,
                 FechaVencimiento: "",
-                Extension: '.' + extension
+                Extension: '.' + extension,
             })
             //console.log(newFile);
         }))
 
-        setFiles([...files, newFile])
+        //setFiles([...files, newFile])
         //console.log(results, "results")
-        console.log(files)
+        //console.log(files)
 
     }
 
