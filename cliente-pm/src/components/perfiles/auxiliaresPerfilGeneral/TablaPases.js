@@ -2,115 +2,61 @@ import React, {useEffect, useState} from 'react';
 import { Link } from "react-router-dom";
 import Pagination from '../../Pagination';
 import SelectSearch from 'react-select-search';
+import moment, { min } from 'moment';
 
 const TablaPases = props => {
 
-    console.log(props.soloPases);
     const currentRol = props.currentRol;
 
     //PAGINACION
     const [pases, setPases] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(5);
+    const [lista, setLista] = useState(null);
+    const [cargadoTipo, setCargadoTipo] =useState(false);
+    const [cargadoEstado, setCargadoEstado] =useState(false);
+    const [cargadoIni, setCargadoIni] =useState(false);
+    const [cargadoFin, setCargadoFin] =useState(false);
 
-    const [filtro, setFiltro] = useState("");
-    const [tipo, setTipo] = useState('')
-    const [estado, setEstado] = useState('');
+    if(props.filtroTipo !== undefined){
+        var listaFiltradaTipo = [].concat(props.soloPases).sort(function(a,b){
+            if(a.tipo.toLowerCase() === props.filtroTipo.toLowerCase()){
+                return -1;
+            }
+            return 0;
+        }); 
+    }
 
+    if(props.filtroEstado !== undefined){
+        var listaFiltradaEstado = [].concat(props.soloPases).sort(function(a,b){
+            if(a.estado.toLowerCase()  === props.filtroEstado.toLowerCase() ){
+                return -1;
+            }
+            return 0;
+        }); 
+    }
     
-    
-    // Filtro de estado
-    const filtroEstado = [].concat(props.soloPases).sort(function(b,a){
-        if(a.estado === "FINALIZADO") return -1;
-        return 0;
-    });
-
-    //console.log(filtroEstado, "aqui esta la lista filtrada")
-    if(filtro === ""){
-        //console.log("Se aplica el filtro")
-        setFiltro(filtroEstado);
+    if(props.filtroIni !== null){
+        var listaFiltradaIni = [].concat(props.soloPases).sort(function(a,b){
+            var arrAux = a.fechaInicio.split(" ")
+            if(arrAux[0] === moment(props.filtroIni.toString()).format("DD/MM/YYYY")){
+                return -1;
+            }
+            return 0;
+        }); 
     }
     
 
-    // Filtro por fecha de inicio
-
-    var filtroIni =[].concat(props.soloPases).sort(function(a,b){
-            if(a.fechaInicio > b.fechaInicio){
+    if(props.filtroFin !== null){
+        var listaFiltradaFin = [].concat(props.soloPases).sort(function(a,b){
+            var arrAux = a.fechaTermino.split(" ")
+            console.log(arrAux[0], moment(props.filtroFin.toString()).format("DD/MM/YYYY"))
+            if(arrAux[0] === moment(props.filtroFin.toString()).format("DD/MM/YYYY")){
                 return -1;
-            }if(a.fechaInicio < b.fechaInicio){
-                return 1;
             }
             return 0;
         });
-     
-    // Filtro por fecha de termino
-
-    var filtroFin = [].concat(props.soloPases).sort(function(a,b){
-                    if(a.fechaTermino > b.fechaTermino){
-                        return -1;
-                    }if(a.fechaTermino < b.fechaTermino){
-                        return 1;
-                    }
-                    return 0;
-                });  
-                
-    // Filtro por tipo de pase
-
-    var filtroTipo = [].concat(props.soloPases).sort(function(a,b){
-        if(a.tipo == tipo){
-            return -1;
-        }
-        return 0;
-    }); 
-
-    // Filtro por estado del pase
-
-    var filtroEstadoB = [].concat(props.soloPases).sort(function(a,b){
-        if(a.estado == estado){
-            return -1;
-        }
-        return 0;
-    }); 
-
-    console.log("este es el filtro", filtro)
-
-    // Funciones para cambiar filtro
-
-    function showIni(){
-        setFiltro(filtroIni);
     }
-
-    function showFin(){
-        setFiltro(filtroFin);
-    }
-
-    function showTipo(){
-        setFiltro(filtroTipo)
-    }
-
-    function showEstado(){
-        setFiltro(filtroEstadoB)
-    }
-
-    if(tipo!=''){
-        showTipo()
-        setTipo('') 
-    }
-
-    if(estado!=''){
-        setFiltro('')
-        showEstado()
-        setEstado('')
-    }
-
-
-
-    useEffect(() => {
-        const fetchUsers = async () => {
-            setPases(props.soloPases);
-        };    
-        fetchUsers();
-    }, []);
 
     // Obtener el indice inicial por pagina
     const offset = (currentPage - 1) * postsPerPage;
@@ -124,7 +70,7 @@ const TablaPases = props => {
                     setCurrentPage(currentPage - 1);                
                 break;
             case 'RIGHT':
-                if (currentPage < Math.ceil((props.soloPases? props.soloPases.length: 0) / postsPerPage))
+                if (currentPage < Math.ceil((lista? lista.length: 0) / postsPerPage))
                     setCurrentPage(currentPage + 1);                    
                 break;
             default:
@@ -132,6 +78,73 @@ const TablaPases = props => {
                 break;
         }       
     };
+
+    // funcion para cambiar filtros
+    function showIni(){
+        setLista(listaFiltradaIni);
+    }
+
+    function showFin(){
+        setLista(listaFiltradaFin);
+    }
+
+    function showTipo(){
+        setLista(listaFiltradaTipo);
+    }
+
+    function showEstado(){
+        setLista(listaFiltradaEstado);
+    }
+
+    if(props.filtroIni!==null){
+        if(cargadoIni!==true){
+            showIni();
+            setCargadoIni(true);
+        }
+    }
+
+    if(props.filtroFin!==null){
+        if(cargadoFin!==true){
+            showFin();
+            setCargadoFin(true);
+        }
+    }
+
+    if(props.filtroTipo!==undefined){
+        if(cargadoTipo!== true){
+            showTipo()
+            setCargadoTipo(true);
+        }
+    }
+
+    if(props.filtroEstado!==undefined){ 
+        if(cargadoEstado!== true){
+            showEstado()
+            setCargadoEstado(true);
+        }
+    }
+
+    useEffect(() => {
+        setCargadoTipo(false)
+    }, [props.filtroTipo]);
+
+    useEffect(() => {
+        setCargadoEstado(false)
+    }, [props.filtroEstado]);
+
+    useEffect(() => {
+        setCargadoIni(false)
+    }, [props.filtroIni]);
+
+    useEffect(() => {
+        setCargadoFin(false)
+    }, [props.filtroFin]);
+
+    useEffect(() => {
+        setLista(props.soloPases)
+    }, [props.soloPases])
+
+    console.log(lista)
 
     return (
         <div class="bg-white p-4 md:p-8 rounded-lg shadow-md">
@@ -205,12 +218,12 @@ const TablaPases = props => {
 
                         <tbody>
                             {/* CICLO FOR CON TODOS LOS DATOS PARA CADA PASE */}
-                            {props.soloPases ?
-                                props.soloPases.length > 0 ?
-                                    props.soloPases.slice(offset, offset + postsPerPage).map((value, index) => {
+                            {lista ?
+                                lista.length > 0 ?
+                                    lista.slice(offset, offset + postsPerPage).map((value, index) => {
                                         return <tr key={index} class={index % 2 == 0 ? "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap"
                                             : "text-center border-b border-gray-200 text-sm text-gray-800 whitespace-nowrap bg-gray-100"} >
-
+                                            
                                             <td class="p-4">
                                                 {value.fechaInicio}
                                             </td>
