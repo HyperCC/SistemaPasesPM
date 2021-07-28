@@ -75,9 +75,9 @@ const AgregarPersona = props => {
             arrayAux = fileContents.split(',');
 
             // variable para sacar la extension del archivo
-            var extension = fileContents.split('.').pop();
+            var extension = file.name.split('.').pop();
 
-            newFile.push({ 
+            documentosInduccion.push({ 
                 Documento: arrayAux[1],
                 TipoDocumento: id.toUpperCase(),
                 Obligariedad: true,
@@ -87,9 +87,9 @@ const AgregarPersona = props => {
             //console.log(newFile);
         }))
 
-        setDocumentosInduccion([...documentosInduccion, newFile])
+        //setDocumentosInduccion([...documentosInduccion, newFile])
         //console.log(results, "results")
-        console.log(documentosInduccion)
+        //console.log(documentosInduccion)
 
     }
 
