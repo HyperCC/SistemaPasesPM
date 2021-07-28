@@ -18,6 +18,7 @@ export const ArchivosEmpresa = props => {
 
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
+    const [actualizar, setActualizar] = useState(0);
     let data = useLocation();
     let history = useHistory();
 
@@ -31,6 +32,16 @@ export const ArchivosEmpresa = props => {
 
     function backPage(){
         setPageNumber(pageNumber-1)
+    }
+
+    const downloadFile = (file, extension) => {
+        const linkSource = `data:application/${extension};base64,${file}`;
+        const downloadLink = document.createElement("a");
+        const fileName = "file."+extension;
+    
+        downloadLink.href = linkSource;
+        downloadLink.download = fileName;
+        downloadLink.click();
     }
 
     function base64DecodeUnicode(str) {
@@ -124,10 +135,12 @@ export const ArchivosEmpresa = props => {
                                                                             &times;
                                                                         </button>
 
-                                                                        <FileViewer
-                                                                        fileType={value.extension.split('.').pop()}
-                                                                        filePath={"data:application/"+value.extension.split('.').pop()+";base64,"+value.documentoBase64}
-                                                                        />
+                                                                        <div style={{ height: '100%'}}>
+                                                                            <FileViewer
+                                                                            fileType={value.extension.split('.').pop().toLowerCase()}
+                                                                            filePath={"data:application/"+value.extension.split('.').pop().toLowerCase()+";base64,"+value.documentoBase64}
+                                                                            />
+                                                                        </div>
                                                                         
                                                                     </div>
                                                                     
@@ -170,10 +183,20 @@ export const ArchivosEmpresa = props => {
 
                                                         </td>
                                                         <td class="p-4">
-                                                            descarga
+                                                        
+
+                                                            <div>
+                                                                
+                                                                <button type="button" onClick={() => downloadFile(value.documentoBase64, value.extension.split('.').pop())}
+                                                                    class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-2 select-none text-white rounded-md transition duration-500">
+                                                                    Descargar
+                                                                </button>
+                                                            </div>
+
+                                                         
                                                         </td>
                                                         <td class="p-4">
-                                                            {value.fechaRegistro}
+                                                            {value.fechaVencimiento}
                                                         </td>
                                                     </tr>
                                                 })

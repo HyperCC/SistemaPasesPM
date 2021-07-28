@@ -34,8 +34,8 @@ export const Contratista = (props) => {
         ServicioAdjudicado: '',
         Completitud: false,
         Observaciones: '',
-        FechaInicio: '01/01/2022',
-        FechaTermino: '01/01/2022',
+        FechaInicio: '',
+        FechaTermino: '',
 
         // listas de usuarios y documentos
         PersonasContratista: [],

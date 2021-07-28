@@ -1,13 +1,21 @@
-import React from 'react'
+import {React, useState} from 'react'
 import { useHistory, Link } from 'react-router-dom';
 import Popup from 'reactjs-popup';
 
 export const ListaPersonas = props => {
     const history = useHistory();
-    let descripcion = "";
+    const [descripcion, setDescripcion] = useState();
     const rolCuenta = window.localStorage.getItem('data_current_usuario') ?
         JSON.parse(window.localStorage.getItem('data_current_usuario')).rol
         : null;
+
+    const ingresarValoresMemoria = valorInput => {
+        // obtener el valor
+        const { name, value } = valorInput.target;
+
+        // asignar el valor
+        setDescripcion(value);
+    };
 
     const AprobarPaseActual = () => {
         props.opcionCambiarEstado({
@@ -59,7 +67,7 @@ export const ListaPersonas = props => {
                                             <div class="grid grid-cols-4 gap-4 md:grid-cols-4 mt-6 mx-8 mb-2 md:mb-0">
                                                 <div class="col-span-1 row-span-2 col-start-1 row-start-1"><p>Descripcion del rechazo</p></div>
                                                 <div class="col-span-3 row-span-2 col-start-2 row-start-1">
-                                                    <textarea type="range" value={descripcion} name="Descripcion" placeholder="range...."
+                                                    <textarea type="range" value={descripcion} onChange={ingresarValoresMemoria} name="descripcion" placeholder="range...."
                                                         class="border w-full app border-gray-300 p-2 my-2 rounded-md focus:outline-none focus:ring-2 ring-azul-pm">
                                                     </textarea>
                                                 </div>

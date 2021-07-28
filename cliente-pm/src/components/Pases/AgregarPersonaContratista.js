@@ -100,11 +100,189 @@ export const AgregarPersonaContratista = props => {
             )
         );
 
-        console.log("äqui")
-
     }, [contratoDate]);
 
-    
+    useEffect(() => {
+       
+        setDocumentoPersona(
+            documentoPersona.map( (documento) =>
+            
+                documento.TipoDocumento === "REGISTRO RIOHS"
+                    ? { ...documento, FechaVencimiento: moment(RIOHSDate.toString()).format("DD/MM/YYYY")}
+                    : { ...documento}
+                
+            )
+        );
+
+    }, [RIOHSDate]);
+
+    useEffect(() => {
+       
+        setDocumentoPersona(
+            documentoPersona.map( (documento) =>
+            
+                documento.TipoDocumento === "REGISTRO ODI"
+                    ? { ...documento, FechaVencimiento: moment(ODIDate.toString()).format("DD/MM/YYYY")}
+                    : { ...documento}
+                
+            )
+        );
+
+    }, [ODIDate]);
+
+    useEffect(() => {
+       
+        setDocumentoPersona(
+            documentoPersona.map( (documento) =>
+            
+                documento.TipoDocumento === "REGISTRO EPPS"
+                    ? { ...documento, FechaVencimiento: moment(EPPsDate.toString()).format("DD/MM/YYYY")}
+                    : { ...documento}
+                
+            )
+        );
+
+    }, [EPPsDate]);
+
+    useEffect(() => {
+       
+        setDocumentoPersona(
+            documentoPersona.map( (documento) =>
+            
+                documento.TipoDocumento === "BASICO"
+                    ? { ...documento, FechaVencimiento: moment(basicoDate.toString()).format("DD/MM/YYYY")}
+                    : { ...documento}
+                
+            )
+        );
+
+    }, [basicoDate]);
+
+    useEffect(() => {
+       
+        setDocumentoPersona(
+            documentoPersona.map( (documento) =>
+            
+                documento.TipoDocumento === "ALTURA FÍSICA"
+                    ? { ...documento, FechaVencimiento: moment(alturaDate.toString()).format("DD/MM/YYYY")}
+                    : { ...documento}
+                
+            )
+        );
+
+    }, [alturaDate]);
+
+    useEffect(() => {
+       
+        setDocumentoPersona(
+            documentoPersona.map( (documento) =>
+            
+                documento.TipoDocumento === "ESPACIOS CONFINADOS"
+                    ? { ...documento, FechaVencimiento: moment(confinadosDate.toString()).format("DD/MM/YYYY")}
+                    : { ...documento}
+                
+            )
+        );
+
+    }, [confinadosDate]);
+
+    useEffect(() => {
+       
+        setDocumentoPersona(
+            documentoPersona.map( (documento) =>
+            
+                documento.TipoDocumento === "PSICOSENSOMÉTRICO"
+                    ? { ...documento, FechaVencimiento: moment(psicosensometricoDate.toString()).format("DD/MM/YYYY")}
+                    : { ...documento}
+                
+            )
+        );
+
+    }, [psicosensometricoDate]);
+
+    useEffect(() => {
+       
+        setDocumentoPersona(
+            documentoPersona.map( (documento) =>
+            
+                documento.TipoDocumento === "SOLDADOR CALIFICADO"
+                    ? { ...documento, FechaVencimiento: moment(soldadorDate.toString()).format("DD/MM/YYYY")}
+                    : { ...documento}
+                
+            )
+        );
+
+    }, [soldadorDate]);
+
+    useEffect(() => {
+       
+        setDocumentoPersona(
+            documentoPersona.map( (documento) =>
+            
+                documento.TipoDocumento === "TRABAJO EN ALTURA"
+                    ? { ...documento, FechaVencimiento: moment(trabajadorAlturaDate.toString()).format("DD/MM/YYYY")}
+                    : { ...documento}
+                
+            )
+        );
+
+    }, [trabajadorAlturaDate]);
+
+    useEffect(() => {
+       
+        setDocumentoPersona(
+            documentoPersona.map( (documento) =>
+            
+                documento.TipoDocumento === "OPERADOR DE EQUIPO MÓVIL"
+                    ? { ...documento, FechaVencimiento: moment(operadorDate.toString()).format("DD/MM/YYYY")}
+                    : { ...documento}
+                
+            )
+        );
+
+    }, [operadorDate]);
+
+    useEffect(() => {
+       
+        setDocumentoPersona(
+            documentoPersona.map( (documento) =>
+            
+                documento.TipoDocumento === "RIGGER / PORTALONERO"
+                    ? { ...documento, FechaVencimiento: moment(riggerDate.toString()).format("DD/MM/YYYY")}
+                    : { ...documento}
+                
+            )
+        );
+
+    }, [riggerDate]);   
+
+    useEffect(() => {
+       
+        setDocumentoPersona(
+            documentoPersona.map( (documento) =>
+            
+                documento.TipoDocumento === "OTROS"
+                    ? { ...documento, FechaVencimiento: moment(otrosDate.toString()).format("DD/MM/YYYY")}
+                    : { ...documento}
+                
+            )
+        );
+
+    }, [otrosDate]);   
+
+    useEffect(() => {
+       
+        setDocumentoPersona(
+            documentoPersona.map( (documento) =>
+            
+                documento.TipoDocumento === "ANEXO"
+                    ? { ...documento, FechaVencimiento: moment(anexosDate.toString()).format("DD/MM/YYYY")}
+                    : { ...documento}
+                
+            )
+        );
+
+    }, [anexosDate]);     
 
 
     const sendData = () => { 
