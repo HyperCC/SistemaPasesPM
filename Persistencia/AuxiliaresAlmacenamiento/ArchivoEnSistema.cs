@@ -18,7 +18,7 @@ namespace Persistencia.AuxiliaresAlmacenamiento
             , IHostingEnvironment env)
         {
             currentExtension = currentExtension.ToLower();
-            string[] permittedExtensions = { ".txt", ".pdf", ".docx", ".doc", ".png", ".jpeg", ".jpg", ".ppt", ".pptx", "xls", "xlsx" };
+            string[] permittedExtensions = { ".txt", ".pdf", ".docx", ".doc", ".png", ".jpeg", ".jpg", ".ppt", ".pptx", ".xls", ".xlsx" };
 
             Console.WriteLine("--------------------------------");
             Console.WriteLine($"SE HA ENTRADO A LA SECCION DE ALMCENAR DOCS CON EXTENSION {currentExtension}.");

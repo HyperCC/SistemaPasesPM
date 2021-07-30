@@ -126,7 +126,7 @@ export const ArchivosEmpresa = props => {
                                                         </td>
                                                         <td class="p-4">
                                                             
-                                                            {value.extension.split('.').pop() !="pdf" &&
+                                                            {value.extension.split('.').pop() === "docx" &&
                                                                 <Popup trigger={<button class="bg-verde-pm hover:bg-amarillo-pm shadow-md font-semibold px-5 py-1 select-none text-white rounded-md transition duration-500">Ver archivo</button>} modal nested>
                                                                 {close => (
                                                                     <div className="modal">
