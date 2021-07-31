@@ -15,6 +15,9 @@ using System.Threading.Tasks;
 
 namespace Aplicacion.ConfiguracionLogin
 {
+    /// <summary>
+    /// cambiar contraseña de un usuario validando la contraseña actual
+    /// </summary>
     public class CambiarContrasena
     {
         public class Ejecuta : IRequest
@@ -128,7 +131,10 @@ namespace Aplicacion.ConfiguracionLogin
 
                     // devolver datos del usuario o lanzar 400
                     if (result.Succeeded)
+                    {
+                        // TODO: envair EMAIL al usuario con la nueva clave desde aqui
                         return Unit.Value;
+                    }
 
                     // obtener todos los errores en las password
                     foreach (var err in result.Errors)

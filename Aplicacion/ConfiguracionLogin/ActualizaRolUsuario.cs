@@ -111,7 +111,10 @@ namespace Aplicacion.ConfiguracionLogin
                 var resultAgregar = await this._userManager.AddToRoleAsync(usuario, request.RolActualizar);
 
                 if (resultAgregar.Succeeded)
+                {
+                    // TODO: envair EMAIL al usuario "usuario" informando del cambio de rol
                     return Unit.Value;
+                }
 
                 throw new Exception("No se pudo cambiar el rol");
             }

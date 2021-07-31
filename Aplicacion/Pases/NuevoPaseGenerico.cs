@@ -161,13 +161,6 @@ namespace Aplicacion.Pases
                             paseGenerado,
                             personaIndividual.Nacionalidad);
 
-                        Console.WriteLine("--------------------------------------------------");
-                        Console.WriteLine("--------------------------------------------------");
-                        Console.WriteLine("--------------------------------------------------");
-                        Console.WriteLine($"nuero docs por persona: {personaIndividual.DocumentosInduccion.Count}");
-                        Console.WriteLine("--------------------------------------------------");
-                        Console.WriteLine("--------------------------------------------------");
-
                         // guardar documentos de induccion si los posee
                         if (personaIndividual.DocumentosInduccion.Count > 0)
                             // agregar documentos

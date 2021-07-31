@@ -24,6 +24,8 @@ namespace Persistencia.Seeders
             {
                 // todos los tipos de documento solicitados
                 string[] tipoDocumetos = {
+                    "DOCUMENTO INDUCCION",
+
                     "CRONOGRAMA DE TRABAJO",
                     "CERTIFICADO DE MUTUALIDAD",
                     "CERTIFICADO DE ACCIDENTABILIDAD",
@@ -65,29 +67,29 @@ namespace Persistencia.Seeders
                     "OTROS"
                 };
 
+                string[] tiposDocumentoMultiples = {
+                    "DOCUMENTO INDUCCION",
+                    "ANEXO DE CONTRATO",
+                    "PROCEDIMIENTO TRABAJO SEGURO",
+                    "HDS SUSTANCIAS PELIGROSAS",
+                    "OTROS"
+                };
+
+                // agregar todos los tipos de documentos al context
                 for (int index = 0; index < tipoDocumetos.Length; index++)
                 {
-                    var searchTipo = await context.TipoDocumento
-                        .FirstOrDefaultAsync(t => t.Titulo == tipoDocumetos[index]);
-
-                    if (searchTipo == null)
+                    TipoDocumento nuevoTipo = new TipoDocumento
                     {
-                        TipoDocumento nuevoTipo = new TipoDocumento
-                        {
-                            TipoDocumentoId = new Guid(),
-                            Titulo = tipoDocumetos[index],
-                            Obligatoriedad = tipoDocumetoNoObligatorio.Contains(tipoDocumetos[index])
-                            ? false
-                            : true
-                        };
-                        await context.TipoDocumento.AddAsync(nuevoTipo);
-                    }
-                    else
-                        Console.WriteLine($"YA EXISTE EL TIPO DE DOCUMENTO {tipoDocumetos[index]}");
-
+                        TipoDocumentoId = new Guid(),
+                        Titulo = tipoDocumetos[index],
+                        Obligatoriedad = tipoDocumetoNoObligatorio.Contains(tipoDocumetos[index])
+                            ? false : true,
+                        IsUnique = tiposDocumentoMultiples.Contains(tipoDocumetos[index])
+                            ? false : true
+                    };
+                    await context.TipoDocumento.AddAsync(nuevoTipo);
                 }
                 await context.SaveChangesAsync();
-
             }
             else
                 Console.WriteLine("YA EXISTEN LOS TIPOS DE DOCUMENTO INICIALES");

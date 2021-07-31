@@ -172,7 +172,7 @@ namespace Aplicacion.ConfiguracionLogin
                         var usuarioNuevoActual = await this._userManager.FindByNameAsync(usuarioGenerado.UserName);
                         await this._userManager.AddToRoleAsync(usuarioNuevoActual, "SOLICITANTE");
 
-                        //TODO: agregar devolucion de usuario DTO
+                        //TODO: enviar un EMAIL al nuevo usuario notificando la creacion de la cuenta
                         return Unit.Value;
                     }
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistencia;
 
 namespace Persistencia.Migrations
 {
     [DbContext(typeof(SistemaPasesContext))]
-    partial class SistemaPasesContextModelSnapshot : ModelSnapshot
+    [Migration("20210730231819_DBCompleteV16")]
+    partial class DBCompleteV16
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -284,7 +286,7 @@ namespace Persistencia.Migrations
                     b.Property<Guid>("TipoDocumentoId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("IsUnique");
+                    b.Property<bool>("IsMultiple");
 
                     b.Property<bool>("Obligatoriedad");
 

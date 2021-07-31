@@ -11,6 +11,7 @@ namespace Dominio.Entidades
         // atributos de la entidad
         public string Titulo { get; set; }
         public bool Obligatoriedad { get; set; }
+        public bool IsUnique { get; set; }
 
         // obtener los modelos relacionados 
         public ICollection<Documento> DocumentosRel { get; set; }

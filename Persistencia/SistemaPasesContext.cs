@@ -31,6 +31,9 @@ namespace Persistencia
             modelBuilder.Entity<Pase>().Property(p => p.Estado).HasConversion<string>();
             modelBuilder.Entity<Pase>().Property(p => p.Tipo).HasConversion<string>();
             modelBuilder.Entity<Pase>().HasOne(u => u.UsuarioRel).WithMany(p => p.PasesRel);
+            modelBuilder.Entity<TipoDocumento>().Property(t => t.Obligatoriedad).HasConversion<bool>();
+            modelBuilder.Entity<TipoDocumento>().Property(t => t.IsUnique).HasConversion<bool>();
+
         }
 
         // conversion de los modelos a entidades en la Solucion
