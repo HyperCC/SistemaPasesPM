@@ -1,23 +1,31 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState, useEffect } from "react";
+import Rutas from './enrutador/Rutas';
+import { useStateValue } from "./contexto/store";
+import { perfilUsuario } from './actions/UsuarioAction';
+
 
 function App() {
-  return (
+
+  const [{ usuarioSesion }, dispatch] = useStateValue();
+
+  const [iniciaApp, setIniciaApp] = useState(false);
+
+  useEffect(() => {
+    if (!iniciaApp) {
+      perfilUsuario(dispatch)
+        .then((response) => {
+          setIniciaApp(true);
+        })
+        .catch((error) => {
+          setIniciaApp(true);
+        });
+    }
+  }, [iniciaApp]);
+
+  return iniciaApp == false ? null : (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Rutas />
     </div>
   );
 }

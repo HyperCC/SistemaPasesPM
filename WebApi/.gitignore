@@ -446,3 +446,9 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# servidor personalizado
+appsettings.json
+
+# archivos subidos manualmente 
+/wwwroot/Uploads

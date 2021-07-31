@@ -4,14 +4,14 @@ using System.Text;
 
 namespace Dominio.Entidades
 {
-    public class PersonaTipoNombre
+    public class PasePersona
     {
         // relacionamiento segun modelo R
+        public Guid PaseId { get; set; }
         public Guid PersonaId { get; set; }
-        public Guid TipoNombreId { get; set; }
 
         // obtener los modelos relacionados 
+        public Pase PaseRel { get; set; }
         public Persona PersonaRel { get; set; }
-        public TIpoNombre TIpoNombreRel { get; set; }
     }
 }
